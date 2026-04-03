@@ -4,7 +4,7 @@ import { onDepositForBurn } from "./main";
 import type { Config } from "./main";
 import type { EVMLog } from "@chainlink/cre-sdk";
 import { type Hex, hexToBytes, pad } from "viem";
-import { parseAttestationData, irisStatusUrl } from "../../app/packages/circle/src/iris";
+import { parseAttestationData, irisStatusUrl } from "../../app/packages/circle/src/iris-types";
 
 function toBytes(hex: string, size: number): Uint8Array {
   return hexToBytes(pad(hex as Hex, { size }));

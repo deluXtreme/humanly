@@ -1,76 +1,26 @@
-import type { Hash, Hex } from "viem";
+import type { Hash } from "viem";
+import type { IrisMessageResponse } from "./iris-types";
 
-export interface CctpFeeData {
-  forwardFee: { med: string };
-  minimumFee: number;
-}
+export type {
+  CctpFeeData,
+  IrisMessageResponse,
+  AttestationData,
+} from "./iris-types";
+export {
+  computeFees,
+  irisStatusUrl,
+  parseAttestationData,
+} from "./iris-types";
 
 export async function getCctpFees(
   irisApiBase: string,
   srcDomain: number,
   destDomain: number,
-): Promise<CctpFeeData[]> {
+): Promise<import("./iris-types").CctpFeeData[]> {
   const res = await fetch(
     `${irisApiBase}/v2/burn/USDC/fees/${srcDomain}/${destDomain}?forward=true`,
   );
-  return res.json() as Promise<CctpFeeData[]>;
-}
-
-export function computeFees(
-  feeData: CctpFeeData,
-  transferAmount: bigint,
-): { forwardFee: bigint; protocolFee: bigint; maxFee: bigint; totalAmount: bigint } {
-  const forwardFee = BigInt(feeData.forwardFee.med);
-  const protocolFee =
-    (transferAmount * BigInt(Math.round(feeData.minimumFee * 100))) / 1_000_000n;
-  const maxFee = forwardFee + protocolFee;
-  const totalAmount = transferAmount + maxFee;
-  return { forwardFee, protocolFee, maxFee, totalAmount };
-}
-
-export interface IrisMessageResponse {
-  messages: {
-    attestation: Hex;
-    message: Hex;
-    status: string;
-    decodedMessage: {
-      sourceDomain: string;
-      destinationDomain: string;
-      destinationCaller: Hex;
-    };
-    forwardTxHash?: string;
-  }[];
-}
-
-export interface AttestationData {
-  message: Hex;
-  attestation: Hex;
-  destinationDomain: number;
-}
-
-export function irisStatusUrl(
-  irisApiBase: string,
-  srcDomain: number,
-  burnTxHash: Hash,
-): string {
-  return `${irisApiBase}/v2/messages/${srcDomain}?transactionHash=${burnTxHash}`;
-}
-
-export function parseAttestationData(
-  data: IrisMessageResponse,
-): AttestationData {
-  const msg = data.messages?.[0];
-  if (!msg) {
-    throw new Error("No messages in IRIS response");
-  }
-  if (msg.status !== "complete") {
-    throw new Error(`IRIS message status: ${msg.status}, expected complete`);
-  }
-  return {
-    message: msg.message,
-    attestation: msg.attestation,
-    destinationDomain: Number(msg.decodedMessage.destinationDomain),
-  };
+  return res.json() as Promise<import("./iris-types").CctpFeeData[]>;
 }
 
 export async function getAttestationData(
@@ -78,7 +28,8 @@ export async function getAttestationData(
   srcDomain: number,
   burnTxHash: Hash,
   pollIntervalMs = 2000,
-): Promise<AttestationData> {
+): Promise<import("./iris-types").AttestationData> {
+  const { irisStatusUrl, parseAttestationData } = await import("./iris-types");
   const url = irisStatusUrl(irisApiBase, srcDomain, burnTxHash);
 
   while (true) {

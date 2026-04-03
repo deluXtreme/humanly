@@ -16,7 +16,7 @@ import {
   parseAttestationData,
   type AttestationData,
   type IrisMessageResponse,
-} from "../../app/packages/circle/src/iris";
+} from "../../app/packages/circle/src/iris-types";
 import { getChainByDomain } from "../../app/packages/circle/src/data";
 
 const BASE_CHAIN_SELECTOR =

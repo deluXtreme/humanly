@@ -3786,6 +3786,7 @@ var ListSchema = /* @__PURE__ */ messageDesc(file_values_v1_values, 3);
 var DecimalSchema = /* @__PURE__ */ messageDesc(file_values_v1_values, 4);
 var file_sdk_v1alpha_sdk = /* @__PURE__ */ fileDesc("ChVzZGsvdjFhbHBoYS9zZGsucHJvdG8SC3Nkay52MWFscGhhIrQBChVTaW1wbGVDb25zZW5zdXNJbnB1dHMSIQoFdmFsdWUYASABKAsyEC52YWx1ZXMudjEuVmFsdWVIABIPCgVlcnJvchgCIAEoCUgAEjUKC2Rlc2NyaXB0b3JzGAMgASgLMiAuc2RrLnYxYWxwaGEuQ29uc2Vuc3VzRGVzY3JpcHRvchIhCgdkZWZhdWx0GAQgASgLMhAudmFsdWVzLnYxLlZhbHVlQg0KC29ic2VydmF0aW9uIpABCglGaWVsZHNNYXASMgoGZmllbGRzGAEgAygLMiIuc2RrLnYxYWxwaGEuRmllbGRzTWFwLkZpZWxkc0VudHJ5Gk8KC0ZpZWxkc0VudHJ5EgsKA2tleRgBIAEoCRIvCgV2YWx1ZRgCIAEoCzIgLnNkay52MWFscGhhLkNvbnNlbnN1c0Rlc2NyaXB0b3I6AjgBIoYBChNDb25zZW5zdXNEZXNjcmlwdG9yEjMKC2FnZ3JlZ2F0aW9uGAEgASgOMhwuc2RrLnYxYWxwaGEuQWdncmVnYXRpb25UeXBlSAASLAoKZmllbGRzX21hcBgCIAEoCzIWLnNkay52MWFscGhhLkZpZWxkc01hcEgAQgwKCmRlc2NyaXB0b3IiagoNUmVwb3J0UmVxdWVzdBIXCg9lbmNvZGVkX3BheWxvYWQYASABKAwSFAoMZW5jb2Rlcl9uYW1lGAIgASgJEhQKDHNpZ25pbmdfYWxnbxgDIAEoCRIUCgxoYXNoaW5nX2FsZ28YBCABKAkilwEKDlJlcG9ydFJlc3BvbnNlEhUKDWNvbmZpZ19kaWdlc3QYASABKAwSEgoGc2VxX25yGAIgASgEQgIwABIWCg5yZXBvcnRfY29udGV4dBgDIAEoDBISCgpyYXdfcmVwb3J0GAQgASgMEi4KBHNpZ3MYBSADKAsyIC5zZGsudjFhbHBoYS5BdHRyaWJ1dGVkU2lnbmF0dXJlIjsKE0F0dHJpYnV0ZWRTaWduYXR1cmUSEQoJc2lnbmF0dXJlGAEgASgMEhEKCXNpZ25lcl9pZBgCIAEoDSJrChFDYXBhYmlsaXR5UmVxdWVzdBIKCgJpZBgBIAEoCRIlCgdwYXlsb2FkGAIgASgLMhQuZ29vZ2xlLnByb3RvYnVmLkFueRIOCgZtZXRob2QYAyABKAkSEwoLY2FsbGJhY2tfaWQYBCABKAUiWgoSQ2FwYWJpbGl0eVJlc3BvbnNlEicKB3BheWxvYWQYASABKAsyFC5nb29nbGUucHJvdG9idWYuQW55SAASDwoFZXJyb3IYAiABKAlIAEIKCghyZXNwb25zZSJYChNUcmlnZ2VyU3Vic2NyaXB0aW9uEgoKAmlkGAEgASgJEiUKB3BheWxvYWQYAiABKAsyFC5nb29nbGUucHJvdG9idWYuQW55Eg4KBm1ldGhvZBgDIAEoCSJVChpUcmlnZ2VyU3Vic2NyaXB0aW9uUmVxdWVzdBI3Cg1zdWJzY3JpcHRpb25zGAEgAygLMiAuc2RrLnYxYWxwaGEuVHJpZ2dlclN1YnNjcmlwdGlvbiJACgdUcmlnZ2VyEg4KAmlkGAEgASgEQgIwABIlCgdwYXlsb2FkGAIgASgLMhQuZ29vZ2xlLnByb3RvYnVmLkFueSInChhBd2FpdENhcGFiaWxpdGllc1JlcXVlc3QSCwoDaWRzGAEgAygFIrgBChlBd2FpdENhcGFiaWxpdGllc1Jlc3BvbnNlEkgKCXJlc3BvbnNlcxgBIAMoCzI1LnNkay52MWFscGhhLkF3YWl0Q2FwYWJpbGl0aWVzUmVzcG9uc2UuUmVzcG9uc2VzRW50cnkaUQoOUmVzcG9uc2VzRW50cnkSCwoDa2V5GAEgASgFEi4KBXZhbHVlGAIgASgLMh8uc2RrLnYxYWxwaGEuQ2FwYWJpbGl0eVJlc3BvbnNlOgI4ASKgAQoORXhlY3V0ZVJlcXVlc3QSDgoGY29uZmlnGAEgASgMEisKCXN1YnNjcmliZRgCIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eUgAEicKB3RyaWdnZXIYAyABKAsyFC5zZGsudjFhbHBoYS5UcmlnZ2VySAASHQoRbWF4X3Jlc3BvbnNlX3NpemUYBCABKARCAjAAQgkKB3JlcXVlc3QimQEKD0V4ZWN1dGlvblJlc3VsdBIhCgV2YWx1ZRgBIAEoCzIQLnZhbHVlcy52MS5WYWx1ZUgAEg8KBWVycm9yGAIgASgJSAASSAoVdHJpZ2dlcl9zdWJzY3JpcHRpb25zGAMgASgLMicuc2RrLnYxYWxwaGEuVHJpZ2dlclN1YnNjcmlwdGlvblJlcXVlc3RIAEIICgZyZXN1bHQiVgoRR2V0U2VjcmV0c1JlcXVlc3QSLAoIcmVxdWVzdHMYASADKAsyGi5zZGsudjFhbHBoYS5TZWNyZXRSZXF1ZXN0EhMKC2NhbGxiYWNrX2lkGAIgASgFIiIKE0F3YWl0U2VjcmV0c1JlcXVlc3QSCwoDaWRzGAEgAygFIqsBChRBd2FpdFNlY3JldHNSZXNwb25zZRJDCglyZXNwb25zZXMYASADKAsyMC5zZGsudjFhbHBoYS5Bd2FpdFNlY3JldHNSZXNwb25zZS5SZXNwb25zZXNFbnRyeRpOCg5SZXNwb25zZXNFbnRyeRILCgNrZXkYASABKAUSKwoFdmFsdWUYAiABKAsyHC5zZGsudjFhbHBoYS5TZWNyZXRSZXNwb25zZXM6AjgBIi4KDVNlY3JldFJlcXVlc3QSCgoCaWQYASABKAkSEQoJbmFtZXNwYWNlGAIgASgJIkUKBlNlY3JldBIKCgJpZBgBIAEoCRIRCgluYW1lc3BhY2UYAiABKAkSDQoFb3duZXIYAyABKAkSDQoFdmFsdWUYBCABKAkiSgoLU2VjcmV0RXJyb3ISCgoCaWQYASABKAkSEQoJbmFtZXNwYWNlGAIgASgJEg0KBW93bmVyGAMgASgJEg0KBWVycm9yGAQgASgJIm4KDlNlY3JldFJlc3BvbnNlEiUKBnNlY3JldBgBIAEoCzITLnNkay52MWFscGhhLlNlY3JldEgAEikKBWVycm9yGAIgASgLMhguc2RrLnYxYWxwaGEuU2VjcmV0RXJyb3JIAEIKCghyZXNwb25zZSJBCg9TZWNyZXRSZXNwb25zZXMSLgoJcmVzcG9uc2VzGAEgAygLMhsuc2RrLnYxYWxwaGEuU2VjcmV0UmVzcG9uc2UquAEKD0FnZ3JlZ2F0aW9uVHlwZRIgChxBR0dSRUdBVElPTl9UWVBFX1VOU1BFQ0lGSUVEEAASGwoXQUdHUkVHQVRJT05fVFlQRV9NRURJQU4QARIeChpBR0dSRUdBVElPTl9UWVBFX0lERU5USUNBTBACEiIKHkFHR1JFR0FUSU9OX1RZUEVfQ09NTU9OX1BSRUZJWBADEiIKHkFHR1JFR0FUSU9OX1RZUEVfQ09NTU9OX1NVRkZJWBAEKjkKBE1vZGUSFAoQTU9ERV9VTlNQRUNJRklFRBAAEgwKCE1PREVfRE9OEAESDQoJTU9ERV9OT0RFEAJCaAoPY29tLnNkay52MWFscGhhQghTZGtQcm90b1ABogIDU1hYqgILU2RrLlYxYWxwaGHKAgtTZGtcVjFhbHBoYeICF1Nka1xWMWFscGhhXEdQQk1ldGFkYXRh6gIMU2RrOjpWMWFscGhhYgZwcm90bzM", [file_google_protobuf_any, file_google_protobuf_empty, file_values_v1_values]);
 var SimpleConsensusInputsSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 0);
+var ConsensusDescriptorSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 2);
 var ReportRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 3);
 var ReportResponseSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 4);
 var CapabilityRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 6);
@@ -3813,6 +3814,26 @@ var Mode;
   Mode2[Mode2["NODE"] = 2] = "NODE";
 })(Mode || (Mode = {}));
 var file_tools_generator_v1alpha_cre_metadata = /* @__PURE__ */ fileDesc("Cip0b29scy9nZW5lcmF0b3IvdjFhbHBoYS9jcmVfbWV0YWRhdGEucHJvdG8SF3Rvb2xzLmdlbmVyYXRvci52MWFscGhhIoQBCgtTdHJpbmdMYWJlbBJECghkZWZhdWx0cxgBIAMoCzIyLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLlN0cmluZ0xhYmVsLkRlZmF1bHRzRW50cnkaLwoNRGVmYXVsdHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIogBCgtVaW50NjRMYWJlbBJECghkZWZhdWx0cxgBIAMoCzIyLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLlVpbnQ2NExhYmVsLkRlZmF1bHRzRW50cnkaMwoNRGVmYXVsdHNFbnRyeRILCgNrZXkYASABKAkSEQoFdmFsdWUYAiABKARCAjAAOgI4ASKEAQoLVWludDMyTGFiZWwSRAoIZGVmYXVsdHMYASADKAsyMi50b29scy5nZW5lcmF0b3IudjFhbHBoYS5VaW50MzJMYWJlbC5EZWZhdWx0c0VudHJ5Gi8KDURlZmF1bHRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgNOgI4ASKGAQoKSW50NjRMYWJlbBJDCghkZWZhdWx0cxgBIAMoCzIxLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLkludDY0TGFiZWwuRGVmYXVsdHNFbnRyeRozCg1EZWZhdWx0c0VudHJ5EgsKA2tleRgBIAEoCRIRCgV2YWx1ZRgCIAEoA0ICMAA6AjgBIoIBCgpJbnQzMkxhYmVsEkMKCGRlZmF1bHRzGAEgAygLMjEudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuSW50MzJMYWJlbC5EZWZhdWx0c0VudHJ5Gi8KDURlZmF1bHRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgFOgI4ASLBAgoFTGFiZWwSPAoMc3RyaW5nX2xhYmVsGAEgASgLMiQudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuU3RyaW5nTGFiZWxIABI8Cgx1aW50NjRfbGFiZWwYAiABKAsyJC50b29scy5nZW5lcmF0b3IudjFhbHBoYS5VaW50NjRMYWJlbEgAEjoKC2ludDY0X2xhYmVsGAMgASgLMiMudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuSW50NjRMYWJlbEgAEjwKDHVpbnQzMl9sYWJlbBgEIAEoCzIkLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLlVpbnQzMkxhYmVsSAASOgoLaW50MzJfbGFiZWwYBSABKAsyIy50b29scy5nZW5lcmF0b3IudjFhbHBoYS5JbnQzMkxhYmVsSABCBgoEa2luZCLkAQoSQ2FwYWJpbGl0eU1ldGFkYXRhEh8KBG1vZGUYASABKA4yES5zZGsudjFhbHBoYS5Nb2RlEhUKDWNhcGFiaWxpdHlfaWQYAiABKAkSRwoGbGFiZWxzGAMgAygLMjcudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuQ2FwYWJpbGl0eU1ldGFkYXRhLkxhYmVsc0VudHJ5Gk0KC0xhYmVsc0VudHJ5EgsKA2tleRgBIAEoCRItCgV2YWx1ZRgCIAEoCzIeLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLkxhYmVsOgI4ASI2ChhDYXBhYmlsaXR5TWV0aG9kTWV0YWRhdGESGgoSbWFwX3RvX3VudHlwZWRfYXBpGAEgASgIOm4KCmNhcGFiaWxpdHkSHy5nb29nbGUucHJvdG9idWYuU2VydmljZU9wdGlvbnMY0IYDIAEoCzIrLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLkNhcGFiaWxpdHlNZXRhZGF0YVIKY2FwYWJpbGl0eTprCgZtZXRob2QSHi5nb29nbGUucHJvdG9idWYuTWV0aG9kT3B0aW9ucxjRhgMgASgLMjEudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuQ2FwYWJpbGl0eU1ldGhvZE1ldGFkYXRhUgZtZXRob2RCrwEKG2NvbS50b29scy5nZW5lcmF0b3IudjFhbHBoYUIQQ3JlTWV0YWRhdGFQcm90b1ABogIDVEdYqgIXVG9vbHMuR2VuZXJhdG9yLlYxYWxwaGHKAhhUb29sc1xHZW5lcmF0b3JfXFYxYWxwaGHiAiRUb29sc1xHZW5lcmF0b3JfXFYxYWxwaGFcR1BCTWV0YWRhdGHqAhlUb29sczo6R2VuZXJhdG9yOjpWMWFscGhhYgZwcm90bzM", [file_google_protobuf_descriptor, file_sdk_v1alpha_sdk]);
+var file_capabilities_blockchain_evm_v1alpha_client = /* @__PURE__ */ fileDesc("CjBjYXBhYmlsaXRpZXMvYmxvY2tjaGFpbi9ldm0vdjFhbHBoYS9jbGllbnQucHJvdG8SI2NhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhIh0KC1RvcGljVmFsdWVzEg4KBnZhbHVlcxgBIAMoDCK4AQoXRmlsdGVyTG9nVHJpZ2dlclJlcXVlc3QSEQoJYWRkcmVzc2VzGAEgAygMEkAKBnRvcGljcxgCIAMoCzIwLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLlRvcGljVmFsdWVzEkgKCmNvbmZpZGVuY2UYAyABKA4yNC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Db25maWRlbmNlTGV2ZWwiegoTQ2FsbENvbnRyYWN0UmVxdWVzdBI6CgRjYWxsGAEgASgLMiwuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuQ2FsbE1zZxInCgxibG9ja19udW1iZXIYAiABKAsyES52YWx1ZXMudjEuQmlnSW50IiEKEUNhbGxDb250cmFjdFJlcGx5EgwKBGRhdGEYASABKAwiWwoRRmlsdGVyTG9nc1JlcXVlc3QSRgoMZmlsdGVyX3F1ZXJ5GAEgASgLMjAuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRmlsdGVyUXVlcnkiSQoPRmlsdGVyTG9nc1JlcGx5EjYKBGxvZ3MYASADKAsyKC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Mb2cixwEKA0xvZxIPCgdhZGRyZXNzGAEgASgMEg4KBnRvcGljcxgCIAMoDBIPCgd0eF9oYXNoGAMgASgMEhIKCmJsb2NrX2hhc2gYBCABKAwSDAoEZGF0YRgFIAEoDBIRCglldmVudF9zaWcYBiABKAwSJwoMYmxvY2tfbnVtYmVyGAcgASgLMhEudmFsdWVzLnYxLkJpZ0ludBIQCgh0eF9pbmRleBgIIAEoDRINCgVpbmRleBgJIAEoDRIPCgdyZW1vdmVkGAogASgIIjEKB0NhbGxNc2cSDAoEZnJvbRgBIAEoDBIKCgJ0bxgCIAEoDBIMCgRkYXRhGAMgASgMIr0BCgtGaWx0ZXJRdWVyeRISCgpibG9ja19oYXNoGAEgASgMEiUKCmZyb21fYmxvY2sYAiABKAsyES52YWx1ZXMudjEuQmlnSW50EiMKCHRvX2Jsb2NrGAMgASgLMhEudmFsdWVzLnYxLkJpZ0ludBIRCglhZGRyZXNzZXMYBCADKAwSOwoGdG9waWNzGAUgAygLMisuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuVG9waWNzIhcKBlRvcGljcxINCgV0b3BpYxgBIAMoDCJMChBCYWxhbmNlQXRSZXF1ZXN0Eg8KB2FjY291bnQYASABKAwSJwoMYmxvY2tfbnVtYmVyGAIgASgLMhEudmFsdWVzLnYxLkJpZ0ludCI0Cg5CYWxhbmNlQXRSZXBseRIiCgdiYWxhbmNlGAEgASgLMhEudmFsdWVzLnYxLkJpZ0ludCJPChJFc3RpbWF0ZUdhc1JlcXVlc3QSOQoDbXNnGAEgASgLMiwuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuQ2FsbE1zZyIjChBFc3RpbWF0ZUdhc1JlcGx5Eg8KA2dhcxgBIAEoBEICMAAiKwobR2V0VHJhbnNhY3Rpb25CeUhhc2hSZXF1ZXN0EgwKBGhhc2gYASABKAwiYgoZR2V0VHJhbnNhY3Rpb25CeUhhc2hSZXBseRJFCgt0cmFuc2FjdGlvbhgBIAEoCzIwLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLlRyYW5zYWN0aW9uIqEBCgtUcmFuc2FjdGlvbhIRCgVub25jZRgBIAEoBEICMAASDwoDZ2FzGAIgASgEQgIwABIKCgJ0bxgDIAEoDBIMCgRkYXRhGAQgASgMEgwKBGhhc2gYBSABKAwSIAoFdmFsdWUYBiABKAsyES52YWx1ZXMudjEuQmlnSW50EiQKCWdhc19wcmljZRgHIAEoCzIRLnZhbHVlcy52MS5CaWdJbnQiLAocR2V0VHJhbnNhY3Rpb25SZWNlaXB0UmVxdWVzdBIMCgRoYXNoGAEgASgMIlsKGkdldFRyYW5zYWN0aW9uUmVjZWlwdFJlcGx5Ej0KB3JlY2VpcHQYASABKAsyLC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5SZWNlaXB0IpkCCgdSZWNlaXB0EhIKBnN0YXR1cxgBIAEoBEICMAASFAoIZ2FzX3VzZWQYAiABKARCAjAAEhQKCHR4X2luZGV4GAMgASgEQgIwABISCgpibG9ja19oYXNoGAQgASgMEjYKBGxvZ3MYBiADKAsyKC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Mb2cSDwoHdHhfaGFzaBgHIAEoDBIuChNlZmZlY3RpdmVfZ2FzX3ByaWNlGAggASgLMhEudmFsdWVzLnYxLkJpZ0ludBInCgxibG9ja19udW1iZXIYCSABKAsyES52YWx1ZXMudjEuQmlnSW50EhgKEGNvbnRyYWN0X2FkZHJlc3MYCiABKAwiQAoVSGVhZGVyQnlOdW1iZXJSZXF1ZXN0EicKDGJsb2NrX251bWJlchgBIAEoCzIRLnZhbHVlcy52MS5CaWdJbnQiUgoTSGVhZGVyQnlOdW1iZXJSZXBseRI7CgZoZWFkZXIYASABKAsyKy5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5IZWFkZXIiawoGSGVhZGVyEhUKCXRpbWVzdGFtcBgBIAEoBEICMAASJwoMYmxvY2tfbnVtYmVyGAIgASgLMhEudmFsdWVzLnYxLkJpZ0ludBIMCgRoYXNoGAMgASgMEhMKC3BhcmVudF9oYXNoGAQgASgMIqsBChJXcml0ZVJlcG9ydFJlcXVlc3QSEAoIcmVjZWl2ZXIYASABKAwSKwoGcmVwb3J0GAIgASgLMhsuc2RrLnYxYWxwaGEuUmVwb3J0UmVzcG9uc2USRwoKZ2FzX2NvbmZpZxgDIAEoCzIuLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLkdhc0NvbmZpZ0gAiAEBQg0KC19nYXNfY29uZmlnIiIKCUdhc0NvbmZpZxIVCglnYXNfbGltaXQYASABKARCAjAAIocDChBXcml0ZVJlcG9ydFJlcGx5EkAKCXR4X3N0YXR1cxgBIAEoDjItLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLlR4U3RhdHVzEnUKInJlY2VpdmVyX2NvbnRyYWN0X2V4ZWN1dGlvbl9zdGF0dXMYAiABKA4yRC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5SZWNlaXZlckNvbnRyYWN0RXhlY3V0aW9uU3RhdHVzSACIAQESFAoHdHhfaGFzaBgDIAEoDEgBiAEBEi8KD3RyYW5zYWN0aW9uX2ZlZRgEIAEoCzIRLnZhbHVlcy52MS5CaWdJbnRIAogBARIaCg1lcnJvcl9tZXNzYWdlGAUgASgJSAOIAQFCJQojX3JlY2VpdmVyX2NvbnRyYWN0X2V4ZWN1dGlvbl9zdGF0dXNCCgoIX3R4X2hhc2hCEgoQX3RyYW5zYWN0aW9uX2ZlZUIQCg5fZXJyb3JfbWVzc2FnZSppCg9Db25maWRlbmNlTGV2ZWwSGQoVQ09ORklERU5DRV9MRVZFTF9TQUZFEAASGwoXQ09ORklERU5DRV9MRVZFTF9MQVRFU1QQARIeChpDT05GSURFTkNFX0xFVkVMX0ZJTkFMSVpFRBACKoIBCh9SZWNlaXZlckNvbnRyYWN0RXhlY3V0aW9uU3RhdHVzEi4KKlJFQ0VJVkVSX0NPTlRSQUNUX0VYRUNVVElPTl9TVEFUVVNfU1VDQ0VTUxAAEi8KK1JFQ0VJVkVSX0NPTlRSQUNUX0VYRUNVVElPTl9TVEFUVVNfUkVWRVJURUQQASpOCghUeFN0YXR1cxITCg9UWF9TVEFUVVNfRkFUQUwQABIWChJUWF9TVEFUVVNfUkVWRVJURUQQARIVChFUWF9TVEFUVVNfU1VDQ0VTUxACMoUYCgZDbGllbnQSgAEKDENhbGxDb250cmFjdBI4LmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLkNhbGxDb250cmFjdFJlcXVlc3QaNi5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5DYWxsQ29udHJhY3RSZXBseRJ6CgpGaWx0ZXJMb2dzEjYuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRmlsdGVyTG9nc1JlcXVlc3QaNC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5GaWx0ZXJMb2dzUmVwbHkSdwoJQmFsYW5jZUF0EjUuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuQmFsYW5jZUF0UmVxdWVzdBozLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLkJhbGFuY2VBdFJlcGx5En0KC0VzdGltYXRlR2FzEjcuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRXN0aW1hdGVHYXNSZXF1ZXN0GjUuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRXN0aW1hdGVHYXNSZXBseRKYAQoUR2V0VHJhbnNhY3Rpb25CeUhhc2gSQC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5HZXRUcmFuc2FjdGlvbkJ5SGFzaFJlcXVlc3QaPi5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5HZXRUcmFuc2FjdGlvbkJ5SGFzaFJlcGx5EpsBChVHZXRUcmFuc2FjdGlvblJlY2VpcHQSQS5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5HZXRUcmFuc2FjdGlvblJlY2VpcHRSZXF1ZXN0Gj8uY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuR2V0VHJhbnNhY3Rpb25SZWNlaXB0UmVwbHkShgEKDkhlYWRlckJ5TnVtYmVyEjouY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuSGVhZGVyQnlOdW1iZXJSZXF1ZXN0GjguY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuSGVhZGVyQnlOdW1iZXJSZXBseRJ2CgpMb2dUcmlnZ2VyEjwuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRmlsdGVyTG9nVHJpZ2dlclJlcXVlc3QaKC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Mb2cwARJ9CgtXcml0ZVJlcG9ydBI3LmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLldyaXRlUmVwb3J0UmVxdWVzdBo1LmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLldyaXRlUmVwb3J0UmVwbHkayg6CtRjFDggBEglldm1AMS4wLjAatQ4KDUNoYWluU2VsZWN0b3ISow4SoA4KJAoXYXBlY2hhaW4tdGVzdG5ldC1jdXJ0aXMQwcO0+I3EkrKJAQoXCgthcmMtdGVzdG5ldBDnxoye19fQjSoKHQoRYXZhbGFuY2hlLW1haW5uZXQQ1eeKwOHVmKRZCiMKFmF2YWxhbmNoZS10ZXN0bmV0LWZ1amkQm/n8kKLjqPjMAQooChtiaW5hbmNlX3NtYXJ0X2NoYWluLW1haW5uZXQQz/eU8djtlbidAQooChtiaW5hbmNlX3NtYXJ0X2NoYWluLXRlc3RuZXQQ+62+nICu5Iq4AQoYCgxjZWxvLW1haW5uZXQQhtTo2IaTiNcSChoKDmNyb25vcy10ZXN0bmV0EP3Z7q3g3trIKQoiChVkdGNjLXRlc3RuZXQtYW5kZXNpdGUQ0oPj0JmW5aTXAQocChBldGhlcmV1bS1tYWlubmV0EJX28eTPsqbCRQonChtldGhlcmV1bS1tYWlubmV0LWFyYml0cnVtLTEQxOiNzY6boddECiQKF2V0aGVyZXVtLW1haW5uZXQtYmFzZS0xEIL/q6L+uZDT3QEKIgoWZXRoZXJldW0tbWFpbm5ldC1pbmstMRCgsKbpt+aqhDAKJAoYZXRoZXJldW0tbWFpbm5ldC1saW5lYS0xELa66ZjLvbCbQAolChlldGhlcmV1bS1tYWlubmV0LW1hbnRsZS0xEIrntJXnsIPMFQonChtldGhlcmV1bS1tYWlubmV0LW9wdGltaXNtLTEQuJWPw/f+0OkzCiYKGWV0aGVyZXVtLW1haW5uZXQtc2Nyb2xsLTEQuLzk68S+yJ+3AQopCh1ldGhlcmV1bS1tYWlubmV0LXdvcmxkY2hhaW4tMRCH77q3xbbCuBwKJQoZZXRoZXJldW0tbWFpbm5ldC14bGF5ZXItMRCWpfycpqjv7SkKJQoZZXRoZXJldW0tbWFpbm5ldC16a3N5bmMtMRCU7pfZ7bSx1xUKJQoYZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhENm15M78ye6g3gEKLwojZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhLWFyYml0cnVtLTEQ6s7u/+q2hKMwCiwKH2V0aGVyZXVtLXRlc3RuZXQtc2Vwb2xpYS1iYXNlLTEQuMq57/aQrsiPAQosCiBldGhlcmV1bS10ZXN0bmV0LXNlcG9saWEtbGluZWEtMRDrqtT+gvnmr08KLQohZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhLW1hbnRsZS0xENXGuO7N9vKmcgovCiNldGhlcmV1bS10ZXN0bmV0LXNlcG9saWEtb3B0aW1pc20tMRCfhsWhvtjDwEgKLQohZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhLXNjcm9sbC0xEIvptL7buu3RHwowCiNldGhlcmV1bS10ZXN0bmV0LXNlcG9saWEtdW5pY2hhaW4tMRC03v7g7JeplsQBCjEKJWV0aGVyZXVtLXRlc3RuZXQtc2Vwb2xpYS13b3JsZGNoYWluLTEQut/gxcep88VJCi0KIWV0aGVyZXVtLXRlc3RuZXQtc2Vwb2xpYS16a3N5bmMtMRC3wfz98sSA3l8KIAoUZ25vc2lzX2NoYWluLW1haW5uZXQQ9JKt2vKirroGCicKG2dub3Npc19jaGFpbi10ZXN0bmV0LWNoaWFkbxCzsYLQm6WPj3sKHwoTaHlwZXJsaXF1aWQtbWFpbm5ldBCns/jdztHp8iEKHwoTaHlwZXJsaXF1aWQtdGVzdG5ldBCIzt3Il+DJvTsKIAoTaW5rLXRlc3RuZXQtc2Vwb2xpYRDo9Kel8+aWwIcBChkKDWpvdmF5LW1haW5uZXQQtcPEmqGA35IVChkKDWpvdmF5LXRlc3RuZXQQ5M+KhN6y3o4NChsKD21lZ2FldGgtbWFpbm5ldBDqlbbIvOSmyFQKHgoRbWVnYWV0aC10ZXN0bmV0LTIQ443eiLGP/ZP9AQokChdwaGFyb3MtYXRsYW50aWMtdGVzdG5ldBDMme3gzryvtN8BChoKDnBoYXJvcy1tYWlubmV0EMjBh571782hbAobCg5wbGFzbWEtbWFpbm5ldBD4m/HR2snVxoEBChoKDnBsYXNtYS10ZXN0bmV0ENWbv6XDtJmHNwobCg9wb2x5Z29uLW1haW5uZXQQsavk8JqShp04CiEKFHBvbHlnb24tdGVzdG5ldC1hbW95EM2P1t/xx5D64QEKJAoYcHJpdmF0ZS10ZXN0bmV0LWFuZGVzaXRlENSmmKXBj9z8XwoZCg1zb25pYy1tYWlubmV0ENGy5e3ZoLKdFwoZCg1zb25pYy10ZXN0bmV0EMiI+9S0xvq8GAoYCgt0YWMtdGVzdG5ldBDV243j+5+T14MBChsKDnhsYXllci10ZXN0bmV0EMm+obStzLzdjQFC5QEKJ2NvbS5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYUILQ2xpZW50UHJvdG9QAaICA0NCRaoCI0NhcGFiaWxpdGllcy5CbG9ja2NoYWluLkV2bS5WMWFscGhhygIjQ2FwYWJpbGl0aWVzXEJsb2NrY2hhaW5cRXZtXFYxYWxwaGHiAi9DYXBhYmlsaXRpZXNcQmxvY2tjaGFpblxFdm1cVjFhbHBoYVxHUEJNZXRhZGF0YeoCJkNhcGFiaWxpdGllczo6QmxvY2tjaGFpbjo6RXZtOjpWMWFscGhhYgZwcm90bzM", [file_sdk_v1alpha_sdk, file_tools_generator_v1alpha_cre_metadata, file_values_v1_values]);
+var FilterLogTriggerRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 1);
+var CallContractRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 2);
+var CallContractReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 3);
+var FilterLogsRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 4);
+var FilterLogsReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 5);
+var LogSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 6);
+var BalanceAtRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 10);
+var BalanceAtReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 11);
+var EstimateGasRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 12);
+var EstimateGasReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 13);
+var GetTransactionByHashRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 14);
+var GetTransactionByHashReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 15);
+var GetTransactionReceiptRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 17);
+var GetTransactionReceiptReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 18);
+var HeaderByNumberRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 20);
+var HeaderByNumberReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 21);
+var WriteReportRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 23);
+var GasConfigSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 24);
+var WriteReportReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 25);
 var ConfidenceLevel;
 (function(ConfidenceLevel2) {
   ConfidenceLevel2[ConfidenceLevel2["SAFE"] = 0] = "SAFE";
@@ -3840,6 +3861,321 @@ class Report {
     return this.report;
   }
 }
+var hexToBytes = (hexStr) => {
+  if (!hexStr.startsWith("0x")) {
+    throw new Error(`Invalid hex string: ${hexStr}`);
+  }
+  if (!/^0x[0-9a-fA-F]*$/.test(hexStr)) {
+    throw new Error(`Invalid hex string: ${hexStr}`);
+  }
+  if ((hexStr.length - 2) % 2 !== 0) {
+    throw new Error(`Hex string must have an even number of characters: ${hexStr}`);
+  }
+  const hex = hexStr.slice(2);
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0;i < hex.length; i += 2) {
+    bytes[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
+  }
+  return bytes;
+};
+var hexToBase64 = (hex) => {
+  const cleanHex = hex.startsWith("0x") ? hex.slice(2) : hex;
+  if (cleanHex.length === 0) {
+    return "";
+  }
+  if (cleanHex.length % 2 !== 0) {
+    throw new Error(`Hex string must have an even number of characters: ${hex}`);
+  }
+  if (!/^[0-9a-fA-F]*$/.test(cleanHex)) {
+    throw new Error(`Invalid hex string: ${hex}`);
+  }
+  return Buffer.from(cleanHex, "hex").toString("base64");
+};
+function createWriteCreReportRequest(input) {
+  return {
+    receiver: hexToBytes(input.receiver),
+    report: input.report,
+    gasConfig: input.gasConfig !== undefined ? fromJson(GasConfigSchema, input.gasConfig) : undefined,
+    $report: true
+  };
+}
+function x_generatedCodeOnly_unwrap_WriteCreReportRequest(input) {
+  return create(WriteReportRequestSchema, {
+    receiver: input.receiver,
+    report: input.report !== undefined ? input.report.x_generatedCodeOnly_unwrap() : undefined,
+    gasConfig: input.gasConfig
+  });
+}
+
+class ClientCapability {
+  ChainSelector;
+  static CAPABILITY_ID = "evm@1.0.0";
+  static CAPABILITY_NAME = "evm";
+  static CAPABILITY_VERSION = "1.0.0";
+  static SUPPORTED_CHAIN_SELECTORS = {
+    "apechain-testnet-curtis": 9900119385908781505n,
+    "arc-testnet": 3034092155422581607n,
+    "avalanche-mainnet": 6433500567565415381n,
+    "avalanche-testnet-fuji": 14767482510784806043n,
+    "binance_smart_chain-mainnet": 11344663589394136015n,
+    "binance_smart_chain-testnet": 13264668187771770619n,
+    "celo-mainnet": 1346049177634351622n,
+    "cronos-testnet": 2995292832068775165n,
+    "dtcc-testnet-andesite": 15513093881969820114n,
+    "ethereum-mainnet": 5009297550715157269n,
+    "ethereum-mainnet-arbitrum-1": 4949039107694359620n,
+    "ethereum-mainnet-base-1": 15971525489660198786n,
+    "ethereum-mainnet-ink-1": 3461204551265785888n,
+    "ethereum-mainnet-linea-1": 4627098889531055414n,
+    "ethereum-mainnet-mantle-1": 1556008542357238666n,
+    "ethereum-mainnet-optimism-1": 3734403246176062136n,
+    "ethereum-mainnet-scroll-1": 13204309965629103672n,
+    "ethereum-mainnet-worldchain-1": 2049429975587534727n,
+    "ethereum-mainnet-xlayer-1": 3016212468291539606n,
+    "ethereum-mainnet-zksync-1": 1562403441176082196n,
+    "ethereum-testnet-sepolia": 16015286601757825753n,
+    "ethereum-testnet-sepolia-arbitrum-1": 3478487238524512106n,
+    "ethereum-testnet-sepolia-base-1": 10344971235874465080n,
+    "ethereum-testnet-sepolia-linea-1": 5719461335882077547n,
+    "ethereum-testnet-sepolia-mantle-1": 8236463271206331221n,
+    "ethereum-testnet-sepolia-optimism-1": 5224473277236331295n,
+    "ethereum-testnet-sepolia-scroll-1": 2279865765895943307n,
+    "ethereum-testnet-sepolia-unichain-1": 14135854469784514356n,
+    "ethereum-testnet-sepolia-worldchain-1": 5299555114858065850n,
+    "ethereum-testnet-sepolia-zksync-1": 6898391096552792247n,
+    "gnosis_chain-mainnet": 465200170687744372n,
+    "gnosis_chain-testnet-chiado": 8871595565390010547n,
+    "hyperliquid-mainnet": 2442541497099098535n,
+    "hyperliquid-testnet": 4286062357653186312n,
+    "ink-testnet-sepolia": 9763904284804119144n,
+    "jovay-mainnet": 1523760397290643893n,
+    "jovay-testnet": 945045181441419236n,
+    "megaeth-mainnet": 6093540873831549674n,
+    "megaeth-testnet-2": 18241817625092392675n,
+    "pharos-atlantic-testnet": 16098325658947243212n,
+    "pharos-mainnet": 7801139999541420232n,
+    "plasma-mainnet": 9335212494177455608n,
+    "plasma-testnet": 3967220077692964309n,
+    "polygon-mainnet": 4051577828743386545n,
+    "polygon-testnet-amoy": 16281711391670634445n,
+    "private-testnet-andesite": 6915682381028791124n,
+    "sonic-mainnet": 1673871237479749969n,
+    "sonic-testnet": 1763698235108410440n,
+    "tac-testnet": 9488606126177218005n,
+    "xlayer-testnet": 10212741611335999305n
+  };
+  constructor(ChainSelector) {
+    this.ChainSelector = ChainSelector;
+  }
+  callContract(runtime, input) {
+    let payload;
+    if (input.$typeName) {
+      payload = input;
+    } else {
+      payload = fromJson(CallContractRequestSchema, input);
+    }
+    const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
+    const capabilityResponse = runtime.callCapability({
+      capabilityId,
+      method: "CallContract",
+      payload,
+      inputSchema: CallContractRequestSchema,
+      outputSchema: CallContractReplySchema
+    });
+    return {
+      result: () => {
+        const result = capabilityResponse.result();
+        return result;
+      }
+    };
+  }
+  filterLogs(runtime, input) {
+    let payload;
+    if (input.$typeName) {
+      payload = input;
+    } else {
+      payload = fromJson(FilterLogsRequestSchema, input);
+    }
+    const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
+    const capabilityResponse = runtime.callCapability({
+      capabilityId,
+      method: "FilterLogs",
+      payload,
+      inputSchema: FilterLogsRequestSchema,
+      outputSchema: FilterLogsReplySchema
+    });
+    return {
+      result: () => {
+        const result = capabilityResponse.result();
+        return result;
+      }
+    };
+  }
+  balanceAt(runtime, input) {
+    let payload;
+    if (input.$typeName) {
+      payload = input;
+    } else {
+      payload = fromJson(BalanceAtRequestSchema, input);
+    }
+    const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
+    const capabilityResponse = runtime.callCapability({
+      capabilityId,
+      method: "BalanceAt",
+      payload,
+      inputSchema: BalanceAtRequestSchema,
+      outputSchema: BalanceAtReplySchema
+    });
+    return {
+      result: () => {
+        const result = capabilityResponse.result();
+        return result;
+      }
+    };
+  }
+  estimateGas(runtime, input) {
+    let payload;
+    if (input.$typeName) {
+      payload = input;
+    } else {
+      payload = fromJson(EstimateGasRequestSchema, input);
+    }
+    const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
+    const capabilityResponse = runtime.callCapability({
+      capabilityId,
+      method: "EstimateGas",
+      payload,
+      inputSchema: EstimateGasRequestSchema,
+      outputSchema: EstimateGasReplySchema
+    });
+    return {
+      result: () => {
+        const result = capabilityResponse.result();
+        return result;
+      }
+    };
+  }
+  getTransactionByHash(runtime, input) {
+    let payload;
+    if (input.$typeName) {
+      payload = input;
+    } else {
+      payload = fromJson(GetTransactionByHashRequestSchema, input);
+    }
+    const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
+    const capabilityResponse = runtime.callCapability({
+      capabilityId,
+      method: "GetTransactionByHash",
+      payload,
+      inputSchema: GetTransactionByHashRequestSchema,
+      outputSchema: GetTransactionByHashReplySchema
+    });
+    return {
+      result: () => {
+        const result = capabilityResponse.result();
+        return result;
+      }
+    };
+  }
+  getTransactionReceipt(runtime, input) {
+    let payload;
+    if (input.$typeName) {
+      payload = input;
+    } else {
+      payload = fromJson(GetTransactionReceiptRequestSchema, input);
+    }
+    const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
+    const capabilityResponse = runtime.callCapability({
+      capabilityId,
+      method: "GetTransactionReceipt",
+      payload,
+      inputSchema: GetTransactionReceiptRequestSchema,
+      outputSchema: GetTransactionReceiptReplySchema
+    });
+    return {
+      result: () => {
+        const result = capabilityResponse.result();
+        return result;
+      }
+    };
+  }
+  headerByNumber(runtime, input) {
+    let payload;
+    if (input.$typeName) {
+      payload = input;
+    } else {
+      payload = fromJson(HeaderByNumberRequestSchema, input);
+    }
+    const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
+    const capabilityResponse = runtime.callCapability({
+      capabilityId,
+      method: "HeaderByNumber",
+      payload,
+      inputSchema: HeaderByNumberRequestSchema,
+      outputSchema: HeaderByNumberReplySchema
+    });
+    return {
+      result: () => {
+        const result = capabilityResponse.result();
+        return result;
+      }
+    };
+  }
+  logTrigger(config) {
+    const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
+    return new ClientLogTrigger(config, capabilityId, "LogTrigger", this.ChainSelector);
+  }
+  writeReport(runtime, input) {
+    let payload;
+    if (input.$report) {
+      payload = x_generatedCodeOnly_unwrap_WriteCreReportRequest(input);
+    } else {
+      payload = x_generatedCodeOnly_unwrap_WriteCreReportRequest(createWriteCreReportRequest(input));
+    }
+    const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
+    const capabilityResponse = runtime.callCapability({
+      capabilityId,
+      method: "WriteReport",
+      payload,
+      inputSchema: WriteReportRequestSchema,
+      outputSchema: WriteReportReplySchema
+    });
+    return {
+      result: () => {
+        const result = capabilityResponse.result();
+        return result;
+      }
+    };
+  }
+}
+
+class ClientLogTrigger {
+  _capabilityId;
+  _method;
+  ChainSelector;
+  config;
+  constructor(config, _capabilityId, _method, ChainSelector) {
+    this._capabilityId = _capabilityId;
+    this._method = _method;
+    this.ChainSelector = ChainSelector;
+    this.config = config.$typeName ? config : fromJson(FilterLogTriggerRequestSchema, config);
+  }
+  capabilityId() {
+    return this._capabilityId;
+  }
+  method() {
+    return this._method;
+  }
+  outputSchema() {
+    return LogSchema;
+  }
+  configAsAny() {
+    return anyPack(FilterLogTriggerRequestSchema, this.config);
+  }
+  adapt(rawOutput) {
+    return rawOutput;
+  }
+}
 var file_capabilities_networking_http_v1alpha_client = /* @__PURE__ */ fileDesc("CjFjYXBhYmlsaXRpZXMvbmV0d29ya2luZy9odHRwL3YxYWxwaGEvY2xpZW50LnByb3RvEiRjYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEiSgoNQ2FjaGVTZXR0aW5ncxINCgVzdG9yZRgBIAEoCBIqCgdtYXhfYWdlGAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uIh4KDEhlYWRlclZhbHVlcxIOCgZ2YWx1ZXMYASADKAki7wMKB1JlcXVlc3QSCwoDdXJsGAEgASgJEg4KBm1ldGhvZBgCIAEoCRJPCgdoZWFkZXJzGAMgAygLMjouY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlcXVlc3QuSGVhZGVyc0VudHJ5QgIYARIMCgRib2R5GAQgASgMEioKB3RpbWVvdXQYBSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SSwoOY2FjaGVfc2V0dGluZ3MYBiABKAsyMy5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuQ2FjaGVTZXR0aW5ncxJWCg1tdWx0aV9oZWFkZXJzGAcgAygLMj8uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlcXVlc3QuTXVsdGlIZWFkZXJzRW50cnkaLgoMSGVhZGVyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaZwoRTXVsdGlIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEkEKBXZhbHVlGAIgASgLMjIuY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLkhlYWRlclZhbHVlczoCOAEi8QIKCFJlc3BvbnNlEhMKC3N0YXR1c19jb2RlGAEgASgNElAKB2hlYWRlcnMYAiADKAsyOy5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuUmVzcG9uc2UuSGVhZGVyc0VudHJ5QgIYARIMCgRib2R5GAMgASgMElcKDW11bHRpX2hlYWRlcnMYBCADKAsyQC5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuUmVzcG9uc2UuTXVsdGlIZWFkZXJzRW50cnkaLgoMSGVhZGVyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaZwoRTXVsdGlIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEkEKBXZhbHVlGAIgASgLMjIuY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLkhlYWRlclZhbHVlczoCOAEymAEKBkNsaWVudBJsCgtTZW5kUmVxdWVzdBItLmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYS5SZXF1ZXN0Gi4uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlc3BvbnNlGiCCtRgcCAISGGh0dHAtYWN0aW9uc0AxLjAuMC1hbHBoYULqAQooY29tLmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYUILQ2xpZW50UHJvdG9QAaICA0NOSKoCJENhcGFiaWxpdGllcy5OZXR3b3JraW5nLkh0dHAuVjFhbHBoYcoCJENhcGFiaWxpdGllc1xOZXR3b3JraW5nXEh0dHBcVjFhbHBoYeICMENhcGFiaWxpdGllc1xOZXR3b3JraW5nXEh0dHBcVjFhbHBoYVxHUEJNZXRhZGF0YeoCJ0NhcGFiaWxpdGllczo6TmV0d29ya2luZzo6SHR0cDo6VjFhbHBoYWIGcHJvdG8z", [file_google_protobuf_duration, file_tools_generator_v1alpha_cre_metadata]);
 var RequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_http_v1alpha_client, 2);
 var ResponseSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_http_v1alpha_client, 3);
@@ -3856,7 +4192,7 @@ class SendRequester {
   }
 }
 
-class ClientCapability {
+class ClientCapability2 {
   static CAPABILITY_ID = "http-actions@1.0.0-alpha";
   static CAPABILITY_NAME = "http-actions";
   static CAPABILITY_VERSION = "1.0.0-alpha";
@@ -3875,7 +4211,7 @@ class ClientCapability {
     } else {
       payload = fromJson(RequestSchema, input);
     }
-    const capabilityId = ClientCapability.CAPABILITY_ID;
+    const capabilityId = ClientCapability2.CAPABILITY_ID;
     const capabilityResponse = runtime.callCapability({
       capabilityId,
       method: "SendRequest",
@@ -3903,45 +4239,6 @@ var KeyType;
   KeyType2[KeyType2["UNSPECIFIED"] = 0] = "UNSPECIFIED";
   KeyType2[KeyType2["ECDSA_EVM"] = 1] = "ECDSA_EVM";
 })(KeyType || (KeyType = {}));
-var file_capabilities_scheduler_cron_v1_trigger = /* @__PURE__ */ fileDesc("CixjYXBhYmlsaXRpZXMvc2NoZWR1bGVyL2Nyb24vdjEvdHJpZ2dlci5wcm90bxIeY2FwYWJpbGl0aWVzLnNjaGVkdWxlci5jcm9uLnYxIhoKBkNvbmZpZxIQCghzY2hlZHVsZRgBIAEoCSJHCgdQYXlsb2FkEjwKGHNjaGVkdWxlZF9leGVjdXRpb25fdGltZRgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiNQoNTGVnYWN5UGF5bG9hZBIgChhzY2hlZHVsZWRfZXhlY3V0aW9uX3RpbWUYASABKAk6AhgBMvUBCgRDcm9uElwKB1RyaWdnZXISJi5jYXBhYmlsaXRpZXMuc2NoZWR1bGVyLmNyb24udjEuQ29uZmlnGicuY2FwYWJpbGl0aWVzLnNjaGVkdWxlci5jcm9uLnYxLlBheWxvYWQwARJzCg1MZWdhY3lUcmlnZ2VyEiYuY2FwYWJpbGl0aWVzLnNjaGVkdWxlci5jcm9uLnYxLkNvbmZpZxotLmNhcGFiaWxpdGllcy5zY2hlZHVsZXIuY3Jvbi52MS5MZWdhY3lQYXlsb2FkIgmIAgGKtRgCCAEwARoagrUYFggBEhJjcm9uLXRyaWdnZXJAMS4wLjBCzQEKImNvbS5jYXBhYmlsaXRpZXMuc2NoZWR1bGVyLmNyb24udjFCDFRyaWdnZXJQcm90b1ABogIDQ1NDqgIeQ2FwYWJpbGl0aWVzLlNjaGVkdWxlci5Dcm9uLlYxygIeQ2FwYWJpbGl0aWVzXFNjaGVkdWxlclxDcm9uXFYx4gIqQ2FwYWJpbGl0aWVzXFNjaGVkdWxlclxDcm9uXFYxXEdQQk1ldGFkYXRh6gIhQ2FwYWJpbGl0aWVzOjpTY2hlZHVsZXI6OkNyb246OlYxYgZwcm90bzM", [file_google_protobuf_timestamp, file_tools_generator_v1alpha_cre_metadata]);
-var ConfigSchema2 = /* @__PURE__ */ messageDesc(file_capabilities_scheduler_cron_v1_trigger, 0);
-var PayloadSchema2 = /* @__PURE__ */ messageDesc(file_capabilities_scheduler_cron_v1_trigger, 1);
-
-class CronCapability {
-  static CAPABILITY_ID = "cron-trigger@1.0.0";
-  static CAPABILITY_NAME = "cron-trigger";
-  static CAPABILITY_VERSION = "1.0.0";
-  trigger(config) {
-    const capabilityId = CronCapability.CAPABILITY_ID;
-    return new CronTrigger(config, capabilityId, "Trigger");
-  }
-}
-
-class CronTrigger {
-  _capabilityId;
-  _method;
-  config;
-  constructor(config, _capabilityId, _method) {
-    this._capabilityId = _capabilityId;
-    this._method = _method;
-    this.config = config.$typeName ? config : fromJson(ConfigSchema2, config);
-  }
-  capabilityId() {
-    return this._capabilityId;
-  }
-  method() {
-    return this._method;
-  }
-  outputSchema() {
-    return PayloadSchema2;
-  }
-  configAsAny() {
-    return anyPack(ConfigSchema2, this.config);
-  }
-  adapt(rawOutput) {
-    return rawOutput;
-  }
-}
 var lookup = [];
 var revLookup = [];
 var code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -5615,6 +5912,53 @@ var LATEST_BLOCK_NUMBER = {
   absVal: Buffer.from([2]).toString("base64"),
   sign: "-1"
 };
+var validateHexByteLength = (hex, expectedBytes, fieldLabel) => {
+  const bytes = hexToBytes(hex);
+  if (bytes.length !== expectedBytes) {
+    throw new Error(`Invalid ${fieldLabel}: expected ${expectedBytes} bytes, got ${bytes.length} bytes from '${hex.length > 200 ? hex.slice(0, 200) + "..." : hex}'. EVM ${fieldLabel}s must be exactly ${expectedBytes} bytes.`);
+  }
+  return hexToBase64(hex);
+};
+var logTriggerConfig = (opts) => {
+  if (!opts.addresses || opts.addresses.length === 0) {
+    throw new Error("logTriggerConfig requires at least one address. Provide an array of hex-encoded EVM addresses (20 bytes each).");
+  }
+  const addresses = opts.addresses.map((addr, i2) => {
+    try {
+      return validateHexByteLength(addr, 20, "address");
+    } catch (e) {
+      throw new Error(`Invalid address at index ${i2}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  });
+  const topics = opts.topics?.map((topicSlot, slotIndex) => ({
+    values: topicSlot.map((topic, valueIndex) => {
+      try {
+        return validateHexByteLength(topic, 32, "topic");
+      } catch (e) {
+        throw new Error(`Invalid topic at topics[${slotIndex}][${valueIndex}]: ${e instanceof Error ? e.message : String(e)}`);
+      }
+    })
+  }));
+  const confidence = opts.confidence ? `CONFIDENCE_LEVEL_${opts.confidence}` : undefined;
+  return {
+    addresses,
+    ...topics ? { topics } : {},
+    ...confidence ? { confidence } : {}
+  };
+};
+var decodeJson = (input) => {
+  const decoder = new TextDecoder("utf-8");
+  const textBody = decoder.decode(input);
+  return JSON.parse(textBody);
+};
+function json(responseOrFn) {
+  if (typeof responseOrFn === "function") {
+    return {
+      result: () => json(responseOrFn().result)
+    };
+  }
+  return decodeJson(responseOrFn.body);
+}
 function sendReport(runtime, report, fn) {
   const rawReport = report.x_generatedCodeOnly_unwrap();
   const request = fn(rawReport);
@@ -5625,7 +5969,7 @@ function sendRequesterSendReport(report, fn) {
   const request = fn(rawReport);
   return this.sendRequest(request);
 }
-ClientCapability.prototype.sendReport = sendReport;
+ClientCapability2.prototype.sendReport = sendReport;
 SendRequester.prototype.sendReport = sendRequesterSendReport;
 var network = {
   chainId: "1",
@@ -9719,6 +10063,33 @@ var defaultLookup = new NetworkLookup({
   testnetBySelector,
   testnetBySelectorByFamily
 });
+function consensusIdenticalAggregation() {
+  return simpleConsensus(AggregationType.IDENTICAL);
+}
+
+class ConsensusImpl {
+  descriptor;
+  defaultValue;
+  constructor(descriptor, defaultValue) {
+    this.descriptor = descriptor;
+    this.defaultValue = defaultValue;
+  }
+  withDefault(t) {
+    return new ConsensusImpl(this.descriptor, t);
+  }
+  _usesUToForceShape(_) {}
+}
+function simpleConsensus(agg) {
+  return new ConsensusImpl(simpleDescriptor(agg));
+}
+function simpleDescriptor(agg) {
+  return create(ConsensusDescriptorSchema, {
+    descriptor: {
+      case: "aggregation",
+      value: agg
+    }
+  });
+}
 
 class Int64 {
   static INT64_MIN = -(2n ** 63n);
@@ -10333,8 +10704,8 @@ var ZodIssueCode = util.arrayToEnum([
   "not_finite"
 ]);
 var quotelessJson = (obj) => {
-  const json = JSON.stringify(obj, null, 2);
-  return json.replace(/"([^"]+)":/g, "$1:");
+  const json2 = JSON.stringify(obj, null, 2);
+  return json2.replace(/"([^"]+)":/g, "$1:");
 };
 
 class ZodError extends Error {
@@ -14618,14 +14989,4855 @@ var sendErrorResponse = (error) => {
   }
   hostBindings.sendResponse(payload);
 };
-var onCronTrigger = (runtime2) => {
-  runtime2.log("Hello world! Workflow triggered.");
-  return "Hello world!";
+function concat(values) {
+  if (typeof values[0] === "string")
+    return concatHex(values);
+  return concatBytes(values);
+}
+function concatBytes(values) {
+  let length = 0;
+  for (const arr of values) {
+    length += arr.length;
+  }
+  const result = new Uint8Array(length);
+  let offset = 0;
+  for (const arr of values) {
+    result.set(arr, offset);
+    offset += arr.length;
+  }
+  return result;
+}
+function concatHex(values) {
+  return `0x${values.reduce((acc, x) => acc + x.replace("0x", ""), "")}`;
+}
+function formatAbiItem(abiItem, { includeName = false } = {}) {
+  if (abiItem.type !== "function" && abiItem.type !== "event" && abiItem.type !== "error")
+    throw new InvalidDefinitionTypeError(abiItem.type);
+  return `${abiItem.name}(${formatAbiParams(abiItem.inputs, { includeName })})`;
+}
+function formatAbiParams(params, { includeName = false } = {}) {
+  if (!params)
+    return "";
+  return params.map((param) => formatAbiParam(param, { includeName })).join(includeName ? ", " : ",");
+}
+function formatAbiParam(param, { includeName }) {
+  if (param.type.startsWith("tuple")) {
+    return `(${formatAbiParams(param.components, { includeName })})${param.type.slice("tuple".length)}`;
+  }
+  return param.type + (includeName && param.name ? ` ${param.name}` : "");
+}
+function isHex(value2, { strict = true } = {}) {
+  if (!value2)
+    return false;
+  if (typeof value2 !== "string")
+    return false;
+  return strict ? /^0x[0-9a-fA-F]*$/.test(value2) : value2.startsWith("0x");
+}
+function size(value2) {
+  if (isHex(value2, { strict: false }))
+    return Math.ceil((value2.length - 2) / 2);
+  return value2.length;
+}
+var version = "2.47.6";
+var errorConfig = {
+  getDocsUrl: ({ docsBaseUrl, docsPath = "", docsSlug }) => docsPath ? `${docsBaseUrl ?? "https://viem.sh"}${docsPath}${docsSlug ? `#${docsSlug}` : ""}` : undefined,
+  version: `viem@${version}`
+};
+
+class BaseError extends Error {
+  constructor(shortMessage, args = {}) {
+    const details = (() => {
+      if (args.cause instanceof BaseError)
+        return args.cause.details;
+      if (args.cause?.message)
+        return args.cause.message;
+      return args.details;
+    })();
+    const docsPath = (() => {
+      if (args.cause instanceof BaseError)
+        return args.cause.docsPath || args.docsPath;
+      return args.docsPath;
+    })();
+    const docsUrl = errorConfig.getDocsUrl?.({ ...args, docsPath });
+    const message = [
+      shortMessage || "An error occurred.",
+      "",
+      ...args.metaMessages ? [...args.metaMessages, ""] : [],
+      ...docsUrl ? [`Docs: ${docsUrl}`] : [],
+      ...details ? [`Details: ${details}`] : [],
+      ...errorConfig.version ? [`Version: ${errorConfig.version}`] : []
+    ].join(`
+`);
+    super(message, args.cause ? { cause: args.cause } : undefined);
+    Object.defineProperty(this, "details", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "docsPath", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "metaMessages", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "shortMessage", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "version", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "name", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: "BaseError"
+    });
+    this.details = details;
+    this.docsPath = docsPath;
+    this.metaMessages = args.metaMessages;
+    this.name = args.name ?? this.name;
+    this.shortMessage = shortMessage;
+    this.version = version;
+  }
+  walk(fn) {
+    return walk(this, fn);
+  }
+}
+function walk(err, fn) {
+  if (fn?.(err))
+    return err;
+  if (err && typeof err === "object" && "cause" in err && err.cause !== undefined)
+    return walk(err.cause, fn);
+  return fn ? null : err;
+}
+
+class AbiEncodingArrayLengthMismatchError extends BaseError {
+  constructor({ expectedLength, givenLength, type }) {
+    super([
+      `ABI encoding array length mismatch for type ${type}.`,
+      `Expected length: ${expectedLength}`,
+      `Given length: ${givenLength}`
+    ].join(`
+`), { name: "AbiEncodingArrayLengthMismatchError" });
+  }
+}
+
+class AbiEncodingBytesSizeMismatchError extends BaseError {
+  constructor({ expectedSize, value: value2 }) {
+    super(`Size of bytes "${value2}" (bytes${size(value2)}) does not match expected size (bytes${expectedSize}).`, { name: "AbiEncodingBytesSizeMismatchError" });
+  }
+}
+
+class AbiEncodingLengthMismatchError extends BaseError {
+  constructor({ expectedLength, givenLength }) {
+    super([
+      "ABI encoding params/values length mismatch.",
+      `Expected length (params): ${expectedLength}`,
+      `Given length (values): ${givenLength}`
+    ].join(`
+`), { name: "AbiEncodingLengthMismatchError" });
+  }
+}
+
+class AbiFunctionNotFoundError extends BaseError {
+  constructor(functionName, { docsPath } = {}) {
+    super([
+      `Function ${functionName ? `"${functionName}" ` : ""}not found on ABI.`,
+      "Make sure you are using the correct ABI and that the function exists on it."
+    ].join(`
+`), {
+      docsPath,
+      name: "AbiFunctionNotFoundError"
+    });
+  }
+}
+
+class AbiItemAmbiguityError extends BaseError {
+  constructor(x, y) {
+    super("Found ambiguous types in overloaded ABI items.", {
+      metaMessages: [
+        `\`${x.type}\` in \`${formatAbiItem(x.abiItem)}\`, and`,
+        `\`${y.type}\` in \`${formatAbiItem(y.abiItem)}\``,
+        "",
+        "These types encode differently and cannot be distinguished at runtime.",
+        "Remove one of the ambiguous items in the ABI."
+      ],
+      name: "AbiItemAmbiguityError"
+    });
+  }
+}
+
+class InvalidAbiEncodingTypeError extends BaseError {
+  constructor(type, { docsPath }) {
+    super([
+      `Type "${type}" is not a valid encoding type.`,
+      "Please provide a valid ABI type."
+    ].join(`
+`), { docsPath, name: "InvalidAbiEncodingType" });
+  }
+}
+
+class InvalidArrayError extends BaseError {
+  constructor(value2) {
+    super([`Value "${value2}" is not a valid array.`].join(`
+`), {
+      name: "InvalidArrayError"
+    });
+  }
+}
+
+class InvalidDefinitionTypeError extends BaseError {
+  constructor(type) {
+    super([
+      `"${type}" is not a valid definition type.`,
+      'Valid types: "function", "event", "error"'
+    ].join(`
+`), { name: "InvalidDefinitionTypeError" });
+  }
+}
+
+class InvalidAddressError extends BaseError {
+  constructor({ address }) {
+    super(`Address "${address}" is invalid.`, {
+      metaMessages: [
+        "- Address must be a hex value of 20 bytes (40 hex characters).",
+        "- Address must match its checksum counterpart."
+      ],
+      name: "InvalidAddressError"
+    });
+  }
+}
+
+class IntegerOutOfRangeError extends BaseError {
+  constructor({ max, min, signed, size: size2, value: value2 }) {
+    super(`Number "${value2}" is not in safe ${size2 ? `${size2 * 8}-bit ${signed ? "signed" : "unsigned"} ` : ""}integer range ${max ? `(${min} to ${max})` : `(above ${min})`}`, { name: "IntegerOutOfRangeError" });
+  }
+}
+
+class SizeOverflowError extends BaseError {
+  constructor({ givenSize, maxSize }) {
+    super(`Size cannot exceed ${maxSize} bytes. Given size: ${givenSize} bytes.`, { name: "SizeOverflowError" });
+  }
+}
+
+class LruMap extends Map {
+  constructor(size2) {
+    super();
+    Object.defineProperty(this, "maxSize", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    this.maxSize = size2;
+  }
+  get(key) {
+    const value2 = super.get(key);
+    if (super.has(key)) {
+      super.delete(key);
+      super.set(key, value2);
+    }
+    return value2;
+  }
+  set(key, value2) {
+    if (super.has(key))
+      super.delete(key);
+    super.set(key, value2);
+    if (this.maxSize && this.size > this.maxSize) {
+      const firstKey = super.keys().next().value;
+      if (firstKey !== undefined)
+        super.delete(firstKey);
+    }
+    return this;
+  }
+}
+
+class SliceOffsetOutOfBoundsError extends BaseError {
+  constructor({ offset, position, size: size2 }) {
+    super(`Slice ${position === "start" ? "starting" : "ending"} at offset "${offset}" is out-of-bounds (size: ${size2}).`, { name: "SliceOffsetOutOfBoundsError" });
+  }
+}
+
+class SizeExceedsPaddingSizeError extends BaseError {
+  constructor({ size: size2, targetSize, type }) {
+    super(`${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()} size (${size2}) exceeds padding size (${targetSize}).`, { name: "SizeExceedsPaddingSizeError" });
+  }
+}
+function pad(hexOrBytes, { dir, size: size2 = 32 } = {}) {
+  if (typeof hexOrBytes === "string")
+    return padHex(hexOrBytes, { dir, size: size2 });
+  return padBytes(hexOrBytes, { dir, size: size2 });
+}
+function padHex(hex_, { dir, size: size2 = 32 } = {}) {
+  if (size2 === null)
+    return hex_;
+  const hex = hex_.replace("0x", "");
+  if (hex.length > size2 * 2)
+    throw new SizeExceedsPaddingSizeError({
+      size: Math.ceil(hex.length / 2),
+      targetSize: size2,
+      type: "hex"
+    });
+  return `0x${hex[dir === "right" ? "padEnd" : "padStart"](size2 * 2, "0")}`;
+}
+function padBytes(bytes, { dir, size: size2 = 32 } = {}) {
+  if (size2 === null)
+    return bytes;
+  if (bytes.length > size2)
+    throw new SizeExceedsPaddingSizeError({
+      size: bytes.length,
+      targetSize: size2,
+      type: "bytes"
+    });
+  const paddedBytes = new Uint8Array(size2);
+  for (let i2 = 0;i2 < size2; i2++) {
+    const padEnd = dir === "right";
+    paddedBytes[padEnd ? i2 : size2 - i2 - 1] = bytes[padEnd ? i2 : bytes.length - i2 - 1];
+  }
+  return paddedBytes;
+}
+function assertSize2(hexOrBytes, { size: size2 }) {
+  if (size(hexOrBytes) > size2)
+    throw new SizeOverflowError({
+      givenSize: size(hexOrBytes),
+      maxSize: size2
+    });
+}
+var hexes = /* @__PURE__ */ Array.from({ length: 256 }, (_v, i2) => i2.toString(16).padStart(2, "0"));
+function toHex(value2, opts = {}) {
+  if (typeof value2 === "number" || typeof value2 === "bigint")
+    return numberToHex(value2, opts);
+  if (typeof value2 === "string") {
+    return stringToHex(value2, opts);
+  }
+  if (typeof value2 === "boolean")
+    return boolToHex(value2, opts);
+  return bytesToHex(value2, opts);
+}
+function boolToHex(value2, opts = {}) {
+  const hex = `0x${Number(value2)}`;
+  if (typeof opts.size === "number") {
+    assertSize2(hex, { size: opts.size });
+    return pad(hex, { size: opts.size });
+  }
+  return hex;
+}
+function bytesToHex(value2, opts = {}) {
+  let string = "";
+  for (let i2 = 0;i2 < value2.length; i2++) {
+    string += hexes[value2[i2]];
+  }
+  const hex = `0x${string}`;
+  if (typeof opts.size === "number") {
+    assertSize2(hex, { size: opts.size });
+    return pad(hex, { dir: "right", size: opts.size });
+  }
+  return hex;
+}
+function numberToHex(value_, opts = {}) {
+  const { signed, size: size2 } = opts;
+  const value2 = BigInt(value_);
+  let maxValue;
+  if (size2) {
+    if (signed)
+      maxValue = (1n << BigInt(size2) * 8n - 1n) - 1n;
+    else
+      maxValue = 2n ** (BigInt(size2) * 8n) - 1n;
+  } else if (typeof value_ === "number") {
+    maxValue = BigInt(Number.MAX_SAFE_INTEGER);
+  }
+  const minValue = typeof maxValue === "bigint" && signed ? -maxValue - 1n : 0;
+  if (maxValue && value2 > maxValue || value2 < minValue) {
+    const suffix = typeof value_ === "bigint" ? "n" : "";
+    throw new IntegerOutOfRangeError({
+      max: maxValue ? `${maxValue}${suffix}` : undefined,
+      min: `${minValue}${suffix}`,
+      signed,
+      size: size2,
+      value: `${value_}${suffix}`
+    });
+  }
+  const hex = `0x${(signed && value2 < 0 ? (1n << BigInt(size2 * 8)) + BigInt(value2) : value2).toString(16)}`;
+  if (size2)
+    return pad(hex, { size: size2 });
+  return hex;
+}
+var encoder = /* @__PURE__ */ new TextEncoder;
+function stringToHex(value_, opts = {}) {
+  const value2 = encoder.encode(value_);
+  return bytesToHex(value2, opts);
+}
+var encoder2 = /* @__PURE__ */ new TextEncoder;
+function toBytes(value2, opts = {}) {
+  if (typeof value2 === "number" || typeof value2 === "bigint")
+    return numberToBytes(value2, opts);
+  if (typeof value2 === "boolean")
+    return boolToBytes(value2, opts);
+  if (isHex(value2))
+    return hexToBytes2(value2, opts);
+  return stringToBytes(value2, opts);
+}
+function boolToBytes(value2, opts = {}) {
+  const bytes = new Uint8Array(1);
+  bytes[0] = Number(value2);
+  if (typeof opts.size === "number") {
+    assertSize2(bytes, { size: opts.size });
+    return pad(bytes, { size: opts.size });
+  }
+  return bytes;
+}
+var charCodeMap = {
+  zero: 48,
+  nine: 57,
+  A: 65,
+  F: 70,
+  a: 97,
+  f: 102
+};
+function charCodeToBase16(char) {
+  if (char >= charCodeMap.zero && char <= charCodeMap.nine)
+    return char - charCodeMap.zero;
+  if (char >= charCodeMap.A && char <= charCodeMap.F)
+    return char - (charCodeMap.A - 10);
+  if (char >= charCodeMap.a && char <= charCodeMap.f)
+    return char - (charCodeMap.a - 10);
+  return;
+}
+function hexToBytes2(hex_, opts = {}) {
+  let hex = hex_;
+  if (opts.size) {
+    assertSize2(hex, { size: opts.size });
+    hex = pad(hex, { dir: "right", size: opts.size });
+  }
+  let hexString = hex.slice(2);
+  if (hexString.length % 2)
+    hexString = `0${hexString}`;
+  const length = hexString.length / 2;
+  const bytes = new Uint8Array(length);
+  for (let index = 0, j = 0;index < length; index++) {
+    const nibbleLeft = charCodeToBase16(hexString.charCodeAt(j++));
+    const nibbleRight = charCodeToBase16(hexString.charCodeAt(j++));
+    if (nibbleLeft === undefined || nibbleRight === undefined) {
+      throw new BaseError(`Invalid byte sequence ("${hexString[j - 2]}${hexString[j - 1]}" in "${hexString}").`);
+    }
+    bytes[index] = nibbleLeft * 16 + nibbleRight;
+  }
+  return bytes;
+}
+function numberToBytes(value2, opts) {
+  const hex = numberToHex(value2, opts);
+  return hexToBytes2(hex);
+}
+function stringToBytes(value2, opts = {}) {
+  const bytes = encoder2.encode(value2);
+  if (typeof opts.size === "number") {
+    assertSize2(bytes, { size: opts.size });
+    return pad(bytes, { dir: "right", size: opts.size });
+  }
+  return bytes;
+}
+var U32_MASK64 = /* @__PURE__ */ BigInt(2 ** 32 - 1);
+var _32n = /* @__PURE__ */ BigInt(32);
+function fromBig(n, le = false) {
+  if (le)
+    return { h: Number(n & U32_MASK64), l: Number(n >> _32n & U32_MASK64) };
+  return { h: Number(n >> _32n & U32_MASK64) | 0, l: Number(n & U32_MASK64) | 0 };
+}
+function split(lst, le = false) {
+  const len2 = lst.length;
+  let Ah = new Uint32Array(len2);
+  let Al = new Uint32Array(len2);
+  for (let i2 = 0;i2 < len2; i2++) {
+    const { h, l } = fromBig(lst[i2], le);
+    [Ah[i2], Al[i2]] = [h, l];
+  }
+  return [Ah, Al];
+}
+var rotlSH = (h, l, s) => h << s | l >>> 32 - s;
+var rotlSL = (h, l, s) => l << s | h >>> 32 - s;
+var rotlBH = (h, l, s) => l << s - 32 | h >>> 64 - s;
+var rotlBL = (h, l, s) => h << s - 32 | l >>> 64 - s;
+/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+function isBytes(a) {
+  return a instanceof Uint8Array || ArrayBuffer.isView(a) && a.constructor.name === "Uint8Array";
+}
+function anumber(n) {
+  if (!Number.isSafeInteger(n) || n < 0)
+    throw new Error("positive integer expected, got " + n);
+}
+function abytes(b, ...lengths) {
+  if (!isBytes(b))
+    throw new Error("Uint8Array expected");
+  if (lengths.length > 0 && !lengths.includes(b.length))
+    throw new Error("Uint8Array expected of length " + lengths + ", got length=" + b.length);
+}
+function aexists(instance, checkFinished = true) {
+  if (instance.destroyed)
+    throw new Error("Hash instance has been destroyed");
+  if (checkFinished && instance.finished)
+    throw new Error("Hash#digest() has already been called");
+}
+function aoutput(out, instance) {
+  abytes(out);
+  const min = instance.outputLen;
+  if (out.length < min) {
+    throw new Error("digestInto() expects output buffer of length at least " + min);
+  }
+}
+function u32(arr) {
+  return new Uint32Array(arr.buffer, arr.byteOffset, Math.floor(arr.byteLength / 4));
+}
+function clean(...arrays) {
+  for (let i2 = 0;i2 < arrays.length; i2++) {
+    arrays[i2].fill(0);
+  }
+}
+var isLE = /* @__PURE__ */ (() => new Uint8Array(new Uint32Array([287454020]).buffer)[0] === 68)();
+function byteSwap(word) {
+  return word << 24 & 4278190080 | word << 8 & 16711680 | word >>> 8 & 65280 | word >>> 24 & 255;
+}
+function byteSwap32(arr) {
+  for (let i2 = 0;i2 < arr.length; i2++) {
+    arr[i2] = byteSwap(arr[i2]);
+  }
+  return arr;
+}
+var swap32IfBE = isLE ? (u) => u : byteSwap32;
+function utf8ToBytes2(str) {
+  if (typeof str !== "string")
+    throw new Error("string expected");
+  return new Uint8Array(new TextEncoder().encode(str));
+}
+function toBytes2(data) {
+  if (typeof data === "string")
+    data = utf8ToBytes2(data);
+  abytes(data);
+  return data;
+}
+
+class Hash {
+}
+function createHasher(hashCons) {
+  const hashC = (msg) => hashCons().update(toBytes2(msg)).digest();
+  const tmp = hashCons();
+  hashC.outputLen = tmp.outputLen;
+  hashC.blockLen = tmp.blockLen;
+  hashC.create = () => hashCons();
+  return hashC;
+}
+var _0n = BigInt(0);
+var _1n = BigInt(1);
+var _2n = BigInt(2);
+var _7n = BigInt(7);
+var _256n = BigInt(256);
+var _0x71n = BigInt(113);
+var SHA3_PI = [];
+var SHA3_ROTL = [];
+var _SHA3_IOTA = [];
+for (let round = 0, R = _1n, x = 1, y = 0;round < 24; round++) {
+  [x, y] = [y, (2 * x + 3 * y) % 5];
+  SHA3_PI.push(2 * (5 * y + x));
+  SHA3_ROTL.push((round + 1) * (round + 2) / 2 % 64);
+  let t = _0n;
+  for (let j = 0;j < 7; j++) {
+    R = (R << _1n ^ (R >> _7n) * _0x71n) % _256n;
+    if (R & _2n)
+      t ^= _1n << (_1n << /* @__PURE__ */ BigInt(j)) - _1n;
+  }
+  _SHA3_IOTA.push(t);
+}
+var IOTAS = split(_SHA3_IOTA, true);
+var SHA3_IOTA_H = IOTAS[0];
+var SHA3_IOTA_L = IOTAS[1];
+var rotlH = (h, l, s) => s > 32 ? rotlBH(h, l, s) : rotlSH(h, l, s);
+var rotlL = (h, l, s) => s > 32 ? rotlBL(h, l, s) : rotlSL(h, l, s);
+function keccakP(s, rounds = 24) {
+  const B = new Uint32Array(5 * 2);
+  for (let round = 24 - rounds;round < 24; round++) {
+    for (let x = 0;x < 10; x++)
+      B[x] = s[x] ^ s[x + 10] ^ s[x + 20] ^ s[x + 30] ^ s[x + 40];
+    for (let x = 0;x < 10; x += 2) {
+      const idx1 = (x + 8) % 10;
+      const idx0 = (x + 2) % 10;
+      const B0 = B[idx0];
+      const B1 = B[idx0 + 1];
+      const Th = rotlH(B0, B1, 1) ^ B[idx1];
+      const Tl = rotlL(B0, B1, 1) ^ B[idx1 + 1];
+      for (let y = 0;y < 50; y += 10) {
+        s[x + y] ^= Th;
+        s[x + y + 1] ^= Tl;
+      }
+    }
+    let curH = s[2];
+    let curL = s[3];
+    for (let t = 0;t < 24; t++) {
+      const shift = SHA3_ROTL[t];
+      const Th = rotlH(curH, curL, shift);
+      const Tl = rotlL(curH, curL, shift);
+      const PI = SHA3_PI[t];
+      curH = s[PI];
+      curL = s[PI + 1];
+      s[PI] = Th;
+      s[PI + 1] = Tl;
+    }
+    for (let y = 0;y < 50; y += 10) {
+      for (let x = 0;x < 10; x++)
+        B[x] = s[y + x];
+      for (let x = 0;x < 10; x++)
+        s[y + x] ^= ~B[(x + 2) % 10] & B[(x + 4) % 10];
+    }
+    s[0] ^= SHA3_IOTA_H[round];
+    s[1] ^= SHA3_IOTA_L[round];
+  }
+  clean(B);
+}
+
+class Keccak extends Hash {
+  constructor(blockLen, suffix, outputLen, enableXOF = false, rounds = 24) {
+    super();
+    this.pos = 0;
+    this.posOut = 0;
+    this.finished = false;
+    this.destroyed = false;
+    this.enableXOF = false;
+    this.blockLen = blockLen;
+    this.suffix = suffix;
+    this.outputLen = outputLen;
+    this.enableXOF = enableXOF;
+    this.rounds = rounds;
+    anumber(outputLen);
+    if (!(0 < blockLen && blockLen < 200))
+      throw new Error("only keccak-f1600 function is supported");
+    this.state = new Uint8Array(200);
+    this.state32 = u32(this.state);
+  }
+  clone() {
+    return this._cloneInto();
+  }
+  keccak() {
+    swap32IfBE(this.state32);
+    keccakP(this.state32, this.rounds);
+    swap32IfBE(this.state32);
+    this.posOut = 0;
+    this.pos = 0;
+  }
+  update(data) {
+    aexists(this);
+    data = toBytes2(data);
+    abytes(data);
+    const { blockLen, state } = this;
+    const len2 = data.length;
+    for (let pos = 0;pos < len2; ) {
+      const take = Math.min(blockLen - this.pos, len2 - pos);
+      for (let i2 = 0;i2 < take; i2++)
+        state[this.pos++] ^= data[pos++];
+      if (this.pos === blockLen)
+        this.keccak();
+    }
+    return this;
+  }
+  finish() {
+    if (this.finished)
+      return;
+    this.finished = true;
+    const { state, suffix, pos, blockLen } = this;
+    state[pos] ^= suffix;
+    if ((suffix & 128) !== 0 && pos === blockLen - 1)
+      this.keccak();
+    state[blockLen - 1] ^= 128;
+    this.keccak();
+  }
+  writeInto(out) {
+    aexists(this, false);
+    abytes(out);
+    this.finish();
+    const bufferOut = this.state;
+    const { blockLen } = this;
+    for (let pos = 0, len2 = out.length;pos < len2; ) {
+      if (this.posOut >= blockLen)
+        this.keccak();
+      const take = Math.min(blockLen - this.posOut, len2 - pos);
+      out.set(bufferOut.subarray(this.posOut, this.posOut + take), pos);
+      this.posOut += take;
+      pos += take;
+    }
+    return out;
+  }
+  xofInto(out) {
+    if (!this.enableXOF)
+      throw new Error("XOF is not possible for this instance");
+    return this.writeInto(out);
+  }
+  xof(bytes) {
+    anumber(bytes);
+    return this.xofInto(new Uint8Array(bytes));
+  }
+  digestInto(out) {
+    aoutput(out, this);
+    if (this.finished)
+      throw new Error("digest() was already called");
+    this.writeInto(out);
+    this.destroy();
+    return out;
+  }
+  digest() {
+    return this.digestInto(new Uint8Array(this.outputLen));
+  }
+  destroy() {
+    this.destroyed = true;
+    clean(this.state);
+  }
+  _cloneInto(to) {
+    const { blockLen, suffix, outputLen, rounds, enableXOF } = this;
+    to || (to = new Keccak(blockLen, suffix, outputLen, enableXOF, rounds));
+    to.state32.set(this.state32);
+    to.pos = this.pos;
+    to.posOut = this.posOut;
+    to.finished = this.finished;
+    to.rounds = rounds;
+    to.suffix = suffix;
+    to.outputLen = outputLen;
+    to.enableXOF = enableXOF;
+    to.destroyed = this.destroyed;
+    return to;
+  }
+}
+var gen = (suffix, blockLen, outputLen) => createHasher(() => new Keccak(blockLen, suffix, outputLen));
+var keccak_256 = /* @__PURE__ */ (() => gen(1, 136, 256 / 8))();
+function keccak256(value2, to_) {
+  const to = to_ || "hex";
+  const bytes = keccak_256(isHex(value2, { strict: false }) ? toBytes(value2) : value2);
+  if (to === "bytes")
+    return bytes;
+  return toHex(bytes);
+}
+var checksumAddressCache = /* @__PURE__ */ new LruMap(8192);
+function checksumAddress(address_, chainId) {
+  if (checksumAddressCache.has(`${address_}.${chainId}`))
+    return checksumAddressCache.get(`${address_}.${chainId}`);
+  const hexAddress = chainId ? `${chainId}${address_.toLowerCase()}` : address_.substring(2).toLowerCase();
+  const hash = keccak256(stringToBytes(hexAddress), "bytes");
+  const address = (chainId ? hexAddress.substring(`${chainId}0x`.length) : hexAddress).split("");
+  for (let i2 = 0;i2 < 40; i2 += 2) {
+    if (hash[i2 >> 1] >> 4 >= 8 && address[i2]) {
+      address[i2] = address[i2].toUpperCase();
+    }
+    if ((hash[i2 >> 1] & 15) >= 8 && address[i2 + 1]) {
+      address[i2 + 1] = address[i2 + 1].toUpperCase();
+    }
+  }
+  const result = `0x${address.join("")}`;
+  checksumAddressCache.set(`${address_}.${chainId}`, result);
+  return result;
+}
+var addressRegex = /^0x[a-fA-F0-9]{40}$/;
+var isAddressCache = /* @__PURE__ */ new LruMap(8192);
+function isAddress(address, options) {
+  const { strict = true } = options ?? {};
+  const cacheKey = `${address}.${strict}`;
+  if (isAddressCache.has(cacheKey))
+    return isAddressCache.get(cacheKey);
+  const result = (() => {
+    if (!addressRegex.test(address))
+      return false;
+    if (address.toLowerCase() === address)
+      return true;
+    if (strict)
+      return checksumAddress(address) === address;
+    return true;
+  })();
+  isAddressCache.set(cacheKey, result);
+  return result;
+}
+function slice(value2, start, end, { strict } = {}) {
+  if (isHex(value2, { strict: false }))
+    return sliceHex(value2, start, end, {
+      strict
+    });
+  return sliceBytes(value2, start, end, {
+    strict
+  });
+}
+function assertStartOffset(value2, start) {
+  if (typeof start === "number" && start > 0 && start > size(value2) - 1)
+    throw new SliceOffsetOutOfBoundsError({
+      offset: start,
+      position: "start",
+      size: size(value2)
+    });
+}
+function assertEndOffset(value2, start, end) {
+  if (typeof start === "number" && typeof end === "number" && size(value2) !== end - start) {
+    throw new SliceOffsetOutOfBoundsError({
+      offset: end,
+      position: "end",
+      size: size(value2)
+    });
+  }
+}
+function sliceBytes(value_, start, end, { strict } = {}) {
+  assertStartOffset(value_, start);
+  const value2 = value_.slice(start, end);
+  if (strict)
+    assertEndOffset(value2, start, end);
+  return value2;
+}
+function sliceHex(value_, start, end, { strict } = {}) {
+  assertStartOffset(value_, start);
+  const value2 = `0x${value_.replace("0x", "").slice((start ?? 0) * 2, (end ?? value_.length) * 2)}`;
+  if (strict)
+    assertEndOffset(value2, start, end);
+  return value2;
+}
+var integerRegex = /^(u?int)(8|16|24|32|40|48|56|64|72|80|88|96|104|112|120|128|136|144|152|160|168|176|184|192|200|208|216|224|232|240|248|256)?$/;
+function encodeAbiParameters(params, values) {
+  if (params.length !== values.length)
+    throw new AbiEncodingLengthMismatchError({
+      expectedLength: params.length,
+      givenLength: values.length
+    });
+  const preparedParams = prepareParams({
+    params,
+    values
+  });
+  const data = encodeParams(preparedParams);
+  if (data.length === 0)
+    return "0x";
+  return data;
+}
+function prepareParams({ params, values }) {
+  const preparedParams = [];
+  for (let i2 = 0;i2 < params.length; i2++) {
+    preparedParams.push(prepareParam({ param: params[i2], value: values[i2] }));
+  }
+  return preparedParams;
+}
+function prepareParam({ param, value: value2 }) {
+  const arrayComponents = getArrayComponents(param.type);
+  if (arrayComponents) {
+    const [length, type] = arrayComponents;
+    return encodeArray(value2, { length, param: { ...param, type } });
+  }
+  if (param.type === "tuple") {
+    return encodeTuple(value2, {
+      param
+    });
+  }
+  if (param.type === "address") {
+    return encodeAddress(value2);
+  }
+  if (param.type === "bool") {
+    return encodeBool(value2);
+  }
+  if (param.type.startsWith("uint") || param.type.startsWith("int")) {
+    const signed = param.type.startsWith("int");
+    const [, , size2 = "256"] = integerRegex.exec(param.type) ?? [];
+    return encodeNumber(value2, {
+      signed,
+      size: Number(size2)
+    });
+  }
+  if (param.type.startsWith("bytes")) {
+    return encodeBytes(value2, { param });
+  }
+  if (param.type === "string") {
+    return encodeString(value2);
+  }
+  throw new InvalidAbiEncodingTypeError(param.type, {
+    docsPath: "/docs/contract/encodeAbiParameters"
+  });
+}
+function encodeParams(preparedParams) {
+  let staticSize = 0;
+  for (let i2 = 0;i2 < preparedParams.length; i2++) {
+    const { dynamic, encoded } = preparedParams[i2];
+    if (dynamic)
+      staticSize += 32;
+    else
+      staticSize += size(encoded);
+  }
+  const staticParams = [];
+  const dynamicParams = [];
+  let dynamicSize = 0;
+  for (let i2 = 0;i2 < preparedParams.length; i2++) {
+    const { dynamic, encoded } = preparedParams[i2];
+    if (dynamic) {
+      staticParams.push(numberToHex(staticSize + dynamicSize, { size: 32 }));
+      dynamicParams.push(encoded);
+      dynamicSize += size(encoded);
+    } else {
+      staticParams.push(encoded);
+    }
+  }
+  return concat([...staticParams, ...dynamicParams]);
+}
+function encodeAddress(value2) {
+  if (!isAddress(value2))
+    throw new InvalidAddressError({ address: value2 });
+  return { dynamic: false, encoded: padHex(value2.toLowerCase()) };
+}
+function encodeArray(value2, { length, param }) {
+  const dynamic = length === null;
+  if (!Array.isArray(value2))
+    throw new InvalidArrayError(value2);
+  if (!dynamic && value2.length !== length)
+    throw new AbiEncodingArrayLengthMismatchError({
+      expectedLength: length,
+      givenLength: value2.length,
+      type: `${param.type}[${length}]`
+    });
+  let dynamicChild = false;
+  const preparedParams = [];
+  for (let i2 = 0;i2 < value2.length; i2++) {
+    const preparedParam = prepareParam({ param, value: value2[i2] });
+    if (preparedParam.dynamic)
+      dynamicChild = true;
+    preparedParams.push(preparedParam);
+  }
+  if (dynamic || dynamicChild) {
+    const data = encodeParams(preparedParams);
+    if (dynamic) {
+      const length2 = numberToHex(preparedParams.length, { size: 32 });
+      return {
+        dynamic: true,
+        encoded: preparedParams.length > 0 ? concat([length2, data]) : length2
+      };
+    }
+    if (dynamicChild)
+      return { dynamic: true, encoded: data };
+  }
+  return {
+    dynamic: false,
+    encoded: concat(preparedParams.map(({ encoded }) => encoded))
+  };
+}
+function encodeBytes(value2, { param }) {
+  const [, paramSize] = param.type.split("bytes");
+  const bytesSize = size(value2);
+  if (!paramSize) {
+    let value_ = value2;
+    if (bytesSize % 32 !== 0)
+      value_ = padHex(value_, {
+        dir: "right",
+        size: Math.ceil((value2.length - 2) / 2 / 32) * 32
+      });
+    return {
+      dynamic: true,
+      encoded: concat([padHex(numberToHex(bytesSize, { size: 32 })), value_])
+    };
+  }
+  if (bytesSize !== Number.parseInt(paramSize, 10))
+    throw new AbiEncodingBytesSizeMismatchError({
+      expectedSize: Number.parseInt(paramSize, 10),
+      value: value2
+    });
+  return { dynamic: false, encoded: padHex(value2, { dir: "right" }) };
+}
+function encodeBool(value2) {
+  if (typeof value2 !== "boolean")
+    throw new BaseError(`Invalid boolean value: "${value2}" (type: ${typeof value2}). Expected: \`true\` or \`false\`.`);
+  return { dynamic: false, encoded: padHex(boolToHex(value2)) };
+}
+function encodeNumber(value2, { signed, size: size2 = 256 }) {
+  if (typeof size2 === "number") {
+    const max = 2n ** (BigInt(size2) - (signed ? 1n : 0n)) - 1n;
+    const min = signed ? -max - 1n : 0n;
+    if (value2 > max || value2 < min)
+      throw new IntegerOutOfRangeError({
+        max: max.toString(),
+        min: min.toString(),
+        signed,
+        size: size2 / 8,
+        value: value2.toString()
+      });
+  }
+  return {
+    dynamic: false,
+    encoded: numberToHex(value2, {
+      size: 32,
+      signed
+    })
+  };
+}
+function encodeString(value2) {
+  const hexValue = stringToHex(value2);
+  const partsLength = Math.ceil(size(hexValue) / 32);
+  const parts = [];
+  for (let i2 = 0;i2 < partsLength; i2++) {
+    parts.push(padHex(slice(hexValue, i2 * 32, (i2 + 1) * 32), {
+      dir: "right"
+    }));
+  }
+  return {
+    dynamic: true,
+    encoded: concat([
+      padHex(numberToHex(size(hexValue), { size: 32 })),
+      ...parts
+    ])
+  };
+}
+function encodeTuple(value2, { param }) {
+  let dynamic = false;
+  const preparedParams = [];
+  for (let i2 = 0;i2 < param.components.length; i2++) {
+    const param_ = param.components[i2];
+    const index = Array.isArray(value2) ? i2 : param_.name;
+    const preparedParam = prepareParam({
+      param: param_,
+      value: value2[index]
+    });
+    preparedParams.push(preparedParam);
+    if (preparedParam.dynamic)
+      dynamic = true;
+  }
+  return {
+    dynamic,
+    encoded: dynamic ? encodeParams(preparedParams) : concat(preparedParams.map(({ encoded }) => encoded))
+  };
+}
+function getArrayComponents(type) {
+  const matches = type.match(/^(.*)\[(\d+)?\]$/);
+  return matches ? [matches[2] ? Number(matches[2]) : null, matches[1]] : undefined;
+}
+var hash = (value2) => keccak256(toBytes(value2));
+function hashSignature(sig) {
+  return hash(sig);
+}
+function execTyped(regex, string) {
+  const match = regex.exec(string);
+  return match?.groups;
+}
+var tupleRegex = /^tuple(?<array>(\[(\d*)\])*)$/;
+function formatAbiParameter(abiParameter) {
+  let type = abiParameter.type;
+  if (tupleRegex.test(abiParameter.type) && "components" in abiParameter) {
+    type = "(";
+    const length = abiParameter.components.length;
+    for (let i2 = 0;i2 < length; i2++) {
+      const component = abiParameter.components[i2];
+      type += formatAbiParameter(component);
+      if (i2 < length - 1)
+        type += ", ";
+    }
+    const result = execTyped(tupleRegex, abiParameter.type);
+    type += `)${result?.array || ""}`;
+    return formatAbiParameter({
+      ...abiParameter,
+      type
+    });
+  }
+  if ("indexed" in abiParameter && abiParameter.indexed)
+    type = `${type} indexed`;
+  if (abiParameter.name)
+    return `${type} ${abiParameter.name}`;
+  return type;
+}
+function formatAbiParameters(abiParameters) {
+  let params = "";
+  const length = abiParameters.length;
+  for (let i2 = 0;i2 < length; i2++) {
+    const abiParameter = abiParameters[i2];
+    params += formatAbiParameter(abiParameter);
+    if (i2 !== length - 1)
+      params += ", ";
+  }
+  return params;
+}
+function formatAbiItem2(abiItem) {
+  if (abiItem.type === "function")
+    return `function ${abiItem.name}(${formatAbiParameters(abiItem.inputs)})${abiItem.stateMutability && abiItem.stateMutability !== "nonpayable" ? ` ${abiItem.stateMutability}` : ""}${abiItem.outputs?.length ? ` returns (${formatAbiParameters(abiItem.outputs)})` : ""}`;
+  if (abiItem.type === "event")
+    return `event ${abiItem.name}(${formatAbiParameters(abiItem.inputs)})`;
+  if (abiItem.type === "error")
+    return `error ${abiItem.name}(${formatAbiParameters(abiItem.inputs)})`;
+  if (abiItem.type === "constructor")
+    return `constructor(${formatAbiParameters(abiItem.inputs)})${abiItem.stateMutability === "payable" ? " payable" : ""}`;
+  if (abiItem.type === "fallback")
+    return `fallback() external${abiItem.stateMutability === "payable" ? " payable" : ""}`;
+  return "receive() external payable";
+}
+function normalizeSignature(signature) {
+  let active = true;
+  let current = "";
+  let level = 0;
+  let result = "";
+  let valid = false;
+  for (let i2 = 0;i2 < signature.length; i2++) {
+    const char = signature[i2];
+    if (["(", ")", ","].includes(char))
+      active = true;
+    if (char === "(")
+      level++;
+    if (char === ")")
+      level--;
+    if (!active)
+      continue;
+    if (level === 0) {
+      if (char === " " && ["event", "function", ""].includes(result))
+        result = "";
+      else {
+        result += char;
+        if (char === ")") {
+          valid = true;
+          break;
+        }
+      }
+      continue;
+    }
+    if (char === " ") {
+      if (signature[i2 - 1] !== "," && current !== "," && current !== ",(") {
+        current = "";
+        active = false;
+      }
+      continue;
+    }
+    result += char;
+    current += char;
+  }
+  if (!valid)
+    throw new BaseError("Unable to normalize signature.");
+  return result;
+}
+var toSignature = (def) => {
+  const def_ = (() => {
+    if (typeof def === "string")
+      return def;
+    return formatAbiItem2(def);
+  })();
+  return normalizeSignature(def_);
+};
+function toSignatureHash(fn) {
+  return hashSignature(toSignature(fn));
+}
+var toFunctionSelector = (fn) => slice(toSignatureHash(fn), 0, 4);
+var toEventSelector = toSignatureHash;
+function getAbiItem(parameters) {
+  const { abi, args = [], name } = parameters;
+  const isSelector = isHex(name, { strict: false });
+  const abiItems = abi.filter((abiItem) => {
+    if (isSelector) {
+      if (abiItem.type === "function")
+        return toFunctionSelector(abiItem) === name;
+      if (abiItem.type === "event")
+        return toEventSelector(abiItem) === name;
+      return false;
+    }
+    return "name" in abiItem && abiItem.name === name;
+  });
+  if (abiItems.length === 0)
+    return;
+  if (abiItems.length === 1)
+    return abiItems[0];
+  let matchedAbiItem;
+  for (const abiItem of abiItems) {
+    if (!("inputs" in abiItem))
+      continue;
+    if (!args || args.length === 0) {
+      if (!abiItem.inputs || abiItem.inputs.length === 0)
+        return abiItem;
+      continue;
+    }
+    if (!abiItem.inputs)
+      continue;
+    if (abiItem.inputs.length === 0)
+      continue;
+    if (abiItem.inputs.length !== args.length)
+      continue;
+    const matched = args.every((arg, index) => {
+      const abiParameter = "inputs" in abiItem && abiItem.inputs[index];
+      if (!abiParameter)
+        return false;
+      return isArgOfType(arg, abiParameter);
+    });
+    if (matched) {
+      if (matchedAbiItem && "inputs" in matchedAbiItem && matchedAbiItem.inputs) {
+        const ambiguousTypes = getAmbiguousTypes(abiItem.inputs, matchedAbiItem.inputs, args);
+        if (ambiguousTypes)
+          throw new AbiItemAmbiguityError({
+            abiItem,
+            type: ambiguousTypes[0]
+          }, {
+            abiItem: matchedAbiItem,
+            type: ambiguousTypes[1]
+          });
+      }
+      matchedAbiItem = abiItem;
+    }
+  }
+  if (matchedAbiItem)
+    return matchedAbiItem;
+  return abiItems[0];
+}
+function isArgOfType(arg, abiParameter) {
+  const argType = typeof arg;
+  const abiParameterType = abiParameter.type;
+  switch (abiParameterType) {
+    case "address":
+      return isAddress(arg, { strict: false });
+    case "bool":
+      return argType === "boolean";
+    case "function":
+      return argType === "string";
+    case "string":
+      return argType === "string";
+    default: {
+      if (abiParameterType === "tuple" && "components" in abiParameter)
+        return Object.values(abiParameter.components).every((component, index) => {
+          return argType === "object" && isArgOfType(Object.values(arg)[index], component);
+        });
+      if (/^u?int(8|16|24|32|40|48|56|64|72|80|88|96|104|112|120|128|136|144|152|160|168|176|184|192|200|208|216|224|232|240|248|256)?$/.test(abiParameterType))
+        return argType === "number" || argType === "bigint";
+      if (/^bytes([1-9]|1[0-9]|2[0-9]|3[0-2])?$/.test(abiParameterType))
+        return argType === "string" || arg instanceof Uint8Array;
+      if (/[a-z]+[1-9]{0,3}(\[[0-9]{0,}\])+$/.test(abiParameterType)) {
+        return Array.isArray(arg) && arg.every((x) => isArgOfType(x, {
+          ...abiParameter,
+          type: abiParameterType.replace(/(\[[0-9]{0,}\])$/, "")
+        }));
+      }
+      return false;
+    }
+  }
+}
+function getAmbiguousTypes(sourceParameters, targetParameters, args) {
+  for (const parameterIndex in sourceParameters) {
+    const sourceParameter = sourceParameters[parameterIndex];
+    const targetParameter = targetParameters[parameterIndex];
+    if (sourceParameter.type === "tuple" && targetParameter.type === "tuple" && "components" in sourceParameter && "components" in targetParameter)
+      return getAmbiguousTypes(sourceParameter.components, targetParameter.components, args[parameterIndex]);
+    const types4 = [sourceParameter.type, targetParameter.type];
+    const ambiguous = (() => {
+      if (types4.includes("address") && types4.includes("bytes20"))
+        return true;
+      if (types4.includes("address") && types4.includes("string"))
+        return isAddress(args[parameterIndex], { strict: false });
+      if (types4.includes("address") && types4.includes("bytes"))
+        return isAddress(args[parameterIndex], { strict: false });
+      return false;
+    })();
+    if (ambiguous)
+      return types4;
+  }
+  return;
+}
+var docsPath = "/docs/contract/encodeFunctionData";
+function prepareEncodeFunctionData(parameters) {
+  const { abi, args, functionName } = parameters;
+  let abiItem = abi[0];
+  if (functionName) {
+    const item = getAbiItem({
+      abi,
+      args,
+      name: functionName
+    });
+    if (!item)
+      throw new AbiFunctionNotFoundError(functionName, { docsPath });
+    abiItem = item;
+  }
+  if (abiItem.type !== "function")
+    throw new AbiFunctionNotFoundError(undefined, { docsPath });
+  return {
+    abi: [abiItem],
+    functionName: toFunctionSelector(formatAbiItem(abiItem))
+  };
+}
+function encodeFunctionData(parameters) {
+  const { args } = parameters;
+  const { abi, functionName } = (() => {
+    if (parameters.abi.length === 1 && parameters.functionName?.startsWith("0x"))
+      return parameters;
+    return prepareEncodeFunctionData(parameters);
+  })();
+  const abiItem = abi[0];
+  const signature = functionName;
+  const data = "inputs" in abiItem && abiItem.inputs ? encodeAbiParameters(abiItem.inputs, args ?? []) : undefined;
+  return concatHex([signature, data ?? "0x"]);
+}
+function irisStatusUrl(irisApiBase, srcDomain, burnTxHash) {
+  return `${irisApiBase}/v2/messages/${srcDomain}?transactionHash=${burnTxHash}`;
+}
+function parseAttestationData(data) {
+  const msg = data.messages?.[0];
+  if (!msg) {
+    throw new Error("No messages in IRIS response");
+  }
+  if (msg.status !== "complete") {
+    throw new Error(`IRIS message status: ${msg.status}, expected complete`);
+  }
+  return {
+    message: msg.message,
+    attestation: msg.attestation,
+    destinationDomain: Number(msg.decodedMessage.destinationDomain)
+  };
+}
+function defineChain2(chain) {
+  const chainInstance = {
+    formatters: undefined,
+    fees: undefined,
+    serializers: undefined,
+    ...chain
+  };
+  function extend(base) {
+    return (fnOrExtended) => {
+      const properties = typeof fnOrExtended === "function" ? fnOrExtended(base) : fnOrExtended;
+      const combined = { ...base, ...properties };
+      return Object.assign(combined, { extend: extend(combined) });
+    };
+  }
+  return Object.assign(chainInstance, {
+    extend: extend(chainInstance)
+  });
+}
+var arbitrum = /* @__PURE__ */ defineChain2({
+  id: 42161,
+  name: "Arbitrum One",
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  blockTime: 250,
+  rpcUrls: {
+    default: {
+      http: ["https://arb1.arbitrum.io/rpc"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Arbiscan",
+      url: "https://arbiscan.io",
+      apiUrl: "https://api.arbiscan.io/api"
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 7654707
+    }
+  }
+});
+var arbitrumSepolia = /* @__PURE__ */ defineChain2({
+  id: 421614,
+  name: "Arbitrum Sepolia",
+  blockTime: 250,
+  nativeCurrency: {
+    name: "Arbitrum Sepolia Ether",
+    symbol: "ETH",
+    decimals: 18
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://sepolia-rollup.arbitrum.io/rpc"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Arbiscan",
+      url: "https://sepolia.arbiscan.io",
+      apiUrl: "https://api-sepolia.arbiscan.io/api"
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 81930
+    }
+  },
+  testnet: true
+});
+var avalanche = /* @__PURE__ */ defineChain2({
+  id: 43114,
+  name: "Avalanche",
+  blockTime: 1700,
+  nativeCurrency: {
+    decimals: 18,
+    name: "Avalanche",
+    symbol: "AVAX"
+  },
+  rpcUrls: {
+    default: { http: ["https://api.avax.network/ext/bc/C/rpc"] }
+  },
+  blockExplorers: {
+    default: {
+      name: "SnowTrace",
+      url: "https://snowtrace.io",
+      apiUrl: "https://api.snowtrace.io"
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 11907934
+    }
+  }
+});
+var avalancheFuji = /* @__PURE__ */ defineChain2({
+  id: 43113,
+  name: "Avalanche Fuji",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Avalanche Fuji",
+    symbol: "AVAX"
+  },
+  rpcUrls: {
+    default: { http: ["https://api.avax-test.network/ext/bc/C/rpc"] }
+  },
+  blockExplorers: {
+    default: {
+      name: "SnowTrace",
+      url: "https://testnet.snowtrace.io",
+      apiUrl: "https://api-testnet.snowtrace.io"
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 7096959
+    }
+  },
+  testnet: true
+});
+var contracts = {
+  gasPriceOracle: { address: "0x420000000000000000000000000000000000000F" },
+  l1Block: { address: "0x4200000000000000000000000000000000000015" },
+  l2CrossDomainMessenger: {
+    address: "0x4200000000000000000000000000000000000007"
+  },
+  l2Erc721Bridge: { address: "0x4200000000000000000000000000000000000014" },
+  l2StandardBridge: { address: "0x4200000000000000000000000000000000000010" },
+  l2ToL1MessagePasser: {
+    address: "0x4200000000000000000000000000000000000016"
+  }
+};
+var version2 = "2.47.6";
+var errorConfig2 = {
+  getDocsUrl: ({ docsBaseUrl, docsPath: docsPath2 = "", docsSlug }) => docsPath2 ? `${docsBaseUrl ?? "https://viem.sh"}${docsPath2}${docsSlug ? `#${docsSlug}` : ""}` : undefined,
+  version: `viem@${version2}`
+};
+
+class BaseError4 extends Error {
+  constructor(shortMessage, args = {}) {
+    const details = (() => {
+      if (args.cause instanceof BaseError4)
+        return args.cause.details;
+      if (args.cause?.message)
+        return args.cause.message;
+      return args.details;
+    })();
+    const docsPath2 = (() => {
+      if (args.cause instanceof BaseError4)
+        return args.cause.docsPath || args.docsPath;
+      return args.docsPath;
+    })();
+    const docsUrl = errorConfig2.getDocsUrl?.({ ...args, docsPath: docsPath2 });
+    const message = [
+      shortMessage || "An error occurred.",
+      "",
+      ...args.metaMessages ? [...args.metaMessages, ""] : [],
+      ...docsUrl ? [`Docs: ${docsUrl}`] : [],
+      ...details ? [`Details: ${details}`] : [],
+      ...errorConfig2.version ? [`Version: ${errorConfig2.version}`] : []
+    ].join(`
+`);
+    super(message, args.cause ? { cause: args.cause } : undefined);
+    Object.defineProperty(this, "details", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "docsPath", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "metaMessages", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "shortMessage", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "version", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    Object.defineProperty(this, "name", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: "BaseError"
+    });
+    this.details = details;
+    this.docsPath = docsPath2;
+    this.metaMessages = args.metaMessages;
+    this.name = args.name ?? this.name;
+    this.shortMessage = shortMessage;
+    this.version = version2;
+  }
+  walk(fn) {
+    return walk2(this, fn);
+  }
+}
+function walk2(err, fn) {
+  if (fn?.(err))
+    return err;
+  if (err && typeof err === "object" && "cause" in err && err.cause !== undefined)
+    return walk2(err.cause, fn);
+  return fn ? null : err;
+}
+
+class IntegerOutOfRangeError3 extends BaseError4 {
+  constructor({ max, min, signed, size: size3, value: value2 }) {
+    super(`Number "${value2}" is not in safe ${size3 ? `${size3 * 8}-bit ${signed ? "signed" : "unsigned"} ` : ""}integer range ${max ? `(${min} to ${max})` : `(above ${min})`}`, { name: "IntegerOutOfRangeError" });
+  }
+}
+
+class SizeOverflowError3 extends BaseError4 {
+  constructor({ givenSize, maxSize }) {
+    super(`Size cannot exceed ${maxSize} bytes. Given size: ${givenSize} bytes.`, { name: "SizeOverflowError" });
+  }
+}
+function isHex3(value2, { strict = true } = {}) {
+  if (!value2)
+    return false;
+  if (typeof value2 !== "string")
+    return false;
+  return strict ? /^0x[0-9a-fA-F]*$/.test(value2) : value2.startsWith("0x");
+}
+function size3(value2) {
+  if (isHex3(value2, { strict: false }))
+    return Math.ceil((value2.length - 2) / 2);
+  return value2.length;
+}
+function trim2(hexOrBytes, { dir = "left" } = {}) {
+  let data = typeof hexOrBytes === "string" ? hexOrBytes.replace("0x", "") : hexOrBytes;
+  let sliceLength = 0;
+  for (let i2 = 0;i2 < data.length - 1; i2++) {
+    if (data[dir === "left" ? i2 : data.length - i2 - 1].toString() === "0")
+      sliceLength++;
+    else
+      break;
+  }
+  data = dir === "left" ? data.slice(sliceLength) : data.slice(0, data.length - sliceLength);
+  if (typeof hexOrBytes === "string") {
+    if (data.length === 1 && dir === "right")
+      data = `${data}0`;
+    return `0x${data.length % 2 === 1 ? `0${data}` : data}`;
+  }
+  return data;
+}
+
+class SliceOffsetOutOfBoundsError3 extends BaseError4 {
+  constructor({ offset, position, size: size4 }) {
+    super(`Slice ${position === "start" ? "starting" : "ending"} at offset "${offset}" is out-of-bounds (size: ${size4}).`, { name: "SliceOffsetOutOfBoundsError" });
+  }
+}
+
+class SizeExceedsPaddingSizeError3 extends BaseError4 {
+  constructor({ size: size4, targetSize, type }) {
+    super(`${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()} size (${size4}) exceeds padding size (${targetSize}).`, { name: "SizeExceedsPaddingSizeError" });
+  }
+}
+function pad3(hexOrBytes, { dir, size: size4 = 32 } = {}) {
+  if (typeof hexOrBytes === "string")
+    return padHex3(hexOrBytes, { dir, size: size4 });
+  return padBytes3(hexOrBytes, { dir, size: size4 });
+}
+function padHex3(hex_, { dir, size: size4 = 32 } = {}) {
+  if (size4 === null)
+    return hex_;
+  const hex = hex_.replace("0x", "");
+  if (hex.length > size4 * 2)
+    throw new SizeExceedsPaddingSizeError3({
+      size: Math.ceil(hex.length / 2),
+      targetSize: size4,
+      type: "hex"
+    });
+  return `0x${hex[dir === "right" ? "padEnd" : "padStart"](size4 * 2, "0")}`;
+}
+function padBytes3(bytes, { dir, size: size4 = 32 } = {}) {
+  if (size4 === null)
+    return bytes;
+  if (bytes.length > size4)
+    throw new SizeExceedsPaddingSizeError3({
+      size: bytes.length,
+      targetSize: size4,
+      type: "bytes"
+    });
+  const paddedBytes = new Uint8Array(size4);
+  for (let i2 = 0;i2 < size4; i2++) {
+    const padEnd = dir === "right";
+    paddedBytes[padEnd ? i2 : size4 - i2 - 1] = bytes[padEnd ? i2 : bytes.length - i2 - 1];
+  }
+  return paddedBytes;
+}
+var hexes2 = /* @__PURE__ */ Array.from({ length: 256 }, (_v, i2) => i2.toString(16).padStart(2, "0"));
+function toHex2(value2, opts = {}) {
+  if (typeof value2 === "number" || typeof value2 === "bigint")
+    return numberToHex2(value2, opts);
+  if (typeof value2 === "string") {
+    return stringToHex2(value2, opts);
+  }
+  if (typeof value2 === "boolean")
+    return boolToHex2(value2, opts);
+  return bytesToHex2(value2, opts);
+}
+function boolToHex2(value2, opts = {}) {
+  const hex = `0x${Number(value2)}`;
+  if (typeof opts.size === "number") {
+    assertSize3(hex, { size: opts.size });
+    return pad3(hex, { size: opts.size });
+  }
+  return hex;
+}
+function bytesToHex2(value2, opts = {}) {
+  let string = "";
+  for (let i2 = 0;i2 < value2.length; i2++) {
+    string += hexes2[value2[i2]];
+  }
+  const hex = `0x${string}`;
+  if (typeof opts.size === "number") {
+    assertSize3(hex, { size: opts.size });
+    return pad3(hex, { dir: "right", size: opts.size });
+  }
+  return hex;
+}
+function numberToHex2(value_, opts = {}) {
+  const { signed, size: size4 } = opts;
+  const value2 = BigInt(value_);
+  let maxValue;
+  if (size4) {
+    if (signed)
+      maxValue = (1n << BigInt(size4) * 8n - 1n) - 1n;
+    else
+      maxValue = 2n ** (BigInt(size4) * 8n) - 1n;
+  } else if (typeof value_ === "number") {
+    maxValue = BigInt(Number.MAX_SAFE_INTEGER);
+  }
+  const minValue = typeof maxValue === "bigint" && signed ? -maxValue - 1n : 0;
+  if (maxValue && value2 > maxValue || value2 < minValue) {
+    const suffix = typeof value_ === "bigint" ? "n" : "";
+    throw new IntegerOutOfRangeError3({
+      max: maxValue ? `${maxValue}${suffix}` : undefined,
+      min: `${minValue}${suffix}`,
+      signed,
+      size: size4,
+      value: `${value_}${suffix}`
+    });
+  }
+  const hex = `0x${(signed && value2 < 0 ? (1n << BigInt(size4 * 8)) + BigInt(value2) : value2).toString(16)}`;
+  if (size4)
+    return pad3(hex, { size: size4 });
+  return hex;
+}
+var encoder3 = /* @__PURE__ */ new TextEncoder;
+function stringToHex2(value_, opts = {}) {
+  const value2 = encoder3.encode(value_);
+  return bytesToHex2(value2, opts);
+}
+var encoder4 = /* @__PURE__ */ new TextEncoder;
+function toBytes4(value2, opts = {}) {
+  if (typeof value2 === "number" || typeof value2 === "bigint")
+    return numberToBytes3(value2, opts);
+  if (typeof value2 === "boolean")
+    return boolToBytes3(value2, opts);
+  if (isHex3(value2))
+    return hexToBytes4(value2, opts);
+  return stringToBytes3(value2, opts);
+}
+function boolToBytes3(value2, opts = {}) {
+  const bytes = new Uint8Array(1);
+  bytes[0] = Number(value2);
+  if (typeof opts.size === "number") {
+    assertSize3(bytes, { size: opts.size });
+    return pad3(bytes, { size: opts.size });
+  }
+  return bytes;
+}
+var charCodeMap2 = {
+  zero: 48,
+  nine: 57,
+  A: 65,
+  F: 70,
+  a: 97,
+  f: 102
+};
+function charCodeToBase162(char) {
+  if (char >= charCodeMap2.zero && char <= charCodeMap2.nine)
+    return char - charCodeMap2.zero;
+  if (char >= charCodeMap2.A && char <= charCodeMap2.F)
+    return char - (charCodeMap2.A - 10);
+  if (char >= charCodeMap2.a && char <= charCodeMap2.f)
+    return char - (charCodeMap2.a - 10);
+  return;
+}
+function hexToBytes4(hex_, opts = {}) {
+  let hex = hex_;
+  if (opts.size) {
+    assertSize3(hex, { size: opts.size });
+    hex = pad3(hex, { dir: "right", size: opts.size });
+  }
+  let hexString = hex.slice(2);
+  if (hexString.length % 2)
+    hexString = `0${hexString}`;
+  const length = hexString.length / 2;
+  const bytes = new Uint8Array(length);
+  for (let index = 0, j = 0;index < length; index++) {
+    const nibbleLeft = charCodeToBase162(hexString.charCodeAt(j++));
+    const nibbleRight = charCodeToBase162(hexString.charCodeAt(j++));
+    if (nibbleLeft === undefined || nibbleRight === undefined) {
+      throw new BaseError4(`Invalid byte sequence ("${hexString[j - 2]}${hexString[j - 1]}" in "${hexString}").`);
+    }
+    bytes[index] = nibbleLeft * 16 + nibbleRight;
+  }
+  return bytes;
+}
+function numberToBytes3(value2, opts) {
+  const hex = numberToHex2(value2, opts);
+  return hexToBytes4(hex);
+}
+function stringToBytes3(value2, opts = {}) {
+  const bytes = encoder4.encode(value2);
+  if (typeof opts.size === "number") {
+    assertSize3(bytes, { size: opts.size });
+    return pad3(bytes, { dir: "right", size: opts.size });
+  }
+  return bytes;
+}
+function assertSize3(hexOrBytes, { size: size4 }) {
+  if (size3(hexOrBytes) > size4)
+    throw new SizeOverflowError3({
+      givenSize: size3(hexOrBytes),
+      maxSize: size4
+    });
+}
+function hexToBigInt2(hex, opts = {}) {
+  const { signed } = opts;
+  if (opts.size)
+    assertSize3(hex, { size: opts.size });
+  const value2 = BigInt(hex);
+  if (!signed)
+    return value2;
+  const size4 = (hex.length - 2) / 2;
+  const max = (1n << BigInt(size4) * 8n - 1n) - 1n;
+  if (value2 <= max)
+    return value2;
+  return value2 - BigInt(`0x${"f".padStart(size4 * 2, "f")}`) - 1n;
+}
+function hexToNumber2(hex, opts = {}) {
+  const value2 = hexToBigInt2(hex, opts);
+  const number = Number(value2);
+  if (!Number.isSafeInteger(number))
+    throw new IntegerOutOfRangeError3({
+      max: `${Number.MAX_SAFE_INTEGER}`,
+      min: `${Number.MIN_SAFE_INTEGER}`,
+      signed: opts.signed,
+      size: opts.size,
+      value: `${value2}n`
+    });
+  return number;
+}
+function defineFormatter(type, format) {
+  return ({ exclude, format: overrides }) => {
+    return {
+      exclude,
+      format: (args, action) => {
+        const formatted = format(args, action);
+        if (exclude) {
+          for (const key of exclude) {
+            delete formatted[key];
+          }
+        }
+        return {
+          ...formatted,
+          ...overrides(args, action)
+        };
+      },
+      type
+    };
+  };
+}
+var transactionType2 = {
+  "0x0": "legacy",
+  "0x1": "eip2930",
+  "0x2": "eip1559",
+  "0x3": "eip4844",
+  "0x4": "eip7702"
+};
+function formatTransaction2(transaction, _) {
+  const transaction_ = {
+    ...transaction,
+    blockHash: transaction.blockHash ? transaction.blockHash : null,
+    blockNumber: transaction.blockNumber ? BigInt(transaction.blockNumber) : null,
+    chainId: transaction.chainId ? hexToNumber2(transaction.chainId) : undefined,
+    gas: transaction.gas ? BigInt(transaction.gas) : undefined,
+    gasPrice: transaction.gasPrice ? BigInt(transaction.gasPrice) : undefined,
+    maxFeePerBlobGas: transaction.maxFeePerBlobGas ? BigInt(transaction.maxFeePerBlobGas) : undefined,
+    maxFeePerGas: transaction.maxFeePerGas ? BigInt(transaction.maxFeePerGas) : undefined,
+    maxPriorityFeePerGas: transaction.maxPriorityFeePerGas ? BigInt(transaction.maxPriorityFeePerGas) : undefined,
+    nonce: transaction.nonce ? hexToNumber2(transaction.nonce) : undefined,
+    to: transaction.to ? transaction.to : null,
+    transactionIndex: transaction.transactionIndex ? Number(transaction.transactionIndex) : null,
+    type: transaction.type ? transactionType2[transaction.type] : undefined,
+    typeHex: transaction.type ? transaction.type : undefined,
+    value: transaction.value ? BigInt(transaction.value) : undefined,
+    v: transaction.v ? BigInt(transaction.v) : undefined
+  };
+  if (transaction.authorizationList)
+    transaction_.authorizationList = formatAuthorizationList(transaction.authorizationList);
+  transaction_.yParity = (() => {
+    if (transaction.yParity)
+      return Number(transaction.yParity);
+    if (typeof transaction_.v === "bigint") {
+      if (transaction_.v === 0n || transaction_.v === 27n)
+        return 0;
+      if (transaction_.v === 1n || transaction_.v === 28n)
+        return 1;
+      if (transaction_.v >= 35n)
+        return transaction_.v % 2n === 0n ? 1 : 0;
+    }
+    return;
+  })();
+  if (transaction_.type === "legacy") {
+    delete transaction_.accessList;
+    delete transaction_.maxFeePerBlobGas;
+    delete transaction_.maxFeePerGas;
+    delete transaction_.maxPriorityFeePerGas;
+    delete transaction_.yParity;
+  }
+  if (transaction_.type === "eip2930") {
+    delete transaction_.maxFeePerBlobGas;
+    delete transaction_.maxFeePerGas;
+    delete transaction_.maxPriorityFeePerGas;
+  }
+  if (transaction_.type === "eip1559")
+    delete transaction_.maxFeePerBlobGas;
+  return transaction_;
+}
+var defineTransaction2 = /* @__PURE__ */ defineFormatter("transaction", formatTransaction2);
+function formatAuthorizationList(authorizationList) {
+  return authorizationList.map((authorization) => ({
+    address: authorization.address,
+    chainId: Number(authorization.chainId),
+    nonce: Number(authorization.nonce),
+    r: authorization.r,
+    s: authorization.s,
+    yParity: Number(authorization.yParity)
+  }));
+}
+function formatBlock2(block, _) {
+  const transactions = (block.transactions ?? []).map((transaction) => {
+    if (typeof transaction === "string")
+      return transaction;
+    return formatTransaction2(transaction);
+  });
+  return {
+    ...block,
+    baseFeePerGas: block.baseFeePerGas ? BigInt(block.baseFeePerGas) : null,
+    blobGasUsed: block.blobGasUsed ? BigInt(block.blobGasUsed) : undefined,
+    difficulty: block.difficulty ? BigInt(block.difficulty) : undefined,
+    excessBlobGas: block.excessBlobGas ? BigInt(block.excessBlobGas) : undefined,
+    gasLimit: block.gasLimit ? BigInt(block.gasLimit) : undefined,
+    gasUsed: block.gasUsed ? BigInt(block.gasUsed) : undefined,
+    hash: block.hash ? block.hash : null,
+    logsBloom: block.logsBloom ? block.logsBloom : null,
+    nonce: block.nonce ? block.nonce : null,
+    number: block.number ? BigInt(block.number) : null,
+    size: block.size ? BigInt(block.size) : undefined,
+    timestamp: block.timestamp ? BigInt(block.timestamp) : undefined,
+    transactions,
+    totalDifficulty: block.totalDifficulty ? BigInt(block.totalDifficulty) : null
+  };
+}
+var defineBlock2 = /* @__PURE__ */ defineFormatter("block", formatBlock2);
+function formatLog2(log, { args, eventName } = {}) {
+  return {
+    ...log,
+    blockHash: log.blockHash ? log.blockHash : null,
+    blockNumber: log.blockNumber ? BigInt(log.blockNumber) : null,
+    blockTimestamp: log.blockTimestamp ? BigInt(log.blockTimestamp) : log.blockTimestamp === null ? null : undefined,
+    logIndex: log.logIndex ? Number(log.logIndex) : null,
+    transactionHash: log.transactionHash ? log.transactionHash : null,
+    transactionIndex: log.transactionIndex ? Number(log.transactionIndex) : null,
+    ...eventName ? { args, eventName } : {}
+  };
+}
+var receiptStatuses = {
+  "0x0": "reverted",
+  "0x1": "success"
+};
+function formatTransactionReceipt2(transactionReceipt, _) {
+  const receipt = {
+    ...transactionReceipt,
+    blockNumber: transactionReceipt.blockNumber ? BigInt(transactionReceipt.blockNumber) : null,
+    contractAddress: transactionReceipt.contractAddress ? transactionReceipt.contractAddress : null,
+    cumulativeGasUsed: transactionReceipt.cumulativeGasUsed ? BigInt(transactionReceipt.cumulativeGasUsed) : null,
+    effectiveGasPrice: transactionReceipt.effectiveGasPrice ? BigInt(transactionReceipt.effectiveGasPrice) : null,
+    gasUsed: transactionReceipt.gasUsed ? BigInt(transactionReceipt.gasUsed) : null,
+    logs: transactionReceipt.logs ? transactionReceipt.logs.map((log) => formatLog2(log)) : null,
+    to: transactionReceipt.to ? transactionReceipt.to : null,
+    transactionIndex: transactionReceipt.transactionIndex ? hexToNumber2(transactionReceipt.transactionIndex) : null,
+    status: transactionReceipt.status ? receiptStatuses[transactionReceipt.status] : null,
+    type: transactionReceipt.type ? transactionType2[transactionReceipt.type] || transactionReceipt.type : null
+  };
+  if (transactionReceipt.blobGasPrice)
+    receipt.blobGasPrice = BigInt(transactionReceipt.blobGasPrice);
+  if (transactionReceipt.blobGasUsed)
+    receipt.blobGasUsed = BigInt(transactionReceipt.blobGasUsed);
+  return receipt;
+}
+var defineTransactionReceipt2 = /* @__PURE__ */ defineFormatter("transactionReceipt", formatTransactionReceipt2);
+var formatters = {
+  block: /* @__PURE__ */ defineBlock2({
+    format(args) {
+      const transactions = args.transactions?.map((transaction) => {
+        if (typeof transaction === "string")
+          return transaction;
+        const formatted = formatTransaction2(transaction);
+        if (formatted.typeHex === "0x7e") {
+          formatted.isSystemTx = transaction.isSystemTx;
+          formatted.mint = transaction.mint ? hexToBigInt2(transaction.mint) : undefined;
+          formatted.sourceHash = transaction.sourceHash;
+          formatted.type = "deposit";
+        }
+        return formatted;
+      });
+      return {
+        transactions,
+        stateRoot: args.stateRoot
+      };
+    }
+  }),
+  transaction: /* @__PURE__ */ defineTransaction2({
+    format(args) {
+      const transaction = {};
+      if (args.type === "0x7e") {
+        transaction.isSystemTx = args.isSystemTx;
+        transaction.mint = args.mint ? hexToBigInt2(args.mint) : undefined;
+        transaction.sourceHash = args.sourceHash;
+        transaction.type = "deposit";
+      }
+      return transaction;
+    }
+  }),
+  transactionReceipt: /* @__PURE__ */ defineTransactionReceipt2({
+    format(args) {
+      return {
+        l1GasPrice: args.l1GasPrice ? hexToBigInt2(args.l1GasPrice) : null,
+        l1GasUsed: args.l1GasUsed ? hexToBigInt2(args.l1GasUsed) : null,
+        l1Fee: args.l1Fee ? hexToBigInt2(args.l1Fee) : null,
+        l1FeeScalar: args.l1FeeScalar ? Number(args.l1FeeScalar) : null
+      };
+    }
+  })
+};
+
+class InvalidAddressError3 extends BaseError4 {
+  constructor({ address }) {
+    super(`Address "${address}" is invalid.`, {
+      metaMessages: [
+        "- Address must be a hex value of 20 bytes (40 hex characters).",
+        "- Address must match its checksum counterpart."
+      ],
+      name: "InvalidAddressError"
+    });
+  }
+}
+
+class LruMap2 extends Map {
+  constructor(size4) {
+    super();
+    Object.defineProperty(this, "maxSize", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    this.maxSize = size4;
+  }
+  get(key) {
+    const value2 = super.get(key);
+    if (super.has(key)) {
+      super.delete(key);
+      super.set(key, value2);
+    }
+    return value2;
+  }
+  set(key, value2) {
+    if (super.has(key))
+      super.delete(key);
+    super.set(key, value2);
+    if (this.maxSize && this.size > this.maxSize) {
+      const firstKey = super.keys().next().value;
+      if (firstKey !== undefined)
+        super.delete(firstKey);
+    }
+    return this;
+  }
+}
+var U32_MASK642 = /* @__PURE__ */ BigInt(2 ** 32 - 1);
+var _32n2 = /* @__PURE__ */ BigInt(32);
+function fromBig2(n, le = false) {
+  if (le)
+    return { h: Number(n & U32_MASK642), l: Number(n >> _32n2 & U32_MASK642) };
+  return { h: Number(n >> _32n2 & U32_MASK642) | 0, l: Number(n & U32_MASK642) | 0 };
+}
+function split2(lst, le = false) {
+  const len2 = lst.length;
+  let Ah = new Uint32Array(len2);
+  let Al = new Uint32Array(len2);
+  for (let i2 = 0;i2 < len2; i2++) {
+    const { h, l } = fromBig2(lst[i2], le);
+    [Ah[i2], Al[i2]] = [h, l];
+  }
+  return [Ah, Al];
+}
+var rotlSH2 = (h, l, s) => h << s | l >>> 32 - s;
+var rotlSL2 = (h, l, s) => l << s | h >>> 32 - s;
+var rotlBH2 = (h, l, s) => l << s - 32 | h >>> 64 - s;
+var rotlBL2 = (h, l, s) => h << s - 32 | l >>> 64 - s;
+/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+function isBytes3(a) {
+  return a instanceof Uint8Array || ArrayBuffer.isView(a) && a.constructor.name === "Uint8Array";
+}
+function anumber2(n) {
+  if (!Number.isSafeInteger(n) || n < 0)
+    throw new Error("positive integer expected, got " + n);
+}
+function abytes2(b, ...lengths) {
+  if (!isBytes3(b))
+    throw new Error("Uint8Array expected");
+  if (lengths.length > 0 && !lengths.includes(b.length))
+    throw new Error("Uint8Array expected of length " + lengths + ", got length=" + b.length);
+}
+function aexists2(instance, checkFinished = true) {
+  if (instance.destroyed)
+    throw new Error("Hash instance has been destroyed");
+  if (checkFinished && instance.finished)
+    throw new Error("Hash#digest() has already been called");
+}
+function aoutput2(out, instance) {
+  abytes2(out);
+  const min = instance.outputLen;
+  if (out.length < min) {
+    throw new Error("digestInto() expects output buffer of length at least " + min);
+  }
+}
+function u322(arr) {
+  return new Uint32Array(arr.buffer, arr.byteOffset, Math.floor(arr.byteLength / 4));
+}
+function clean2(...arrays) {
+  for (let i2 = 0;i2 < arrays.length; i2++) {
+    arrays[i2].fill(0);
+  }
+}
+function createView(arr) {
+  return new DataView(arr.buffer, arr.byteOffset, arr.byteLength);
+}
+function rotr(word, shift) {
+  return word << 32 - shift | word >>> shift;
+}
+var isLE2 = /* @__PURE__ */ (() => new Uint8Array(new Uint32Array([287454020]).buffer)[0] === 68)();
+function byteSwap2(word) {
+  return word << 24 & 4278190080 | word << 8 & 16711680 | word >>> 8 & 65280 | word >>> 24 & 255;
+}
+function byteSwap322(arr) {
+  for (let i2 = 0;i2 < arr.length; i2++) {
+    arr[i2] = byteSwap2(arr[i2]);
+  }
+  return arr;
+}
+var swap32IfBE2 = isLE2 ? (u) => u : byteSwap322;
+function utf8ToBytes3(str) {
+  if (typeof str !== "string")
+    throw new Error("string expected");
+  return new Uint8Array(new TextEncoder().encode(str));
+}
+function toBytes5(data) {
+  if (typeof data === "string")
+    data = utf8ToBytes3(data);
+  abytes2(data);
+  return data;
+}
+
+class Hash2 {
+}
+function createHasher2(hashCons) {
+  const hashC = (msg) => hashCons().update(toBytes5(msg)).digest();
+  const tmp = hashCons();
+  hashC.outputLen = tmp.outputLen;
+  hashC.blockLen = tmp.blockLen;
+  hashC.create = () => hashCons();
+  return hashC;
+}
+var _0n2 = BigInt(0);
+var _1n2 = BigInt(1);
+var _2n2 = BigInt(2);
+var _7n2 = BigInt(7);
+var _256n2 = BigInt(256);
+var _0x71n2 = BigInt(113);
+var SHA3_PI2 = [];
+var SHA3_ROTL2 = [];
+var _SHA3_IOTA2 = [];
+for (let round = 0, R = _1n2, x = 1, y = 0;round < 24; round++) {
+  [x, y] = [y, (2 * x + 3 * y) % 5];
+  SHA3_PI2.push(2 * (5 * y + x));
+  SHA3_ROTL2.push((round + 1) * (round + 2) / 2 % 64);
+  let t = _0n2;
+  for (let j = 0;j < 7; j++) {
+    R = (R << _1n2 ^ (R >> _7n2) * _0x71n2) % _256n2;
+    if (R & _2n2)
+      t ^= _1n2 << (_1n2 << /* @__PURE__ */ BigInt(j)) - _1n2;
+  }
+  _SHA3_IOTA2.push(t);
+}
+var IOTAS2 = split2(_SHA3_IOTA2, true);
+var SHA3_IOTA_H2 = IOTAS2[0];
+var SHA3_IOTA_L2 = IOTAS2[1];
+var rotlH2 = (h, l, s) => s > 32 ? rotlBH2(h, l, s) : rotlSH2(h, l, s);
+var rotlL2 = (h, l, s) => s > 32 ? rotlBL2(h, l, s) : rotlSL2(h, l, s);
+function keccakP2(s, rounds = 24) {
+  const B = new Uint32Array(5 * 2);
+  for (let round = 24 - rounds;round < 24; round++) {
+    for (let x = 0;x < 10; x++)
+      B[x] = s[x] ^ s[x + 10] ^ s[x + 20] ^ s[x + 30] ^ s[x + 40];
+    for (let x = 0;x < 10; x += 2) {
+      const idx1 = (x + 8) % 10;
+      const idx0 = (x + 2) % 10;
+      const B0 = B[idx0];
+      const B1 = B[idx0 + 1];
+      const Th = rotlH2(B0, B1, 1) ^ B[idx1];
+      const Tl = rotlL2(B0, B1, 1) ^ B[idx1 + 1];
+      for (let y = 0;y < 50; y += 10) {
+        s[x + y] ^= Th;
+        s[x + y + 1] ^= Tl;
+      }
+    }
+    let curH = s[2];
+    let curL = s[3];
+    for (let t = 0;t < 24; t++) {
+      const shift = SHA3_ROTL2[t];
+      const Th = rotlH2(curH, curL, shift);
+      const Tl = rotlL2(curH, curL, shift);
+      const PI = SHA3_PI2[t];
+      curH = s[PI];
+      curL = s[PI + 1];
+      s[PI] = Th;
+      s[PI + 1] = Tl;
+    }
+    for (let y = 0;y < 50; y += 10) {
+      for (let x = 0;x < 10; x++)
+        B[x] = s[y + x];
+      for (let x = 0;x < 10; x++)
+        s[y + x] ^= ~B[(x + 2) % 10] & B[(x + 4) % 10];
+    }
+    s[0] ^= SHA3_IOTA_H2[round];
+    s[1] ^= SHA3_IOTA_L2[round];
+  }
+  clean2(B);
+}
+
+class Keccak2 extends Hash2 {
+  constructor(blockLen, suffix, outputLen, enableXOF = false, rounds = 24) {
+    super();
+    this.pos = 0;
+    this.posOut = 0;
+    this.finished = false;
+    this.destroyed = false;
+    this.enableXOF = false;
+    this.blockLen = blockLen;
+    this.suffix = suffix;
+    this.outputLen = outputLen;
+    this.enableXOF = enableXOF;
+    this.rounds = rounds;
+    anumber2(outputLen);
+    if (!(0 < blockLen && blockLen < 200))
+      throw new Error("only keccak-f1600 function is supported");
+    this.state = new Uint8Array(200);
+    this.state32 = u322(this.state);
+  }
+  clone() {
+    return this._cloneInto();
+  }
+  keccak() {
+    swap32IfBE2(this.state32);
+    keccakP2(this.state32, this.rounds);
+    swap32IfBE2(this.state32);
+    this.posOut = 0;
+    this.pos = 0;
+  }
+  update(data) {
+    aexists2(this);
+    data = toBytes5(data);
+    abytes2(data);
+    const { blockLen, state } = this;
+    const len2 = data.length;
+    for (let pos = 0;pos < len2; ) {
+      const take = Math.min(blockLen - this.pos, len2 - pos);
+      for (let i2 = 0;i2 < take; i2++)
+        state[this.pos++] ^= data[pos++];
+      if (this.pos === blockLen)
+        this.keccak();
+    }
+    return this;
+  }
+  finish() {
+    if (this.finished)
+      return;
+    this.finished = true;
+    const { state, suffix, pos, blockLen } = this;
+    state[pos] ^= suffix;
+    if ((suffix & 128) !== 0 && pos === blockLen - 1)
+      this.keccak();
+    state[blockLen - 1] ^= 128;
+    this.keccak();
+  }
+  writeInto(out) {
+    aexists2(this, false);
+    abytes2(out);
+    this.finish();
+    const bufferOut = this.state;
+    const { blockLen } = this;
+    for (let pos = 0, len2 = out.length;pos < len2; ) {
+      if (this.posOut >= blockLen)
+        this.keccak();
+      const take = Math.min(blockLen - this.posOut, len2 - pos);
+      out.set(bufferOut.subarray(this.posOut, this.posOut + take), pos);
+      this.posOut += take;
+      pos += take;
+    }
+    return out;
+  }
+  xofInto(out) {
+    if (!this.enableXOF)
+      throw new Error("XOF is not possible for this instance");
+    return this.writeInto(out);
+  }
+  xof(bytes) {
+    anumber2(bytes);
+    return this.xofInto(new Uint8Array(bytes));
+  }
+  digestInto(out) {
+    aoutput2(out, this);
+    if (this.finished)
+      throw new Error("digest() was already called");
+    this.writeInto(out);
+    this.destroy();
+    return out;
+  }
+  digest() {
+    return this.digestInto(new Uint8Array(this.outputLen));
+  }
+  destroy() {
+    this.destroyed = true;
+    clean2(this.state);
+  }
+  _cloneInto(to) {
+    const { blockLen, suffix, outputLen, rounds, enableXOF } = this;
+    to || (to = new Keccak2(blockLen, suffix, outputLen, enableXOF, rounds));
+    to.state32.set(this.state32);
+    to.pos = this.pos;
+    to.posOut = this.posOut;
+    to.finished = this.finished;
+    to.rounds = rounds;
+    to.suffix = suffix;
+    to.outputLen = outputLen;
+    to.enableXOF = enableXOF;
+    to.destroyed = this.destroyed;
+    return to;
+  }
+}
+var gen2 = (suffix, blockLen, outputLen) => createHasher2(() => new Keccak2(blockLen, suffix, outputLen));
+var keccak_2562 = /* @__PURE__ */ (() => gen2(1, 136, 256 / 8))();
+function keccak2563(value2, to_) {
+  const to = to_ || "hex";
+  const bytes = keccak_2562(isHex3(value2, { strict: false }) ? toBytes4(value2) : value2);
+  if (to === "bytes")
+    return bytes;
+  return toHex2(bytes);
+}
+var checksumAddressCache2 = /* @__PURE__ */ new LruMap2(8192);
+function checksumAddress3(address_, chainId) {
+  if (checksumAddressCache2.has(`${address_}.${chainId}`))
+    return checksumAddressCache2.get(`${address_}.${chainId}`);
+  const hexAddress = chainId ? `${chainId}${address_.toLowerCase()}` : address_.substring(2).toLowerCase();
+  const hash2 = keccak2563(stringToBytes3(hexAddress), "bytes");
+  const address = (chainId ? hexAddress.substring(`${chainId}0x`.length) : hexAddress).split("");
+  for (let i2 = 0;i2 < 40; i2 += 2) {
+    if (hash2[i2 >> 1] >> 4 >= 8 && address[i2]) {
+      address[i2] = address[i2].toUpperCase();
+    }
+    if ((hash2[i2 >> 1] & 15) >= 8 && address[i2 + 1]) {
+      address[i2 + 1] = address[i2 + 1].toUpperCase();
+    }
+  }
+  const result = `0x${address.join("")}`;
+  checksumAddressCache2.set(`${address_}.${chainId}`, result);
+  return result;
+}
+var addressRegex2 = /^0x[a-fA-F0-9]{40}$/;
+var isAddressCache2 = /* @__PURE__ */ new LruMap2(8192);
+function isAddress3(address, options) {
+  const { strict = true } = options ?? {};
+  const cacheKey = `${address}.${strict}`;
+  if (isAddressCache2.has(cacheKey))
+    return isAddressCache2.get(cacheKey);
+  const result = (() => {
+    if (!addressRegex2.test(address))
+      return false;
+    if (address.toLowerCase() === address)
+      return true;
+    if (strict)
+      return checksumAddress3(address) === address;
+    return true;
+  })();
+  isAddressCache2.set(cacheKey, result);
+  return result;
+}
+function concatHex3(values) {
+  return `0x${values.reduce((acc, x) => acc + x.replace("0x", ""), "")}`;
+}
+
+class NegativeOffsetError extends BaseError4 {
+  constructor({ offset }) {
+    super(`Offset \`${offset}\` cannot be negative.`, {
+      name: "NegativeOffsetError"
+    });
+  }
+}
+
+class PositionOutOfBoundsError extends BaseError4 {
+  constructor({ length, position }) {
+    super(`Position \`${position}\` is out of bounds (\`0 < position < ${length}\`).`, { name: "PositionOutOfBoundsError" });
+  }
+}
+
+class RecursiveReadLimitExceededError extends BaseError4 {
+  constructor({ count, limit }) {
+    super(`Recursive read limit of \`${limit}\` exceeded (recursive read count: \`${count}\`).`, { name: "RecursiveReadLimitExceededError" });
+  }
+}
+var staticCursor = {
+  bytes: new Uint8Array,
+  dataView: new DataView(new ArrayBuffer(0)),
+  position: 0,
+  positionReadCount: new Map,
+  recursiveReadCount: 0,
+  recursiveReadLimit: Number.POSITIVE_INFINITY,
+  assertReadLimit() {
+    if (this.recursiveReadCount >= this.recursiveReadLimit)
+      throw new RecursiveReadLimitExceededError({
+        count: this.recursiveReadCount + 1,
+        limit: this.recursiveReadLimit
+      });
+  },
+  assertPosition(position) {
+    if (position < 0 || position > this.bytes.length - 1)
+      throw new PositionOutOfBoundsError({
+        length: this.bytes.length,
+        position
+      });
+  },
+  decrementPosition(offset) {
+    if (offset < 0)
+      throw new NegativeOffsetError({ offset });
+    const position = this.position - offset;
+    this.assertPosition(position);
+    this.position = position;
+  },
+  getReadCount(position) {
+    return this.positionReadCount.get(position || this.position) || 0;
+  },
+  incrementPosition(offset) {
+    if (offset < 0)
+      throw new NegativeOffsetError({ offset });
+    const position = this.position + offset;
+    this.assertPosition(position);
+    this.position = position;
+  },
+  inspectByte(position_) {
+    const position = position_ ?? this.position;
+    this.assertPosition(position);
+    return this.bytes[position];
+  },
+  inspectBytes(length, position_) {
+    const position = position_ ?? this.position;
+    this.assertPosition(position + length - 1);
+    return this.bytes.subarray(position, position + length);
+  },
+  inspectUint8(position_) {
+    const position = position_ ?? this.position;
+    this.assertPosition(position);
+    return this.bytes[position];
+  },
+  inspectUint16(position_) {
+    const position = position_ ?? this.position;
+    this.assertPosition(position + 1);
+    return this.dataView.getUint16(position);
+  },
+  inspectUint24(position_) {
+    const position = position_ ?? this.position;
+    this.assertPosition(position + 2);
+    return (this.dataView.getUint16(position) << 8) + this.dataView.getUint8(position + 2);
+  },
+  inspectUint32(position_) {
+    const position = position_ ?? this.position;
+    this.assertPosition(position + 3);
+    return this.dataView.getUint32(position);
+  },
+  pushByte(byte) {
+    this.assertPosition(this.position);
+    this.bytes[this.position] = byte;
+    this.position++;
+  },
+  pushBytes(bytes) {
+    this.assertPosition(this.position + bytes.length - 1);
+    this.bytes.set(bytes, this.position);
+    this.position += bytes.length;
+  },
+  pushUint8(value2) {
+    this.assertPosition(this.position);
+    this.bytes[this.position] = value2;
+    this.position++;
+  },
+  pushUint16(value2) {
+    this.assertPosition(this.position + 1);
+    this.dataView.setUint16(this.position, value2);
+    this.position += 2;
+  },
+  pushUint24(value2) {
+    this.assertPosition(this.position + 2);
+    this.dataView.setUint16(this.position, value2 >> 8);
+    this.dataView.setUint8(this.position + 2, value2 & ~4294967040);
+    this.position += 3;
+  },
+  pushUint32(value2) {
+    this.assertPosition(this.position + 3);
+    this.dataView.setUint32(this.position, value2);
+    this.position += 4;
+  },
+  readByte() {
+    this.assertReadLimit();
+    this._touch();
+    const value2 = this.inspectByte();
+    this.position++;
+    return value2;
+  },
+  readBytes(length, size4) {
+    this.assertReadLimit();
+    this._touch();
+    const value2 = this.inspectBytes(length);
+    this.position += size4 ?? length;
+    return value2;
+  },
+  readUint8() {
+    this.assertReadLimit();
+    this._touch();
+    const value2 = this.inspectUint8();
+    this.position += 1;
+    return value2;
+  },
+  readUint16() {
+    this.assertReadLimit();
+    this._touch();
+    const value2 = this.inspectUint16();
+    this.position += 2;
+    return value2;
+  },
+  readUint24() {
+    this.assertReadLimit();
+    this._touch();
+    const value2 = this.inspectUint24();
+    this.position += 3;
+    return value2;
+  },
+  readUint32() {
+    this.assertReadLimit();
+    this._touch();
+    const value2 = this.inspectUint32();
+    this.position += 4;
+    return value2;
+  },
+  get remaining() {
+    return this.bytes.length - this.position;
+  },
+  setPosition(position) {
+    const oldPosition = this.position;
+    this.assertPosition(position);
+    this.position = position;
+    return () => this.position = oldPosition;
+  },
+  _touch() {
+    if (this.recursiveReadLimit === Number.POSITIVE_INFINITY)
+      return;
+    const count = this.getReadCount();
+    this.positionReadCount.set(this.position, count + 1);
+    if (count > 0)
+      this.recursiveReadCount++;
+  }
+};
+function createCursor(bytes, { recursiveReadLimit = 8192 } = {}) {
+  const cursor = Object.create(staticCursor);
+  cursor.bytes = bytes;
+  cursor.dataView = new DataView(bytes.buffer ?? bytes, bytes.byteOffset, bytes.byteLength);
+  cursor.positionReadCount = new Map;
+  cursor.recursiveReadLimit = recursiveReadLimit;
+  return cursor;
+}
+function toRlp2(bytes, to = "hex") {
+  const encodable = getEncodable(bytes);
+  const cursor = createCursor(new Uint8Array(encodable.length));
+  encodable.encode(cursor);
+  if (to === "hex")
+    return bytesToHex2(cursor.bytes);
+  return cursor.bytes;
+}
+function getEncodable(bytes) {
+  if (Array.isArray(bytes))
+    return getEncodableList(bytes.map((x) => getEncodable(x)));
+  return getEncodableBytes(bytes);
+}
+function getEncodableList(list) {
+  const bodyLength = list.reduce((acc, x) => acc + x.length, 0);
+  const sizeOfBodyLength = getSizeOfLength(bodyLength);
+  const length = (() => {
+    if (bodyLength <= 55)
+      return 1 + bodyLength;
+    return 1 + sizeOfBodyLength + bodyLength;
+  })();
+  return {
+    length,
+    encode(cursor) {
+      if (bodyLength <= 55) {
+        cursor.pushByte(192 + bodyLength);
+      } else {
+        cursor.pushByte(192 + 55 + sizeOfBodyLength);
+        if (sizeOfBodyLength === 1)
+          cursor.pushUint8(bodyLength);
+        else if (sizeOfBodyLength === 2)
+          cursor.pushUint16(bodyLength);
+        else if (sizeOfBodyLength === 3)
+          cursor.pushUint24(bodyLength);
+        else
+          cursor.pushUint32(bodyLength);
+      }
+      for (const { encode } of list) {
+        encode(cursor);
+      }
+    }
+  };
+}
+function getEncodableBytes(bytesOrHex) {
+  const bytes = typeof bytesOrHex === "string" ? hexToBytes4(bytesOrHex) : bytesOrHex;
+  const sizeOfBytesLength = getSizeOfLength(bytes.length);
+  const length = (() => {
+    if (bytes.length === 1 && bytes[0] < 128)
+      return 1;
+    if (bytes.length <= 55)
+      return 1 + bytes.length;
+    return 1 + sizeOfBytesLength + bytes.length;
+  })();
+  return {
+    length,
+    encode(cursor) {
+      if (bytes.length === 1 && bytes[0] < 128) {
+        cursor.pushBytes(bytes);
+      } else if (bytes.length <= 55) {
+        cursor.pushByte(128 + bytes.length);
+        cursor.pushBytes(bytes);
+      } else {
+        cursor.pushByte(128 + 55 + sizeOfBytesLength);
+        if (sizeOfBytesLength === 1)
+          cursor.pushUint8(bytes.length);
+        else if (sizeOfBytesLength === 2)
+          cursor.pushUint16(bytes.length);
+        else if (sizeOfBytesLength === 3)
+          cursor.pushUint24(bytes.length);
+        else
+          cursor.pushUint32(bytes.length);
+        cursor.pushBytes(bytes);
+      }
+    }
+  };
+}
+function getSizeOfLength(length) {
+  if (length < 2 ** 8)
+    return 1;
+  if (length < 2 ** 16)
+    return 2;
+  if (length < 2 ** 24)
+    return 3;
+  if (length < 2 ** 32)
+    return 4;
+  throw new BaseError4("Length is too large.");
+}
+var etherUnits2 = {
+  gwei: 9,
+  wei: 18
+};
+var gweiUnits2 = {
+  ether: -9,
+  wei: 9
+};
+function formatUnits2(value2, decimals) {
+  let display = value2.toString();
+  const negative = display.startsWith("-");
+  if (negative)
+    display = display.slice(1);
+  display = display.padStart(decimals, "0");
+  let [integer, fraction] = [
+    display.slice(0, display.length - decimals),
+    display.slice(display.length - decimals)
+  ];
+  fraction = fraction.replace(/(0+)$/, "");
+  return `${negative ? "-" : ""}${integer || "0"}${fraction ? `.${fraction}` : ""}`;
+}
+function formatEther2(wei, unit = "wei") {
+  return formatUnits2(wei, etherUnits2[unit]);
+}
+function formatGwei2(wei, unit = "wei") {
+  return formatUnits2(wei, gweiUnits2[unit]);
+}
+function prettyPrint(args) {
+  const entries = Object.entries(args).map(([key, value2]) => {
+    if (value2 === undefined || value2 === false)
+      return null;
+    return [key, value2];
+  }).filter(Boolean);
+  const maxLength = entries.reduce((acc, [key]) => Math.max(acc, key.length), 0);
+  return entries.map(([key, value2]) => `  ${`${key}:`.padEnd(maxLength + 1)}  ${value2}`).join(`
+`);
+}
+
+class InvalidLegacyVError2 extends BaseError4 {
+  constructor({ v }) {
+    super(`Invalid \`v\` value "${v}". Expected 27 or 28.`, {
+      name: "InvalidLegacyVError"
+    });
+  }
+}
+
+class InvalidSerializableTransactionError2 extends BaseError4 {
+  constructor({ transaction }) {
+    super("Cannot infer a transaction type from provided transaction.", {
+      metaMessages: [
+        "Provided Transaction:",
+        "{",
+        prettyPrint(transaction),
+        "}",
+        "",
+        "To infer the type, either provide:",
+        "- a `type` to the Transaction, or",
+        "- an EIP-1559 Transaction with `maxFeePerGas`, or",
+        "- an EIP-2930 Transaction with `gasPrice` & `accessList`, or",
+        "- an EIP-4844 Transaction with `blobs`, `blobVersionedHashes`, `sidecars`, or",
+        "- an EIP-7702 Transaction with `authorizationList`, or",
+        "- a Legacy Transaction with `gasPrice`"
+      ],
+      name: "InvalidSerializableTransactionError"
+    });
+  }
+}
+
+class InvalidStorageKeySizeError2 extends BaseError4 {
+  constructor({ storageKey }) {
+    super(`Size for storage key "${storageKey}" is invalid. Expected 32 bytes. Got ${Math.floor((storageKey.length - 2) / 2)} bytes.`, { name: "InvalidStorageKeySizeError" });
+  }
+}
+function serializeAuthorizationList(authorizationList) {
+  if (!authorizationList || authorizationList.length === 0)
+    return [];
+  const serializedAuthorizationList = [];
+  for (const authorization of authorizationList) {
+    const { chainId, nonce, ...signature } = authorization;
+    const contractAddress = authorization.address;
+    serializedAuthorizationList.push([
+      chainId ? toHex2(chainId) : "0x",
+      contractAddress,
+      nonce ? toHex2(nonce) : "0x",
+      ...toYParitySignatureArray({}, signature)
+    ]);
+  }
+  return serializedAuthorizationList;
+}
+function blobsToCommitments2(parameters) {
+  const { kzg } = parameters;
+  const to = parameters.to ?? (typeof parameters.blobs[0] === "string" ? "hex" : "bytes");
+  const blobs = typeof parameters.blobs[0] === "string" ? parameters.blobs.map((x) => hexToBytes4(x)) : parameters.blobs;
+  const commitments = [];
+  for (const blob of blobs)
+    commitments.push(Uint8Array.from(kzg.blobToKzgCommitment(blob)));
+  return to === "bytes" ? commitments : commitments.map((x) => bytesToHex2(x));
+}
+function blobsToProofs2(parameters) {
+  const { kzg } = parameters;
+  const to = parameters.to ?? (typeof parameters.blobs[0] === "string" ? "hex" : "bytes");
+  const blobs = typeof parameters.blobs[0] === "string" ? parameters.blobs.map((x) => hexToBytes4(x)) : parameters.blobs;
+  const commitments = typeof parameters.commitments[0] === "string" ? parameters.commitments.map((x) => hexToBytes4(x)) : parameters.commitments;
+  const proofs = [];
+  for (let i2 = 0;i2 < blobs.length; i2++) {
+    const blob = blobs[i2];
+    const commitment = commitments[i2];
+    proofs.push(Uint8Array.from(kzg.computeBlobKzgProof(blob, commitment)));
+  }
+  return to === "bytes" ? proofs : proofs.map((x) => bytesToHex2(x));
+}
+function setBigUint64(view, byteOffset, value2, isLE3) {
+  if (typeof view.setBigUint64 === "function")
+    return view.setBigUint64(byteOffset, value2, isLE3);
+  const _32n3 = BigInt(32);
+  const _u32_max = BigInt(4294967295);
+  const wh = Number(value2 >> _32n3 & _u32_max);
+  const wl = Number(value2 & _u32_max);
+  const h = isLE3 ? 4 : 0;
+  const l = isLE3 ? 0 : 4;
+  view.setUint32(byteOffset + h, wh, isLE3);
+  view.setUint32(byteOffset + l, wl, isLE3);
+}
+function Chi(a, b, c) {
+  return a & b ^ ~a & c;
+}
+function Maj(a, b, c) {
+  return a & b ^ a & c ^ b & c;
+}
+
+class HashMD extends Hash2 {
+  constructor(blockLen, outputLen, padOffset, isLE3) {
+    super();
+    this.finished = false;
+    this.length = 0;
+    this.pos = 0;
+    this.destroyed = false;
+    this.blockLen = blockLen;
+    this.outputLen = outputLen;
+    this.padOffset = padOffset;
+    this.isLE = isLE3;
+    this.buffer = new Uint8Array(blockLen);
+    this.view = createView(this.buffer);
+  }
+  update(data) {
+    aexists2(this);
+    data = toBytes5(data);
+    abytes2(data);
+    const { view, buffer, blockLen } = this;
+    const len2 = data.length;
+    for (let pos = 0;pos < len2; ) {
+      const take = Math.min(blockLen - this.pos, len2 - pos);
+      if (take === blockLen) {
+        const dataView = createView(data);
+        for (;blockLen <= len2 - pos; pos += blockLen)
+          this.process(dataView, pos);
+        continue;
+      }
+      buffer.set(data.subarray(pos, pos + take), this.pos);
+      this.pos += take;
+      pos += take;
+      if (this.pos === blockLen) {
+        this.process(view, 0);
+        this.pos = 0;
+      }
+    }
+    this.length += data.length;
+    this.roundClean();
+    return this;
+  }
+  digestInto(out) {
+    aexists2(this);
+    aoutput2(out, this);
+    this.finished = true;
+    const { buffer, view, blockLen, isLE: isLE3 } = this;
+    let { pos } = this;
+    buffer[pos++] = 128;
+    clean2(this.buffer.subarray(pos));
+    if (this.padOffset > blockLen - pos) {
+      this.process(view, 0);
+      pos = 0;
+    }
+    for (let i2 = pos;i2 < blockLen; i2++)
+      buffer[i2] = 0;
+    setBigUint64(view, blockLen - 8, BigInt(this.length * 8), isLE3);
+    this.process(view, 0);
+    const oview = createView(out);
+    const len2 = this.outputLen;
+    if (len2 % 4)
+      throw new Error("_sha2: outputLen should be aligned to 32bit");
+    const outLen = len2 / 4;
+    const state = this.get();
+    if (outLen > state.length)
+      throw new Error("_sha2: outputLen bigger than state");
+    for (let i2 = 0;i2 < outLen; i2++)
+      oview.setUint32(4 * i2, state[i2], isLE3);
+  }
+  digest() {
+    const { buffer, outputLen } = this;
+    this.digestInto(buffer);
+    const res = buffer.slice(0, outputLen);
+    this.destroy();
+    return res;
+  }
+  _cloneInto(to) {
+    to || (to = new this.constructor);
+    to.set(...this.get());
+    const { blockLen, buffer, length, finished, destroyed, pos } = this;
+    to.destroyed = destroyed;
+    to.finished = finished;
+    to.length = length;
+    to.pos = pos;
+    if (length % blockLen)
+      to.buffer.set(buffer);
+    return to;
+  }
+  clone() {
+    return this._cloneInto();
+  }
+}
+var SHA256_IV = /* @__PURE__ */ Uint32Array.from([
+  1779033703,
+  3144134277,
+  1013904242,
+  2773480762,
+  1359893119,
+  2600822924,
+  528734635,
+  1541459225
+]);
+var SHA256_K = /* @__PURE__ */ Uint32Array.from([
+  1116352408,
+  1899447441,
+  3049323471,
+  3921009573,
+  961987163,
+  1508970993,
+  2453635748,
+  2870763221,
+  3624381080,
+  310598401,
+  607225278,
+  1426881987,
+  1925078388,
+  2162078206,
+  2614888103,
+  3248222580,
+  3835390401,
+  4022224774,
+  264347078,
+  604807628,
+  770255983,
+  1249150122,
+  1555081692,
+  1996064986,
+  2554220882,
+  2821834349,
+  2952996808,
+  3210313671,
+  3336571891,
+  3584528711,
+  113926993,
+  338241895,
+  666307205,
+  773529912,
+  1294757372,
+  1396182291,
+  1695183700,
+  1986661051,
+  2177026350,
+  2456956037,
+  2730485921,
+  2820302411,
+  3259730800,
+  3345764771,
+  3516065817,
+  3600352804,
+  4094571909,
+  275423344,
+  430227734,
+  506948616,
+  659060556,
+  883997877,
+  958139571,
+  1322822218,
+  1537002063,
+  1747873779,
+  1955562222,
+  2024104815,
+  2227730452,
+  2361852424,
+  2428436474,
+  2756734187,
+  3204031479,
+  3329325298
+]);
+var SHA256_W = /* @__PURE__ */ new Uint32Array(64);
+
+class SHA256 extends HashMD {
+  constructor(outputLen = 32) {
+    super(64, outputLen, 8, false);
+    this.A = SHA256_IV[0] | 0;
+    this.B = SHA256_IV[1] | 0;
+    this.C = SHA256_IV[2] | 0;
+    this.D = SHA256_IV[3] | 0;
+    this.E = SHA256_IV[4] | 0;
+    this.F = SHA256_IV[5] | 0;
+    this.G = SHA256_IV[6] | 0;
+    this.H = SHA256_IV[7] | 0;
+  }
+  get() {
+    const { A, B, C, D, E: E2, F, G, H } = this;
+    return [A, B, C, D, E2, F, G, H];
+  }
+  set(A, B, C, D, E2, F, G, H) {
+    this.A = A | 0;
+    this.B = B | 0;
+    this.C = C | 0;
+    this.D = D | 0;
+    this.E = E2 | 0;
+    this.F = F | 0;
+    this.G = G | 0;
+    this.H = H | 0;
+  }
+  process(view, offset) {
+    for (let i2 = 0;i2 < 16; i2++, offset += 4)
+      SHA256_W[i2] = view.getUint32(offset, false);
+    for (let i2 = 16;i2 < 64; i2++) {
+      const W15 = SHA256_W[i2 - 15];
+      const W2 = SHA256_W[i2 - 2];
+      const s0 = rotr(W15, 7) ^ rotr(W15, 18) ^ W15 >>> 3;
+      const s1 = rotr(W2, 17) ^ rotr(W2, 19) ^ W2 >>> 10;
+      SHA256_W[i2] = s1 + SHA256_W[i2 - 7] + s0 + SHA256_W[i2 - 16] | 0;
+    }
+    let { A, B, C, D, E: E2, F, G, H } = this;
+    for (let i2 = 0;i2 < 64; i2++) {
+      const sigma1 = rotr(E2, 6) ^ rotr(E2, 11) ^ rotr(E2, 25);
+      const T1 = H + sigma1 + Chi(E2, F, G) + SHA256_K[i2] + SHA256_W[i2] | 0;
+      const sigma0 = rotr(A, 2) ^ rotr(A, 13) ^ rotr(A, 22);
+      const T2 = sigma0 + Maj(A, B, C) | 0;
+      H = G;
+      G = F;
+      F = E2;
+      E2 = D + T1 | 0;
+      D = C;
+      C = B;
+      B = A;
+      A = T1 + T2 | 0;
+    }
+    A = A + this.A | 0;
+    B = B + this.B | 0;
+    C = C + this.C | 0;
+    D = D + this.D | 0;
+    E2 = E2 + this.E | 0;
+    F = F + this.F | 0;
+    G = G + this.G | 0;
+    H = H + this.H | 0;
+    this.set(A, B, C, D, E2, F, G, H);
+  }
+  roundClean() {
+    clean2(SHA256_W);
+  }
+  destroy() {
+    this.set(0, 0, 0, 0, 0, 0, 0, 0);
+    clean2(this.buffer);
+  }
+}
+var sha2562 = /* @__PURE__ */ createHasher2(() => new SHA256);
+var sha2563 = sha2562;
+function sha2564(value2, to_) {
+  const to = to_ || "hex";
+  const bytes = sha2563(isHex3(value2, { strict: false }) ? toBytes4(value2) : value2);
+  if (to === "bytes")
+    return bytes;
+  return toHex2(bytes);
+}
+function commitmentToVersionedHash2(parameters) {
+  const { commitment, version: version3 = 1 } = parameters;
+  const to = parameters.to ?? (typeof commitment === "string" ? "hex" : "bytes");
+  const versionedHash = sha2564(commitment, "bytes");
+  versionedHash.set([version3], 0);
+  return to === "bytes" ? versionedHash : bytesToHex2(versionedHash);
+}
+function commitmentsToVersionedHashes2(parameters) {
+  const { commitments, version: version3 } = parameters;
+  const to = parameters.to ?? (typeof commitments[0] === "string" ? "hex" : "bytes");
+  const hashes = [];
+  for (const commitment of commitments) {
+    hashes.push(commitmentToVersionedHash2({
+      commitment,
+      to,
+      version: version3
+    }));
+  }
+  return hashes;
+}
+var blobsPerTransaction = 6;
+var bytesPerFieldElement = 32;
+var fieldElementsPerBlob = 4096;
+var bytesPerBlob = bytesPerFieldElement * fieldElementsPerBlob;
+var maxBytesPerTransaction = bytesPerBlob * blobsPerTransaction - 1 - 1 * fieldElementsPerBlob * blobsPerTransaction;
+var versionedHashVersionKzg = 1;
+
+class BlobSizeTooLargeError extends BaseError4 {
+  constructor({ maxSize, size: size4 }) {
+    super("Blob size is too large.", {
+      metaMessages: [`Max: ${maxSize} bytes`, `Given: ${size4} bytes`],
+      name: "BlobSizeTooLargeError"
+    });
+  }
+}
+
+class EmptyBlobError extends BaseError4 {
+  constructor() {
+    super("Blob data must not be empty.", { name: "EmptyBlobError" });
+  }
+}
+
+class InvalidVersionedHashSizeError extends BaseError4 {
+  constructor({ hash: hash2, size: size4 }) {
+    super(`Versioned hash "${hash2}" size is invalid.`, {
+      metaMessages: ["Expected: 32", `Received: ${size4}`],
+      name: "InvalidVersionedHashSizeError"
+    });
+  }
+}
+
+class InvalidVersionedHashVersionError extends BaseError4 {
+  constructor({ hash: hash2, version: version3 }) {
+    super(`Versioned hash "${hash2}" version is invalid.`, {
+      metaMessages: [
+        `Expected: ${versionedHashVersionKzg}`,
+        `Received: ${version3}`
+      ],
+      name: "InvalidVersionedHashVersionError"
+    });
+  }
+}
+function toBlobs2(parameters) {
+  const to = parameters.to ?? (typeof parameters.data === "string" ? "hex" : "bytes");
+  const data = typeof parameters.data === "string" ? hexToBytes4(parameters.data) : parameters.data;
+  const size_ = size3(data);
+  if (!size_)
+    throw new EmptyBlobError;
+  if (size_ > maxBytesPerTransaction)
+    throw new BlobSizeTooLargeError({
+      maxSize: maxBytesPerTransaction,
+      size: size_
+    });
+  const blobs = [];
+  let active = true;
+  let position = 0;
+  while (active) {
+    const blob = createCursor(new Uint8Array(bytesPerBlob));
+    let size4 = 0;
+    while (size4 < fieldElementsPerBlob) {
+      const bytes = data.slice(position, position + (bytesPerFieldElement - 1));
+      blob.pushByte(0);
+      blob.pushBytes(bytes);
+      if (bytes.length < 31) {
+        blob.pushByte(128);
+        active = false;
+        break;
+      }
+      size4++;
+      position += 31;
+    }
+    blobs.push(blob);
+  }
+  return to === "bytes" ? blobs.map((x) => x.bytes) : blobs.map((x) => bytesToHex2(x.bytes));
+}
+function toBlobSidecars2(parameters) {
+  const { data, kzg, to } = parameters;
+  const blobs = parameters.blobs ?? toBlobs2({ data, to });
+  const commitments = parameters.commitments ?? blobsToCommitments2({ blobs, kzg, to });
+  const proofs = parameters.proofs ?? blobsToProofs2({ blobs, commitments, kzg, to });
+  const sidecars = [];
+  for (let i2 = 0;i2 < blobs.length; i2++)
+    sidecars.push({
+      blob: blobs[i2],
+      commitment: commitments[i2],
+      proof: proofs[i2]
+    });
+  return sidecars;
+}
+var maxInt82 = 2n ** (8n - 1n) - 1n;
+var maxInt162 = 2n ** (16n - 1n) - 1n;
+var maxInt242 = 2n ** (24n - 1n) - 1n;
+var maxInt322 = 2n ** (32n - 1n) - 1n;
+var maxInt402 = 2n ** (40n - 1n) - 1n;
+var maxInt482 = 2n ** (48n - 1n) - 1n;
+var maxInt562 = 2n ** (56n - 1n) - 1n;
+var maxInt642 = 2n ** (64n - 1n) - 1n;
+var maxInt722 = 2n ** (72n - 1n) - 1n;
+var maxInt802 = 2n ** (80n - 1n) - 1n;
+var maxInt882 = 2n ** (88n - 1n) - 1n;
+var maxInt962 = 2n ** (96n - 1n) - 1n;
+var maxInt1042 = 2n ** (104n - 1n) - 1n;
+var maxInt1122 = 2n ** (112n - 1n) - 1n;
+var maxInt1202 = 2n ** (120n - 1n) - 1n;
+var maxInt1282 = 2n ** (128n - 1n) - 1n;
+var maxInt1362 = 2n ** (136n - 1n) - 1n;
+var maxInt1442 = 2n ** (144n - 1n) - 1n;
+var maxInt1522 = 2n ** (152n - 1n) - 1n;
+var maxInt1602 = 2n ** (160n - 1n) - 1n;
+var maxInt1682 = 2n ** (168n - 1n) - 1n;
+var maxInt1762 = 2n ** (176n - 1n) - 1n;
+var maxInt1842 = 2n ** (184n - 1n) - 1n;
+var maxInt1922 = 2n ** (192n - 1n) - 1n;
+var maxInt2002 = 2n ** (200n - 1n) - 1n;
+var maxInt2082 = 2n ** (208n - 1n) - 1n;
+var maxInt2162 = 2n ** (216n - 1n) - 1n;
+var maxInt2242 = 2n ** (224n - 1n) - 1n;
+var maxInt2322 = 2n ** (232n - 1n) - 1n;
+var maxInt2402 = 2n ** (240n - 1n) - 1n;
+var maxInt2482 = 2n ** (248n - 1n) - 1n;
+var maxInt2562 = 2n ** (256n - 1n) - 1n;
+var minInt82 = -(2n ** (8n - 1n));
+var minInt162 = -(2n ** (16n - 1n));
+var minInt242 = -(2n ** (24n - 1n));
+var minInt322 = -(2n ** (32n - 1n));
+var minInt402 = -(2n ** (40n - 1n));
+var minInt482 = -(2n ** (48n - 1n));
+var minInt562 = -(2n ** (56n - 1n));
+var minInt642 = -(2n ** (64n - 1n));
+var minInt722 = -(2n ** (72n - 1n));
+var minInt802 = -(2n ** (80n - 1n));
+var minInt882 = -(2n ** (88n - 1n));
+var minInt962 = -(2n ** (96n - 1n));
+var minInt1042 = -(2n ** (104n - 1n));
+var minInt1122 = -(2n ** (112n - 1n));
+var minInt1202 = -(2n ** (120n - 1n));
+var minInt1282 = -(2n ** (128n - 1n));
+var minInt1362 = -(2n ** (136n - 1n));
+var minInt1442 = -(2n ** (144n - 1n));
+var minInt1522 = -(2n ** (152n - 1n));
+var minInt1602 = -(2n ** (160n - 1n));
+var minInt1682 = -(2n ** (168n - 1n));
+var minInt1762 = -(2n ** (176n - 1n));
+var minInt1842 = -(2n ** (184n - 1n));
+var minInt1922 = -(2n ** (192n - 1n));
+var minInt2002 = -(2n ** (200n - 1n));
+var minInt2082 = -(2n ** (208n - 1n));
+var minInt2162 = -(2n ** (216n - 1n));
+var minInt2242 = -(2n ** (224n - 1n));
+var minInt2322 = -(2n ** (232n - 1n));
+var minInt2402 = -(2n ** (240n - 1n));
+var minInt2482 = -(2n ** (248n - 1n));
+var minInt2562 = -(2n ** (256n - 1n));
+var maxUint82 = 2n ** 8n - 1n;
+var maxUint162 = 2n ** 16n - 1n;
+var maxUint242 = 2n ** 24n - 1n;
+var maxUint322 = 2n ** 32n - 1n;
+var maxUint402 = 2n ** 40n - 1n;
+var maxUint482 = 2n ** 48n - 1n;
+var maxUint562 = 2n ** 56n - 1n;
+var maxUint642 = 2n ** 64n - 1n;
+var maxUint722 = 2n ** 72n - 1n;
+var maxUint802 = 2n ** 80n - 1n;
+var maxUint882 = 2n ** 88n - 1n;
+var maxUint962 = 2n ** 96n - 1n;
+var maxUint1042 = 2n ** 104n - 1n;
+var maxUint1122 = 2n ** 112n - 1n;
+var maxUint1202 = 2n ** 120n - 1n;
+var maxUint1282 = 2n ** 128n - 1n;
+var maxUint1362 = 2n ** 136n - 1n;
+var maxUint1442 = 2n ** 144n - 1n;
+var maxUint1522 = 2n ** 152n - 1n;
+var maxUint1602 = 2n ** 160n - 1n;
+var maxUint1682 = 2n ** 168n - 1n;
+var maxUint1762 = 2n ** 176n - 1n;
+var maxUint1842 = 2n ** 184n - 1n;
+var maxUint1922 = 2n ** 192n - 1n;
+var maxUint2002 = 2n ** 200n - 1n;
+var maxUint2082 = 2n ** 208n - 1n;
+var maxUint2162 = 2n ** 216n - 1n;
+var maxUint2242 = 2n ** 224n - 1n;
+var maxUint2322 = 2n ** 232n - 1n;
+var maxUint2402 = 2n ** 240n - 1n;
+var maxUint2482 = 2n ** 248n - 1n;
+var maxUint2562 = 2n ** 256n - 1n;
+
+class InvalidChainIdError2 extends BaseError4 {
+  constructor({ chainId }) {
+    super(typeof chainId === "number" ? `Chain ID "${chainId}" is invalid.` : "Chain ID is invalid.", { name: "InvalidChainIdError" });
+  }
+}
+
+class ExecutionRevertedError2 extends BaseError4 {
+  constructor({ cause, message } = {}) {
+    const reason = message?.replace("execution reverted: ", "")?.replace("execution reverted", "");
+    super(`Execution reverted ${reason ? `with reason: ${reason}` : "for an unknown reason"}.`, {
+      cause,
+      name: "ExecutionRevertedError"
+    });
+  }
+}
+Object.defineProperty(ExecutionRevertedError2, "code", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: 3
+});
+Object.defineProperty(ExecutionRevertedError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /execution reverted|gas required exceeds allowance/
+});
+
+class FeeCapTooHighError2 extends BaseError4 {
+  constructor({ cause, maxFeePerGas } = {}) {
+    super(`The fee cap (\`maxFeePerGas\`${maxFeePerGas ? ` = ${formatGwei2(maxFeePerGas)} gwei` : ""}) cannot be higher than the maximum allowed value (2^256-1).`, {
+      cause,
+      name: "FeeCapTooHighError"
+    });
+  }
+}
+Object.defineProperty(FeeCapTooHighError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /max fee per gas higher than 2\^256-1|fee cap higher than 2\^256-1/
+});
+
+class FeeCapTooLowError2 extends BaseError4 {
+  constructor({ cause, maxFeePerGas } = {}) {
+    super(`The fee cap (\`maxFeePerGas\`${maxFeePerGas ? ` = ${formatGwei2(maxFeePerGas)}` : ""} gwei) cannot be lower than the block base fee.`, {
+      cause,
+      name: "FeeCapTooLowError"
+    });
+  }
+}
+Object.defineProperty(FeeCapTooLowError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /max fee per gas less than block base fee|fee cap less than block base fee|transaction is outdated/
+});
+
+class NonceTooHighError2 extends BaseError4 {
+  constructor({ cause, nonce } = {}) {
+    super(`Nonce provided for the transaction ${nonce ? `(${nonce}) ` : ""}is higher than the next one expected.`, { cause, name: "NonceTooHighError" });
+  }
+}
+Object.defineProperty(NonceTooHighError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /nonce too high/
+});
+
+class NonceTooLowError2 extends BaseError4 {
+  constructor({ cause, nonce } = {}) {
+    super([
+      `Nonce provided for the transaction ${nonce ? `(${nonce}) ` : ""}is lower than the current nonce of the account.`,
+      "Try increasing the nonce or find the latest nonce with `getTransactionCount`."
+    ].join(`
+`), { cause, name: "NonceTooLowError" });
+  }
+}
+Object.defineProperty(NonceTooLowError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /nonce too low|transaction already imported|already known/
+});
+
+class NonceMaxValueError2 extends BaseError4 {
+  constructor({ cause, nonce } = {}) {
+    super(`Nonce provided for the transaction ${nonce ? `(${nonce}) ` : ""}exceeds the maximum allowed nonce.`, { cause, name: "NonceMaxValueError" });
+  }
+}
+Object.defineProperty(NonceMaxValueError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /nonce has max value/
+});
+
+class InsufficientFundsError2 extends BaseError4 {
+  constructor({ cause } = {}) {
+    super([
+      "The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account."
+    ].join(`
+`), {
+      cause,
+      metaMessages: [
+        "This error could arise when the account does not have enough funds to:",
+        " - pay for the total gas fee,",
+        " - pay for the value to send.",
+        " ",
+        "The cost of the transaction is calculated as `gas * gas fee + value`, where:",
+        " - `gas` is the amount of gas needed for transaction to execute,",
+        " - `gas fee` is the gas fee,",
+        " - `value` is the amount of ether to send to the recipient."
+      ],
+      name: "InsufficientFundsError"
+    });
+  }
+}
+Object.defineProperty(InsufficientFundsError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /insufficient funds|exceeds transaction sender account balance/
+});
+
+class IntrinsicGasTooHighError2 extends BaseError4 {
+  constructor({ cause, gas } = {}) {
+    super(`The amount of gas ${gas ? `(${gas}) ` : ""}provided for the transaction exceeds the limit allowed for the block.`, {
+      cause,
+      name: "IntrinsicGasTooHighError"
+    });
+  }
+}
+Object.defineProperty(IntrinsicGasTooHighError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /intrinsic gas too high|gas limit reached/
+});
+
+class IntrinsicGasTooLowError2 extends BaseError4 {
+  constructor({ cause, gas } = {}) {
+    super(`The amount of gas ${gas ? `(${gas}) ` : ""}provided for the transaction is too low.`, {
+      cause,
+      name: "IntrinsicGasTooLowError"
+    });
+  }
+}
+Object.defineProperty(IntrinsicGasTooLowError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /intrinsic gas too low/
+});
+
+class TransactionTypeNotSupportedError2 extends BaseError4 {
+  constructor({ cause }) {
+    super("The transaction type is not supported for this chain.", {
+      cause,
+      name: "TransactionTypeNotSupportedError"
+    });
+  }
+}
+Object.defineProperty(TransactionTypeNotSupportedError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /transaction type not valid/
+});
+
+class TipAboveFeeCapError2 extends BaseError4 {
+  constructor({ cause, maxPriorityFeePerGas, maxFeePerGas } = {}) {
+    super([
+      `The provided tip (\`maxPriorityFeePerGas\`${maxPriorityFeePerGas ? ` = ${formatGwei2(maxPriorityFeePerGas)} gwei` : ""}) cannot be higher than the fee cap (\`maxFeePerGas\`${maxFeePerGas ? ` = ${formatGwei2(maxFeePerGas)} gwei` : ""}).`
+    ].join(`
+`), {
+      cause,
+      name: "TipAboveFeeCapError"
+    });
+  }
+}
+Object.defineProperty(TipAboveFeeCapError2, "nodeMessage", {
+  enumerable: true,
+  configurable: true,
+  writable: true,
+  value: /max priority fee per gas higher than max fee per gas|tip higher than fee cap/
+});
+
+class UnknownNodeError2 extends BaseError4 {
+  constructor({ cause }) {
+    super(`An error occurred while executing: ${cause?.shortMessage}`, {
+      cause,
+      name: "UnknownNodeError"
+    });
+  }
+}
+function slice3(value2, start, end, { strict } = {}) {
+  if (isHex3(value2, { strict: false }))
+    return sliceHex3(value2, start, end, {
+      strict
+    });
+  return sliceBytes3(value2, start, end, {
+    strict
+  });
+}
+function assertStartOffset2(value2, start) {
+  if (typeof start === "number" && start > 0 && start > size3(value2) - 1)
+    throw new SliceOffsetOutOfBoundsError3({
+      offset: start,
+      position: "start",
+      size: size3(value2)
+    });
+}
+function assertEndOffset2(value2, start, end) {
+  if (typeof start === "number" && typeof end === "number" && size3(value2) !== end - start) {
+    throw new SliceOffsetOutOfBoundsError3({
+      offset: end,
+      position: "end",
+      size: size3(value2)
+    });
+  }
+}
+function sliceBytes3(value_, start, end, { strict } = {}) {
+  assertStartOffset2(value_, start);
+  const value2 = value_.slice(start, end);
+  if (strict)
+    assertEndOffset2(value2, start, end);
+  return value2;
+}
+function sliceHex3(value_, start, end, { strict } = {}) {
+  assertStartOffset2(value_, start);
+  const value2 = `0x${value_.replace("0x", "").slice((start ?? 0) * 2, (end ?? value_.length) * 2)}`;
+  if (strict)
+    assertEndOffset2(value2, start, end);
+  return value2;
+}
+function assertTransactionEIP7702(transaction) {
+  const { authorizationList } = transaction;
+  if (authorizationList) {
+    for (const authorization of authorizationList) {
+      const { chainId } = authorization;
+      const address = authorization.address;
+      if (!isAddress3(address))
+        throw new InvalidAddressError3({ address });
+      if (chainId < 0)
+        throw new InvalidChainIdError2({ chainId });
+    }
+  }
+  assertTransactionEIP15592(transaction);
+}
+function assertTransactionEIP4844(transaction) {
+  const { blobVersionedHashes } = transaction;
+  if (blobVersionedHashes) {
+    if (blobVersionedHashes.length === 0)
+      throw new EmptyBlobError;
+    for (const hash2 of blobVersionedHashes) {
+      const size_ = size3(hash2);
+      const version3 = hexToNumber2(slice3(hash2, 0, 1));
+      if (size_ !== 32)
+        throw new InvalidVersionedHashSizeError({ hash: hash2, size: size_ });
+      if (version3 !== versionedHashVersionKzg)
+        throw new InvalidVersionedHashVersionError({
+          hash: hash2,
+          version: version3
+        });
+    }
+  }
+  assertTransactionEIP15592(transaction);
+}
+function assertTransactionEIP15592(transaction) {
+  const { chainId, maxPriorityFeePerGas, maxFeePerGas, to } = transaction;
+  if (chainId <= 0)
+    throw new InvalidChainIdError2({ chainId });
+  if (to && !isAddress3(to))
+    throw new InvalidAddressError3({ address: to });
+  if (maxFeePerGas && maxFeePerGas > maxUint2562)
+    throw new FeeCapTooHighError2({ maxFeePerGas });
+  if (maxPriorityFeePerGas && maxFeePerGas && maxPriorityFeePerGas > maxFeePerGas)
+    throw new TipAboveFeeCapError2({ maxFeePerGas, maxPriorityFeePerGas });
+}
+function assertTransactionEIP29302(transaction) {
+  const { chainId, maxPriorityFeePerGas, gasPrice, maxFeePerGas, to } = transaction;
+  if (chainId <= 0)
+    throw new InvalidChainIdError2({ chainId });
+  if (to && !isAddress3(to))
+    throw new InvalidAddressError3({ address: to });
+  if (maxPriorityFeePerGas || maxFeePerGas)
+    throw new BaseError4("`maxFeePerGas`/`maxPriorityFeePerGas` is not a valid EIP-2930 Transaction attribute.");
+  if (gasPrice && gasPrice > maxUint2562)
+    throw new FeeCapTooHighError2({ maxFeePerGas: gasPrice });
+}
+function assertTransactionLegacy2(transaction) {
+  const { chainId, maxPriorityFeePerGas, gasPrice, maxFeePerGas, to } = transaction;
+  if (to && !isAddress3(to))
+    throw new InvalidAddressError3({ address: to });
+  if (typeof chainId !== "undefined" && chainId <= 0)
+    throw new InvalidChainIdError2({ chainId });
+  if (maxPriorityFeePerGas || maxFeePerGas)
+    throw new BaseError4("`maxFeePerGas`/`maxPriorityFeePerGas` is not a valid Legacy Transaction attribute.");
+  if (gasPrice && gasPrice > maxUint2562)
+    throw new FeeCapTooHighError2({ maxFeePerGas: gasPrice });
+}
+function getTransactionType2(transaction) {
+  if (transaction.type)
+    return transaction.type;
+  if (typeof transaction.authorizationList !== "undefined")
+    return "eip7702";
+  if (typeof transaction.blobs !== "undefined" || typeof transaction.blobVersionedHashes !== "undefined" || typeof transaction.maxFeePerBlobGas !== "undefined" || typeof transaction.sidecars !== "undefined")
+    return "eip4844";
+  if (typeof transaction.maxFeePerGas !== "undefined" || typeof transaction.maxPriorityFeePerGas !== "undefined") {
+    return "eip1559";
+  }
+  if (typeof transaction.gasPrice !== "undefined") {
+    if (typeof transaction.accessList !== "undefined")
+      return "eip2930";
+    return "legacy";
+  }
+  throw new InvalidSerializableTransactionError2({ transaction });
+}
+function serializeAccessList2(accessList) {
+  if (!accessList || accessList.length === 0)
+    return [];
+  const serializedAccessList = [];
+  for (let i2 = 0;i2 < accessList.length; i2++) {
+    const { address, storageKeys } = accessList[i2];
+    for (let j = 0;j < storageKeys.length; j++) {
+      if (storageKeys[j].length - 2 !== 64) {
+        throw new InvalidStorageKeySizeError2({ storageKey: storageKeys[j] });
+      }
+    }
+    if (!isAddress3(address, { strict: false })) {
+      throw new InvalidAddressError3({ address });
+    }
+    serializedAccessList.push([address, storageKeys]);
+  }
+  return serializedAccessList;
+}
+function serializeTransaction2(transaction, signature) {
+  const type = getTransactionType2(transaction);
+  if (type === "eip1559")
+    return serializeTransactionEIP1559(transaction, signature);
+  if (type === "eip2930")
+    return serializeTransactionEIP2930(transaction, signature);
+  if (type === "eip4844")
+    return serializeTransactionEIP4844(transaction, signature);
+  if (type === "eip7702")
+    return serializeTransactionEIP7702(transaction, signature);
+  return serializeTransactionLegacy(transaction, signature);
+}
+function serializeTransactionEIP7702(transaction, signature) {
+  const { authorizationList, chainId, gas, nonce, to, value: value2, maxFeePerGas, maxPriorityFeePerGas, accessList, data } = transaction;
+  assertTransactionEIP7702(transaction);
+  const serializedAccessList = serializeAccessList2(accessList);
+  const serializedAuthorizationList = serializeAuthorizationList(authorizationList);
+  return concatHex3([
+    "0x04",
+    toRlp2([
+      numberToHex2(chainId),
+      nonce ? numberToHex2(nonce) : "0x",
+      maxPriorityFeePerGas ? numberToHex2(maxPriorityFeePerGas) : "0x",
+      maxFeePerGas ? numberToHex2(maxFeePerGas) : "0x",
+      gas ? numberToHex2(gas) : "0x",
+      to ?? "0x",
+      value2 ? numberToHex2(value2) : "0x",
+      data ?? "0x",
+      serializedAccessList,
+      serializedAuthorizationList,
+      ...toYParitySignatureArray(transaction, signature)
+    ])
+  ]);
+}
+function serializeTransactionEIP4844(transaction, signature) {
+  const { chainId, gas, nonce, to, value: value2, maxFeePerBlobGas, maxFeePerGas, maxPriorityFeePerGas, accessList, data } = transaction;
+  assertTransactionEIP4844(transaction);
+  let blobVersionedHashes = transaction.blobVersionedHashes;
+  let sidecars = transaction.sidecars;
+  if (transaction.blobs && (typeof blobVersionedHashes === "undefined" || typeof sidecars === "undefined")) {
+    const blobs2 = typeof transaction.blobs[0] === "string" ? transaction.blobs : transaction.blobs.map((x) => bytesToHex2(x));
+    const kzg = transaction.kzg;
+    const commitments2 = blobsToCommitments2({
+      blobs: blobs2,
+      kzg
+    });
+    if (typeof blobVersionedHashes === "undefined")
+      blobVersionedHashes = commitmentsToVersionedHashes2({
+        commitments: commitments2
+      });
+    if (typeof sidecars === "undefined") {
+      const proofs2 = blobsToProofs2({ blobs: blobs2, commitments: commitments2, kzg });
+      sidecars = toBlobSidecars2({ blobs: blobs2, commitments: commitments2, proofs: proofs2 });
+    }
+  }
+  const serializedAccessList = serializeAccessList2(accessList);
+  const serializedTransaction = [
+    numberToHex2(chainId),
+    nonce ? numberToHex2(nonce) : "0x",
+    maxPriorityFeePerGas ? numberToHex2(maxPriorityFeePerGas) : "0x",
+    maxFeePerGas ? numberToHex2(maxFeePerGas) : "0x",
+    gas ? numberToHex2(gas) : "0x",
+    to ?? "0x",
+    value2 ? numberToHex2(value2) : "0x",
+    data ?? "0x",
+    serializedAccessList,
+    maxFeePerBlobGas ? numberToHex2(maxFeePerBlobGas) : "0x",
+    blobVersionedHashes ?? [],
+    ...toYParitySignatureArray(transaction, signature)
+  ];
+  const blobs = [];
+  const commitments = [];
+  const proofs = [];
+  if (sidecars)
+    for (let i2 = 0;i2 < sidecars.length; i2++) {
+      const { blob, commitment, proof } = sidecars[i2];
+      blobs.push(blob);
+      commitments.push(commitment);
+      proofs.push(proof);
+    }
+  return concatHex3([
+    "0x03",
+    sidecars ? toRlp2([serializedTransaction, blobs, commitments, proofs]) : toRlp2(serializedTransaction)
+  ]);
+}
+function serializeTransactionEIP1559(transaction, signature) {
+  const { chainId, gas, nonce, to, value: value2, maxFeePerGas, maxPriorityFeePerGas, accessList, data } = transaction;
+  assertTransactionEIP15592(transaction);
+  const serializedAccessList = serializeAccessList2(accessList);
+  const serializedTransaction = [
+    numberToHex2(chainId),
+    nonce ? numberToHex2(nonce) : "0x",
+    maxPriorityFeePerGas ? numberToHex2(maxPriorityFeePerGas) : "0x",
+    maxFeePerGas ? numberToHex2(maxFeePerGas) : "0x",
+    gas ? numberToHex2(gas) : "0x",
+    to ?? "0x",
+    value2 ? numberToHex2(value2) : "0x",
+    data ?? "0x",
+    serializedAccessList,
+    ...toYParitySignatureArray(transaction, signature)
+  ];
+  return concatHex3([
+    "0x02",
+    toRlp2(serializedTransaction)
+  ]);
+}
+function serializeTransactionEIP2930(transaction, signature) {
+  const { chainId, gas, data, nonce, to, value: value2, accessList, gasPrice } = transaction;
+  assertTransactionEIP29302(transaction);
+  const serializedAccessList = serializeAccessList2(accessList);
+  const serializedTransaction = [
+    numberToHex2(chainId),
+    nonce ? numberToHex2(nonce) : "0x",
+    gasPrice ? numberToHex2(gasPrice) : "0x",
+    gas ? numberToHex2(gas) : "0x",
+    to ?? "0x",
+    value2 ? numberToHex2(value2) : "0x",
+    data ?? "0x",
+    serializedAccessList,
+    ...toYParitySignatureArray(transaction, signature)
+  ];
+  return concatHex3([
+    "0x01",
+    toRlp2(serializedTransaction)
+  ]);
+}
+function serializeTransactionLegacy(transaction, signature) {
+  const { chainId = 0, gas, data, nonce, to, value: value2, gasPrice } = transaction;
+  assertTransactionLegacy2(transaction);
+  let serializedTransaction = [
+    nonce ? numberToHex2(nonce) : "0x",
+    gasPrice ? numberToHex2(gasPrice) : "0x",
+    gas ? numberToHex2(gas) : "0x",
+    to ?? "0x",
+    value2 ? numberToHex2(value2) : "0x",
+    data ?? "0x"
+  ];
+  if (signature) {
+    const v = (() => {
+      if (signature.v >= 35n) {
+        const inferredChainId = (signature.v - 35n) / 2n;
+        if (inferredChainId > 0)
+          return signature.v;
+        return 27n + (signature.v === 35n ? 0n : 1n);
+      }
+      if (chainId > 0)
+        return BigInt(chainId * 2) + BigInt(35n + signature.v - 27n);
+      const v2 = 27n + (signature.v === 27n ? 0n : 1n);
+      if (signature.v !== v2)
+        throw new InvalidLegacyVError2({ v: signature.v });
+      return v2;
+    })();
+    const r = trim2(signature.r);
+    const s = trim2(signature.s);
+    serializedTransaction = [
+      ...serializedTransaction,
+      numberToHex2(v),
+      r === "0x00" ? "0x" : r,
+      s === "0x00" ? "0x" : s
+    ];
+  } else if (chainId > 0) {
+    serializedTransaction = [
+      ...serializedTransaction,
+      numberToHex2(chainId),
+      "0x",
+      "0x"
+    ];
+  }
+  return toRlp2(serializedTransaction);
+}
+function toYParitySignatureArray(transaction, signature_) {
+  const signature = signature_ ?? transaction;
+  const { v, yParity } = signature;
+  if (typeof signature.r === "undefined")
+    return [];
+  if (typeof signature.s === "undefined")
+    return [];
+  if (typeof v === "undefined" && typeof yParity === "undefined")
+    return [];
+  const r = trim2(signature.r);
+  const s = trim2(signature.s);
+  const yParity_ = (() => {
+    if (typeof yParity === "number")
+      return yParity ? numberToHex2(1) : "0x";
+    if (v === 0n)
+      return "0x";
+    if (v === 1n)
+      return numberToHex2(1);
+    return v === 27n ? "0x" : numberToHex2(1);
+  })();
+  return [yParity_, r === "0x00" ? "0x" : r, s === "0x00" ? "0x" : s];
+}
+function serializeTransaction3(transaction, signature) {
+  if (isDeposit(transaction))
+    return serializeTransactionDeposit(transaction);
+  return serializeTransaction2(transaction, signature);
+}
+var serializers = {
+  transaction: serializeTransaction3
+};
+function serializeTransactionDeposit(transaction) {
+  assertTransactionDeposit(transaction);
+  const { sourceHash, data, from: from2, gas, isSystemTx, mint, to, value: value2 } = transaction;
+  const serializedTransaction = [
+    sourceHash,
+    from2,
+    to ?? "0x",
+    mint ? toHex2(mint) : "0x",
+    value2 ? toHex2(value2) : "0x",
+    gas ? toHex2(gas) : "0x",
+    isSystemTx ? "0x1" : "0x",
+    data ?? "0x"
+  ];
+  return concatHex3([
+    "0x7e",
+    toRlp2(serializedTransaction)
+  ]);
+}
+function isDeposit(transaction) {
+  if (transaction.type === "deposit")
+    return true;
+  if (typeof transaction.sourceHash !== "undefined")
+    return true;
+  return false;
+}
+function assertTransactionDeposit(transaction) {
+  const { from: from2, to } = transaction;
+  if (from2 && !isAddress3(from2))
+    throw new InvalidAddressError3({ address: from2 });
+  if (to && !isAddress3(to))
+    throw new InvalidAddressError3({ address: to });
+}
+var chainConfig = {
+  blockTime: 2000,
+  contracts,
+  formatters,
+  serializers
+};
+var sourceId = 1;
+var base = /* @__PURE__ */ defineChain2({
+  ...chainConfig,
+  id: 8453,
+  name: "Base",
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://mainnet.base.org"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Basescan",
+      url: "https://basescan.org",
+      apiUrl: "https://api.basescan.org/api"
+    }
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    disputeGameFactory: {
+      [sourceId]: {
+        address: "0x43edB88C4B80fDD2AdFF2412A7BebF9dF42cB40e"
+      }
+    },
+    l2OutputOracle: {
+      [sourceId]: {
+        address: "0x56315b90c40730925ec5485cf004d835058518A0"
+      }
+    },
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 5022
+    },
+    portal: {
+      [sourceId]: {
+        address: "0x49048044D57e1C92A77f79988d21Fa8fAF74E97e",
+        blockCreated: 17482143
+      }
+    },
+    l1StandardBridge: {
+      [sourceId]: {
+        address: "0x3154Cf16ccdb4C6d922629664174b904d80F2C35",
+        blockCreated: 17482143
+      }
+    }
+  },
+  sourceId
+});
+var basePreconf = /* @__PURE__ */ defineChain2({
+  ...base,
+  experimental_preconfirmationTime: 200,
+  rpcUrls: {
+    default: {
+      http: ["https://mainnet-preconf.base.org"]
+    }
+  }
+});
+var sourceId2 = 11155111;
+var baseSepolia = /* @__PURE__ */ defineChain2({
+  ...chainConfig,
+  id: 84532,
+  network: "base-sepolia",
+  name: "Base Sepolia",
+  nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://sepolia.base.org"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Basescan",
+      url: "https://sepolia.basescan.org",
+      apiUrl: "https://api-sepolia.basescan.org/api"
+    }
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    disputeGameFactory: {
+      [sourceId2]: {
+        address: "0xd6E6dBf4F7EA0ac412fD8b65ED297e64BB7a06E1"
+      }
+    },
+    l2OutputOracle: {
+      [sourceId2]: {
+        address: "0x84457ca9D0163FbC4bbfe4Dfbb20ba46e48DF254"
+      }
+    },
+    portal: {
+      [sourceId2]: {
+        address: "0x49f53e41452c74589e85ca1677426ba426459e85",
+        blockCreated: 4446677
+      }
+    },
+    l1StandardBridge: {
+      [sourceId2]: {
+        address: "0xfd0Bf71F60660E2f608ed56e1659C450eB113120",
+        blockCreated: 4446677
+      }
+    },
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 1059647
+    }
+  },
+  testnet: true,
+  sourceId: sourceId2
+});
+var baseSepoliaPreconf = /* @__PURE__ */ defineChain2({
+  ...baseSepolia,
+  experimental_preconfirmationTime: 200,
+  rpcUrls: {
+    default: {
+      http: ["https://sepolia-preconf.base.org"]
+    }
+  }
+});
+var sourceId3 = 1;
+var codex = /* @__PURE__ */ defineChain2({
+  ...chainConfig,
+  id: 81224,
+  name: "Codex",
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.codex.xyz"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Codex Explorer",
+      url: "https://explorer.codex.xyz",
+      apiUrl: "https://explorer.codex.xyz/api"
+    }
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    disputeGameFactory: {
+      [sourceId3]: {
+        address: "0x6A3855dc26e2beA8Ac73f82Cda79f3808B6C6F6C"
+      }
+    },
+    portal: {
+      [sourceId3]: {
+        address: "0x52759C07A759c81BAab28AE1BE5A19e6450959bD"
+      }
+    },
+    l1StandardBridge: {
+      [sourceId3]: {
+        address: "0xa6b1A05a592719B0C8a70c69eac114C48410aDE4"
+      }
+    },
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11"
+    }
+  },
+  sourceId: sourceId3
+});
+function parseAccount(account) {
+  if (typeof account === "string")
+    return { address: account, type: "json-rpc" };
+  return account;
+}
+
+class AccountNotFoundError extends BaseError4 {
+  constructor({ docsPath: docsPath2 } = {}) {
+    super([
+      "Could not find an Account to execute with this Action.",
+      "Please provide an Account with the `account` argument on the Action, or by supplying an `account` to the Client."
+    ].join(`
+`), {
+      docsPath: docsPath2,
+      docsSlug: "account",
+      name: "AccountNotFoundError"
+    });
+  }
+}
+function prettyStateMapping(stateMapping) {
+  return stateMapping.reduce((pretty, { slot, value: value2 }) => {
+    return `${pretty}        ${slot}: ${value2}
+`;
+  }, "");
+}
+function prettyStateOverride(stateOverride) {
+  return stateOverride.reduce((pretty, { address, ...state }) => {
+    let val = `${pretty}    ${address}:
+`;
+    if (state.nonce)
+      val += `      nonce: ${state.nonce}
+`;
+    if (state.balance)
+      val += `      balance: ${state.balance}
+`;
+    if (state.code)
+      val += `      code: ${state.code}
+`;
+    if (state.state) {
+      val += `      state:
+`;
+      val += prettyStateMapping(state.state);
+    }
+    if (state.stateDiff) {
+      val += `      stateDiff:
+`;
+      val += prettyStateMapping(state.stateDiff);
+    }
+    return val;
+  }, `  State Override:
+`).slice(0, -1);
+}
+
+class CallExecutionError2 extends BaseError4 {
+  constructor(cause, { account: account_, docsPath: docsPath2, chain, data, gas, gasPrice, maxFeePerGas, maxPriorityFeePerGas, nonce, to, value: value2, stateOverride }) {
+    const account = account_ ? parseAccount(account_) : undefined;
+    let prettyArgs = prettyPrint({
+      from: account?.address,
+      to,
+      value: typeof value2 !== "undefined" && `${formatEther2(value2)} ${chain?.nativeCurrency?.symbol || "ETH"}`,
+      data,
+      gas,
+      gasPrice: typeof gasPrice !== "undefined" && `${formatGwei2(gasPrice)} gwei`,
+      maxFeePerGas: typeof maxFeePerGas !== "undefined" && `${formatGwei2(maxFeePerGas)} gwei`,
+      maxPriorityFeePerGas: typeof maxPriorityFeePerGas !== "undefined" && `${formatGwei2(maxPriorityFeePerGas)} gwei`,
+      nonce
+    });
+    if (stateOverride) {
+      prettyArgs += `
+${prettyStateOverride(stateOverride)}`;
+    }
+    super(cause.shortMessage, {
+      cause,
+      docsPath: docsPath2,
+      metaMessages: [
+        ...cause.metaMessages ? [...cause.metaMessages, " "] : [],
+        "Raw Call Arguments:",
+        prettyArgs
+      ].filter(Boolean),
+      name: "CallExecutionError"
+    });
+    Object.defineProperty(this, "cause", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+    this.cause = cause;
+  }
+}
+function getNodeError(err, args) {
+  const message = (err.details || "").toLowerCase();
+  const executionRevertedError = err instanceof BaseError4 ? err.walk((e) => e?.code === ExecutionRevertedError2.code) : err;
+  if (executionRevertedError instanceof BaseError4)
+    return new ExecutionRevertedError2({
+      cause: err,
+      message: executionRevertedError.details
+    });
+  if (ExecutionRevertedError2.nodeMessage.test(message))
+    return new ExecutionRevertedError2({
+      cause: err,
+      message: err.details
+    });
+  if (FeeCapTooHighError2.nodeMessage.test(message))
+    return new FeeCapTooHighError2({
+      cause: err,
+      maxFeePerGas: args?.maxFeePerGas
+    });
+  if (FeeCapTooLowError2.nodeMessage.test(message))
+    return new FeeCapTooLowError2({
+      cause: err,
+      maxFeePerGas: args?.maxFeePerGas
+    });
+  if (NonceTooHighError2.nodeMessage.test(message))
+    return new NonceTooHighError2({ cause: err, nonce: args?.nonce });
+  if (NonceTooLowError2.nodeMessage.test(message))
+    return new NonceTooLowError2({ cause: err, nonce: args?.nonce });
+  if (NonceMaxValueError2.nodeMessage.test(message))
+    return new NonceMaxValueError2({ cause: err, nonce: args?.nonce });
+  if (InsufficientFundsError2.nodeMessage.test(message))
+    return new InsufficientFundsError2({ cause: err });
+  if (IntrinsicGasTooHighError2.nodeMessage.test(message))
+    return new IntrinsicGasTooHighError2({ cause: err, gas: args?.gas });
+  if (IntrinsicGasTooLowError2.nodeMessage.test(message))
+    return new IntrinsicGasTooLowError2({ cause: err, gas: args?.gas });
+  if (TransactionTypeNotSupportedError2.nodeMessage.test(message))
+    return new TransactionTypeNotSupportedError2({ cause: err });
+  if (TipAboveFeeCapError2.nodeMessage.test(message))
+    return new TipAboveFeeCapError2({
+      cause: err,
+      maxFeePerGas: args?.maxFeePerGas,
+      maxPriorityFeePerGas: args?.maxPriorityFeePerGas
+    });
+  return new UnknownNodeError2({
+    cause: err
+  });
+}
+function getCallError(err, { docsPath: docsPath2, ...args }) {
+  const cause = (() => {
+    const cause2 = getNodeError(err, args);
+    if (cause2 instanceof UnknownNodeError2)
+      return err;
+    return cause2;
+  })();
+  return new CallExecutionError2(cause, {
+    docsPath: docsPath2,
+    ...args
+  });
+}
+function extract(value_, { format }) {
+  if (!format)
+    return {};
+  const value2 = {};
+  function extract_(formatted2) {
+    const keys = Object.keys(formatted2);
+    for (const key of keys) {
+      if (key in value_)
+        value2[key] = value_[key];
+      if (formatted2[key] && typeof formatted2[key] === "object" && !Array.isArray(formatted2[key]))
+        extract_(formatted2[key]);
+    }
+  }
+  const formatted = format(value_ || {});
+  extract_(formatted);
+  return value2;
+}
+var rpcTransactionType2 = {
+  legacy: "0x0",
+  eip2930: "0x1",
+  eip1559: "0x2",
+  eip4844: "0x3",
+  eip7702: "0x4"
+};
+function formatTransactionRequest2(request, _) {
+  const rpcRequest = {};
+  if (typeof request.authorizationList !== "undefined")
+    rpcRequest.authorizationList = formatAuthorizationList2(request.authorizationList);
+  if (typeof request.accessList !== "undefined")
+    rpcRequest.accessList = request.accessList;
+  if (typeof request.blobVersionedHashes !== "undefined")
+    rpcRequest.blobVersionedHashes = request.blobVersionedHashes;
+  if (typeof request.blobs !== "undefined") {
+    if (typeof request.blobs[0] !== "string")
+      rpcRequest.blobs = request.blobs.map((x) => bytesToHex2(x));
+    else
+      rpcRequest.blobs = request.blobs;
+  }
+  if (typeof request.data !== "undefined")
+    rpcRequest.data = request.data;
+  if (request.account)
+    rpcRequest.from = request.account.address;
+  if (typeof request.from !== "undefined")
+    rpcRequest.from = request.from;
+  if (typeof request.gas !== "undefined")
+    rpcRequest.gas = numberToHex2(request.gas);
+  if (typeof request.gasPrice !== "undefined")
+    rpcRequest.gasPrice = numberToHex2(request.gasPrice);
+  if (typeof request.maxFeePerBlobGas !== "undefined")
+    rpcRequest.maxFeePerBlobGas = numberToHex2(request.maxFeePerBlobGas);
+  if (typeof request.maxFeePerGas !== "undefined")
+    rpcRequest.maxFeePerGas = numberToHex2(request.maxFeePerGas);
+  if (typeof request.maxPriorityFeePerGas !== "undefined")
+    rpcRequest.maxPriorityFeePerGas = numberToHex2(request.maxPriorityFeePerGas);
+  if (typeof request.nonce !== "undefined")
+    rpcRequest.nonce = numberToHex2(request.nonce);
+  if (typeof request.to !== "undefined")
+    rpcRequest.to = request.to;
+  if (typeof request.type !== "undefined")
+    rpcRequest.type = rpcTransactionType2[request.type];
+  if (typeof request.value !== "undefined")
+    rpcRequest.value = numberToHex2(request.value);
+  return rpcRequest;
+}
+function formatAuthorizationList2(authorizationList) {
+  return authorizationList.map((authorization) => ({
+    address: authorization.address,
+    r: authorization.r ? numberToHex2(BigInt(authorization.r)) : authorization.r,
+    s: authorization.s ? numberToHex2(BigInt(authorization.s)) : authorization.s,
+    chainId: numberToHex2(authorization.chainId),
+    nonce: numberToHex2(authorization.nonce),
+    ...typeof authorization.yParity !== "undefined" ? { yParity: numberToHex2(authorization.yParity) } : {},
+    ...typeof authorization.v !== "undefined" && typeof authorization.yParity === "undefined" ? { v: numberToHex2(authorization.v) } : {}
+  }));
+}
+function assertRequest2(args) {
+  const { account: account_, maxFeePerGas, maxPriorityFeePerGas, to } = args;
+  const account = account_ ? parseAccount(account_) : undefined;
+  if (account && !isAddress3(account.address))
+    throw new InvalidAddressError3({ address: account.address });
+  if (to && !isAddress3(to))
+    throw new InvalidAddressError3({ address: to });
+  if (maxFeePerGas && maxFeePerGas > maxUint2562)
+    throw new FeeCapTooHighError2({ maxFeePerGas });
+  if (maxPriorityFeePerGas && maxFeePerGas && maxPriorityFeePerGas > maxFeePerGas)
+    throw new TipAboveFeeCapError2({ maxFeePerGas, maxPriorityFeePerGas });
+}
+async function estimateGas(client, args) {
+  const { account: account_ = client.account } = args;
+  if (!account_)
+    throw new AccountNotFoundError;
+  const account = parseAccount(account_);
+  try {
+    const { accessList, blockNumber, blockTag, data, gas, gasPrice, maxFeePerGas, maxPriorityFeePerGas, nonce, to, value: value2, ...rest } = args;
+    const blockNumberHex = typeof blockNumber === "bigint" ? numberToHex2(blockNumber) : undefined;
+    const block = blockNumberHex || blockTag;
+    assertRequest2(args);
+    const chainFormat = client.chain?.formatters?.transactionRequest?.format;
+    const format = chainFormat || formatTransactionRequest2;
+    const request = format({
+      ...extract(rest, { format: chainFormat }),
+      account,
+      accessList,
+      data,
+      gas,
+      gasPrice,
+      maxFeePerGas,
+      maxPriorityFeePerGas,
+      nonce,
+      to,
+      value: value2
+    }, "estimateGas");
+    const { baseFeePerGas, gasLimit, priorityFeePerGas } = await client.request({
+      method: "linea_estimateGas",
+      params: block ? [request, block] : [request]
+    });
+    return {
+      baseFeePerGas: BigInt(baseFeePerGas),
+      gasLimit: BigInt(gasLimit),
+      priorityFeePerGas: BigInt(priorityFeePerGas)
+    };
+  } catch (err) {
+    throw getCallError(err, {
+      ...args,
+      account,
+      chain: client.chain
+    });
+  }
+}
+var chainConfig2 = {
+  fees: {
+    estimateFeesPerGas,
+    async maxPriorityFeePerGas({ block, client, request }) {
+      const response = await estimateFeesPerGas({
+        block,
+        client,
+        multiply: (x) => x,
+        request,
+        type: "eip1559"
+      });
+      if (!response?.maxPriorityFeePerGas)
+        return null;
+      return response.maxPriorityFeePerGas;
+    }
+  }
+};
+async function estimateFeesPerGas({ client, multiply, request, type }) {
+  try {
+    const response = await estimateGas(client, {
+      ...request,
+      account: request?.account
+    });
+    const { priorityFeePerGas: maxPriorityFeePerGas } = response;
+    const baseFeePerGas = multiply(BigInt(response.baseFeePerGas));
+    const maxFeePerGas = baseFeePerGas + maxPriorityFeePerGas;
+    if (type === "legacy")
+      return { gasPrice: maxFeePerGas };
+    return {
+      maxFeePerGas,
+      maxPriorityFeePerGas
+    };
+  } catch {
+    return null;
+  }
+}
+var linea = /* @__PURE__ */ defineChain2({
+  ...chainConfig2,
+  id: 59144,
+  name: "Linea Mainnet",
+  blockTime: 2000,
+  nativeCurrency: { name: "Linea Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.linea.build"],
+      webSocket: ["wss://rpc.linea.build"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Etherscan",
+      url: "https://lineascan.build",
+      apiUrl: "https://api.lineascan.build/api"
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: "0xcA11bde05977b3631167028862bE2a173976CA11",
+      blockCreated: 42
+    },
+    ensRegistry: {
+      address: "0x50130b669B28C339991d8676FA73CF122a121267",
+      blockCreated: 6682888
+    },
+    ensUniversalResolver: {
+      address: "0x4D41762915F83c76EcaF6776d9b08076aA32b492",
+      blockCreated: 22222151
+    }
+  },
+  ensTlds: [".linea.eth"],
+  testnet: false
+});
+var mainnet = /* @__PURE__ */ defineChain2({
+  id: 1,
+  name: "Ethereum",
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  blockTime: 12000,
+  rpcUrls: {
+    default: {
+      http: ["https://eth.merkle.io"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Etherscan",
+      url: "https://etherscan.io",
+      apiUrl: "https://api.etherscan.io/api"
+    }
+  },
+  contracts: {
+    ensUniversalResolver: {
+      address: "0xeeeeeeee14d718c2b47d9923deab1335e144eeee",
+      blockCreated: 23085558
+    },
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 14353601
+    }
+  }
+});
+var sourceId4 = 1;
+var optimism = /* @__PURE__ */ defineChain2({
+  ...chainConfig,
+  id: 10,
+  name: "OP Mainnet",
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://mainnet.optimism.io"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Optimism Explorer",
+      url: "https://optimistic.etherscan.io",
+      apiUrl: "https://api-optimistic.etherscan.io/api"
+    }
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    disputeGameFactory: {
+      [sourceId4]: {
+        address: "0xe5965Ab5962eDc7477C8520243A95517CD252fA9"
+      }
+    },
+    l2OutputOracle: {
+      [sourceId4]: {
+        address: "0xdfe97868233d1aa22e815a266982f2cf17685a27"
+      }
+    },
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 4286263
+    },
+    portal: {
+      [sourceId4]: {
+        address: "0xbEb5Fc579115071764c7423A4f12eDde41f106Ed"
+      }
+    },
+    l1StandardBridge: {
+      [sourceId4]: {
+        address: "0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1"
+      }
+    }
+  },
+  sourceId: sourceId4
+});
+var sourceId5 = 11155111;
+var optimismSepolia = /* @__PURE__ */ defineChain2({
+  ...chainConfig,
+  id: 11155420,
+  name: "OP Sepolia",
+  nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://sepolia.optimism.io"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Blockscout",
+      url: "https://optimism-sepolia.blockscout.com",
+      apiUrl: "https://optimism-sepolia.blockscout.com/api"
+    }
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    disputeGameFactory: {
+      [sourceId5]: {
+        address: "0x05F9613aDB30026FFd634f38e5C4dFd30a197Fa1"
+      }
+    },
+    l2OutputOracle: {
+      [sourceId5]: {
+        address: "0x90E9c4f8a994a250F6aEfd61CAFb4F2e895D458F"
+      }
+    },
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 1620204
+    },
+    portal: {
+      [sourceId5]: {
+        address: "0x16Fc5058F25648194471939df75CF27A2fdC48BC"
+      }
+    },
+    l1StandardBridge: {
+      [sourceId5]: {
+        address: "0xFBb0621E0B23b5478B630BD55a5f21f67730B0F1"
+      }
+    }
+  },
+  testnet: true,
+  sourceId: sourceId5
+});
+var polygon = /* @__PURE__ */ defineChain2({
+  id: 137,
+  name: "Polygon",
+  blockTime: 2000,
+  nativeCurrency: { name: "POL", symbol: "POL", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://polygon.drpc.org"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "PolygonScan",
+      url: "https://polygonscan.com",
+      apiUrl: "https://api.etherscan.io/v2/api"
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 25770160
+    }
+  }
+});
+var polygonAmoy = /* @__PURE__ */ defineChain2({
+  id: 80002,
+  name: "Polygon Amoy",
+  nativeCurrency: { name: "POL", symbol: "POL", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc-amoy.polygon.technology"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "PolygonScan",
+      url: "https://amoy.polygonscan.com",
+      apiUrl: "https://api.etherscan.io/v2/api"
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 3127388
+    }
+  },
+  testnet: true
+});
+var sepolia = /* @__PURE__ */ defineChain2({
+  id: 11155111,
+  name: "Sepolia",
+  nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://11155111.rpc.thirdweb.com"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Etherscan",
+      url: "https://sepolia.etherscan.io",
+      apiUrl: "https://api-sepolia.etherscan.io/api"
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 751532
+    },
+    ensUniversalResolver: {
+      address: "0xeeeeeeee14d718c2b47d9923deab1335e144eeee",
+      blockCreated: 8928790
+    }
+  },
+  testnet: true
+});
+var sonic = /* @__PURE__ */ defineChain2({
+  id: 146,
+  name: "Sonic",
+  blockTime: 630,
+  nativeCurrency: {
+    decimals: 18,
+    name: "Sonic",
+    symbol: "S"
+  },
+  rpcUrls: {
+    default: { http: ["https://rpc.soniclabs.com"] }
+  },
+  blockExplorers: {
+    default: {
+      name: "Sonic Explorer",
+      url: "https://sonicscan.org"
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 60
+    }
+  },
+  testnet: false
+});
+var sourceId6 = 1;
+var unichain = /* @__PURE__ */ defineChain2({
+  ...chainConfig,
+  id: 130,
+  name: "Unichain",
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  blockTime: 1000,
+  rpcUrls: {
+    default: {
+      http: ["https://mainnet.unichain.org/"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Uniscan",
+      url: "https://uniscan.xyz",
+      apiUrl: "https://api.uniscan.xyz/api"
+    }
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 0
+    },
+    disputeGameFactory: {
+      [sourceId6]: {
+        address: "0x2F12d621a16e2d3285929C9996f478508951dFe4"
+      }
+    },
+    portal: {
+      [sourceId6]: {
+        address: "0x0bd48f6B86a26D3a217d0Fa6FfE2B491B956A7a2"
+      }
+    },
+    l1StandardBridge: {
+      [sourceId6]: {
+        address: "0x81014F44b0a345033bB2b3B21C7a1A308B35fEeA"
+      }
+    }
+  },
+  sourceId: sourceId6
+});
+var sourceId7 = 11155111;
+var unichainSepolia = /* @__PURE__ */ defineChain2({
+  ...chainConfig,
+  id: 1301,
+  name: "Unichain Sepolia",
+  nativeCurrency: {
+    name: "Ether",
+    symbol: "ETH",
+    decimals: 18
+  },
+  blockTime: 1000,
+  rpcUrls: {
+    default: {
+      http: ["https://sepolia.unichain.org"]
+    }
+  },
+  blockExplorers: {
+    default: {
+      name: "Uniscan",
+      url: "https://sepolia.uniscan.xyz",
+      apiUrl: "https://api-sepolia.uniscan.xyz/api"
+    }
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 0
+    },
+    portal: {
+      [sourceId7]: {
+        address: "0x0d83dab629f0e0F9d36c0Cbc89B69a489f0751bD"
+      }
+    },
+    l1StandardBridge: {
+      [sourceId7]: {
+        address: "0xea58fcA6849d79EAd1f26608855c2D6407d54Ce2"
+      }
+    },
+    disputeGameFactory: {
+      [sourceId7]: {
+        address: "0xeff73e5aa3B9AEC32c659Aa3E00444d20a84394b"
+      }
+    }
+  },
+  testnet: true,
+  sourceId: sourceId7
+});
+var sourceId8 = 1;
+var worldchain = /* @__PURE__ */ defineChain2({
+  ...chainConfig,
+  id: 480,
+  name: "World Chain",
+  network: "worldchain",
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://worldchain-mainnet.g.alchemy.com/public"] }
+  },
+  blockExplorers: {
+    default: {
+      name: "Worldscan",
+      url: "https://worldscan.org",
+      apiUrl: "https://api.worldscan.org/api"
+    },
+    blockscout: {
+      name: "Blockscout",
+      url: "https://worldchain-mainnet.explorer.alchemy.com",
+      apiUrl: "https://worldchain-mainnet.explorer.alchemy.com/api"
+    }
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 0
+    },
+    disputeGameFactory: {
+      [sourceId8]: {
+        address: "0x069c4c579671f8c120b1327a73217D01Ea2EC5ea"
+      }
+    },
+    l2OutputOracle: {
+      [sourceId8]: {
+        address: "0x19A6d1E9034596196295CF148509796978343c5D"
+      }
+    },
+    portal: {
+      [sourceId8]: {
+        address: "0xd5ec14a83B7d95BE1E2Ac12523e2dEE12Cbeea6C"
+      }
+    },
+    l1StandardBridge: {
+      [sourceId8]: {
+        address: "0x470458C91978D2d929704489Ad730DC3E3001113"
+      }
+    }
+  },
+  testnet: false,
+  sourceId: sourceId8
+});
+var TESTNET_TOKEN_MESSENGER = "0x8FE6B999Dc680CcFDD5Bf7EB0974218be2542DAA";
+var TESTNET_MESSAGE_TRANSMITTER = "0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275";
+var MAINNET_TOKEN_MESSENGER = "0x28b5a0e9C621a5BadaA536219b3a228C8168cf5d";
+var MAINNET_MESSAGE_TRANSMITTER = "0x81D40F21F12A8F0E3252Bccb954D722d4c464B64";
+var TESTNET_CHAINS = {
+  ethereumSepolia: {
+    name: "Ethereum Sepolia",
+    domain: 0,
+    chain: sepolia,
+    usdc: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+    tokenMessenger: TESTNET_TOKEN_MESSENGER,
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+  },
+  avalancheFuji: {
+    name: "Avalanche Fuji",
+    domain: 1,
+    chain: avalancheFuji,
+    usdc: "0x5425890298aed601595a70AB815c96711a31Bc65",
+    tokenMessenger: TESTNET_TOKEN_MESSENGER,
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+  },
+  opSepolia: {
+    name: "OP Sepolia",
+    domain: 2,
+    chain: optimismSepolia,
+    usdc: "0x5fd84259d66Cd46123540766Be93DFE6D43130D7",
+    tokenMessenger: TESTNET_TOKEN_MESSENGER,
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+  },
+  arbitrumSepolia: {
+    name: "Arbitrum Sepolia",
+    domain: 3,
+    chain: arbitrumSepolia,
+    usdc: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+    tokenMessenger: TESTNET_TOKEN_MESSENGER,
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+  },
+  baseSepolia: {
+    name: "Base Sepolia",
+    domain: 6,
+    chain: baseSepolia,
+    usdc: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    tokenMessenger: TESTNET_TOKEN_MESSENGER,
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+  },
+  polygonAmoy: {
+    name: "Polygon PoS Amoy",
+    domain: 7,
+    chain: polygonAmoy,
+    usdc: "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582",
+    tokenMessenger: TESTNET_TOKEN_MESSENGER,
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+  },
+  unichainSepolia: {
+    name: "Unichain Sepolia",
+    domain: 10,
+    chain: unichainSepolia,
+    usdc: "0x31d0220469e10c4E71834a79b1f276d740d3768F",
+    tokenMessenger: TESTNET_TOKEN_MESSENGER,
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+  }
+};
+var MAINNET_CHAINS = {
+  ethereum: {
+    name: "Ethereum",
+    domain: 0,
+    chain: mainnet,
+    usdc: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  avalanche: {
+    name: "Avalanche",
+    domain: 1,
+    chain: avalanche,
+    usdc: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  optimism: {
+    name: "OP Mainnet",
+    domain: 2,
+    chain: optimism,
+    usdc: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  arbitrum: {
+    name: "Arbitrum",
+    domain: 3,
+    chain: arbitrum,
+    usdc: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  base: {
+    name: "Base",
+    domain: 6,
+    chain: base,
+    usdc: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  polygon: {
+    name: "Polygon PoS",
+    domain: 7,
+    chain: polygon,
+    usdc: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  unichain: {
+    name: "Unichain",
+    domain: 10,
+    chain: unichain,
+    usdc: "0x078D782b760474a361dDA0AF3839290b0EF57AD6",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  linea: {
+    name: "Linea",
+    domain: 11,
+    chain: linea,
+    usdc: "0x176211869cA2b568f2A7D4EE941E073a821EE1ff",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  codex: {
+    name: "Codex",
+    domain: 12,
+    chain: codex,
+    usdc: "0xd996633a415985DBd7D6D12f4A4343E31f5037cf",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  sonic: {
+    name: "Sonic",
+    domain: 13,
+    chain: sonic,
+    usdc: "0x29219dd400f2Bf60E5a23d13be72b486d4038894",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  },
+  worldchain: {
+    name: "World Chain",
+    domain: 14,
+    chain: worldchain,
+    usdc: "0x79A02482A880bCe3F13E09da970dC34dB4cD24D1",
+    tokenMessenger: MAINNET_TOKEN_MESSENGER,
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+  }
+};
+function getChains(network282) {
+  return network282 === "mainnet" ? MAINNET_CHAINS : TESTNET_CHAINS;
+}
+function getChainByDomain(network282, domain) {
+  return Object.values(getChains(network282)).find((c) => c.domain === domain);
+}
+var BASE_CHAIN_SELECTOR = ClientCapability.SUPPORTED_CHAIN_SELECTORS["ethereum-mainnet-base-1"];
+var TOKEN_MESSENGER_V2 = "0x28b5a0e9c621a5badaa536219b3a228c8168cf5d";
+var DEPOSIT_FOR_BURN_TOPIC = "0x0c8c1cbdc5190613ebd485511d4e2812cfa45eecb79d845893331fedad5130a5";
+var IRIS_API_BASE = "https://iris-api.circle.com";
+var SRC_DOMAIN = 6;
+var MINT_AND_SUBMIT_BID_ABI = [
+  {
+    type: "function",
+    name: "mintAndSubmitBid",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "message", type: "bytes" },
+      { name: "attestation", type: "bytes" }
+    ],
+    outputs: []
+  }
+];
+function fetchAttestation(nodeRuntime, txHash) {
+  const http2 = new ClientCapability2;
+  const url = irisStatusUrl(IRIS_API_BASE, SRC_DOMAIN, txHash);
+  const response = http2.sendRequest(nodeRuntime, { url, method: "GET" });
+  const irisData = json(response.result());
+  return parseAttestationData(irisData);
+}
+var onDepositForBurn = (runtime2, log) => {
+  const txHash = bytesToHex(log.txHash);
+  runtime2.log(`DepositForBurn detected in tx ${txHash}`);
+  const callerOffset = 4 * 32;
+  const destinationCaller = bytesToHex(log.data.slice(callerOffset, callerOffset + 32));
+  const expected = runtime2.config.cctpAuctionCaller.toLowerCase();
+  if (destinationCaller !== expected) {
+    runtime2.log(`Skipping: destinationCaller ${destinationCaller} !== ${expected}`);
+    return "";
+  }
+  const getAttestation = runtime2.runInNodeMode(fetchAttestation, consensusIdenticalAggregation());
+  const { message, attestation, destinationDomain } = getAttestation(txHash).result();
+  const destChain = getChainByDomain("mainnet", destinationDomain);
+  if (!destChain) {
+    runtime2.log(`Unknown destination domain: ${destinationDomain}`);
+    return "";
+  }
+  runtime2.log(`Attestation ready for tx ${txHash}, minting on ${destChain.name} (domain ${destinationDomain})`);
+  const calldata = encodeFunctionData({
+    abi: MINT_AND_SUBMIT_BID_ABI,
+    functionName: "mintAndSubmitBid",
+    args: [message, attestation]
+  });
+  return calldata;
 };
 var initWorkflow = (config) => {
-  const cron = new CronCapability;
+  const evmClient = new ClientCapability(BASE_CHAIN_SELECTOR);
   return [
-    handler(cron.trigger({ schedule: config.schedule }), onCronTrigger)
+    handler(evmClient.logTrigger(logTriggerConfig({
+      addresses: [TOKEN_MESSENGER_V2],
+      topics: [[DEPOSIT_FOR_BURN_TOPIC]]
+    })), onDepositForBurn)
   ];
 };
 async function main() {
@@ -14634,7 +19846,7 @@ async function main() {
 }
 main().catch(sendErrorResponse);
 export {
-  onCronTrigger,
+  onDepositForBurn,
   main,
   initWorkflow
 };
