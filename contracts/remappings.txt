@@ -1,2 +1,4 @@
-@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/
+@circlefin/evm-cctp-contracts/=node_modules/@circlefin/evm-cctp-contracts/
+@memview-sol/contracts/=node_modules/@memview-sol/contracts/contracts/
+@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/contracts/
 forge-std/=node_modules/forge-std/

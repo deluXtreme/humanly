@@ -5,7 +5,9 @@
     "": {
       "name": "@prb/foundry-template",
       "dependencies": {
-        "@openzeppelin/contracts": "5.3.0",
+        "@circlefin/evm-cctp-contracts": "github:circlefin/evm-cctp-contracts#4061786a5726bc05f99fcdb53b0985599f0dbaf7",
+        "@memview-sol/contracts": "github:summa-tx/memview-sol#79a08cb25aac047d81c67c5422c9b55abfac8635",
+        "@openzeppelin/contracts": "github:OpenZeppelin/openzeppelin-contracts#8e0296096449d9b1cd7c5631e917330635244c37",
       },
       "devDependencies": {
         "forge-std": "github:foundry-rs/forge-std#v1.9.7",
@@ -21,7 +23,11 @@
 
     "@babel/highlight": ["@babel/highlight@7.23.4", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.22.20", "chalk": "^2.4.2", "js-tokens": "^4.0.0" } }, "sha512-acGdbYSfp2WheJoJm/EBBBLh/ID8KDc64ISZ9DYtBmC8/Q204PZJLHyzeB5qMzJ5trcOkybd78M4x2KWsUq++A=="],
 
-    "@openzeppelin/contracts": ["@openzeppelin/contracts@5.3.0", "", {}, "sha512-zj/KGoW7zxWUE8qOI++rUM18v+VeLTTzKs/DJFkSzHpQFPD/jKKF0TrMxBfGLl3kpdELCNccvB3zmofSzm4nlA=="],
+    "@circlefin/evm-cctp-contracts": ["evm-cctp-contracts@github:circlefin/evm-cctp-contracts#4061786", {}, "circlefin-evm-cctp-contracts-4061786", "sha512-DrV2zyyEgA3yUzE7++fxxrwdjAFfBrBfudsk9eaWXMGmlC3AZejuYWK/e21FSKEj2txoubb2H2WUidnMibdoqQ=="],
+
+    "@memview-sol/contracts": ["@summa-tx/memview-sol@github:summa-tx/memview-sol#79a08cb", {}, "summa-tx-memview-sol-79a08cb", "sha512-sDULRZWwLsQxfp+9AYmUkC71kbPJnzOCjqNhm+y+ACS9rQznmpf11ovMmrMUohA9wBySX88SjVkyhhMvd+Vhkg=="],
+
+    "@openzeppelin/contracts": ["openzeppelin-solidity@github:OpenZeppelin/openzeppelin-contracts#8e02960", {}, "OpenZeppelin-openzeppelin-contracts-8e02960", "sha512-8+LHIzlfYd+AnnuUN6aNlsMIBejdbLeJe/YF87ItV/rk6r5bVwEig3wdg5E5x5RszhuB+NGrMf1Ry97IugA0sA=="],
 
     "@pnpm/config.env-replace": ["@pnpm/config.env-replace@1.1.0", "", {}, "sha512-htyl8TWnKL7K/ESFa1oW2UB5lVDxuF5DpM7tBi6Hu2LNL3mWkIzNLG6N4zoCUP1lCKNxWy/3iu8mS8MvToGd6w=="],
 
