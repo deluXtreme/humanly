@@ -1,4 +1,4 @@
-import type { Hash } from "viem";
+import type { Hash, Hex } from "viem";
 
 export interface CctpFeeData {
   forwardFee: { med: string };
@@ -26,6 +26,72 @@ export function computeFees(
   const maxFee = forwardFee + protocolFee;
   const totalAmount = transferAmount + maxFee;
   return { forwardFee, protocolFee, maxFee, totalAmount };
+}
+
+export interface IrisMessageResponse {
+  messages: {
+    attestation: Hex;
+    message: Hex;
+    status: string;
+    decodedMessage: {
+      sourceDomain: string;
+      destinationDomain: string;
+      destinationCaller: Hex;
+    };
+    forwardTxHash?: string;
+  }[];
+}
+
+export interface AttestationData {
+  message: Hex;
+  attestation: Hex;
+  destinationDomain: number;
+}
+
+export function irisStatusUrl(
+  irisApiBase: string,
+  srcDomain: number,
+  burnTxHash: Hash,
+): string {
+  return `${irisApiBase}/v2/messages/${srcDomain}?transactionHash=${burnTxHash}`;
+}
+
+export function parseAttestationData(
+  data: IrisMessageResponse,
+): AttestationData {
+  const msg = data.messages?.[0];
+  if (!msg) {
+    throw new Error("No messages in IRIS response");
+  }
+  if (msg.status !== "complete") {
+    throw new Error(`IRIS message status: ${msg.status}, expected complete`);
+  }
+  return {
+    message: msg.message,
+    attestation: msg.attestation,
+    destinationDomain: Number(msg.decodedMessage.destinationDomain),
+  };
+}
+
+export async function getAttestationData(
+  irisApiBase: string,
+  srcDomain: number,
+  burnTxHash: Hash,
+  pollIntervalMs = 2000,
+): Promise<AttestationData> {
+  const url = irisStatusUrl(irisApiBase, srcDomain, burnTxHash);
+
+  while (true) {
+    const res = await fetch(url);
+    const data = (await res.json()) as IrisMessageResponse;
+    const msg = data.messages?.[0];
+
+    if (msg?.status === "complete") {
+      return parseAttestationData(data);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+  }
 }
 
 export async function waitForMint(
