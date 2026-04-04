@@ -10,11 +10,15 @@ var __export = (target, all) => {
       get: all[name],
       enumerable: true,
       configurable: true,
-      set: __exportSetter.bind(all, name)
+      set: __exportSetter.bind(all, name),
     });
 };
 function isMessage(arg, schema) {
-  const isMessage2 = arg !== null && typeof arg == "object" && "$typeName" in arg && typeof arg.$typeName == "string";
+  const isMessage2 =
+    arg !== null &&
+    typeof arg == "object" &&
+    "$typeName" in arg &&
+    typeof arg.$typeName == "string";
   if (!isMessage2) {
     return false;
   }
@@ -24,27 +28,27 @@ function isMessage(arg, schema) {
   return schema.typeName === arg.$typeName;
 }
 var ScalarType;
-(function(ScalarType2) {
-  ScalarType2[ScalarType2["DOUBLE"] = 1] = "DOUBLE";
-  ScalarType2[ScalarType2["FLOAT"] = 2] = "FLOAT";
-  ScalarType2[ScalarType2["INT64"] = 3] = "INT64";
-  ScalarType2[ScalarType2["UINT64"] = 4] = "UINT64";
-  ScalarType2[ScalarType2["INT32"] = 5] = "INT32";
-  ScalarType2[ScalarType2["FIXED64"] = 6] = "FIXED64";
-  ScalarType2[ScalarType2["FIXED32"] = 7] = "FIXED32";
-  ScalarType2[ScalarType2["BOOL"] = 8] = "BOOL";
-  ScalarType2[ScalarType2["STRING"] = 9] = "STRING";
-  ScalarType2[ScalarType2["BYTES"] = 12] = "BYTES";
-  ScalarType2[ScalarType2["UINT32"] = 13] = "UINT32";
-  ScalarType2[ScalarType2["SFIXED32"] = 15] = "SFIXED32";
-  ScalarType2[ScalarType2["SFIXED64"] = 16] = "SFIXED64";
-  ScalarType2[ScalarType2["SINT32"] = 17] = "SINT32";
-  ScalarType2[ScalarType2["SINT64"] = 18] = "SINT64";
+(function (ScalarType2) {
+  ScalarType2[(ScalarType2["DOUBLE"] = 1)] = "DOUBLE";
+  ScalarType2[(ScalarType2["FLOAT"] = 2)] = "FLOAT";
+  ScalarType2[(ScalarType2["INT64"] = 3)] = "INT64";
+  ScalarType2[(ScalarType2["UINT64"] = 4)] = "UINT64";
+  ScalarType2[(ScalarType2["INT32"] = 5)] = "INT32";
+  ScalarType2[(ScalarType2["FIXED64"] = 6)] = "FIXED64";
+  ScalarType2[(ScalarType2["FIXED32"] = 7)] = "FIXED32";
+  ScalarType2[(ScalarType2["BOOL"] = 8)] = "BOOL";
+  ScalarType2[(ScalarType2["STRING"] = 9)] = "STRING";
+  ScalarType2[(ScalarType2["BYTES"] = 12)] = "BYTES";
+  ScalarType2[(ScalarType2["UINT32"] = 13)] = "UINT32";
+  ScalarType2[(ScalarType2["SFIXED32"] = 15)] = "SFIXED32";
+  ScalarType2[(ScalarType2["SFIXED64"] = 16)] = "SFIXED64";
+  ScalarType2[(ScalarType2["SINT32"] = 17)] = "SINT32";
+  ScalarType2[(ScalarType2["SINT64"] = 18)] = "SINT64";
 })(ScalarType || (ScalarType = {}));
 function varint64read() {
   let lowBits = 0;
   let highBits = 0;
-  for (let shift = 0;shift < 28; shift += 7) {
+  for (let shift = 0; shift < 28; shift += 7) {
     let b = this.buf[this.pos++];
     lowBits |= (b & 127) << shift;
     if ((b & 128) == 0) {
@@ -59,7 +63,7 @@ function varint64read() {
     this.assertBounds();
     return [lowBits, highBits];
   }
-  for (let shift = 3;shift <= 31; shift += 7) {
+  for (let shift = 3; shift <= 31; shift += 7) {
     let b = this.buf[this.pos++];
     highBits |= (b & 127) << shift;
     if ((b & 128) == 0) {
@@ -70,7 +74,7 @@ function varint64read() {
   throw new Error("invalid varint");
 }
 function varint64write(lo, hi, bytes) {
-  for (let i = 0;i < 28; i = i + 7) {
+  for (let i = 0; i < 28; i = i + 7) {
     const shift = lo >>> i;
     const hasNext = !(shift >>> 7 == 0 && hi == 0);
     const byte = (hasNext ? shift | 128 : shift) & 255;
@@ -79,13 +83,13 @@ function varint64write(lo, hi, bytes) {
       return;
     }
   }
-  const splitBits = lo >>> 28 & 15 | (hi & 7) << 4;
+  const splitBits = ((lo >>> 28) & 15) | ((hi & 7) << 4);
   const hasMoreBits = !(hi >> 3 == 0);
   bytes.push((hasMoreBits ? splitBits | 128 : splitBits) & 255);
   if (!hasMoreBits) {
     return;
   }
-  for (let i = 3;i < 31; i = i + 7) {
+  for (let i = 3; i < 31; i = i + 7) {
     const shift = hi >>> i;
     const hasNext = !(shift >>> 7 == 0);
     const byte = (hasNext ? shift | 128 : shift) & 255;
@@ -94,7 +98,7 @@ function varint64write(lo, hi, bytes) {
       return;
     }
   }
-  bytes.push(hi >>> 31 & 1);
+  bytes.push((hi >>> 31) & 1);
 }
 var TWO_PWR_32_DBL = 4294967296;
 function int64FromString(dec) {
@@ -110,7 +114,7 @@ function int64FromString(dec) {
     highBits *= base;
     lowBits = lowBits * base + digit1e6;
     if (lowBits >= TWO_PWR_32_DBL) {
-      highBits = highBits + (lowBits / TWO_PWR_32_DBL | 0);
+      highBits = highBits + ((lowBits / TWO_PWR_32_DBL) | 0);
       lowBits = lowBits % TWO_PWR_32_DBL;
     }
   }
@@ -135,8 +139,8 @@ function uInt64ToString(lo, hi) {
     return String(TWO_PWR_32_DBL * hi + lo);
   }
   const low = lo & 16777215;
-  const mid = (lo >>> 24 | hi << 8) & 16777215;
-  const high = hi >> 16 & 65535;
+  const mid = ((lo >>> 24) | (hi << 8)) & 16777215;
+  const high = (hi >> 16) & 65535;
   let digitA = low + mid * 6777216 + high * 6710656;
   let digitB = mid + high * 8147497;
   let digitC = high * 2;
@@ -149,7 +153,11 @@ function uInt64ToString(lo, hi) {
     digitC += Math.floor(digitB / base);
     digitB %= base;
   }
-  return digitC.toString() + decimalFrom1e7WithLeadingZeros(digitB) + decimalFrom1e7WithLeadingZeros(digitA);
+  return (
+    digitC.toString() +
+    decimalFrom1e7WithLeadingZeros(digitB) +
+    decimalFrom1e7WithLeadingZeros(digitA)
+  );
 }
 function toUnsigned(lo, hi) {
   return { lo: lo >>> 0, hi: hi >>> 0 };
@@ -173,13 +181,13 @@ var decimalFrom1e7WithLeadingZeros = (digit1e7) => {
 function varint32write(value, bytes) {
   if (value >= 0) {
     while (value > 127) {
-      bytes.push(value & 127 | 128);
+      bytes.push((value & 127) | 128);
       value = value >>> 7;
     }
     bytes.push(value);
   } else {
-    for (let i = 0;i < 9; i++) {
-      bytes.push(value & 127 | 128);
+    for (let i = 0; i < 9; i++) {
+      bytes.push((value & 127) | 128);
       value = value >> 7;
     }
     bytes.push(1);
@@ -212,17 +220,24 @@ function varint32read() {
   }
   b = this.buf[this.pos++];
   result |= (b & 15) << 28;
-  for (let readBytes = 5;(b & 128) !== 0 && readBytes < 10; readBytes++)
+  for (let readBytes = 5; (b & 128) !== 0 && readBytes < 10; readBytes++)
     b = this.buf[this.pos++];
-  if ((b & 128) != 0)
-    throw new Error("invalid varint");
+  if ((b & 128) != 0) throw new Error("invalid varint");
   this.assertBounds();
   return result >>> 0;
 }
 var protoInt64 = /* @__PURE__ */ makeInt64Support();
 function makeInt64Support() {
   const dv = new DataView(new ArrayBuffer(8));
-  const ok = typeof BigInt === "function" && typeof dv.getBigInt64 === "function" && typeof dv.getBigUint64 === "function" && typeof dv.setBigInt64 === "function" && typeof dv.setBigUint64 === "function" && (typeof process != "object" || typeof process.env != "object" || process.env.BUF_BIGINT_DISABLE !== "1");
+  const ok =
+    typeof BigInt === "function" &&
+    typeof dv.getBigInt64 === "function" &&
+    typeof dv.getBigUint64 === "function" &&
+    typeof dv.setBigInt64 === "function" &&
+    typeof dv.setBigUint64 === "function" &&
+    (typeof process != "object" ||
+      typeof process.env != "object" ||
+      process.env.BUF_BIGINT_DISABLE !== "1");
   if (ok) {
     const MIN = BigInt("-9223372036854775808");
     const MAX = BigInt("9223372036854775807");
@@ -249,14 +264,14 @@ function makeInt64Support() {
         dv.setBigInt64(0, this.parse(value), true);
         return {
           lo: dv.getInt32(0, true),
-          hi: dv.getInt32(4, true)
+          hi: dv.getInt32(4, true),
         };
       },
       uEnc(value) {
         dv.setBigInt64(0, this.uParse(value), true);
         return {
           lo: dv.getInt32(0, true),
-          hi: dv.getInt32(4, true)
+          hi: dv.getInt32(4, true),
         };
       },
       dec(lo, hi) {
@@ -268,7 +283,7 @@ function makeInt64Support() {
         dv.setInt32(0, lo, true);
         dv.setInt32(4, hi, true);
         return dv.getBigUint64(0, true);
-      }
+      },
     };
   }
   return {
@@ -307,7 +322,7 @@ function makeInt64Support() {
     },
     uDec(lo, hi) {
       return uInt64ToString(lo, hi);
-    }
+    },
   };
 }
 function assertInt64String(value) {
@@ -368,7 +383,10 @@ function unsafeIsSet(target, field) {
     return target[field.oneof.localName].case === name;
   }
   if (field.presence != IMPLICIT) {
-    return target[name] !== undefined && Object.prototype.hasOwnProperty.call(target, name);
+    return (
+      target[name] !== undefined &&
+      Object.prototype.hasOwnProperty.call(target, name)
+    );
   }
   switch (field.fieldKind) {
     case "list":
@@ -383,7 +401,10 @@ function unsafeIsSet(target, field) {
   throw new Error("message field with implicit presence");
 }
 function unsafeIsSetExplicit(target, localName) {
-  return Object.prototype.hasOwnProperty.call(target, localName) && target[localName] !== undefined;
+  return (
+    Object.prototype.hasOwnProperty.call(target, localName) &&
+    target[localName] !== undefined
+  );
 }
 function unsafeGet(target, field) {
   if (field.oneof) {
@@ -399,7 +420,7 @@ function unsafeSet(target, field, value) {
   if (field.oneof) {
     target[field.oneof.localName] = {
       case: field.localName,
-      value
+      value,
     };
   } else {
     target[field.localName] = value;
@@ -436,11 +457,30 @@ function isObject(arg) {
 }
 function isReflectList(arg, field) {
   var _a, _b, _c, _d;
-  if (isObject(arg) && unsafeLocal in arg && "add" in arg && "field" in arg && typeof arg.field == "function") {
+  if (
+    isObject(arg) &&
+    unsafeLocal in arg &&
+    "add" in arg &&
+    "field" in arg &&
+    typeof arg.field == "function"
+  ) {
     if (field !== undefined) {
       const a = field;
       const b = arg.field();
-      return a.listKind == b.listKind && a.scalar === b.scalar && ((_a = a.message) === null || _a === undefined ? undefined : _a.typeName) === ((_b = b.message) === null || _b === undefined ? undefined : _b.typeName) && ((_c = a.enum) === null || _c === undefined ? undefined : _c.typeName) === ((_d = b.enum) === null || _d === undefined ? undefined : _d.typeName);
+      return (
+        a.listKind == b.listKind &&
+        a.scalar === b.scalar &&
+        ((_a = a.message) === null || _a === undefined
+          ? undefined
+          : _a.typeName) ===
+          ((_b = b.message) === null || _b === undefined
+            ? undefined
+            : _b.typeName) &&
+        ((_c = a.enum) === null || _c === undefined
+          ? undefined
+          : _c.typeName) ===
+          ((_d = b.enum) === null || _d === undefined ? undefined : _d.typeName)
+      );
     }
     return true;
   }
@@ -448,37 +488,74 @@ function isReflectList(arg, field) {
 }
 function isReflectMap(arg, field) {
   var _a, _b, _c, _d;
-  if (isObject(arg) && unsafeLocal in arg && "has" in arg && "field" in arg && typeof arg.field == "function") {
+  if (
+    isObject(arg) &&
+    unsafeLocal in arg &&
+    "has" in arg &&
+    "field" in arg &&
+    typeof arg.field == "function"
+  ) {
     if (field !== undefined) {
-      const a = field, b = arg.field();
-      return a.mapKey === b.mapKey && a.mapKind == b.mapKind && a.scalar === b.scalar && ((_a = a.message) === null || _a === undefined ? undefined : _a.typeName) === ((_b = b.message) === null || _b === undefined ? undefined : _b.typeName) && ((_c = a.enum) === null || _c === undefined ? undefined : _c.typeName) === ((_d = b.enum) === null || _d === undefined ? undefined : _d.typeName);
+      const a = field,
+        b = arg.field();
+      return (
+        a.mapKey === b.mapKey &&
+        a.mapKind == b.mapKind &&
+        a.scalar === b.scalar &&
+        ((_a = a.message) === null || _a === undefined
+          ? undefined
+          : _a.typeName) ===
+          ((_b = b.message) === null || _b === undefined
+            ? undefined
+            : _b.typeName) &&
+        ((_c = a.enum) === null || _c === undefined
+          ? undefined
+          : _c.typeName) ===
+          ((_d = b.enum) === null || _d === undefined ? undefined : _d.typeName)
+      );
     }
     return true;
   }
   return false;
 }
 function isReflectMessage(arg, messageDesc) {
-  return isObject(arg) && unsafeLocal in arg && "desc" in arg && isObject(arg.desc) && arg.desc.kind === "message" && (messageDesc === undefined || arg.desc.typeName == messageDesc.typeName);
+  return (
+    isObject(arg) &&
+    unsafeLocal in arg &&
+    "desc" in arg &&
+    isObject(arg.desc) &&
+    arg.desc.kind === "message" &&
+    (messageDesc === undefined || arg.desc.typeName == messageDesc.typeName)
+  );
 }
 function isWrapper(arg) {
   return isWrapperTypeName(arg.$typeName);
 }
 function isWrapperDesc(messageDesc) {
   const f = messageDesc.fields[0];
-  return isWrapperTypeName(messageDesc.typeName) && f !== undefined && f.fieldKind == "scalar" && f.name == "value" && f.number == 1;
+  return (
+    isWrapperTypeName(messageDesc.typeName) &&
+    f !== undefined &&
+    f.fieldKind == "scalar" &&
+    f.name == "value" &&
+    f.number == 1
+  );
 }
 function isWrapperTypeName(name) {
-  return name.startsWith("google.protobuf.") && [
-    "DoubleValue",
-    "FloatValue",
-    "Int64Value",
-    "UInt64Value",
-    "Int32Value",
-    "UInt32Value",
-    "BoolValue",
-    "StringValue",
-    "BytesValue"
-  ].includes(name.substring(16));
+  return (
+    name.startsWith("google.protobuf.") &&
+    [
+      "DoubleValue",
+      "FloatValue",
+      "Int64Value",
+      "UInt64Value",
+      "Int32Value",
+      "UInt32Value",
+      "BoolValue",
+      "StringValue",
+      "BytesValue",
+    ].includes(name.substring(16))
+  );
 }
 var EDITION_PROTO3 = 999;
 var EDITION_PROTO2 = 998;
@@ -557,11 +634,18 @@ function initList(field, value) {
   return value;
 }
 function toMessage(field, value) {
-  if (field.fieldKind == "message" && !field.oneof && isWrapperDesc(field.message)) {
+  if (
+    field.fieldKind == "message" &&
+    !field.oneof &&
+    isWrapperDesc(field.message)
+  ) {
     return initScalar(field.message.fields[0], value);
   }
   if (isObject(value)) {
-    if (field.message.typeName == "google.protobuf.Struct" && field.parent.typeName !== "google.protobuf.Value") {
+    if (
+      field.message.typeName == "google.protobuf.Struct" &&
+      field.parent.typeName !== "google.protobuf.Value"
+    ) {
       return value;
     }
     if (!isMessage(value, field.message)) {
@@ -581,12 +665,12 @@ function convertObjectValues(obj, fn) {
   return ret;
 }
 var tokenZeroMessageField = Symbol();
-var messagePrototypes = new WeakMap;
+var messagePrototypes = new WeakMap();
 function createZeroMessage(desc) {
   let msg;
   if (!needsPrototypeChain(desc)) {
     msg = {
-      $typeName: desc.typeName
+      $typeName: desc.typeName,
     };
     for (const member of desc.members) {
       if (member.kind == "oneof" || member.presence == IMPLICIT2) {
@@ -601,7 +685,7 @@ function createZeroMessage(desc) {
       ({ prototype, members } = cached);
     } else {
       prototype = {};
-      members = new Set;
+      members = new Set();
       for (const member of desc.members) {
         if (member.kind == "oneof") {
           continue;
@@ -645,7 +729,9 @@ function needsPrototypeChain(desc) {
     case EDITION_PROTO2:
       return true;
     default:
-      return desc.fields.some((f) => f.presence != IMPLICIT2 && f.fieldKind != "message" && !f.oneof);
+      return desc.fields.some(
+        (f) => f.presence != IMPLICIT2 && f.fieldKind != "message" && !f.oneof,
+      );
   }
 }
 function createZeroField(field) {
@@ -663,14 +749,18 @@ function createZeroField(field) {
   }
   const defaultValue = field.getDefaultValue();
   if (defaultValue !== undefined) {
-    return field.fieldKind == "scalar" && field.longAsString ? defaultValue.toString() : defaultValue;
+    return field.fieldKind == "scalar" && field.longAsString
+      ? defaultValue.toString()
+      : defaultValue;
   }
-  return field.fieldKind == "scalar" ? scalarZeroValue(field.scalar, field.longAsString) : field.enum.values[0].number;
+  return field.fieldKind == "scalar"
+    ? scalarZeroValue(field.scalar, field.longAsString)
+    : field.enum.values[0].number;
 }
 var errorNames = [
   "FieldValueInvalidError",
   "FieldListRangeError",
-  "ForeignFieldError"
+  "ForeignFieldError",
 ];
 
 class FieldError extends Error {
@@ -681,13 +771,18 @@ class FieldError extends Error {
   }
 }
 function isFieldError(arg) {
-  return arg instanceof Error && errorNames.includes(arg.name) && "field" in arg && typeof arg.field == "function";
+  return (
+    arg instanceof Error &&
+    errorNames.includes(arg.name) &&
+    "field" in arg &&
+    typeof arg.field == "function"
+  );
 }
 var symbol = Symbol.for("@bufbuild/protobuf/text-encoding");
 function getTextEncoding() {
   if (globalThis[symbol] == undefined) {
-    const te = new globalThis.TextEncoder;
-    const td = new globalThis.TextDecoder;
+    const te = new globalThis.TextEncoder();
+    const td = new globalThis.TextDecoder();
     globalThis[symbol] = {
       encodeUtf8(text) {
         return te.encode(text);
@@ -702,19 +797,19 @@ function getTextEncoding() {
         } catch (_) {
           return false;
         }
-      }
+      },
     };
   }
   return globalThis[symbol];
 }
 var WireType;
-(function(WireType2) {
-  WireType2[WireType2["Varint"] = 0] = "Varint";
-  WireType2[WireType2["Bit64"] = 1] = "Bit64";
-  WireType2[WireType2["LengthDelimited"] = 2] = "LengthDelimited";
-  WireType2[WireType2["StartGroup"] = 3] = "StartGroup";
-  WireType2[WireType2["EndGroup"] = 4] = "EndGroup";
-  WireType2[WireType2["Bit32"] = 5] = "Bit32";
+(function (WireType2) {
+  WireType2[(WireType2["Varint"] = 0)] = "Varint";
+  WireType2[(WireType2["Bit64"] = 1)] = "Bit64";
+  WireType2[(WireType2["LengthDelimited"] = 2)] = "LengthDelimited";
+  WireType2[(WireType2["StartGroup"] = 3)] = "StartGroup";
+  WireType2[(WireType2["EndGroup"] = 4)] = "EndGroup";
+  WireType2[(WireType2["Bit32"] = 5)] = "Bit32";
 })(WireType || (WireType = {}));
 var FLOAT32_MAX = 340282346638528860000000000000000000000;
 var FLOAT32_MIN = -340282346638528860000000000000000000000;
@@ -735,11 +830,10 @@ class BinaryWriter {
       this.buf = [];
     }
     let len = 0;
-    for (let i = 0;i < this.chunks.length; i++)
-      len += this.chunks[i].length;
+    for (let i = 0; i < this.chunks.length; i++) len += this.chunks[i].length;
     let bytes = new Uint8Array(len);
     let offset = 0;
-    for (let i = 0;i < this.chunks.length; i++) {
+    for (let i = 0; i < this.chunks.length; i++) {
       bytes.set(this.chunks[i], offset);
       offset += this.chunks[i].length;
     }
@@ -755,15 +849,14 @@ class BinaryWriter {
   join() {
     let chunk = this.finish();
     let prev = this.stack.pop();
-    if (!prev)
-      throw new Error("invalid state, fork stack empty");
+    if (!prev) throw new Error("invalid state, fork stack empty");
     this.chunks = prev.chunks;
     this.buf = prev.buf;
     this.uint32(chunk.byteLength);
     return this.raw(chunk);
   }
   tag(fieldNo, type) {
-    return this.uint32((fieldNo << 3 | type) >>> 0);
+    return this.uint32(((fieldNo << 3) | type) >>> 0);
   }
   raw(chunk) {
     if (this.buf.length) {
@@ -776,7 +869,7 @@ class BinaryWriter {
   uint32(value) {
     assertUInt32(value);
     while (value > 127) {
-      this.buf.push(value & 127 | 128);
+      this.buf.push((value & 127) | 128);
       value = value >>> 7;
     }
     this.buf.push(value);
@@ -825,18 +918,22 @@ class BinaryWriter {
   }
   sint32(value) {
     assertInt32(value);
-    value = (value << 1 ^ value >> 31) >>> 0;
+    value = ((value << 1) ^ (value >> 31)) >>> 0;
     varint32write(value, this.buf);
     return this;
   }
   sfixed64(value) {
-    let chunk = new Uint8Array(8), view = new DataView(chunk.buffer), tc = protoInt64.enc(value);
+    let chunk = new Uint8Array(8),
+      view = new DataView(chunk.buffer),
+      tc = protoInt64.enc(value);
     view.setInt32(0, tc.lo, true);
     view.setInt32(4, tc.hi, true);
     return this.raw(chunk);
   }
   fixed64(value) {
-    let chunk = new Uint8Array(8), view = new DataView(chunk.buffer), tc = protoInt64.uEnc(value);
+    let chunk = new Uint8Array(8),
+      view = new DataView(chunk.buffer),
+      tc = protoInt64.uEnc(value);
     view.setInt32(0, tc.lo, true);
     view.setInt32(4, tc.hi, true);
     return this.raw(chunk);
@@ -847,7 +944,10 @@ class BinaryWriter {
     return this;
   }
   sint64(value) {
-    const tc = protoInt64.enc(value), sign = tc.hi >> 31, lo = tc.lo << 1 ^ sign, hi = (tc.hi << 1 | tc.lo >>> 31) ^ sign;
+    const tc = protoInt64.enc(value),
+      sign = tc.hi >> 31,
+      lo = (tc.lo << 1) ^ sign,
+      hi = ((tc.hi << 1) | (tc.lo >>> 31)) ^ sign;
     varint64write(lo, hi, this.buf);
     return this;
   }
@@ -869,9 +969,13 @@ class BinaryReader {
     this.view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
   }
   tag() {
-    let tag = this.uint32(), fieldNo = tag >>> 3, wireType = tag & 7;
+    let tag = this.uint32(),
+      fieldNo = tag >>> 3,
+      wireType = tag & 7;
     if (fieldNo <= 0 || wireType < 0 || wireType > 5)
-      throw new Error("illegal tag: field no " + fieldNo + " wire type " + wireType);
+      throw new Error(
+        "illegal tag: field no " + fieldNo + " wire type " + wireType,
+      );
     return [fieldNo, wireType];
   }
   skip(wireType, fieldNo) {
@@ -890,7 +994,7 @@ class BinaryReader {
         this.pos += len;
         break;
       case WireType.StartGroup:
-        for (;; ) {
+        for (;;) {
           const [fn, wt] = this.tag();
           if (wt === WireType.EndGroup) {
             if (fieldNo !== undefined && fn !== fieldNo) {
@@ -908,15 +1012,14 @@ class BinaryReader {
     return this.buf.subarray(start, this.pos);
   }
   assertBounds() {
-    if (this.pos > this.len)
-      throw new RangeError("premature EOF");
+    if (this.pos > this.len) throw new RangeError("premature EOF");
   }
   int32() {
     return this.uint32() | 0;
   }
   sint32() {
     let zze = this.uint32();
-    return zze >>> 1 ^ -(zze & 1);
+    return (zze >>> 1) ^ -(zze & 1);
   }
   int64() {
     return protoInt64.dec(...this.varint64());
@@ -927,8 +1030,8 @@ class BinaryReader {
   sint64() {
     let [lo, hi] = this.varint64();
     let s = -(lo & 1);
-    lo = (lo >>> 1 | (hi & 1) << 31) ^ s;
-    hi = hi >>> 1 ^ s;
+    lo = ((lo >>> 1) | ((hi & 1) << 31)) ^ s;
+    hi = (hi >>> 1) ^ s;
     return protoInt64.dec(lo, hi);
   }
   bool() {
@@ -954,7 +1057,8 @@ class BinaryReader {
     return this.view.getFloat64((this.pos += 8) - 8, true);
   }
   bytes() {
-    let len = this.uint32(), start = this.pos;
+    let len = this.uint32(),
+      start = this.pos;
     this.pos += len;
     this.assertBounds();
     return this.buf.subarray(start, start + len);
@@ -995,7 +1099,12 @@ function assertFloat32(arg) {
     throw new Error("invalid float32: " + arg);
 }
 function checkField(field, value) {
-  const check = field.fieldKind == "list" ? isReflectList(value, field) : field.fieldKind == "map" ? isReflectMap(value, field) : checkSingular(field, value);
+  const check =
+    field.fieldKind == "list"
+      ? isReflectList(value, field)
+      : field.fieldKind == "map"
+        ? isReflectMap(value, field)
+        : checkSingular(field, value);
   if (check === true) {
     return;
   }
@@ -1016,18 +1125,27 @@ function checkField(field, value) {
 function checkListItem(field, index, value) {
   const check = checkSingular(field, value);
   if (check !== true) {
-    return new FieldError(field, `list item #${index + 1}: ${reasonSingular(field, value, check)}`);
+    return new FieldError(
+      field,
+      `list item #${index + 1}: ${reasonSingular(field, value, check)}`,
+    );
   }
   return;
 }
 function checkMapEntry(field, key, value) {
   const checkKey = checkScalarValue(key, field.mapKey);
   if (checkKey !== true) {
-    return new FieldError(field, `invalid map key: ${reasonSingular({ scalar: field.mapKey }, key, checkKey)}`);
+    return new FieldError(
+      field,
+      `invalid map key: ${reasonSingular({ scalar: field.mapKey }, key, checkKey)}`,
+    );
   }
   const checkVal = checkSingular(field, value);
   if (checkVal !== true) {
-    return new FieldError(field, `map entry ${formatVal(key)}: ${reasonSingular(field, value, checkVal)}`);
+    return new FieldError(
+      field,
+      `map entry ${formatVal(key)}: ${reasonSingular(field, value, checkVal)}`,
+    );
   }
   return;
 }
@@ -1089,7 +1207,11 @@ function checkScalarValue(value, scalar) {
     case ScalarType.INT64:
     case ScalarType.SFIXED64:
     case ScalarType.SINT64:
-      if (typeof value == "bigint" || typeof value == "number" || typeof value == "string" && value.length > 0) {
+      if (
+        typeof value == "bigint" ||
+        typeof value == "number" ||
+        (typeof value == "string" && value.length > 0)
+      ) {
         try {
           protoInt64.parse(value);
           return true;
@@ -1100,7 +1222,11 @@ function checkScalarValue(value, scalar) {
       return false;
     case ScalarType.FIXED64:
     case ScalarType.UINT64:
-      if (typeof value == "bigint" || typeof value == "number" || typeof value == "string" && value.length > 0) {
+      if (
+        typeof value == "bigint" ||
+        typeof value == "number" ||
+        (typeof value == "string" && value.length > 0)
+      ) {
         try {
           protoInt64.uParse(value);
           return true;
@@ -1112,7 +1238,8 @@ function checkScalarValue(value, scalar) {
   }
 }
 function reasonSingular(field, val, details) {
-  details = typeof details == "string" ? `: ${details}` : `, got ${formatVal(val)}`;
+  details =
+    typeof details == "string" ? `: ${details}` : `, got ${formatVal(val)}`;
   if (field.scalar !== undefined) {
     return `expected ${scalarTypeDescription(field.scalar)}` + details;
   }
@@ -1147,7 +1274,7 @@ function formatVal(val) {
       }
       return "object";
     case "string":
-      return val.length > 30 ? "string" : `"${val.split('"').join("\\\"")}"`;
+      return val.length > 30 ? "string" : `"${val.split('"').join('\\"')}"`;
     case "boolean":
       return String(val);
     case "number":
@@ -1216,21 +1343,28 @@ function reflect(messageDesc, message, check = true) {
 class ReflectMessageImpl {
   get sortedFields() {
     var _a;
-    return (_a = this._sortedFields) !== null && _a !== undefined ? _a : this._sortedFields = this.desc.fields.concat().sort((a, b) => a.number - b.number);
+    return (_a = this._sortedFields) !== null && _a !== undefined
+      ? _a
+      : (this._sortedFields = this.desc.fields
+          .concat()
+          .sort((a, b) => a.number - b.number));
   }
   constructor(messageDesc, message, check = true) {
-    this.lists = new Map;
-    this.maps = new Map;
+    this.lists = new Map();
+    this.maps = new Map();
     this.check = check;
     this.desc = messageDesc;
-    this.message = this[unsafeLocal] = message !== null && message !== undefined ? message : create(messageDesc);
+    this.message = this[unsafeLocal] =
+      message !== null && message !== undefined ? message : create(messageDesc);
     this.fields = messageDesc.fields;
     this.oneofs = messageDesc.oneofs;
     this.members = messageDesc.members;
   }
   findNumber(number) {
     if (!this._fieldsByNumber) {
-      this._fieldsByNumber = new Map(this.desc.fields.map((f) => [f.number, f]));
+      this._fieldsByNumber = new Map(
+        this.desc.fields.map((f) => [f.number, f]),
+      );
     }
     return this._fieldsByNumber.get(number);
   }
@@ -1253,21 +1387,31 @@ class ReflectMessageImpl {
       case "list":
         let list = this.lists.get(field);
         if (!list || list[unsafeLocal] !== value) {
-          this.lists.set(field, list = new ReflectListImpl(field, value, this.check));
+          this.lists.set(
+            field,
+            (list = new ReflectListImpl(field, value, this.check)),
+          );
         }
         return list;
       case "map":
         let map = this.maps.get(field);
         if (!map || map[unsafeLocal] !== value) {
-          this.maps.set(field, map = new ReflectMapImpl(field, value, this.check));
+          this.maps.set(
+            field,
+            (map = new ReflectMapImpl(field, value, this.check)),
+          );
         }
         return map;
       case "message":
         return messageToReflect(field, value, this.check);
       case "scalar":
-        return value === undefined ? scalarZeroValue(field.scalar, false) : longToReflect(field, value);
+        return value === undefined
+          ? scalarZeroValue(field.scalar, false)
+          : longToReflect(field, value);
       case "enum":
-        return value !== null && value !== undefined ? value : field.enum.values[0].number;
+        return value !== null && value !== undefined
+          ? value
+          : field.enum.values[0].number;
     }
   }
   set(field, value) {
@@ -1297,7 +1441,11 @@ class ReflectMessageImpl {
 }
 function assertOwn(owner, member) {
   if (member.parent.typeName !== owner.$typeName) {
-    throw new FieldError(member, `cannot use ${member.toString()} with message ${owner.$typeName}`, "ForeignFieldError");
+    throw new FieldError(
+      member,
+      `cannot use ${member.toString()} with message ${owner.$typeName}`,
+      "ForeignFieldError",
+    );
   }
 }
 
@@ -1315,11 +1463,16 @@ class ReflectListImpl {
   }
   get(index) {
     const item = this._arr[index];
-    return item === undefined ? undefined : listItemToReflect(this._field, item, this.check);
+    return item === undefined
+      ? undefined
+      : listItemToReflect(this._field, item, this.check);
   }
   set(index, item) {
     if (index < 0 || index >= this._arr.length) {
-      throw new FieldError(this._field, `list item #${index + 1}: out of range`);
+      throw new FieldError(
+        this._field,
+        `list item #${index + 1}: out of range`,
+      );
     }
     if (this.check) {
       const err = checkListItem(this._field, index, item);
@@ -1354,7 +1507,7 @@ class ReflectListImpl {
     }
   }
   *entries() {
-    for (let i = 0;i < this._arr.length; i++) {
+    for (let i = 0; i < this._arr.length; i++) {
       yield [i, listItemToReflect(this._field, this._arr[i], this.check)];
     }
   }
@@ -1362,7 +1515,8 @@ class ReflectListImpl {
 
 class ReflectMapImpl {
   constructor(field, unsafeInput, check = true) {
-    this.obj = this[unsafeLocal] = unsafeInput !== null && unsafeInput !== undefined ? unsafeInput : {};
+    this.obj = this[unsafeLocal] =
+      unsafeInput !== null && unsafeInput !== undefined ? unsafeInput : {};
     this.check = check;
     this._field = field;
   }
@@ -1411,7 +1565,7 @@ class ReflectMapImpl {
     for (const objEntry of Object.entries(this.obj)) {
       yield [
         mapKeyToReflect(objEntry[0], this._field.mapKey),
-        mapValueToReflect(this._field, objEntry[1], this.check)
+        mapValueToReflect(this._field, objEntry[1], this.check),
       ];
     }
   }
@@ -1436,22 +1590,37 @@ function messageToLocal(field, value) {
   if (!isReflectMessage(value)) {
     return value;
   }
-  if (isWrapper(value.message) && !field.oneof && field.fieldKind == "message") {
+  if (
+    isWrapper(value.message) &&
+    !field.oneof &&
+    field.fieldKind == "message"
+  ) {
     return value.message.value;
   }
-  if (value.desc.typeName == "google.protobuf.Struct" && field.parent.typeName != "google.protobuf.Value") {
+  if (
+    value.desc.typeName == "google.protobuf.Struct" &&
+    field.parent.typeName != "google.protobuf.Value"
+  ) {
     return wktStructToLocal(value.message);
   }
   return value.message;
 }
 function messageToReflect(field, value, check) {
   if (value !== undefined) {
-    if (isWrapperDesc(field.message) && !field.oneof && field.fieldKind == "message") {
+    if (
+      isWrapperDesc(field.message) &&
+      !field.oneof &&
+      field.fieldKind == "message"
+    ) {
       value = {
         $typeName: field.message.typeName,
-        value: longToReflect(field.message.fields[0], value)
+        value: longToReflect(field.message.fields[0], value),
       };
-    } else if (field.message.typeName == "google.protobuf.Struct" && field.parent.typeName != "google.protobuf.Value" && isObject(value)) {
+    } else if (
+      field.message.typeName == "google.protobuf.Struct" &&
+      field.parent.typeName != "google.protobuf.Value" &&
+      isObject(value)
+    ) {
       value = wktStructToReflect(value);
     }
   }
@@ -1526,13 +1695,21 @@ function longToReflect(field, value) {
     case ScalarType.INT64:
     case ScalarType.SFIXED64:
     case ScalarType.SINT64:
-      if ("longAsString" in field && field.longAsString && typeof value == "string") {
+      if (
+        "longAsString" in field &&
+        field.longAsString &&
+        typeof value == "string"
+      ) {
         value = protoInt64.parse(value);
       }
       break;
     case ScalarType.FIXED64:
     case ScalarType.UINT64:
-      if ("longAsString" in field && field.longAsString && typeof value == "string") {
+      if (
+        "longAsString" in field &&
+        field.longAsString &&
+        typeof value == "string"
+      ) {
         value = protoInt64.uParse(value);
       }
       break;
@@ -1564,7 +1741,7 @@ function longToLocal(field, value) {
 function wktStructToReflect(json) {
   const struct = {
     $typeName: "google.protobuf.Struct",
-    fields: {}
+    fields: {},
   };
   if (isObject(json)) {
     for (const [k, v] of Object.entries(json)) {
@@ -1596,7 +1773,7 @@ function wktValueToLocal(val) {
 function wktValueToReflect(json) {
   const value = {
     $typeName: "google.protobuf.Value",
-    kind: { case: undefined }
+    kind: { case: undefined },
   };
   switch (typeof json) {
     case "number":
@@ -1615,7 +1792,7 @@ function wktValueToReflect(json) {
       } else if (Array.isArray(json)) {
         const listValue = {
           $typeName: "google.protobuf.ListValue",
-          values: []
+          values: [],
         };
         if (Array.isArray(json)) {
           for (const e of json) {
@@ -1624,12 +1801,12 @@ function wktValueToReflect(json) {
         }
         value.kind = {
           case: "listValue",
-          value: listValue
+          value: listValue,
         };
       } else {
         value.kind = {
           case: "structValue",
-          value: wktStructToReflect(json)
+          value: wktStructToReflect(json),
         };
       }
       break;
@@ -1638,13 +1815,15 @@ function wktValueToReflect(json) {
 }
 function base64Decode(base64Str) {
   const table = getDecodeTable();
-  let es = base64Str.length * 3 / 4;
-  if (base64Str[base64Str.length - 2] == "=")
-    es -= 2;
-  else if (base64Str[base64Str.length - 1] == "=")
-    es -= 1;
-  let bytes = new Uint8Array(es), bytePos = 0, groupPos = 0, b, p = 0;
-  for (let i = 0;i < base64Str.length; i++) {
+  let es = (base64Str.length * 3) / 4;
+  if (base64Str[base64Str.length - 2] == "=") es -= 2;
+  else if (base64Str[base64Str.length - 1] == "=") es -= 1;
+  let bytes = new Uint8Array(es),
+    bytePos = 0,
+    groupPos = 0,
+    b,
+    p = 0;
+  for (let i = 0; i < base64Str.length; i++) {
     b = table[base64Str.charCodeAt(i)];
     if (b === undefined) {
       switch (base64Str[i]) {
@@ -1666,23 +1845,22 @@ function base64Decode(base64Str) {
         groupPos = 1;
         break;
       case 1:
-        bytes[bytePos++] = p << 2 | (b & 48) >> 4;
+        bytes[bytePos++] = (p << 2) | ((b & 48) >> 4);
         p = b;
         groupPos = 2;
         break;
       case 2:
-        bytes[bytePos++] = (p & 15) << 4 | (b & 60) >> 2;
+        bytes[bytePos++] = ((p & 15) << 4) | ((b & 60) >> 2);
         p = b;
         groupPos = 3;
         break;
       case 3:
-        bytes[bytePos++] = (p & 3) << 6 | b;
+        bytes[bytePos++] = ((p & 3) << 6) | b;
         groupPos = 0;
         break;
     }
   }
-  if (groupPos == 1)
-    throw Error("invalid base64 string");
+  if (groupPos == 1) throw Error("invalid base64 string");
   return bytes.subarray(0, bytePos);
 }
 var encodeTableStd;
@@ -1690,7 +1868,10 @@ var encodeTableUrl;
 var decodeTable;
 function getEncodeTable(encoding) {
   if (!encodeTableStd) {
-    encodeTableStd = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split("");
+    encodeTableStd =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(
+        "",
+      );
     encodeTableUrl = encodeTableStd.slice(0, -2).concat("-", "_");
   }
   return encoding == "url" ? encodeTableUrl : encodeTableStd;
@@ -1699,7 +1880,7 @@ function getDecodeTable() {
   if (!decodeTable) {
     decodeTable = [];
     const encodeTable = getEncodeTable("std");
-    for (let i = 0;i < encodeTable.length; i++)
+    for (let i = 0; i < encodeTable.length; i++)
       decodeTable[encodeTable[i].charCodeAt(0)] = i;
     decodeTable[45] = encodeTable.indexOf("+");
     decodeTable[95] = encodeTable.indexOf("/");
@@ -1709,7 +1890,7 @@ function getDecodeTable() {
 function protoCamelCase(snakeCase) {
   let capNext = false;
   const b = [];
-  for (let i = 0;i < snakeCase.length; i++) {
+  for (let i = 0; i < snakeCase.length; i++) {
     let c = snakeCase.charAt(i);
     switch (c) {
       case "_":
@@ -1743,7 +1924,7 @@ var reservedObjectProperties = new Set([
   "constructor",
   "toString",
   "toJSON",
-  "valueOf"
+  "valueOf",
 ]);
 function safeObjectProperty(name) {
   return reservedObjectProperties.has(name) ? name + "$" : name;
@@ -1770,7 +1951,9 @@ function parseTextFormatScalarValue(type, value) {
     case ScalarType.BYTES: {
       const u = unescapeBytesDefaultValue(value);
       if (u === false) {
-        throw new Error(`cannot parse ${ScalarType[type]} default value: ${value}`);
+        throw new Error(
+          `cannot parse ${ScalarType[type]} default value: ${value}`,
+        );
       }
       return u;
     }
@@ -1823,7 +2006,7 @@ function unescapeBytesDefaultValue(str) {
         return r;
       }
       return false;
-    }
+    },
   };
   while (input.next()) {
     switch (input.c) {
@@ -1911,7 +2094,16 @@ function unescapeBytesDefaultValue(str) {
               const view = new DataView(chunk.buffer);
               view.setInt32(0, tc.lo, true);
               view.setInt32(4, tc.hi, true);
-              b.push(chunk[0], chunk[1], chunk[2], chunk[3], chunk[4], chunk[5], chunk[6], chunk[7]);
+              b.push(
+                chunk[0],
+                chunk[1],
+                chunk[2],
+                chunk[3],
+                chunk[4],
+                chunk[5],
+                chunk[6],
+                chunk[7],
+              );
               break;
             }
           }
@@ -1949,14 +2141,17 @@ function createFileRegistry(...args) {
   if (!args.length) {
     return registry;
   }
-  if ("$typeName" in args[0] && args[0].$typeName == "google.protobuf.FileDescriptorSet") {
+  if (
+    "$typeName" in args[0] &&
+    args[0].$typeName == "google.protobuf.FileDescriptorSet"
+  ) {
     for (const file of args[0].file) {
       addFile(file, registry);
     }
     return registry;
   }
   if ("$typeName" in args[0]) {
-    let recurseDeps = function(file) {
+    let recurseDeps = function (file) {
       const deps = [];
       for (const protoFileName of file.dependency) {
         if (registry.getFile(protoFileName) != null) {
@@ -1967,7 +2162,9 @@ function createFileRegistry(...args) {
         }
         const dep = resolve(protoFileName);
         if (!dep) {
-          throw new Error(`Unable to resolve ${protoFileName}, imported by ${file.name}`);
+          throw new Error(
+            `Unable to resolve ${protoFileName}, imported by ${file.name}`,
+          );
         }
         if ("kind" in dep) {
           registry.addFile(dep, false, true);
@@ -1980,7 +2177,7 @@ function createFileRegistry(...args) {
     };
     const input = args[0];
     const resolve = args[1];
-    const seen = new Set;
+    const seen = new Set();
     for (const file of [input, ...recurseDeps(input)].reverse()) {
       addFile(file, registry);
     }
@@ -1994,9 +2191,9 @@ function createFileRegistry(...args) {
   return registry;
 }
 function createBaseRegistry() {
-  const types = new Map;
-  const extendees = new Map;
-  const files = new Map;
+  const types = new Map();
+  const extendees = new Map();
+  const files = new Map();
   return {
     kind: "registry",
     types,
@@ -2024,7 +2221,7 @@ function createBaseRegistry() {
       if (desc.kind == "extension") {
         let numberToExt = extendees.get(desc.extendee.typeName);
         if (!numberToExt) {
-          extendees.set(desc.extendee.typeName, numberToExt = new Map);
+          extendees.set(desc.extendee.typeName, (numberToExt = new Map()));
         }
         numberToExt.set(desc.number, desc);
       }
@@ -2038,24 +2235,35 @@ function createBaseRegistry() {
     },
     getMessage(typeName) {
       const t = types.get(typeName);
-      return (t === null || t === undefined ? undefined : t.kind) == "message" ? t : undefined;
+      return (t === null || t === undefined ? undefined : t.kind) == "message"
+        ? t
+        : undefined;
     },
     getEnum(typeName) {
       const t = types.get(typeName);
-      return (t === null || t === undefined ? undefined : t.kind) == "enum" ? t : undefined;
+      return (t === null || t === undefined ? undefined : t.kind) == "enum"
+        ? t
+        : undefined;
     },
     getExtension(typeName) {
       const t = types.get(typeName);
-      return (t === null || t === undefined ? undefined : t.kind) == "extension" ? t : undefined;
+      return (t === null || t === undefined ? undefined : t.kind) == "extension"
+        ? t
+        : undefined;
     },
     getExtensionFor(extendee, no) {
       var _a;
-      return (_a = extendees.get(extendee.typeName)) === null || _a === undefined ? undefined : _a.get(no);
+      return (_a = extendees.get(extendee.typeName)) === null ||
+        _a === undefined
+        ? undefined
+        : _a.get(no);
     },
     getService(typeName) {
       const t = types.get(typeName);
-      return (t === null || t === undefined ? undefined : t.kind) == "service" ? t : undefined;
-    }
+      return (t === null || t === undefined ? undefined : t.kind) == "service"
+        ? t
+        : undefined;
+    },
   };
 }
 var EDITION_PROTO22 = 998;
@@ -2084,7 +2292,7 @@ var featureDefaults = {
     messageEncoding: 1,
     jsonFormat: 2,
     enforceNamingStyle: 2,
-    defaultSymbolVisibility: 1
+    defaultSymbolVisibility: 1,
   },
   999: {
     fieldPresence: 2,
@@ -2094,7 +2302,7 @@ var featureDefaults = {
     messageEncoding: 1,
     jsonFormat: 1,
     enforceNamingStyle: 2,
-    defaultSymbolVisibility: 1
+    defaultSymbolVisibility: 1,
   },
   1000: {
     fieldPresence: 1,
@@ -2104,15 +2312,21 @@ var featureDefaults = {
     messageEncoding: 1,
     jsonFormat: 1,
     enforceNamingStyle: 2,
-    defaultSymbolVisibility: 1
-  }
+    defaultSymbolVisibility: 1,
+  },
 };
 function addFile(proto, reg) {
   var _a, _b;
   const file = {
     kind: "file",
     proto,
-    deprecated: (_b = (_a = proto.options) === null || _a === undefined ? undefined : _a.deprecated) !== null && _b !== undefined ? _b : false,
+    deprecated:
+      (_b =
+        (_a = proto.options) === null || _a === undefined
+          ? undefined
+          : _a.deprecated) !== null && _b !== undefined
+        ? _b
+        : false,
     edition: getFileEdition(proto),
     name: proto.name.replace(/\.proto$/, ""),
     dependencies: findFileDependencies(proto, reg),
@@ -2122,18 +2336,22 @@ function addFile(proto, reg) {
     services: [],
     toString() {
       return `file ${proto.name}`;
-    }
+    },
   };
-  const mapEntriesStore = new Map;
+  const mapEntriesStore = new Map();
   const mapEntries = {
     get(typeName) {
       return mapEntriesStore.get(typeName);
     },
     add(desc) {
       var _a2;
-      assert(((_a2 = desc.proto.options) === null || _a2 === undefined ? undefined : _a2.mapEntry) === true);
+      assert(
+        ((_a2 = desc.proto.options) === null || _a2 === undefined
+          ? undefined
+          : _a2.mapEntry) === true,
+      );
       mapEntriesStore.set(desc.typeName, desc);
-    }
+    },
   };
   for (const enumProto of proto.enumType) {
     addEnum(enumProto, file, undefined, reg);
@@ -2176,8 +2394,10 @@ function addExtensions(desc, reg) {
   }
 }
 function addFields(message, reg, mapEntries) {
-  const allOneofs = message.proto.oneofDecl.map((proto) => newOneof(proto, message));
-  const oneofsSeen = new Set;
+  const allOneofs = message.proto.oneofDecl.map((proto) =>
+    newOneof(proto, message),
+  );
+  const oneofsSeen = new Set();
   for (const proto of message.proto.field) {
     const oneof = findOneof(proto, allOneofs);
     const field = newField(proto, message, reg, oneof, mapEntries);
@@ -2206,7 +2426,13 @@ function addEnum(proto, file, parent, reg) {
   const desc = {
     kind: "enum",
     proto,
-    deprecated: (_b = (_a = proto.options) === null || _a === undefined ? undefined : _a.deprecated) !== null && _b !== undefined ? _b : false,
+    deprecated:
+      (_b =
+        (_a = proto.options) === null || _a === undefined
+          ? undefined
+          : _a.deprecated) !== null && _b !== undefined
+        ? _b
+        : false,
     file,
     parent,
     open: true,
@@ -2217,33 +2443,57 @@ function addEnum(proto, file, parent, reg) {
     sharedPrefix,
     toString() {
       return `enum ${this.typeName}`;
-    }
+    },
   };
   desc.open = isEnumOpen(desc);
   reg.add(desc);
   for (const p of proto.value) {
     const name = p.name;
-    desc.values.push(desc.value[p.number] = {
-      kind: "enum_value",
-      proto: p,
-      deprecated: (_d = (_c = p.options) === null || _c === undefined ? undefined : _c.deprecated) !== null && _d !== undefined ? _d : false,
-      parent: desc,
-      name,
-      localName: safeObjectProperty(sharedPrefix == undefined ? name : name.substring(sharedPrefix.length)),
-      number: p.number,
-      toString() {
-        return `enum value ${desc.typeName}.${name}`;
-      }
-    });
+    desc.values.push(
+      (desc.value[p.number] = {
+        kind: "enum_value",
+        proto: p,
+        deprecated:
+          (_d =
+            (_c = p.options) === null || _c === undefined
+              ? undefined
+              : _c.deprecated) !== null && _d !== undefined
+            ? _d
+            : false,
+        parent: desc,
+        name,
+        localName: safeObjectProperty(
+          sharedPrefix == undefined
+            ? name
+            : name.substring(sharedPrefix.length),
+        ),
+        number: p.number,
+        toString() {
+          return `enum value ${desc.typeName}.${name}`;
+        },
+      }),
+    );
   }
-  ((_e = parent === null || parent === undefined ? undefined : parent.nestedEnums) !== null && _e !== undefined ? _e : file.enums).push(desc);
+  ((_e =
+    parent === null || parent === undefined
+      ? undefined
+      : parent.nestedEnums) !== null && _e !== undefined
+    ? _e
+    : file.enums
+  ).push(desc);
 }
 function addMessage(proto, file, parent, reg, mapEntries) {
   var _a, _b, _c, _d;
   const desc = {
     kind: "message",
     proto,
-    deprecated: (_b = (_a = proto.options) === null || _a === undefined ? undefined : _a.deprecated) !== null && _b !== undefined ? _b : false,
+    deprecated:
+      (_b =
+        (_a = proto.options) === null || _a === undefined
+          ? undefined
+          : _a.deprecated) !== null && _b !== undefined
+        ? _b
+        : false,
     file,
     parent,
     name: proto.name,
@@ -2257,12 +2507,22 @@ function addMessage(proto, file, parent, reg, mapEntries) {
     nestedExtensions: [],
     toString() {
       return `message ${this.typeName}`;
-    }
+    },
   };
-  if (((_c = proto.options) === null || _c === undefined ? undefined : _c.mapEntry) === true) {
+  if (
+    ((_c = proto.options) === null || _c === undefined
+      ? undefined
+      : _c.mapEntry) === true
+  ) {
     mapEntries.add(desc);
   } else {
-    ((_d = parent === null || parent === undefined ? undefined : parent.nestedMessages) !== null && _d !== undefined ? _d : file.messages).push(desc);
+    ((_d =
+      parent === null || parent === undefined
+        ? undefined
+        : parent.nestedMessages) !== null && _d !== undefined
+      ? _d
+      : file.messages
+    ).push(desc);
     reg.add(desc);
   }
   for (const enumProto of proto.enumType) {
@@ -2277,7 +2537,13 @@ function addService(proto, file, reg) {
   const desc = {
     kind: "service",
     proto,
-    deprecated: (_b = (_a = proto.options) === null || _a === undefined ? undefined : _a.deprecated) !== null && _b !== undefined ? _b : false,
+    deprecated:
+      (_b =
+        (_a = proto.options) === null || _a === undefined
+          ? undefined
+          : _a.deprecated) !== null && _b !== undefined
+        ? _b
+        : false,
     file,
     name: proto.name,
     typeName: makeTypeName(proto, undefined, file),
@@ -2285,7 +2551,7 @@ function addService(proto, file, reg) {
     method: {},
     toString() {
       return `service ${this.typeName}`;
-    }
+    },
   };
   file.services.push(desc);
   reg.add(desc);
@@ -2309,23 +2575,45 @@ function newMethod(proto, parent, reg) {
   }
   const input = reg.getMessage(trimLeadingDot(proto.inputType));
   const output = reg.getMessage(trimLeadingDot(proto.outputType));
-  assert(input, `invalid MethodDescriptorProto: input_type ${proto.inputType} not found`);
-  assert(output, `invalid MethodDescriptorProto: output_type ${proto.inputType} not found`);
+  assert(
+    input,
+    `invalid MethodDescriptorProto: input_type ${proto.inputType} not found`,
+  );
+  assert(
+    output,
+    `invalid MethodDescriptorProto: output_type ${proto.inputType} not found`,
+  );
   const name = proto.name;
   return {
     kind: "rpc",
     proto,
-    deprecated: (_b = (_a = proto.options) === null || _a === undefined ? undefined : _a.deprecated) !== null && _b !== undefined ? _b : false,
+    deprecated:
+      (_b =
+        (_a = proto.options) === null || _a === undefined
+          ? undefined
+          : _a.deprecated) !== null && _b !== undefined
+        ? _b
+        : false,
     parent,
     name,
-    localName: safeObjectProperty(name.length ? safeObjectProperty(name[0].toLowerCase() + name.substring(1)) : name),
+    localName: safeObjectProperty(
+      name.length
+        ? safeObjectProperty(name[0].toLowerCase() + name.substring(1))
+        : name,
+    ),
     methodKind,
     input,
     output,
-    idempotency: (_d = (_c = proto.options) === null || _c === undefined ? undefined : _c.idempotencyLevel) !== null && _d !== undefined ? _d : IDEMPOTENCY_UNKNOWN,
+    idempotency:
+      (_d =
+        (_c = proto.options) === null || _c === undefined
+          ? undefined
+          : _c.idempotencyLevel) !== null && _d !== undefined
+        ? _d
+        : IDEMPOTENCY_UNKNOWN,
     toString() {
       return `rpc ${parent.typeName}.${name}`;
-    }
+    },
   };
 }
 function newOneof(proto, parent) {
@@ -2339,7 +2627,7 @@ function newOneof(proto, parent) {
     localName: safeObjectProperty(protoCamelCase(proto.name)),
     toString() {
       return `oneof ${parent.typeName}.${this.name}`;
-    }
+    },
   };
 }
 function newField(proto, parentOrFile, reg, oneof, mapEntries) {
@@ -2348,7 +2636,13 @@ function newField(proto, parentOrFile, reg, oneof, mapEntries) {
   const field = {
     kind: "field",
     proto,
-    deprecated: (_b = (_a = proto.options) === null || _a === undefined ? undefined : _a.deprecated) !== null && _b !== undefined ? _b : false,
+    deprecated:
+      (_b =
+        (_a = proto.options) === null || _a === undefined
+          ? undefined
+          : _a.deprecated) !== null && _b !== undefined
+        ? _b
+        : false,
     name: proto.name,
     number: proto.number,
     scalar: undefined,
@@ -2361,7 +2655,7 @@ function newField(proto, parentOrFile, reg, oneof, mapEntries) {
     delimitedEncoding: undefined,
     packed: undefined,
     longAsString: false,
-    getDefaultValue: undefined
+    getDefaultValue: undefined,
   };
   if (isExtension) {
     const file = parentOrFile.kind == "file" ? parentOrFile : parentOrFile.file;
@@ -2375,22 +2669,33 @@ function newField(proto, parentOrFile, reg, oneof, mapEntries) {
     field.jsonName = `[${typeName}]`;
     field.toString = () => `extension ${typeName}`;
     const extendee = reg.getMessage(trimLeadingDot(proto.extendee));
-    assert(extendee, `invalid FieldDescriptorProto: extendee ${proto.extendee} not found`);
+    assert(
+      extendee,
+      `invalid FieldDescriptorProto: extendee ${proto.extendee} not found`,
+    );
     field.extendee = extendee;
   } else {
     const parent = parentOrFile;
     assert(parent.kind == "message");
     field.parent = parent;
     field.oneof = oneof;
-    field.localName = oneof ? protoCamelCase(proto.name) : safeObjectProperty(protoCamelCase(proto.name));
+    field.localName = oneof
+      ? protoCamelCase(proto.name)
+      : safeObjectProperty(protoCamelCase(proto.name));
     field.jsonName = proto.jsonName;
     field.toString = () => `field ${parent.typeName}.${proto.name}`;
   }
   const label = proto.label;
   const type = proto.type;
-  const jstype = (_c = proto.options) === null || _c === undefined ? undefined : _c.jstype;
+  const jstype =
+    (_c = proto.options) === null || _c === undefined ? undefined : _c.jstype;
   if (label === LABEL_REPEATED) {
-    const mapEntry = type == TYPE_MESSAGE ? mapEntries === null || mapEntries === undefined ? undefined : mapEntries.get(trimLeadingDot(proto.typeName)) : undefined;
+    const mapEntry =
+      type == TYPE_MESSAGE
+        ? mapEntries === null || mapEntries === undefined
+          ? undefined
+          : mapEntries.get(trimLeadingDot(proto.typeName))
+        : undefined;
     if (mapEntry) {
       field.fieldKind = "map";
       const { key, value } = findMapEntryFields(mapEntry);
@@ -2430,7 +2735,10 @@ function newField(proto, parentOrFile, reg, oneof, mapEntries) {
     case TYPE_GROUP:
       field.fieldKind = "message";
       field.message = reg.getMessage(trimLeadingDot(proto.typeName));
-      assert(field.message, `invalid FieldDescriptorProto: type_name ${proto.typeName} not found`);
+      assert(
+        field.message,
+        `invalid FieldDescriptorProto: type_name ${proto.typeName} not found`,
+      );
       field.delimitedEncoding = isDelimitedEncoding(proto, parentOrFile);
       field.getDefaultValue = () => {
         return;
@@ -2438,11 +2746,16 @@ function newField(proto, parentOrFile, reg, oneof, mapEntries) {
       break;
     case TYPE_ENUM: {
       const enumeration = reg.getEnum(trimLeadingDot(proto.typeName));
-      assert(enumeration !== undefined, `invalid FieldDescriptorProto: type_name ${proto.typeName} not found`);
+      assert(
+        enumeration !== undefined,
+        `invalid FieldDescriptorProto: type_name ${proto.typeName} not found`,
+      );
       field.fieldKind = "enum";
       field.enum = reg.getEnum(trimLeadingDot(proto.typeName));
       field.getDefaultValue = () => {
-        return unsafeIsSetExplicit(proto, "defaultValue") ? parseTextFormatEnumValue(enumeration, proto.defaultValue) : undefined;
+        return unsafeIsSetExplicit(proto, "defaultValue")
+          ? parseTextFormatEnumValue(enumeration, proto.defaultValue)
+          : undefined;
       };
       break;
     }
@@ -2451,7 +2764,9 @@ function newField(proto, parentOrFile, reg, oneof, mapEntries) {
       field.scalar = type;
       field.longAsString = jstype == JS_STRING;
       field.getDefaultValue = () => {
-        return unsafeIsSetExplicit(proto, "defaultValue") ? parseTextFormatScalarValue(type, proto.defaultValue) : undefined;
+        return unsafeIsSetExplicit(proto, "defaultValue")
+          ? parseTextFormatScalarValue(type, proto.defaultValue)
+          : undefined;
       };
       break;
     }
@@ -2500,7 +2815,9 @@ function findEnumSharedPrefix(enumName, values) {
   return prefix;
 }
 function camelToSnakeCase(camel) {
-  return (camel.substring(0, 1) + camel.substring(1).replace(/[A-Z]/g, (c) => "_" + c)).toLowerCase();
+  return (
+    camel.substring(0, 1) + camel.substring(1).replace(/[A-Z]/g, (c) => "_" + c)
+  ).toLowerCase();
 }
 function makeTypeName(proto, parent, file) {
   let typeName;
@@ -2524,7 +2841,10 @@ function findOneof(proto, allOneofs) {
     return;
   }
   const oneof = allOneofs[proto.oneofIndex];
-  assert(oneof, `invalid FieldDescriptorProto: oneof #${proto.oneofIndex} for field #${proto.number} not found`);
+  assert(
+    oneof,
+    `invalid FieldDescriptorProto: oneof #${proto.oneofIndex} for field #${proto.number} not found`,
+  );
   return oneof;
 }
 function getFieldPresence(proto, oneof, isExtension, parent) {
@@ -2541,7 +2861,10 @@ function getFieldPresence(proto, oneof, isExtension, parent) {
     return EXPLICIT;
   }
   const resolved = resolveFeature("fieldPresence", { proto, parent });
-  if (resolved == IMPLICIT3 && (proto.type == TYPE_MESSAGE || proto.type == TYPE_GROUP)) {
+  if (
+    resolved == IMPLICIT3 &&
+    (proto.type == TYPE_MESSAGE || proto.type == TYPE_GROUP)
+  ) {
     return EXPLICIT;
   }
   return resolved;
@@ -2561,36 +2884,57 @@ function isPackedField(proto, parent) {
   if (o && unsafeIsSetExplicit(o, "packed")) {
     return o.packed;
   }
-  return PACKED == resolveFeature("repeatedFieldEncoding", {
-    proto,
-    parent
-  });
+  return (
+    PACKED ==
+    resolveFeature("repeatedFieldEncoding", {
+      proto,
+      parent,
+    })
+  );
 }
 function findMapEntryFields(mapEntry) {
   const key = mapEntry.fields.find((f) => f.number === 1);
   const value = mapEntry.fields.find((f) => f.number === 2);
-  assert(key && key.fieldKind == "scalar" && key.scalar != ScalarType.BYTES && key.scalar != ScalarType.FLOAT && key.scalar != ScalarType.DOUBLE && value && value.fieldKind != "list" && value.fieldKind != "map");
+  assert(
+    key &&
+      key.fieldKind == "scalar" &&
+      key.scalar != ScalarType.BYTES &&
+      key.scalar != ScalarType.FLOAT &&
+      key.scalar != ScalarType.DOUBLE &&
+      value &&
+      value.fieldKind != "list" &&
+      value.fieldKind != "map",
+  );
   return { key, value };
 }
 function isEnumOpen(desc) {
   var _a;
-  return OPEN == resolveFeature("enumType", {
-    proto: desc.proto,
-    parent: (_a = desc.parent) !== null && _a !== undefined ? _a : desc.file
-  });
+  return (
+    OPEN ==
+    resolveFeature("enumType", {
+      proto: desc.proto,
+      parent: (_a = desc.parent) !== null && _a !== undefined ? _a : desc.file,
+    })
+  );
 }
 function isDelimitedEncoding(proto, parent) {
   if (proto.type == TYPE_GROUP) {
     return true;
   }
-  return DELIMITED == resolveFeature("messageEncoding", {
-    proto,
-    parent
-  });
+  return (
+    DELIMITED ==
+    resolveFeature("messageEncoding", {
+      proto,
+      parent,
+    })
+  );
 }
 function resolveFeature(name, ref) {
   var _a, _b;
-  const featureSet = (_a = ref.proto.options) === null || _a === undefined ? undefined : _a.features;
+  const featureSet =
+    (_a = ref.proto.options) === null || _a === undefined
+      ? undefined
+      : _a.features;
   if (featureSet) {
     const val = featureSet[name];
     if (val != 0) {
@@ -2599,7 +2943,10 @@ function resolveFeature(name, ref) {
   }
   if ("kind" in ref) {
     if (ref.kind == "message") {
-      return resolveFeature(name, (_b = ref.parent) !== null && _b !== undefined ? _b : ref.file);
+      return resolveFeature(
+        name,
+        (_b = ref.parent) !== null && _b !== undefined ? _b : ref.file,
+      );
     }
     const editionDefaults = featureDefaults[ref.edition];
     if (!editionDefaults) {
@@ -2625,26 +2972,75 @@ function boot(boot2) {
 function bootFileDescriptorProto(init) {
   const proto = Object.create({
     syntax: "",
-    edition: 0
+    edition: 0,
   });
-  return Object.assign(proto, Object.assign(Object.assign({ $typeName: "google.protobuf.FileDescriptorProto", dependency: [], publicDependency: [], weakDependency: [], optionDependency: [], service: [], extension: [] }, init), { messageType: init.messageType.map(bootDescriptorProto), enumType: init.enumType.map(bootEnumDescriptorProto) }));
+  return Object.assign(
+    proto,
+    Object.assign(
+      Object.assign(
+        {
+          $typeName: "google.protobuf.FileDescriptorProto",
+          dependency: [],
+          publicDependency: [],
+          weakDependency: [],
+          optionDependency: [],
+          service: [],
+          extension: [],
+        },
+        init,
+      ),
+      {
+        messageType: init.messageType.map(bootDescriptorProto),
+        enumType: init.enumType.map(bootEnumDescriptorProto),
+      },
+    ),
+  );
 }
 function bootDescriptorProto(init) {
   var _a, _b, _c, _d, _e, _f, _g, _h;
   const proto = Object.create({
-    visibility: 0
+    visibility: 0,
   });
   return Object.assign(proto, {
     $typeName: "google.protobuf.DescriptorProto",
     name: init.name,
-    field: (_b = (_a = init.field) === null || _a === undefined ? undefined : _a.map(bootFieldDescriptorProto)) !== null && _b !== undefined ? _b : [],
+    field:
+      (_b =
+        (_a = init.field) === null || _a === undefined
+          ? undefined
+          : _a.map(bootFieldDescriptorProto)) !== null && _b !== undefined
+        ? _b
+        : [],
     extension: [],
-    nestedType: (_d = (_c = init.nestedType) === null || _c === undefined ? undefined : _c.map(bootDescriptorProto)) !== null && _d !== undefined ? _d : [],
-    enumType: (_f = (_e = init.enumType) === null || _e === undefined ? undefined : _e.map(bootEnumDescriptorProto)) !== null && _f !== undefined ? _f : [],
-    extensionRange: (_h = (_g = init.extensionRange) === null || _g === undefined ? undefined : _g.map((e) => Object.assign({ $typeName: "google.protobuf.DescriptorProto.ExtensionRange" }, e))) !== null && _h !== undefined ? _h : [],
+    nestedType:
+      (_d =
+        (_c = init.nestedType) === null || _c === undefined
+          ? undefined
+          : _c.map(bootDescriptorProto)) !== null && _d !== undefined
+        ? _d
+        : [],
+    enumType:
+      (_f =
+        (_e = init.enumType) === null || _e === undefined
+          ? undefined
+          : _e.map(bootEnumDescriptorProto)) !== null && _f !== undefined
+        ? _f
+        : [],
+    extensionRange:
+      (_h =
+        (_g = init.extensionRange) === null || _g === undefined
+          ? undefined
+          : _g.map((e) =>
+              Object.assign(
+                { $typeName: "google.protobuf.DescriptorProto.ExtensionRange" },
+                e,
+              ),
+            )) !== null && _h !== undefined
+        ? _h
+        : [],
     oneofDecl: [],
     reservedRange: [],
-    reservedName: []
+    reservedName: [],
   });
 }
 function bootFieldDescriptorProto(init) {
@@ -2655,9 +3051,18 @@ function bootFieldDescriptorProto(init) {
     defaultValue: "",
     oneofIndex: 0,
     jsonName: "",
-    proto3Optional: false
+    proto3Optional: false,
   });
-  return Object.assign(proto, Object.assign(Object.assign({ $typeName: "google.protobuf.FieldDescriptorProto" }, init), { options: init.options ? bootFieldOptions(init.options) : undefined }));
+  return Object.assign(
+    proto,
+    Object.assign(
+      Object.assign(
+        { $typeName: "google.protobuf.FieldDescriptorProto" },
+        init,
+      ),
+      { options: init.options ? bootFieldOptions(init.options) : undefined },
+    ),
+  );
 }
 function bootFieldOptions(init) {
   var _a, _b, _c;
@@ -2670,197 +3075,1675 @@ function bootFieldOptions(init) {
     deprecated: false,
     weak: false,
     debugRedact: false,
-    retention: 0
+    retention: 0,
   });
-  return Object.assign(proto, Object.assign(Object.assign({ $typeName: "google.protobuf.FieldOptions" }, init), { targets: (_a = init.targets) !== null && _a !== undefined ? _a : [], editionDefaults: (_c = (_b = init.editionDefaults) === null || _b === undefined ? undefined : _b.map((e) => Object.assign({ $typeName: "google.protobuf.FieldOptions.EditionDefault" }, e))) !== null && _c !== undefined ? _c : [], uninterpretedOption: [] }));
+  return Object.assign(
+    proto,
+    Object.assign(
+      Object.assign({ $typeName: "google.protobuf.FieldOptions" }, init),
+      {
+        targets: (_a = init.targets) !== null && _a !== undefined ? _a : [],
+        editionDefaults:
+          (_c =
+            (_b = init.editionDefaults) === null || _b === undefined
+              ? undefined
+              : _b.map((e) =>
+                  Object.assign(
+                    {
+                      $typeName: "google.protobuf.FieldOptions.EditionDefault",
+                    },
+                    e,
+                  ),
+                )) !== null && _c !== undefined
+            ? _c
+            : [],
+        uninterpretedOption: [],
+      },
+    ),
+  );
 }
 function bootEnumDescriptorProto(init) {
   const proto = Object.create({
-    visibility: 0
+    visibility: 0,
   });
   return Object.assign(proto, {
     $typeName: "google.protobuf.EnumDescriptorProto",
     name: init.name,
     reservedName: [],
     reservedRange: [],
-    value: init.value.map((e) => Object.assign({ $typeName: "google.protobuf.EnumValueDescriptorProto" }, e))
+    value: init.value.map((e) =>
+      Object.assign(
+        { $typeName: "google.protobuf.EnumValueDescriptorProto" },
+        e,
+      ),
+    ),
   });
 }
 function messageDesc(file, path, ...paths) {
-  return paths.reduce((acc, cur) => acc.nestedMessages[cur], file.messages[path]);
+  return paths.reduce(
+    (acc, cur) => acc.nestedMessages[cur],
+    file.messages[path],
+  );
 }
-var file_google_protobuf_descriptor = /* @__PURE__ */ boot({ name: "google/protobuf/descriptor.proto", package: "google.protobuf", messageType: [{ name: "FileDescriptorSet", field: [{ name: "file", number: 1, type: 11, label: 3, typeName: ".google.protobuf.FileDescriptorProto" }], extensionRange: [{ start: 536000000, end: 536000001 }] }, { name: "FileDescriptorProto", field: [{ name: "name", number: 1, type: 9, label: 1 }, { name: "package", number: 2, type: 9, label: 1 }, { name: "dependency", number: 3, type: 9, label: 3 }, { name: "public_dependency", number: 10, type: 5, label: 3 }, { name: "weak_dependency", number: 11, type: 5, label: 3 }, { name: "option_dependency", number: 15, type: 9, label: 3 }, { name: "message_type", number: 4, type: 11, label: 3, typeName: ".google.protobuf.DescriptorProto" }, { name: "enum_type", number: 5, type: 11, label: 3, typeName: ".google.protobuf.EnumDescriptorProto" }, { name: "service", number: 6, type: 11, label: 3, typeName: ".google.protobuf.ServiceDescriptorProto" }, { name: "extension", number: 7, type: 11, label: 3, typeName: ".google.protobuf.FieldDescriptorProto" }, { name: "options", number: 8, type: 11, label: 1, typeName: ".google.protobuf.FileOptions" }, { name: "source_code_info", number: 9, type: 11, label: 1, typeName: ".google.protobuf.SourceCodeInfo" }, { name: "syntax", number: 12, type: 9, label: 1 }, { name: "edition", number: 14, type: 14, label: 1, typeName: ".google.protobuf.Edition" }] }, { name: "DescriptorProto", field: [{ name: "name", number: 1, type: 9, label: 1 }, { name: "field", number: 2, type: 11, label: 3, typeName: ".google.protobuf.FieldDescriptorProto" }, { name: "extension", number: 6, type: 11, label: 3, typeName: ".google.protobuf.FieldDescriptorProto" }, { name: "nested_type", number: 3, type: 11, label: 3, typeName: ".google.protobuf.DescriptorProto" }, { name: "enum_type", number: 4, type: 11, label: 3, typeName: ".google.protobuf.EnumDescriptorProto" }, { name: "extension_range", number: 5, type: 11, label: 3, typeName: ".google.protobuf.DescriptorProto.ExtensionRange" }, { name: "oneof_decl", number: 8, type: 11, label: 3, typeName: ".google.protobuf.OneofDescriptorProto" }, { name: "options", number: 7, type: 11, label: 1, typeName: ".google.protobuf.MessageOptions" }, { name: "reserved_range", number: 9, type: 11, label: 3, typeName: ".google.protobuf.DescriptorProto.ReservedRange" }, { name: "reserved_name", number: 10, type: 9, label: 3 }, { name: "visibility", number: 11, type: 14, label: 1, typeName: ".google.protobuf.SymbolVisibility" }], nestedType: [{ name: "ExtensionRange", field: [{ name: "start", number: 1, type: 5, label: 1 }, { name: "end", number: 2, type: 5, label: 1 }, { name: "options", number: 3, type: 11, label: 1, typeName: ".google.protobuf.ExtensionRangeOptions" }] }, { name: "ReservedRange", field: [{ name: "start", number: 1, type: 5, label: 1 }, { name: "end", number: 2, type: 5, label: 1 }] }] }, { name: "ExtensionRangeOptions", field: [{ name: "uninterpreted_option", number: 999, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption" }, { name: "declaration", number: 2, type: 11, label: 3, typeName: ".google.protobuf.ExtensionRangeOptions.Declaration", options: { retention: 2 } }, { name: "features", number: 50, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "verification", number: 3, type: 14, label: 1, typeName: ".google.protobuf.ExtensionRangeOptions.VerificationState", defaultValue: "UNVERIFIED", options: { retention: 2 } }], nestedType: [{ name: "Declaration", field: [{ name: "number", number: 1, type: 5, label: 1 }, { name: "full_name", number: 2, type: 9, label: 1 }, { name: "type", number: 3, type: 9, label: 1 }, { name: "reserved", number: 5, type: 8, label: 1 }, { name: "repeated", number: 6, type: 8, label: 1 }] }], enumType: [{ name: "VerificationState", value: [{ name: "DECLARATION", number: 0 }, { name: "UNVERIFIED", number: 1 }] }], extensionRange: [{ start: 1000, end: 536870912 }] }, { name: "FieldDescriptorProto", field: [{ name: "name", number: 1, type: 9, label: 1 }, { name: "number", number: 3, type: 5, label: 1 }, { name: "label", number: 4, type: 14, label: 1, typeName: ".google.protobuf.FieldDescriptorProto.Label" }, { name: "type", number: 5, type: 14, label: 1, typeName: ".google.protobuf.FieldDescriptorProto.Type" }, { name: "type_name", number: 6, type: 9, label: 1 }, { name: "extendee", number: 2, type: 9, label: 1 }, { name: "default_value", number: 7, type: 9, label: 1 }, { name: "oneof_index", number: 9, type: 5, label: 1 }, { name: "json_name", number: 10, type: 9, label: 1 }, { name: "options", number: 8, type: 11, label: 1, typeName: ".google.protobuf.FieldOptions" }, { name: "proto3_optional", number: 17, type: 8, label: 1 }], enumType: [{ name: "Type", value: [{ name: "TYPE_DOUBLE", number: 1 }, { name: "TYPE_FLOAT", number: 2 }, { name: "TYPE_INT64", number: 3 }, { name: "TYPE_UINT64", number: 4 }, { name: "TYPE_INT32", number: 5 }, { name: "TYPE_FIXED64", number: 6 }, { name: "TYPE_FIXED32", number: 7 }, { name: "TYPE_BOOL", number: 8 }, { name: "TYPE_STRING", number: 9 }, { name: "TYPE_GROUP", number: 10 }, { name: "TYPE_MESSAGE", number: 11 }, { name: "TYPE_BYTES", number: 12 }, { name: "TYPE_UINT32", number: 13 }, { name: "TYPE_ENUM", number: 14 }, { name: "TYPE_SFIXED32", number: 15 }, { name: "TYPE_SFIXED64", number: 16 }, { name: "TYPE_SINT32", number: 17 }, { name: "TYPE_SINT64", number: 18 }] }, { name: "Label", value: [{ name: "LABEL_OPTIONAL", number: 1 }, { name: "LABEL_REPEATED", number: 3 }, { name: "LABEL_REQUIRED", number: 2 }] }] }, { name: "OneofDescriptorProto", field: [{ name: "name", number: 1, type: 9, label: 1 }, { name: "options", number: 2, type: 11, label: 1, typeName: ".google.protobuf.OneofOptions" }] }, { name: "EnumDescriptorProto", field: [{ name: "name", number: 1, type: 9, label: 1 }, { name: "value", number: 2, type: 11, label: 3, typeName: ".google.protobuf.EnumValueDescriptorProto" }, { name: "options", number: 3, type: 11, label: 1, typeName: ".google.protobuf.EnumOptions" }, { name: "reserved_range", number: 4, type: 11, label: 3, typeName: ".google.protobuf.EnumDescriptorProto.EnumReservedRange" }, { name: "reserved_name", number: 5, type: 9, label: 3 }, { name: "visibility", number: 6, type: 14, label: 1, typeName: ".google.protobuf.SymbolVisibility" }], nestedType: [{ name: "EnumReservedRange", field: [{ name: "start", number: 1, type: 5, label: 1 }, { name: "end", number: 2, type: 5, label: 1 }] }] }, { name: "EnumValueDescriptorProto", field: [{ name: "name", number: 1, type: 9, label: 1 }, { name: "number", number: 2, type: 5, label: 1 }, { name: "options", number: 3, type: 11, label: 1, typeName: ".google.protobuf.EnumValueOptions" }] }, { name: "ServiceDescriptorProto", field: [{ name: "name", number: 1, type: 9, label: 1 }, { name: "method", number: 2, type: 11, label: 3, typeName: ".google.protobuf.MethodDescriptorProto" }, { name: "options", number: 3, type: 11, label: 1, typeName: ".google.protobuf.ServiceOptions" }] }, { name: "MethodDescriptorProto", field: [{ name: "name", number: 1, type: 9, label: 1 }, { name: "input_type", number: 2, type: 9, label: 1 }, { name: "output_type", number: 3, type: 9, label: 1 }, { name: "options", number: 4, type: 11, label: 1, typeName: ".google.protobuf.MethodOptions" }, { name: "client_streaming", number: 5, type: 8, label: 1, defaultValue: "false" }, { name: "server_streaming", number: 6, type: 8, label: 1, defaultValue: "false" }] }, { name: "FileOptions", field: [{ name: "java_package", number: 1, type: 9, label: 1 }, { name: "java_outer_classname", number: 8, type: 9, label: 1 }, { name: "java_multiple_files", number: 10, type: 8, label: 1, defaultValue: "false" }, { name: "java_generate_equals_and_hash", number: 20, type: 8, label: 1, options: { deprecated: true } }, { name: "java_string_check_utf8", number: 27, type: 8, label: 1, defaultValue: "false" }, { name: "optimize_for", number: 9, type: 14, label: 1, typeName: ".google.protobuf.FileOptions.OptimizeMode", defaultValue: "SPEED" }, { name: "go_package", number: 11, type: 9, label: 1 }, { name: "cc_generic_services", number: 16, type: 8, label: 1, defaultValue: "false" }, { name: "java_generic_services", number: 17, type: 8, label: 1, defaultValue: "false" }, { name: "py_generic_services", number: 18, type: 8, label: 1, defaultValue: "false" }, { name: "deprecated", number: 23, type: 8, label: 1, defaultValue: "false" }, { name: "cc_enable_arenas", number: 31, type: 8, label: 1, defaultValue: "true" }, { name: "objc_class_prefix", number: 36, type: 9, label: 1 }, { name: "csharp_namespace", number: 37, type: 9, label: 1 }, { name: "swift_prefix", number: 39, type: 9, label: 1 }, { name: "php_class_prefix", number: 40, type: 9, label: 1 }, { name: "php_namespace", number: 41, type: 9, label: 1 }, { name: "php_metadata_namespace", number: 44, type: 9, label: 1 }, { name: "ruby_package", number: 45, type: 9, label: 1 }, { name: "features", number: 50, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "uninterpreted_option", number: 999, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption" }], enumType: [{ name: "OptimizeMode", value: [{ name: "SPEED", number: 1 }, { name: "CODE_SIZE", number: 2 }, { name: "LITE_RUNTIME", number: 3 }] }], extensionRange: [{ start: 1000, end: 536870912 }] }, { name: "MessageOptions", field: [{ name: "message_set_wire_format", number: 1, type: 8, label: 1, defaultValue: "false" }, { name: "no_standard_descriptor_accessor", number: 2, type: 8, label: 1, defaultValue: "false" }, { name: "deprecated", number: 3, type: 8, label: 1, defaultValue: "false" }, { name: "map_entry", number: 7, type: 8, label: 1 }, { name: "deprecated_legacy_json_field_conflicts", number: 11, type: 8, label: 1, options: { deprecated: true } }, { name: "features", number: 12, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "uninterpreted_option", number: 999, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption" }], extensionRange: [{ start: 1000, end: 536870912 }] }, { name: "FieldOptions", field: [{ name: "ctype", number: 1, type: 14, label: 1, typeName: ".google.protobuf.FieldOptions.CType", defaultValue: "STRING" }, { name: "packed", number: 2, type: 8, label: 1 }, { name: "jstype", number: 6, type: 14, label: 1, typeName: ".google.protobuf.FieldOptions.JSType", defaultValue: "JS_NORMAL" }, { name: "lazy", number: 5, type: 8, label: 1, defaultValue: "false" }, { name: "unverified_lazy", number: 15, type: 8, label: 1, defaultValue: "false" }, { name: "deprecated", number: 3, type: 8, label: 1, defaultValue: "false" }, { name: "weak", number: 10, type: 8, label: 1, defaultValue: "false" }, { name: "debug_redact", number: 16, type: 8, label: 1, defaultValue: "false" }, { name: "retention", number: 17, type: 14, label: 1, typeName: ".google.protobuf.FieldOptions.OptionRetention" }, { name: "targets", number: 19, type: 14, label: 3, typeName: ".google.protobuf.FieldOptions.OptionTargetType" }, { name: "edition_defaults", number: 20, type: 11, label: 3, typeName: ".google.protobuf.FieldOptions.EditionDefault" }, { name: "features", number: 21, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "feature_support", number: 22, type: 11, label: 1, typeName: ".google.protobuf.FieldOptions.FeatureSupport" }, { name: "uninterpreted_option", number: 999, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption" }], nestedType: [{ name: "EditionDefault", field: [{ name: "edition", number: 3, type: 14, label: 1, typeName: ".google.protobuf.Edition" }, { name: "value", number: 2, type: 9, label: 1 }] }, { name: "FeatureSupport", field: [{ name: "edition_introduced", number: 1, type: 14, label: 1, typeName: ".google.protobuf.Edition" }, { name: "edition_deprecated", number: 2, type: 14, label: 1, typeName: ".google.protobuf.Edition" }, { name: "deprecation_warning", number: 3, type: 9, label: 1 }, { name: "edition_removed", number: 4, type: 14, label: 1, typeName: ".google.protobuf.Edition" }] }], enumType: [{ name: "CType", value: [{ name: "STRING", number: 0 }, { name: "CORD", number: 1 }, { name: "STRING_PIECE", number: 2 }] }, { name: "JSType", value: [{ name: "JS_NORMAL", number: 0 }, { name: "JS_STRING", number: 1 }, { name: "JS_NUMBER", number: 2 }] }, { name: "OptionRetention", value: [{ name: "RETENTION_UNKNOWN", number: 0 }, { name: "RETENTION_RUNTIME", number: 1 }, { name: "RETENTION_SOURCE", number: 2 }] }, { name: "OptionTargetType", value: [{ name: "TARGET_TYPE_UNKNOWN", number: 0 }, { name: "TARGET_TYPE_FILE", number: 1 }, { name: "TARGET_TYPE_EXTENSION_RANGE", number: 2 }, { name: "TARGET_TYPE_MESSAGE", number: 3 }, { name: "TARGET_TYPE_FIELD", number: 4 }, { name: "TARGET_TYPE_ONEOF", number: 5 }, { name: "TARGET_TYPE_ENUM", number: 6 }, { name: "TARGET_TYPE_ENUM_ENTRY", number: 7 }, { name: "TARGET_TYPE_SERVICE", number: 8 }, { name: "TARGET_TYPE_METHOD", number: 9 }] }], extensionRange: [{ start: 1000, end: 536870912 }] }, { name: "OneofOptions", field: [{ name: "features", number: 1, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "uninterpreted_option", number: 999, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption" }], extensionRange: [{ start: 1000, end: 536870912 }] }, { name: "EnumOptions", field: [{ name: "allow_alias", number: 2, type: 8, label: 1 }, { name: "deprecated", number: 3, type: 8, label: 1, defaultValue: "false" }, { name: "deprecated_legacy_json_field_conflicts", number: 6, type: 8, label: 1, options: { deprecated: true } }, { name: "features", number: 7, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "uninterpreted_option", number: 999, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption" }], extensionRange: [{ start: 1000, end: 536870912 }] }, { name: "EnumValueOptions", field: [{ name: "deprecated", number: 1, type: 8, label: 1, defaultValue: "false" }, { name: "features", number: 2, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "debug_redact", number: 3, type: 8, label: 1, defaultValue: "false" }, { name: "feature_support", number: 4, type: 11, label: 1, typeName: ".google.protobuf.FieldOptions.FeatureSupport" }, { name: "uninterpreted_option", number: 999, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption" }], extensionRange: [{ start: 1000, end: 536870912 }] }, { name: "ServiceOptions", field: [{ name: "features", number: 34, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "deprecated", number: 33, type: 8, label: 1, defaultValue: "false" }, { name: "uninterpreted_option", number: 999, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption" }], extensionRange: [{ start: 1000, end: 536870912 }] }, { name: "MethodOptions", field: [{ name: "deprecated", number: 33, type: 8, label: 1, defaultValue: "false" }, { name: "idempotency_level", number: 34, type: 14, label: 1, typeName: ".google.protobuf.MethodOptions.IdempotencyLevel", defaultValue: "IDEMPOTENCY_UNKNOWN" }, { name: "features", number: 35, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "uninterpreted_option", number: 999, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption" }], enumType: [{ name: "IdempotencyLevel", value: [{ name: "IDEMPOTENCY_UNKNOWN", number: 0 }, { name: "NO_SIDE_EFFECTS", number: 1 }, { name: "IDEMPOTENT", number: 2 }] }], extensionRange: [{ start: 1000, end: 536870912 }] }, { name: "UninterpretedOption", field: [{ name: "name", number: 2, type: 11, label: 3, typeName: ".google.protobuf.UninterpretedOption.NamePart" }, { name: "identifier_value", number: 3, type: 9, label: 1 }, { name: "positive_int_value", number: 4, type: 4, label: 1 }, { name: "negative_int_value", number: 5, type: 3, label: 1 }, { name: "double_value", number: 6, type: 1, label: 1 }, { name: "string_value", number: 7, type: 12, label: 1 }, { name: "aggregate_value", number: 8, type: 9, label: 1 }], nestedType: [{ name: "NamePart", field: [{ name: "name_part", number: 1, type: 9, label: 2 }, { name: "is_extension", number: 2, type: 8, label: 2 }] }] }, { name: "FeatureSet", field: [{ name: "field_presence", number: 1, type: 14, label: 1, typeName: ".google.protobuf.FeatureSet.FieldPresence", options: { retention: 1, targets: [4, 1], editionDefaults: [{ value: "EXPLICIT", edition: 900 }, { value: "IMPLICIT", edition: 999 }, { value: "EXPLICIT", edition: 1000 }] } }, { name: "enum_type", number: 2, type: 14, label: 1, typeName: ".google.protobuf.FeatureSet.EnumType", options: { retention: 1, targets: [6, 1], editionDefaults: [{ value: "CLOSED", edition: 900 }, { value: "OPEN", edition: 999 }] } }, { name: "repeated_field_encoding", number: 3, type: 14, label: 1, typeName: ".google.protobuf.FeatureSet.RepeatedFieldEncoding", options: { retention: 1, targets: [4, 1], editionDefaults: [{ value: "EXPANDED", edition: 900 }, { value: "PACKED", edition: 999 }] } }, { name: "utf8_validation", number: 4, type: 14, label: 1, typeName: ".google.protobuf.FeatureSet.Utf8Validation", options: { retention: 1, targets: [4, 1], editionDefaults: [{ value: "NONE", edition: 900 }, { value: "VERIFY", edition: 999 }] } }, { name: "message_encoding", number: 5, type: 14, label: 1, typeName: ".google.protobuf.FeatureSet.MessageEncoding", options: { retention: 1, targets: [4, 1], editionDefaults: [{ value: "LENGTH_PREFIXED", edition: 900 }] } }, { name: "json_format", number: 6, type: 14, label: 1, typeName: ".google.protobuf.FeatureSet.JsonFormat", options: { retention: 1, targets: [3, 6, 1], editionDefaults: [{ value: "LEGACY_BEST_EFFORT", edition: 900 }, { value: "ALLOW", edition: 999 }] } }, { name: "enforce_naming_style", number: 7, type: 14, label: 1, typeName: ".google.protobuf.FeatureSet.EnforceNamingStyle", options: { retention: 2, targets: [1, 2, 3, 4, 5, 6, 7, 8, 9], editionDefaults: [{ value: "STYLE_LEGACY", edition: 900 }, { value: "STYLE2024", edition: 1001 }] } }, { name: "default_symbol_visibility", number: 8, type: 14, label: 1, typeName: ".google.protobuf.FeatureSet.VisibilityFeature.DefaultSymbolVisibility", options: { retention: 2, targets: [1], editionDefaults: [{ value: "EXPORT_ALL", edition: 900 }, { value: "EXPORT_TOP_LEVEL", edition: 1001 }] } }], nestedType: [{ name: "VisibilityFeature", enumType: [{ name: "DefaultSymbolVisibility", value: [{ name: "DEFAULT_SYMBOL_VISIBILITY_UNKNOWN", number: 0 }, { name: "EXPORT_ALL", number: 1 }, { name: "EXPORT_TOP_LEVEL", number: 2 }, { name: "LOCAL_ALL", number: 3 }, { name: "STRICT", number: 4 }] }] }], enumType: [{ name: "FieldPresence", value: [{ name: "FIELD_PRESENCE_UNKNOWN", number: 0 }, { name: "EXPLICIT", number: 1 }, { name: "IMPLICIT", number: 2 }, { name: "LEGACY_REQUIRED", number: 3 }] }, { name: "EnumType", value: [{ name: "ENUM_TYPE_UNKNOWN", number: 0 }, { name: "OPEN", number: 1 }, { name: "CLOSED", number: 2 }] }, { name: "RepeatedFieldEncoding", value: [{ name: "REPEATED_FIELD_ENCODING_UNKNOWN", number: 0 }, { name: "PACKED", number: 1 }, { name: "EXPANDED", number: 2 }] }, { name: "Utf8Validation", value: [{ name: "UTF8_VALIDATION_UNKNOWN", number: 0 }, { name: "VERIFY", number: 2 }, { name: "NONE", number: 3 }] }, { name: "MessageEncoding", value: [{ name: "MESSAGE_ENCODING_UNKNOWN", number: 0 }, { name: "LENGTH_PREFIXED", number: 1 }, { name: "DELIMITED", number: 2 }] }, { name: "JsonFormat", value: [{ name: "JSON_FORMAT_UNKNOWN", number: 0 }, { name: "ALLOW", number: 1 }, { name: "LEGACY_BEST_EFFORT", number: 2 }] }, { name: "EnforceNamingStyle", value: [{ name: "ENFORCE_NAMING_STYLE_UNKNOWN", number: 0 }, { name: "STYLE2024", number: 1 }, { name: "STYLE_LEGACY", number: 2 }] }], extensionRange: [{ start: 1000, end: 9995 }, { start: 9995, end: 1e4 }, { start: 1e4, end: 10001 }] }, { name: "FeatureSetDefaults", field: [{ name: "defaults", number: 1, type: 11, label: 3, typeName: ".google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault" }, { name: "minimum_edition", number: 4, type: 14, label: 1, typeName: ".google.protobuf.Edition" }, { name: "maximum_edition", number: 5, type: 14, label: 1, typeName: ".google.protobuf.Edition" }], nestedType: [{ name: "FeatureSetEditionDefault", field: [{ name: "edition", number: 3, type: 14, label: 1, typeName: ".google.protobuf.Edition" }, { name: "overridable_features", number: 4, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }, { name: "fixed_features", number: 5, type: 11, label: 1, typeName: ".google.protobuf.FeatureSet" }] }] }, { name: "SourceCodeInfo", field: [{ name: "location", number: 1, type: 11, label: 3, typeName: ".google.protobuf.SourceCodeInfo.Location" }], nestedType: [{ name: "Location", field: [{ name: "path", number: 1, type: 5, label: 3, options: { packed: true } }, { name: "span", number: 2, type: 5, label: 3, options: { packed: true } }, { name: "leading_comments", number: 3, type: 9, label: 1 }, { name: "trailing_comments", number: 4, type: 9, label: 1 }, { name: "leading_detached_comments", number: 6, type: 9, label: 3 }] }], extensionRange: [{ start: 536000000, end: 536000001 }] }, { name: "GeneratedCodeInfo", field: [{ name: "annotation", number: 1, type: 11, label: 3, typeName: ".google.protobuf.GeneratedCodeInfo.Annotation" }], nestedType: [{ name: "Annotation", field: [{ name: "path", number: 1, type: 5, label: 3, options: { packed: true } }, { name: "source_file", number: 2, type: 9, label: 1 }, { name: "begin", number: 3, type: 5, label: 1 }, { name: "end", number: 4, type: 5, label: 1 }, { name: "semantic", number: 5, type: 14, label: 1, typeName: ".google.protobuf.GeneratedCodeInfo.Annotation.Semantic" }], enumType: [{ name: "Semantic", value: [{ name: "NONE", number: 0 }, { name: "SET", number: 1 }, { name: "ALIAS", number: 2 }] }] }] }], enumType: [{ name: "Edition", value: [{ name: "EDITION_UNKNOWN", number: 0 }, { name: "EDITION_LEGACY", number: 900 }, { name: "EDITION_PROTO2", number: 998 }, { name: "EDITION_PROTO3", number: 999 }, { name: "EDITION_2023", number: 1000 }, { name: "EDITION_2024", number: 1001 }, { name: "EDITION_1_TEST_ONLY", number: 1 }, { name: "EDITION_2_TEST_ONLY", number: 2 }, { name: "EDITION_99997_TEST_ONLY", number: 99997 }, { name: "EDITION_99998_TEST_ONLY", number: 99998 }, { name: "EDITION_99999_TEST_ONLY", number: 99999 }, { name: "EDITION_MAX", number: 2147483647 }] }, { name: "SymbolVisibility", value: [{ name: "VISIBILITY_UNSET", number: 0 }, { name: "VISIBILITY_LOCAL", number: 1 }, { name: "VISIBILITY_EXPORT", number: 2 }] }] });
-var FileDescriptorProtoSchema = /* @__PURE__ */ messageDesc(file_google_protobuf_descriptor, 1);
+var file_google_protobuf_descriptor = /* @__PURE__ */ boot({
+  name: "google/protobuf/descriptor.proto",
+  package: "google.protobuf",
+  messageType: [
+    {
+      name: "FileDescriptorSet",
+      field: [
+        {
+          name: "file",
+          number: 1,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.FileDescriptorProto",
+        },
+      ],
+      extensionRange: [{ start: 536000000, end: 536000001 }],
+    },
+    {
+      name: "FileDescriptorProto",
+      field: [
+        { name: "name", number: 1, type: 9, label: 1 },
+        { name: "package", number: 2, type: 9, label: 1 },
+        { name: "dependency", number: 3, type: 9, label: 3 },
+        { name: "public_dependency", number: 10, type: 5, label: 3 },
+        { name: "weak_dependency", number: 11, type: 5, label: 3 },
+        { name: "option_dependency", number: 15, type: 9, label: 3 },
+        {
+          name: "message_type",
+          number: 4,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.DescriptorProto",
+        },
+        {
+          name: "enum_type",
+          number: 5,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.EnumDescriptorProto",
+        },
+        {
+          name: "service",
+          number: 6,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.ServiceDescriptorProto",
+        },
+        {
+          name: "extension",
+          number: 7,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.FieldDescriptorProto",
+        },
+        {
+          name: "options",
+          number: 8,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FileOptions",
+        },
+        {
+          name: "source_code_info",
+          number: 9,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.SourceCodeInfo",
+        },
+        { name: "syntax", number: 12, type: 9, label: 1 },
+        {
+          name: "edition",
+          number: 14,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.Edition",
+        },
+      ],
+    },
+    {
+      name: "DescriptorProto",
+      field: [
+        { name: "name", number: 1, type: 9, label: 1 },
+        {
+          name: "field",
+          number: 2,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.FieldDescriptorProto",
+        },
+        {
+          name: "extension",
+          number: 6,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.FieldDescriptorProto",
+        },
+        {
+          name: "nested_type",
+          number: 3,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.DescriptorProto",
+        },
+        {
+          name: "enum_type",
+          number: 4,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.EnumDescriptorProto",
+        },
+        {
+          name: "extension_range",
+          number: 5,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.DescriptorProto.ExtensionRange",
+        },
+        {
+          name: "oneof_decl",
+          number: 8,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.OneofDescriptorProto",
+        },
+        {
+          name: "options",
+          number: 7,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.MessageOptions",
+        },
+        {
+          name: "reserved_range",
+          number: 9,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.DescriptorProto.ReservedRange",
+        },
+        { name: "reserved_name", number: 10, type: 9, label: 3 },
+        {
+          name: "visibility",
+          number: 11,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.SymbolVisibility",
+        },
+      ],
+      nestedType: [
+        {
+          name: "ExtensionRange",
+          field: [
+            { name: "start", number: 1, type: 5, label: 1 },
+            { name: "end", number: 2, type: 5, label: 1 },
+            {
+              name: "options",
+              number: 3,
+              type: 11,
+              label: 1,
+              typeName: ".google.protobuf.ExtensionRangeOptions",
+            },
+          ],
+        },
+        {
+          name: "ReservedRange",
+          field: [
+            { name: "start", number: 1, type: 5, label: 1 },
+            { name: "end", number: 2, type: 5, label: 1 },
+          ],
+        },
+      ],
+    },
+    {
+      name: "ExtensionRangeOptions",
+      field: [
+        {
+          name: "uninterpreted_option",
+          number: 999,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption",
+        },
+        {
+          name: "declaration",
+          number: 2,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.ExtensionRangeOptions.Declaration",
+          options: { retention: 2 },
+        },
+        {
+          name: "features",
+          number: 50,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet",
+        },
+        {
+          name: "verification",
+          number: 3,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.ExtensionRangeOptions.VerificationState",
+          defaultValue: "UNVERIFIED",
+          options: { retention: 2 },
+        },
+      ],
+      nestedType: [
+        {
+          name: "Declaration",
+          field: [
+            { name: "number", number: 1, type: 5, label: 1 },
+            { name: "full_name", number: 2, type: 9, label: 1 },
+            { name: "type", number: 3, type: 9, label: 1 },
+            { name: "reserved", number: 5, type: 8, label: 1 },
+            { name: "repeated", number: 6, type: 8, label: 1 },
+          ],
+        },
+      ],
+      enumType: [
+        {
+          name: "VerificationState",
+          value: [
+            { name: "DECLARATION", number: 0 },
+            { name: "UNVERIFIED", number: 1 },
+          ],
+        },
+      ],
+      extensionRange: [{ start: 1000, end: 536870912 }],
+    },
+    {
+      name: "FieldDescriptorProto",
+      field: [
+        { name: "name", number: 1, type: 9, label: 1 },
+        { name: "number", number: 3, type: 5, label: 1 },
+        {
+          name: "label",
+          number: 4,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FieldDescriptorProto.Label",
+        },
+        {
+          name: "type",
+          number: 5,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FieldDescriptorProto.Type",
+        },
+        { name: "type_name", number: 6, type: 9, label: 1 },
+        { name: "extendee", number: 2, type: 9, label: 1 },
+        { name: "default_value", number: 7, type: 9, label: 1 },
+        { name: "oneof_index", number: 9, type: 5, label: 1 },
+        { name: "json_name", number: 10, type: 9, label: 1 },
+        {
+          name: "options",
+          number: 8,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FieldOptions",
+        },
+        { name: "proto3_optional", number: 17, type: 8, label: 1 },
+      ],
+      enumType: [
+        {
+          name: "Type",
+          value: [
+            { name: "TYPE_DOUBLE", number: 1 },
+            { name: "TYPE_FLOAT", number: 2 },
+            { name: "TYPE_INT64", number: 3 },
+            { name: "TYPE_UINT64", number: 4 },
+            { name: "TYPE_INT32", number: 5 },
+            { name: "TYPE_FIXED64", number: 6 },
+            { name: "TYPE_FIXED32", number: 7 },
+            { name: "TYPE_BOOL", number: 8 },
+            { name: "TYPE_STRING", number: 9 },
+            { name: "TYPE_GROUP", number: 10 },
+            { name: "TYPE_MESSAGE", number: 11 },
+            { name: "TYPE_BYTES", number: 12 },
+            { name: "TYPE_UINT32", number: 13 },
+            { name: "TYPE_ENUM", number: 14 },
+            { name: "TYPE_SFIXED32", number: 15 },
+            { name: "TYPE_SFIXED64", number: 16 },
+            { name: "TYPE_SINT32", number: 17 },
+            { name: "TYPE_SINT64", number: 18 },
+          ],
+        },
+        {
+          name: "Label",
+          value: [
+            { name: "LABEL_OPTIONAL", number: 1 },
+            { name: "LABEL_REPEATED", number: 3 },
+            { name: "LABEL_REQUIRED", number: 2 },
+          ],
+        },
+      ],
+    },
+    {
+      name: "OneofDescriptorProto",
+      field: [
+        { name: "name", number: 1, type: 9, label: 1 },
+        {
+          name: "options",
+          number: 2,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.OneofOptions",
+        },
+      ],
+    },
+    {
+      name: "EnumDescriptorProto",
+      field: [
+        { name: "name", number: 1, type: 9, label: 1 },
+        {
+          name: "value",
+          number: 2,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.EnumValueDescriptorProto",
+        },
+        {
+          name: "options",
+          number: 3,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.EnumOptions",
+        },
+        {
+          name: "reserved_range",
+          number: 4,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.EnumDescriptorProto.EnumReservedRange",
+        },
+        { name: "reserved_name", number: 5, type: 9, label: 3 },
+        {
+          name: "visibility",
+          number: 6,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.SymbolVisibility",
+        },
+      ],
+      nestedType: [
+        {
+          name: "EnumReservedRange",
+          field: [
+            { name: "start", number: 1, type: 5, label: 1 },
+            { name: "end", number: 2, type: 5, label: 1 },
+          ],
+        },
+      ],
+    },
+    {
+      name: "EnumValueDescriptorProto",
+      field: [
+        { name: "name", number: 1, type: 9, label: 1 },
+        { name: "number", number: 2, type: 5, label: 1 },
+        {
+          name: "options",
+          number: 3,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.EnumValueOptions",
+        },
+      ],
+    },
+    {
+      name: "ServiceDescriptorProto",
+      field: [
+        { name: "name", number: 1, type: 9, label: 1 },
+        {
+          name: "method",
+          number: 2,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.MethodDescriptorProto",
+        },
+        {
+          name: "options",
+          number: 3,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.ServiceOptions",
+        },
+      ],
+    },
+    {
+      name: "MethodDescriptorProto",
+      field: [
+        { name: "name", number: 1, type: 9, label: 1 },
+        { name: "input_type", number: 2, type: 9, label: 1 },
+        { name: "output_type", number: 3, type: 9, label: 1 },
+        {
+          name: "options",
+          number: 4,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.MethodOptions",
+        },
+        {
+          name: "client_streaming",
+          number: 5,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "server_streaming",
+          number: 6,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+      ],
+    },
+    {
+      name: "FileOptions",
+      field: [
+        { name: "java_package", number: 1, type: 9, label: 1 },
+        { name: "java_outer_classname", number: 8, type: 9, label: 1 },
+        {
+          name: "java_multiple_files",
+          number: 10,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "java_generate_equals_and_hash",
+          number: 20,
+          type: 8,
+          label: 1,
+          options: { deprecated: true },
+        },
+        {
+          name: "java_string_check_utf8",
+          number: 27,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "optimize_for",
+          number: 9,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FileOptions.OptimizeMode",
+          defaultValue: "SPEED",
+        },
+        { name: "go_package", number: 11, type: 9, label: 1 },
+        {
+          name: "cc_generic_services",
+          number: 16,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "java_generic_services",
+          number: 17,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "py_generic_services",
+          number: 18,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "deprecated",
+          number: 23,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "cc_enable_arenas",
+          number: 31,
+          type: 8,
+          label: 1,
+          defaultValue: "true",
+        },
+        { name: "objc_class_prefix", number: 36, type: 9, label: 1 },
+        { name: "csharp_namespace", number: 37, type: 9, label: 1 },
+        { name: "swift_prefix", number: 39, type: 9, label: 1 },
+        { name: "php_class_prefix", number: 40, type: 9, label: 1 },
+        { name: "php_namespace", number: 41, type: 9, label: 1 },
+        { name: "php_metadata_namespace", number: 44, type: 9, label: 1 },
+        { name: "ruby_package", number: 45, type: 9, label: 1 },
+        {
+          name: "features",
+          number: 50,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet",
+        },
+        {
+          name: "uninterpreted_option",
+          number: 999,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption",
+        },
+      ],
+      enumType: [
+        {
+          name: "OptimizeMode",
+          value: [
+            { name: "SPEED", number: 1 },
+            { name: "CODE_SIZE", number: 2 },
+            { name: "LITE_RUNTIME", number: 3 },
+          ],
+        },
+      ],
+      extensionRange: [{ start: 1000, end: 536870912 }],
+    },
+    {
+      name: "MessageOptions",
+      field: [
+        {
+          name: "message_set_wire_format",
+          number: 1,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "no_standard_descriptor_accessor",
+          number: 2,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "deprecated",
+          number: 3,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        { name: "map_entry", number: 7, type: 8, label: 1 },
+        {
+          name: "deprecated_legacy_json_field_conflicts",
+          number: 11,
+          type: 8,
+          label: 1,
+          options: { deprecated: true },
+        },
+        {
+          name: "features",
+          number: 12,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet",
+        },
+        {
+          name: "uninterpreted_option",
+          number: 999,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption",
+        },
+      ],
+      extensionRange: [{ start: 1000, end: 536870912 }],
+    },
+    {
+      name: "FieldOptions",
+      field: [
+        {
+          name: "ctype",
+          number: 1,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FieldOptions.CType",
+          defaultValue: "STRING",
+        },
+        { name: "packed", number: 2, type: 8, label: 1 },
+        {
+          name: "jstype",
+          number: 6,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FieldOptions.JSType",
+          defaultValue: "JS_NORMAL",
+        },
+        { name: "lazy", number: 5, type: 8, label: 1, defaultValue: "false" },
+        {
+          name: "unverified_lazy",
+          number: 15,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "deprecated",
+          number: 3,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        { name: "weak", number: 10, type: 8, label: 1, defaultValue: "false" },
+        {
+          name: "debug_redact",
+          number: 16,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "retention",
+          number: 17,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FieldOptions.OptionRetention",
+        },
+        {
+          name: "targets",
+          number: 19,
+          type: 14,
+          label: 3,
+          typeName: ".google.protobuf.FieldOptions.OptionTargetType",
+        },
+        {
+          name: "edition_defaults",
+          number: 20,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.FieldOptions.EditionDefault",
+        },
+        {
+          name: "features",
+          number: 21,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet",
+        },
+        {
+          name: "feature_support",
+          number: 22,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FieldOptions.FeatureSupport",
+        },
+        {
+          name: "uninterpreted_option",
+          number: 999,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption",
+        },
+      ],
+      nestedType: [
+        {
+          name: "EditionDefault",
+          field: [
+            {
+              name: "edition",
+              number: 3,
+              type: 14,
+              label: 1,
+              typeName: ".google.protobuf.Edition",
+            },
+            { name: "value", number: 2, type: 9, label: 1 },
+          ],
+        },
+        {
+          name: "FeatureSupport",
+          field: [
+            {
+              name: "edition_introduced",
+              number: 1,
+              type: 14,
+              label: 1,
+              typeName: ".google.protobuf.Edition",
+            },
+            {
+              name: "edition_deprecated",
+              number: 2,
+              type: 14,
+              label: 1,
+              typeName: ".google.protobuf.Edition",
+            },
+            { name: "deprecation_warning", number: 3, type: 9, label: 1 },
+            {
+              name: "edition_removed",
+              number: 4,
+              type: 14,
+              label: 1,
+              typeName: ".google.protobuf.Edition",
+            },
+          ],
+        },
+      ],
+      enumType: [
+        {
+          name: "CType",
+          value: [
+            { name: "STRING", number: 0 },
+            { name: "CORD", number: 1 },
+            { name: "STRING_PIECE", number: 2 },
+          ],
+        },
+        {
+          name: "JSType",
+          value: [
+            { name: "JS_NORMAL", number: 0 },
+            { name: "JS_STRING", number: 1 },
+            { name: "JS_NUMBER", number: 2 },
+          ],
+        },
+        {
+          name: "OptionRetention",
+          value: [
+            { name: "RETENTION_UNKNOWN", number: 0 },
+            { name: "RETENTION_RUNTIME", number: 1 },
+            { name: "RETENTION_SOURCE", number: 2 },
+          ],
+        },
+        {
+          name: "OptionTargetType",
+          value: [
+            { name: "TARGET_TYPE_UNKNOWN", number: 0 },
+            { name: "TARGET_TYPE_FILE", number: 1 },
+            { name: "TARGET_TYPE_EXTENSION_RANGE", number: 2 },
+            { name: "TARGET_TYPE_MESSAGE", number: 3 },
+            { name: "TARGET_TYPE_FIELD", number: 4 },
+            { name: "TARGET_TYPE_ONEOF", number: 5 },
+            { name: "TARGET_TYPE_ENUM", number: 6 },
+            { name: "TARGET_TYPE_ENUM_ENTRY", number: 7 },
+            { name: "TARGET_TYPE_SERVICE", number: 8 },
+            { name: "TARGET_TYPE_METHOD", number: 9 },
+          ],
+        },
+      ],
+      extensionRange: [{ start: 1000, end: 536870912 }],
+    },
+    {
+      name: "OneofOptions",
+      field: [
+        {
+          name: "features",
+          number: 1,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet",
+        },
+        {
+          name: "uninterpreted_option",
+          number: 999,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption",
+        },
+      ],
+      extensionRange: [{ start: 1000, end: 536870912 }],
+    },
+    {
+      name: "EnumOptions",
+      field: [
+        { name: "allow_alias", number: 2, type: 8, label: 1 },
+        {
+          name: "deprecated",
+          number: 3,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "deprecated_legacy_json_field_conflicts",
+          number: 6,
+          type: 8,
+          label: 1,
+          options: { deprecated: true },
+        },
+        {
+          name: "features",
+          number: 7,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet",
+        },
+        {
+          name: "uninterpreted_option",
+          number: 999,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption",
+        },
+      ],
+      extensionRange: [{ start: 1000, end: 536870912 }],
+    },
+    {
+      name: "EnumValueOptions",
+      field: [
+        {
+          name: "deprecated",
+          number: 1,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "features",
+          number: 2,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet",
+        },
+        {
+          name: "debug_redact",
+          number: 3,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "feature_support",
+          number: 4,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FieldOptions.FeatureSupport",
+        },
+        {
+          name: "uninterpreted_option",
+          number: 999,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption",
+        },
+      ],
+      extensionRange: [{ start: 1000, end: 536870912 }],
+    },
+    {
+      name: "ServiceOptions",
+      field: [
+        {
+          name: "features",
+          number: 34,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet",
+        },
+        {
+          name: "deprecated",
+          number: 33,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "uninterpreted_option",
+          number: 999,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption",
+        },
+      ],
+      extensionRange: [{ start: 1000, end: 536870912 }],
+    },
+    {
+      name: "MethodOptions",
+      field: [
+        {
+          name: "deprecated",
+          number: 33,
+          type: 8,
+          label: 1,
+          defaultValue: "false",
+        },
+        {
+          name: "idempotency_level",
+          number: 34,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.MethodOptions.IdempotencyLevel",
+          defaultValue: "IDEMPOTENCY_UNKNOWN",
+        },
+        {
+          name: "features",
+          number: 35,
+          type: 11,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet",
+        },
+        {
+          name: "uninterpreted_option",
+          number: 999,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption",
+        },
+      ],
+      enumType: [
+        {
+          name: "IdempotencyLevel",
+          value: [
+            { name: "IDEMPOTENCY_UNKNOWN", number: 0 },
+            { name: "NO_SIDE_EFFECTS", number: 1 },
+            { name: "IDEMPOTENT", number: 2 },
+          ],
+        },
+      ],
+      extensionRange: [{ start: 1000, end: 536870912 }],
+    },
+    {
+      name: "UninterpretedOption",
+      field: [
+        {
+          name: "name",
+          number: 2,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.UninterpretedOption.NamePart",
+        },
+        { name: "identifier_value", number: 3, type: 9, label: 1 },
+        { name: "positive_int_value", number: 4, type: 4, label: 1 },
+        { name: "negative_int_value", number: 5, type: 3, label: 1 },
+        { name: "double_value", number: 6, type: 1, label: 1 },
+        { name: "string_value", number: 7, type: 12, label: 1 },
+        { name: "aggregate_value", number: 8, type: 9, label: 1 },
+      ],
+      nestedType: [
+        {
+          name: "NamePart",
+          field: [
+            { name: "name_part", number: 1, type: 9, label: 2 },
+            { name: "is_extension", number: 2, type: 8, label: 2 },
+          ],
+        },
+      ],
+    },
+    {
+      name: "FeatureSet",
+      field: [
+        {
+          name: "field_presence",
+          number: 1,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet.FieldPresence",
+          options: {
+            retention: 1,
+            targets: [4, 1],
+            editionDefaults: [
+              { value: "EXPLICIT", edition: 900 },
+              { value: "IMPLICIT", edition: 999 },
+              { value: "EXPLICIT", edition: 1000 },
+            ],
+          },
+        },
+        {
+          name: "enum_type",
+          number: 2,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet.EnumType",
+          options: {
+            retention: 1,
+            targets: [6, 1],
+            editionDefaults: [
+              { value: "CLOSED", edition: 900 },
+              { value: "OPEN", edition: 999 },
+            ],
+          },
+        },
+        {
+          name: "repeated_field_encoding",
+          number: 3,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet.RepeatedFieldEncoding",
+          options: {
+            retention: 1,
+            targets: [4, 1],
+            editionDefaults: [
+              { value: "EXPANDED", edition: 900 },
+              { value: "PACKED", edition: 999 },
+            ],
+          },
+        },
+        {
+          name: "utf8_validation",
+          number: 4,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet.Utf8Validation",
+          options: {
+            retention: 1,
+            targets: [4, 1],
+            editionDefaults: [
+              { value: "NONE", edition: 900 },
+              { value: "VERIFY", edition: 999 },
+            ],
+          },
+        },
+        {
+          name: "message_encoding",
+          number: 5,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet.MessageEncoding",
+          options: {
+            retention: 1,
+            targets: [4, 1],
+            editionDefaults: [{ value: "LENGTH_PREFIXED", edition: 900 }],
+          },
+        },
+        {
+          name: "json_format",
+          number: 6,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet.JsonFormat",
+          options: {
+            retention: 1,
+            targets: [3, 6, 1],
+            editionDefaults: [
+              { value: "LEGACY_BEST_EFFORT", edition: 900 },
+              { value: "ALLOW", edition: 999 },
+            ],
+          },
+        },
+        {
+          name: "enforce_naming_style",
+          number: 7,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.FeatureSet.EnforceNamingStyle",
+          options: {
+            retention: 2,
+            targets: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            editionDefaults: [
+              { value: "STYLE_LEGACY", edition: 900 },
+              { value: "STYLE2024", edition: 1001 },
+            ],
+          },
+        },
+        {
+          name: "default_symbol_visibility",
+          number: 8,
+          type: 14,
+          label: 1,
+          typeName:
+            ".google.protobuf.FeatureSet.VisibilityFeature.DefaultSymbolVisibility",
+          options: {
+            retention: 2,
+            targets: [1],
+            editionDefaults: [
+              { value: "EXPORT_ALL", edition: 900 },
+              { value: "EXPORT_TOP_LEVEL", edition: 1001 },
+            ],
+          },
+        },
+      ],
+      nestedType: [
+        {
+          name: "VisibilityFeature",
+          enumType: [
+            {
+              name: "DefaultSymbolVisibility",
+              value: [
+                { name: "DEFAULT_SYMBOL_VISIBILITY_UNKNOWN", number: 0 },
+                { name: "EXPORT_ALL", number: 1 },
+                { name: "EXPORT_TOP_LEVEL", number: 2 },
+                { name: "LOCAL_ALL", number: 3 },
+                { name: "STRICT", number: 4 },
+              ],
+            },
+          ],
+        },
+      ],
+      enumType: [
+        {
+          name: "FieldPresence",
+          value: [
+            { name: "FIELD_PRESENCE_UNKNOWN", number: 0 },
+            { name: "EXPLICIT", number: 1 },
+            { name: "IMPLICIT", number: 2 },
+            { name: "LEGACY_REQUIRED", number: 3 },
+          ],
+        },
+        {
+          name: "EnumType",
+          value: [
+            { name: "ENUM_TYPE_UNKNOWN", number: 0 },
+            { name: "OPEN", number: 1 },
+            { name: "CLOSED", number: 2 },
+          ],
+        },
+        {
+          name: "RepeatedFieldEncoding",
+          value: [
+            { name: "REPEATED_FIELD_ENCODING_UNKNOWN", number: 0 },
+            { name: "PACKED", number: 1 },
+            { name: "EXPANDED", number: 2 },
+          ],
+        },
+        {
+          name: "Utf8Validation",
+          value: [
+            { name: "UTF8_VALIDATION_UNKNOWN", number: 0 },
+            { name: "VERIFY", number: 2 },
+            { name: "NONE", number: 3 },
+          ],
+        },
+        {
+          name: "MessageEncoding",
+          value: [
+            { name: "MESSAGE_ENCODING_UNKNOWN", number: 0 },
+            { name: "LENGTH_PREFIXED", number: 1 },
+            { name: "DELIMITED", number: 2 },
+          ],
+        },
+        {
+          name: "JsonFormat",
+          value: [
+            { name: "JSON_FORMAT_UNKNOWN", number: 0 },
+            { name: "ALLOW", number: 1 },
+            { name: "LEGACY_BEST_EFFORT", number: 2 },
+          ],
+        },
+        {
+          name: "EnforceNamingStyle",
+          value: [
+            { name: "ENFORCE_NAMING_STYLE_UNKNOWN", number: 0 },
+            { name: "STYLE2024", number: 1 },
+            { name: "STYLE_LEGACY", number: 2 },
+          ],
+        },
+      ],
+      extensionRange: [
+        { start: 1000, end: 9995 },
+        { start: 9995, end: 1e4 },
+        { start: 1e4, end: 10001 },
+      ],
+    },
+    {
+      name: "FeatureSetDefaults",
+      field: [
+        {
+          name: "defaults",
+          number: 1,
+          type: 11,
+          label: 3,
+          typeName:
+            ".google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault",
+        },
+        {
+          name: "minimum_edition",
+          number: 4,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.Edition",
+        },
+        {
+          name: "maximum_edition",
+          number: 5,
+          type: 14,
+          label: 1,
+          typeName: ".google.protobuf.Edition",
+        },
+      ],
+      nestedType: [
+        {
+          name: "FeatureSetEditionDefault",
+          field: [
+            {
+              name: "edition",
+              number: 3,
+              type: 14,
+              label: 1,
+              typeName: ".google.protobuf.Edition",
+            },
+            {
+              name: "overridable_features",
+              number: 4,
+              type: 11,
+              label: 1,
+              typeName: ".google.protobuf.FeatureSet",
+            },
+            {
+              name: "fixed_features",
+              number: 5,
+              type: 11,
+              label: 1,
+              typeName: ".google.protobuf.FeatureSet",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "SourceCodeInfo",
+      field: [
+        {
+          name: "location",
+          number: 1,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.SourceCodeInfo.Location",
+        },
+      ],
+      nestedType: [
+        {
+          name: "Location",
+          field: [
+            {
+              name: "path",
+              number: 1,
+              type: 5,
+              label: 3,
+              options: { packed: true },
+            },
+            {
+              name: "span",
+              number: 2,
+              type: 5,
+              label: 3,
+              options: { packed: true },
+            },
+            { name: "leading_comments", number: 3, type: 9, label: 1 },
+            { name: "trailing_comments", number: 4, type: 9, label: 1 },
+            { name: "leading_detached_comments", number: 6, type: 9, label: 3 },
+          ],
+        },
+      ],
+      extensionRange: [{ start: 536000000, end: 536000001 }],
+    },
+    {
+      name: "GeneratedCodeInfo",
+      field: [
+        {
+          name: "annotation",
+          number: 1,
+          type: 11,
+          label: 3,
+          typeName: ".google.protobuf.GeneratedCodeInfo.Annotation",
+        },
+      ],
+      nestedType: [
+        {
+          name: "Annotation",
+          field: [
+            {
+              name: "path",
+              number: 1,
+              type: 5,
+              label: 3,
+              options: { packed: true },
+            },
+            { name: "source_file", number: 2, type: 9, label: 1 },
+            { name: "begin", number: 3, type: 5, label: 1 },
+            { name: "end", number: 4, type: 5, label: 1 },
+            {
+              name: "semantic",
+              number: 5,
+              type: 14,
+              label: 1,
+              typeName:
+                ".google.protobuf.GeneratedCodeInfo.Annotation.Semantic",
+            },
+          ],
+          enumType: [
+            {
+              name: "Semantic",
+              value: [
+                { name: "NONE", number: 0 },
+                { name: "SET", number: 1 },
+                { name: "ALIAS", number: 2 },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  enumType: [
+    {
+      name: "Edition",
+      value: [
+        { name: "EDITION_UNKNOWN", number: 0 },
+        { name: "EDITION_LEGACY", number: 900 },
+        { name: "EDITION_PROTO2", number: 998 },
+        { name: "EDITION_PROTO3", number: 999 },
+        { name: "EDITION_2023", number: 1000 },
+        { name: "EDITION_2024", number: 1001 },
+        { name: "EDITION_1_TEST_ONLY", number: 1 },
+        { name: "EDITION_2_TEST_ONLY", number: 2 },
+        { name: "EDITION_99997_TEST_ONLY", number: 99997 },
+        { name: "EDITION_99998_TEST_ONLY", number: 99998 },
+        { name: "EDITION_99999_TEST_ONLY", number: 99999 },
+        { name: "EDITION_MAX", number: 2147483647 },
+      ],
+    },
+    {
+      name: "SymbolVisibility",
+      value: [
+        { name: "VISIBILITY_UNSET", number: 0 },
+        { name: "VISIBILITY_LOCAL", number: 1 },
+        { name: "VISIBILITY_EXPORT", number: 2 },
+      ],
+    },
+  ],
+});
+var FileDescriptorProtoSchema = /* @__PURE__ */ messageDesc(
+  file_google_protobuf_descriptor,
+  1,
+);
 var ExtensionRangeOptions_VerificationState;
-(function(ExtensionRangeOptions_VerificationState2) {
-  ExtensionRangeOptions_VerificationState2[ExtensionRangeOptions_VerificationState2["DECLARATION"] = 0] = "DECLARATION";
-  ExtensionRangeOptions_VerificationState2[ExtensionRangeOptions_VerificationState2["UNVERIFIED"] = 1] = "UNVERIFIED";
-})(ExtensionRangeOptions_VerificationState || (ExtensionRangeOptions_VerificationState = {}));
+(function (ExtensionRangeOptions_VerificationState2) {
+  ExtensionRangeOptions_VerificationState2[
+    (ExtensionRangeOptions_VerificationState2["DECLARATION"] = 0)
+  ] = "DECLARATION";
+  ExtensionRangeOptions_VerificationState2[
+    (ExtensionRangeOptions_VerificationState2["UNVERIFIED"] = 1)
+  ] = "UNVERIFIED";
+})(
+  ExtensionRangeOptions_VerificationState ||
+    (ExtensionRangeOptions_VerificationState = {}),
+);
 var FieldDescriptorProto_Type;
-(function(FieldDescriptorProto_Type2) {
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["DOUBLE"] = 1] = "DOUBLE";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["FLOAT"] = 2] = "FLOAT";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["INT64"] = 3] = "INT64";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["UINT64"] = 4] = "UINT64";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["INT32"] = 5] = "INT32";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["FIXED64"] = 6] = "FIXED64";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["FIXED32"] = 7] = "FIXED32";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["BOOL"] = 8] = "BOOL";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["STRING"] = 9] = "STRING";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["GROUP"] = 10] = "GROUP";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["MESSAGE"] = 11] = "MESSAGE";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["BYTES"] = 12] = "BYTES";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["UINT32"] = 13] = "UINT32";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["ENUM"] = 14] = "ENUM";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["SFIXED32"] = 15] = "SFIXED32";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["SFIXED64"] = 16] = "SFIXED64";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["SINT32"] = 17] = "SINT32";
-  FieldDescriptorProto_Type2[FieldDescriptorProto_Type2["SINT64"] = 18] = "SINT64";
+(function (FieldDescriptorProto_Type2) {
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["DOUBLE"] = 1)] =
+    "DOUBLE";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["FLOAT"] = 2)] =
+    "FLOAT";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["INT64"] = 3)] =
+    "INT64";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["UINT64"] = 4)] =
+    "UINT64";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["INT32"] = 5)] =
+    "INT32";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["FIXED64"] = 6)] =
+    "FIXED64";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["FIXED32"] = 7)] =
+    "FIXED32";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["BOOL"] = 8)] = "BOOL";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["STRING"] = 9)] =
+    "STRING";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["GROUP"] = 10)] =
+    "GROUP";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["MESSAGE"] = 11)] =
+    "MESSAGE";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["BYTES"] = 12)] =
+    "BYTES";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["UINT32"] = 13)] =
+    "UINT32";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["ENUM"] = 14)] =
+    "ENUM";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["SFIXED32"] = 15)] =
+    "SFIXED32";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["SFIXED64"] = 16)] =
+    "SFIXED64";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["SINT32"] = 17)] =
+    "SINT32";
+  FieldDescriptorProto_Type2[(FieldDescriptorProto_Type2["SINT64"] = 18)] =
+    "SINT64";
 })(FieldDescriptorProto_Type || (FieldDescriptorProto_Type = {}));
 var FieldDescriptorProto_Label;
-(function(FieldDescriptorProto_Label2) {
-  FieldDescriptorProto_Label2[FieldDescriptorProto_Label2["OPTIONAL"] = 1] = "OPTIONAL";
-  FieldDescriptorProto_Label2[FieldDescriptorProto_Label2["REPEATED"] = 3] = "REPEATED";
-  FieldDescriptorProto_Label2[FieldDescriptorProto_Label2["REQUIRED"] = 2] = "REQUIRED";
+(function (FieldDescriptorProto_Label2) {
+  FieldDescriptorProto_Label2[(FieldDescriptorProto_Label2["OPTIONAL"] = 1)] =
+    "OPTIONAL";
+  FieldDescriptorProto_Label2[(FieldDescriptorProto_Label2["REPEATED"] = 3)] =
+    "REPEATED";
+  FieldDescriptorProto_Label2[(FieldDescriptorProto_Label2["REQUIRED"] = 2)] =
+    "REQUIRED";
 })(FieldDescriptorProto_Label || (FieldDescriptorProto_Label = {}));
 var FileOptions_OptimizeMode;
-(function(FileOptions_OptimizeMode2) {
-  FileOptions_OptimizeMode2[FileOptions_OptimizeMode2["SPEED"] = 1] = "SPEED";
-  FileOptions_OptimizeMode2[FileOptions_OptimizeMode2["CODE_SIZE"] = 2] = "CODE_SIZE";
-  FileOptions_OptimizeMode2[FileOptions_OptimizeMode2["LITE_RUNTIME"] = 3] = "LITE_RUNTIME";
+(function (FileOptions_OptimizeMode2) {
+  FileOptions_OptimizeMode2[(FileOptions_OptimizeMode2["SPEED"] = 1)] = "SPEED";
+  FileOptions_OptimizeMode2[(FileOptions_OptimizeMode2["CODE_SIZE"] = 2)] =
+    "CODE_SIZE";
+  FileOptions_OptimizeMode2[(FileOptions_OptimizeMode2["LITE_RUNTIME"] = 3)] =
+    "LITE_RUNTIME";
 })(FileOptions_OptimizeMode || (FileOptions_OptimizeMode = {}));
 var FieldOptions_CType;
-(function(FieldOptions_CType2) {
-  FieldOptions_CType2[FieldOptions_CType2["STRING"] = 0] = "STRING";
-  FieldOptions_CType2[FieldOptions_CType2["CORD"] = 1] = "CORD";
-  FieldOptions_CType2[FieldOptions_CType2["STRING_PIECE"] = 2] = "STRING_PIECE";
+(function (FieldOptions_CType2) {
+  FieldOptions_CType2[(FieldOptions_CType2["STRING"] = 0)] = "STRING";
+  FieldOptions_CType2[(FieldOptions_CType2["CORD"] = 1)] = "CORD";
+  FieldOptions_CType2[(FieldOptions_CType2["STRING_PIECE"] = 2)] =
+    "STRING_PIECE";
 })(FieldOptions_CType || (FieldOptions_CType = {}));
 var FieldOptions_JSType;
-(function(FieldOptions_JSType2) {
-  FieldOptions_JSType2[FieldOptions_JSType2["JS_NORMAL"] = 0] = "JS_NORMAL";
-  FieldOptions_JSType2[FieldOptions_JSType2["JS_STRING"] = 1] = "JS_STRING";
-  FieldOptions_JSType2[FieldOptions_JSType2["JS_NUMBER"] = 2] = "JS_NUMBER";
+(function (FieldOptions_JSType2) {
+  FieldOptions_JSType2[(FieldOptions_JSType2["JS_NORMAL"] = 0)] = "JS_NORMAL";
+  FieldOptions_JSType2[(FieldOptions_JSType2["JS_STRING"] = 1)] = "JS_STRING";
+  FieldOptions_JSType2[(FieldOptions_JSType2["JS_NUMBER"] = 2)] = "JS_NUMBER";
 })(FieldOptions_JSType || (FieldOptions_JSType = {}));
 var FieldOptions_OptionRetention;
-(function(FieldOptions_OptionRetention2) {
-  FieldOptions_OptionRetention2[FieldOptions_OptionRetention2["RETENTION_UNKNOWN"] = 0] = "RETENTION_UNKNOWN";
-  FieldOptions_OptionRetention2[FieldOptions_OptionRetention2["RETENTION_RUNTIME"] = 1] = "RETENTION_RUNTIME";
-  FieldOptions_OptionRetention2[FieldOptions_OptionRetention2["RETENTION_SOURCE"] = 2] = "RETENTION_SOURCE";
+(function (FieldOptions_OptionRetention2) {
+  FieldOptions_OptionRetention2[
+    (FieldOptions_OptionRetention2["RETENTION_UNKNOWN"] = 0)
+  ] = "RETENTION_UNKNOWN";
+  FieldOptions_OptionRetention2[
+    (FieldOptions_OptionRetention2["RETENTION_RUNTIME"] = 1)
+  ] = "RETENTION_RUNTIME";
+  FieldOptions_OptionRetention2[
+    (FieldOptions_OptionRetention2["RETENTION_SOURCE"] = 2)
+  ] = "RETENTION_SOURCE";
 })(FieldOptions_OptionRetention || (FieldOptions_OptionRetention = {}));
 var FieldOptions_OptionTargetType;
-(function(FieldOptions_OptionTargetType2) {
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_UNKNOWN"] = 0] = "TARGET_TYPE_UNKNOWN";
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_FILE"] = 1] = "TARGET_TYPE_FILE";
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_EXTENSION_RANGE"] = 2] = "TARGET_TYPE_EXTENSION_RANGE";
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_MESSAGE"] = 3] = "TARGET_TYPE_MESSAGE";
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_FIELD"] = 4] = "TARGET_TYPE_FIELD";
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_ONEOF"] = 5] = "TARGET_TYPE_ONEOF";
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_ENUM"] = 6] = "TARGET_TYPE_ENUM";
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_ENUM_ENTRY"] = 7] = "TARGET_TYPE_ENUM_ENTRY";
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_SERVICE"] = 8] = "TARGET_TYPE_SERVICE";
-  FieldOptions_OptionTargetType2[FieldOptions_OptionTargetType2["TARGET_TYPE_METHOD"] = 9] = "TARGET_TYPE_METHOD";
+(function (FieldOptions_OptionTargetType2) {
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_UNKNOWN"] = 0)
+  ] = "TARGET_TYPE_UNKNOWN";
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_FILE"] = 1)
+  ] = "TARGET_TYPE_FILE";
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_EXTENSION_RANGE"] = 2)
+  ] = "TARGET_TYPE_EXTENSION_RANGE";
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_MESSAGE"] = 3)
+  ] = "TARGET_TYPE_MESSAGE";
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_FIELD"] = 4)
+  ] = "TARGET_TYPE_FIELD";
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_ONEOF"] = 5)
+  ] = "TARGET_TYPE_ONEOF";
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_ENUM"] = 6)
+  ] = "TARGET_TYPE_ENUM";
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_ENUM_ENTRY"] = 7)
+  ] = "TARGET_TYPE_ENUM_ENTRY";
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_SERVICE"] = 8)
+  ] = "TARGET_TYPE_SERVICE";
+  FieldOptions_OptionTargetType2[
+    (FieldOptions_OptionTargetType2["TARGET_TYPE_METHOD"] = 9)
+  ] = "TARGET_TYPE_METHOD";
 })(FieldOptions_OptionTargetType || (FieldOptions_OptionTargetType = {}));
 var MethodOptions_IdempotencyLevel;
-(function(MethodOptions_IdempotencyLevel2) {
-  MethodOptions_IdempotencyLevel2[MethodOptions_IdempotencyLevel2["IDEMPOTENCY_UNKNOWN"] = 0] = "IDEMPOTENCY_UNKNOWN";
-  MethodOptions_IdempotencyLevel2[MethodOptions_IdempotencyLevel2["NO_SIDE_EFFECTS"] = 1] = "NO_SIDE_EFFECTS";
-  MethodOptions_IdempotencyLevel2[MethodOptions_IdempotencyLevel2["IDEMPOTENT"] = 2] = "IDEMPOTENT";
+(function (MethodOptions_IdempotencyLevel2) {
+  MethodOptions_IdempotencyLevel2[
+    (MethodOptions_IdempotencyLevel2["IDEMPOTENCY_UNKNOWN"] = 0)
+  ] = "IDEMPOTENCY_UNKNOWN";
+  MethodOptions_IdempotencyLevel2[
+    (MethodOptions_IdempotencyLevel2["NO_SIDE_EFFECTS"] = 1)
+  ] = "NO_SIDE_EFFECTS";
+  MethodOptions_IdempotencyLevel2[
+    (MethodOptions_IdempotencyLevel2["IDEMPOTENT"] = 2)
+  ] = "IDEMPOTENT";
 })(MethodOptions_IdempotencyLevel || (MethodOptions_IdempotencyLevel = {}));
 var FeatureSet_VisibilityFeature_DefaultSymbolVisibility;
-(function(FeatureSet_VisibilityFeature_DefaultSymbolVisibility2) {
-  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[FeatureSet_VisibilityFeature_DefaultSymbolVisibility2["DEFAULT_SYMBOL_VISIBILITY_UNKNOWN"] = 0] = "DEFAULT_SYMBOL_VISIBILITY_UNKNOWN";
-  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[FeatureSet_VisibilityFeature_DefaultSymbolVisibility2["EXPORT_ALL"] = 1] = "EXPORT_ALL";
-  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[FeatureSet_VisibilityFeature_DefaultSymbolVisibility2["EXPORT_TOP_LEVEL"] = 2] = "EXPORT_TOP_LEVEL";
-  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[FeatureSet_VisibilityFeature_DefaultSymbolVisibility2["LOCAL_ALL"] = 3] = "LOCAL_ALL";
-  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[FeatureSet_VisibilityFeature_DefaultSymbolVisibility2["STRICT"] = 4] = "STRICT";
-})(FeatureSet_VisibilityFeature_DefaultSymbolVisibility || (FeatureSet_VisibilityFeature_DefaultSymbolVisibility = {}));
+(function (FeatureSet_VisibilityFeature_DefaultSymbolVisibility2) {
+  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[
+    (FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[
+      "DEFAULT_SYMBOL_VISIBILITY_UNKNOWN"
+    ] = 0)
+  ] = "DEFAULT_SYMBOL_VISIBILITY_UNKNOWN";
+  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[
+    (FeatureSet_VisibilityFeature_DefaultSymbolVisibility2["EXPORT_ALL"] = 1)
+  ] = "EXPORT_ALL";
+  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[
+    (FeatureSet_VisibilityFeature_DefaultSymbolVisibility2["EXPORT_TOP_LEVEL"] =
+      2)
+  ] = "EXPORT_TOP_LEVEL";
+  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[
+    (FeatureSet_VisibilityFeature_DefaultSymbolVisibility2["LOCAL_ALL"] = 3)
+  ] = "LOCAL_ALL";
+  FeatureSet_VisibilityFeature_DefaultSymbolVisibility2[
+    (FeatureSet_VisibilityFeature_DefaultSymbolVisibility2["STRICT"] = 4)
+  ] = "STRICT";
+})(
+  FeatureSet_VisibilityFeature_DefaultSymbolVisibility ||
+    (FeatureSet_VisibilityFeature_DefaultSymbolVisibility = {}),
+);
 var FeatureSet_FieldPresence;
-(function(FeatureSet_FieldPresence2) {
-  FeatureSet_FieldPresence2[FeatureSet_FieldPresence2["FIELD_PRESENCE_UNKNOWN"] = 0] = "FIELD_PRESENCE_UNKNOWN";
-  FeatureSet_FieldPresence2[FeatureSet_FieldPresence2["EXPLICIT"] = 1] = "EXPLICIT";
-  FeatureSet_FieldPresence2[FeatureSet_FieldPresence2["IMPLICIT"] = 2] = "IMPLICIT";
-  FeatureSet_FieldPresence2[FeatureSet_FieldPresence2["LEGACY_REQUIRED"] = 3] = "LEGACY_REQUIRED";
+(function (FeatureSet_FieldPresence2) {
+  FeatureSet_FieldPresence2[
+    (FeatureSet_FieldPresence2["FIELD_PRESENCE_UNKNOWN"] = 0)
+  ] = "FIELD_PRESENCE_UNKNOWN";
+  FeatureSet_FieldPresence2[(FeatureSet_FieldPresence2["EXPLICIT"] = 1)] =
+    "EXPLICIT";
+  FeatureSet_FieldPresence2[(FeatureSet_FieldPresence2["IMPLICIT"] = 2)] =
+    "IMPLICIT";
+  FeatureSet_FieldPresence2[
+    (FeatureSet_FieldPresence2["LEGACY_REQUIRED"] = 3)
+  ] = "LEGACY_REQUIRED";
 })(FeatureSet_FieldPresence || (FeatureSet_FieldPresence = {}));
 var FeatureSet_EnumType;
-(function(FeatureSet_EnumType2) {
-  FeatureSet_EnumType2[FeatureSet_EnumType2["ENUM_TYPE_UNKNOWN"] = 0] = "ENUM_TYPE_UNKNOWN";
-  FeatureSet_EnumType2[FeatureSet_EnumType2["OPEN"] = 1] = "OPEN";
-  FeatureSet_EnumType2[FeatureSet_EnumType2["CLOSED"] = 2] = "CLOSED";
+(function (FeatureSet_EnumType2) {
+  FeatureSet_EnumType2[(FeatureSet_EnumType2["ENUM_TYPE_UNKNOWN"] = 0)] =
+    "ENUM_TYPE_UNKNOWN";
+  FeatureSet_EnumType2[(FeatureSet_EnumType2["OPEN"] = 1)] = "OPEN";
+  FeatureSet_EnumType2[(FeatureSet_EnumType2["CLOSED"] = 2)] = "CLOSED";
 })(FeatureSet_EnumType || (FeatureSet_EnumType = {}));
 var FeatureSet_RepeatedFieldEncoding;
-(function(FeatureSet_RepeatedFieldEncoding2) {
-  FeatureSet_RepeatedFieldEncoding2[FeatureSet_RepeatedFieldEncoding2["REPEATED_FIELD_ENCODING_UNKNOWN"] = 0] = "REPEATED_FIELD_ENCODING_UNKNOWN";
-  FeatureSet_RepeatedFieldEncoding2[FeatureSet_RepeatedFieldEncoding2["PACKED"] = 1] = "PACKED";
-  FeatureSet_RepeatedFieldEncoding2[FeatureSet_RepeatedFieldEncoding2["EXPANDED"] = 2] = "EXPANDED";
+(function (FeatureSet_RepeatedFieldEncoding2) {
+  FeatureSet_RepeatedFieldEncoding2[
+    (FeatureSet_RepeatedFieldEncoding2["REPEATED_FIELD_ENCODING_UNKNOWN"] = 0)
+  ] = "REPEATED_FIELD_ENCODING_UNKNOWN";
+  FeatureSet_RepeatedFieldEncoding2[
+    (FeatureSet_RepeatedFieldEncoding2["PACKED"] = 1)
+  ] = "PACKED";
+  FeatureSet_RepeatedFieldEncoding2[
+    (FeatureSet_RepeatedFieldEncoding2["EXPANDED"] = 2)
+  ] = "EXPANDED";
 })(FeatureSet_RepeatedFieldEncoding || (FeatureSet_RepeatedFieldEncoding = {}));
 var FeatureSet_Utf8Validation;
-(function(FeatureSet_Utf8Validation2) {
-  FeatureSet_Utf8Validation2[FeatureSet_Utf8Validation2["UTF8_VALIDATION_UNKNOWN"] = 0] = "UTF8_VALIDATION_UNKNOWN";
-  FeatureSet_Utf8Validation2[FeatureSet_Utf8Validation2["VERIFY"] = 2] = "VERIFY";
-  FeatureSet_Utf8Validation2[FeatureSet_Utf8Validation2["NONE"] = 3] = "NONE";
+(function (FeatureSet_Utf8Validation2) {
+  FeatureSet_Utf8Validation2[
+    (FeatureSet_Utf8Validation2["UTF8_VALIDATION_UNKNOWN"] = 0)
+  ] = "UTF8_VALIDATION_UNKNOWN";
+  FeatureSet_Utf8Validation2[(FeatureSet_Utf8Validation2["VERIFY"] = 2)] =
+    "VERIFY";
+  FeatureSet_Utf8Validation2[(FeatureSet_Utf8Validation2["NONE"] = 3)] = "NONE";
 })(FeatureSet_Utf8Validation || (FeatureSet_Utf8Validation = {}));
 var FeatureSet_MessageEncoding;
-(function(FeatureSet_MessageEncoding2) {
-  FeatureSet_MessageEncoding2[FeatureSet_MessageEncoding2["MESSAGE_ENCODING_UNKNOWN"] = 0] = "MESSAGE_ENCODING_UNKNOWN";
-  FeatureSet_MessageEncoding2[FeatureSet_MessageEncoding2["LENGTH_PREFIXED"] = 1] = "LENGTH_PREFIXED";
-  FeatureSet_MessageEncoding2[FeatureSet_MessageEncoding2["DELIMITED"] = 2] = "DELIMITED";
+(function (FeatureSet_MessageEncoding2) {
+  FeatureSet_MessageEncoding2[
+    (FeatureSet_MessageEncoding2["MESSAGE_ENCODING_UNKNOWN"] = 0)
+  ] = "MESSAGE_ENCODING_UNKNOWN";
+  FeatureSet_MessageEncoding2[
+    (FeatureSet_MessageEncoding2["LENGTH_PREFIXED"] = 1)
+  ] = "LENGTH_PREFIXED";
+  FeatureSet_MessageEncoding2[(FeatureSet_MessageEncoding2["DELIMITED"] = 2)] =
+    "DELIMITED";
 })(FeatureSet_MessageEncoding || (FeatureSet_MessageEncoding = {}));
 var FeatureSet_JsonFormat;
-(function(FeatureSet_JsonFormat2) {
-  FeatureSet_JsonFormat2[FeatureSet_JsonFormat2["JSON_FORMAT_UNKNOWN"] = 0] = "JSON_FORMAT_UNKNOWN";
-  FeatureSet_JsonFormat2[FeatureSet_JsonFormat2["ALLOW"] = 1] = "ALLOW";
-  FeatureSet_JsonFormat2[FeatureSet_JsonFormat2["LEGACY_BEST_EFFORT"] = 2] = "LEGACY_BEST_EFFORT";
+(function (FeatureSet_JsonFormat2) {
+  FeatureSet_JsonFormat2[(FeatureSet_JsonFormat2["JSON_FORMAT_UNKNOWN"] = 0)] =
+    "JSON_FORMAT_UNKNOWN";
+  FeatureSet_JsonFormat2[(FeatureSet_JsonFormat2["ALLOW"] = 1)] = "ALLOW";
+  FeatureSet_JsonFormat2[(FeatureSet_JsonFormat2["LEGACY_BEST_EFFORT"] = 2)] =
+    "LEGACY_BEST_EFFORT";
 })(FeatureSet_JsonFormat || (FeatureSet_JsonFormat = {}));
 var FeatureSet_EnforceNamingStyle;
-(function(FeatureSet_EnforceNamingStyle2) {
-  FeatureSet_EnforceNamingStyle2[FeatureSet_EnforceNamingStyle2["ENFORCE_NAMING_STYLE_UNKNOWN"] = 0] = "ENFORCE_NAMING_STYLE_UNKNOWN";
-  FeatureSet_EnforceNamingStyle2[FeatureSet_EnforceNamingStyle2["STYLE2024"] = 1] = "STYLE2024";
-  FeatureSet_EnforceNamingStyle2[FeatureSet_EnforceNamingStyle2["STYLE_LEGACY"] = 2] = "STYLE_LEGACY";
+(function (FeatureSet_EnforceNamingStyle2) {
+  FeatureSet_EnforceNamingStyle2[
+    (FeatureSet_EnforceNamingStyle2["ENFORCE_NAMING_STYLE_UNKNOWN"] = 0)
+  ] = "ENFORCE_NAMING_STYLE_UNKNOWN";
+  FeatureSet_EnforceNamingStyle2[
+    (FeatureSet_EnforceNamingStyle2["STYLE2024"] = 1)
+  ] = "STYLE2024";
+  FeatureSet_EnforceNamingStyle2[
+    (FeatureSet_EnforceNamingStyle2["STYLE_LEGACY"] = 2)
+  ] = "STYLE_LEGACY";
 })(FeatureSet_EnforceNamingStyle || (FeatureSet_EnforceNamingStyle = {}));
 var GeneratedCodeInfo_Annotation_Semantic;
-(function(GeneratedCodeInfo_Annotation_Semantic2) {
-  GeneratedCodeInfo_Annotation_Semantic2[GeneratedCodeInfo_Annotation_Semantic2["NONE"] = 0] = "NONE";
-  GeneratedCodeInfo_Annotation_Semantic2[GeneratedCodeInfo_Annotation_Semantic2["SET"] = 1] = "SET";
-  GeneratedCodeInfo_Annotation_Semantic2[GeneratedCodeInfo_Annotation_Semantic2["ALIAS"] = 2] = "ALIAS";
-})(GeneratedCodeInfo_Annotation_Semantic || (GeneratedCodeInfo_Annotation_Semantic = {}));
+(function (GeneratedCodeInfo_Annotation_Semantic2) {
+  GeneratedCodeInfo_Annotation_Semantic2[
+    (GeneratedCodeInfo_Annotation_Semantic2["NONE"] = 0)
+  ] = "NONE";
+  GeneratedCodeInfo_Annotation_Semantic2[
+    (GeneratedCodeInfo_Annotation_Semantic2["SET"] = 1)
+  ] = "SET";
+  GeneratedCodeInfo_Annotation_Semantic2[
+    (GeneratedCodeInfo_Annotation_Semantic2["ALIAS"] = 2)
+  ] = "ALIAS";
+})(
+  GeneratedCodeInfo_Annotation_Semantic ||
+    (GeneratedCodeInfo_Annotation_Semantic = {}),
+);
 var Edition;
-(function(Edition2) {
-  Edition2[Edition2["EDITION_UNKNOWN"] = 0] = "EDITION_UNKNOWN";
-  Edition2[Edition2["EDITION_LEGACY"] = 900] = "EDITION_LEGACY";
-  Edition2[Edition2["EDITION_PROTO2"] = 998] = "EDITION_PROTO2";
-  Edition2[Edition2["EDITION_PROTO3"] = 999] = "EDITION_PROTO3";
-  Edition2[Edition2["EDITION_2023"] = 1000] = "EDITION_2023";
-  Edition2[Edition2["EDITION_2024"] = 1001] = "EDITION_2024";
-  Edition2[Edition2["EDITION_1_TEST_ONLY"] = 1] = "EDITION_1_TEST_ONLY";
-  Edition2[Edition2["EDITION_2_TEST_ONLY"] = 2] = "EDITION_2_TEST_ONLY";
-  Edition2[Edition2["EDITION_99997_TEST_ONLY"] = 99997] = "EDITION_99997_TEST_ONLY";
-  Edition2[Edition2["EDITION_99998_TEST_ONLY"] = 99998] = "EDITION_99998_TEST_ONLY";
-  Edition2[Edition2["EDITION_99999_TEST_ONLY"] = 99999] = "EDITION_99999_TEST_ONLY";
-  Edition2[Edition2["EDITION_MAX"] = 2147483647] = "EDITION_MAX";
+(function (Edition2) {
+  Edition2[(Edition2["EDITION_UNKNOWN"] = 0)] = "EDITION_UNKNOWN";
+  Edition2[(Edition2["EDITION_LEGACY"] = 900)] = "EDITION_LEGACY";
+  Edition2[(Edition2["EDITION_PROTO2"] = 998)] = "EDITION_PROTO2";
+  Edition2[(Edition2["EDITION_PROTO3"] = 999)] = "EDITION_PROTO3";
+  Edition2[(Edition2["EDITION_2023"] = 1000)] = "EDITION_2023";
+  Edition2[(Edition2["EDITION_2024"] = 1001)] = "EDITION_2024";
+  Edition2[(Edition2["EDITION_1_TEST_ONLY"] = 1)] = "EDITION_1_TEST_ONLY";
+  Edition2[(Edition2["EDITION_2_TEST_ONLY"] = 2)] = "EDITION_2_TEST_ONLY";
+  Edition2[(Edition2["EDITION_99997_TEST_ONLY"] = 99997)] =
+    "EDITION_99997_TEST_ONLY";
+  Edition2[(Edition2["EDITION_99998_TEST_ONLY"] = 99998)] =
+    "EDITION_99998_TEST_ONLY";
+  Edition2[(Edition2["EDITION_99999_TEST_ONLY"] = 99999)] =
+    "EDITION_99999_TEST_ONLY";
+  Edition2[(Edition2["EDITION_MAX"] = 2147483647)] = "EDITION_MAX";
 })(Edition || (Edition = {}));
 var SymbolVisibility;
-(function(SymbolVisibility2) {
-  SymbolVisibility2[SymbolVisibility2["VISIBILITY_UNSET"] = 0] = "VISIBILITY_UNSET";
-  SymbolVisibility2[SymbolVisibility2["VISIBILITY_LOCAL"] = 1] = "VISIBILITY_LOCAL";
-  SymbolVisibility2[SymbolVisibility2["VISIBILITY_EXPORT"] = 2] = "VISIBILITY_EXPORT";
+(function (SymbolVisibility2) {
+  SymbolVisibility2[(SymbolVisibility2["VISIBILITY_UNSET"] = 0)] =
+    "VISIBILITY_UNSET";
+  SymbolVisibility2[(SymbolVisibility2["VISIBILITY_LOCAL"] = 1)] =
+    "VISIBILITY_LOCAL";
+  SymbolVisibility2[(SymbolVisibility2["VISIBILITY_EXPORT"] = 2)] =
+    "VISIBILITY_EXPORT";
 })(SymbolVisibility || (SymbolVisibility = {}));
 var readDefaults = {
-  readUnknownFields: true
+  readUnknownFields: true,
 };
 function makeReadOptions(options) {
-  return options ? Object.assign(Object.assign({}, readDefaults), options) : readDefaults;
+  return options
+    ? Object.assign(Object.assign({}, readDefaults), options)
+    : readDefaults;
 }
 function fromBinary(schema, bytes, options) {
   const msg = reflect(schema, undefined, false);
-  readMessage(msg, new BinaryReader(bytes), makeReadOptions(options), false, bytes.byteLength);
+  readMessage(
+    msg,
+    new BinaryReader(bytes),
+    makeReadOptions(options),
+    false,
+    bytes.byteLength,
+  );
   return msg.message;
 }
-function readMessage(message, reader, options, delimited, lengthOrDelimitedFieldNo) {
+function readMessage(
+  message,
+  reader,
+  options,
+  delimited,
+  lengthOrDelimitedFieldNo,
+) {
   var _a;
   const end = delimited ? reader.len : reader.pos + lengthOrDelimitedFieldNo;
   let fieldNo;
   let wireType;
-  const unknownFields = (_a = message.getUnknown()) !== null && _a !== undefined ? _a : [];
+  const unknownFields =
+    (_a = message.getUnknown()) !== null && _a !== undefined ? _a : [];
   while (reader.pos < end) {
     [fieldNo, wireType] = reader.tag();
     if (delimited && wireType == WireType.EndGroup) {
@@ -2901,14 +4784,18 @@ function readField(message, reader, field, wireType, options) {
           message.set(field, val);
         } else if (options.readUnknownFields) {
           const data = new BinaryWriter().int32(val).finish();
-          const unknownFields = (_a = message.getUnknown()) !== null && _a !== undefined ? _a : [];
+          const unknownFields =
+            (_a = message.getUnknown()) !== null && _a !== undefined ? _a : [];
           unknownFields.push({ no: field.number, wireType, data });
           message.setUnknown(unknownFields);
         }
       }
       break;
     case "message":
-      message.set(field, readMessageField(reader, options, field, message.get(field)));
+      message.set(
+        field,
+        readMessageField(reader, options, field, message.get(field)),
+      );
       break;
     case "list":
       readListField(reader, wireType, message.get(field), options);
@@ -2970,8 +4857,12 @@ function readListField(reader, wireType, list, options) {
     list.add(readMessageField(reader, options, field));
     return;
   }
-  const scalarType = (_a = field.scalar) !== null && _a !== undefined ? _a : ScalarType.INT32;
-  const packed = wireType == WireType.LengthDelimited && scalarType != ScalarType.STRING && scalarType != ScalarType.BYTES;
+  const scalarType =
+    (_a = field.scalar) !== null && _a !== undefined ? _a : ScalarType.INT32;
+  const packed =
+    wireType == WireType.LengthDelimited &&
+    scalarType != ScalarType.STRING &&
+    scalarType != ScalarType.BYTES;
   if (!packed) {
     list.add(readScalar(reader, scalarType));
     return;
@@ -2983,8 +4874,17 @@ function readListField(reader, wireType, list, options) {
 }
 function readMessageField(reader, options, field, mergeMessage) {
   const delimited = field.delimitedEncoding;
-  const message = mergeMessage !== null && mergeMessage !== undefined ? mergeMessage : reflect(field.message, undefined, false);
-  readMessage(message, reader, options, delimited, delimited ? field.number : reader.uint32());
+  const message =
+    mergeMessage !== null && mergeMessage !== undefined
+      ? mergeMessage
+      : reflect(field.message, undefined, false);
+  readMessage(
+    message,
+    reader,
+    options,
+    delimited,
+    delimited ? field.number : reader.uint32(),
+  );
   return message;
 }
 function readScalar(reader, type) {
@@ -3025,12 +4925,27 @@ function fileDesc(b64, imports) {
   var _a;
   const root = fromBinary(FileDescriptorProtoSchema, base64Decode(b64));
   root.messageType.forEach(restoreJsonNames);
-  root.dependency = (_a = imports === null || imports === undefined ? undefined : imports.map((f) => f.proto.name)) !== null && _a !== undefined ? _a : [];
-  const reg = createFileRegistry(root, (protoFileName) => imports === null || imports === undefined ? undefined : imports.find((f) => f.proto.name === protoFileName));
+  root.dependency =
+    (_a =
+      imports === null || imports === undefined
+        ? undefined
+        : imports.map((f) => f.proto.name)) !== null && _a !== undefined
+      ? _a
+      : [];
+  const reg = createFileRegistry(root, (protoFileName) =>
+    imports === null || imports === undefined
+      ? undefined
+      : imports.find((f) => f.proto.name === protoFileName),
+  );
   return reg.getFile(root.name);
 }
-var file_google_protobuf_timestamp = /* @__PURE__ */ fileDesc("Ch9nb29nbGUvcHJvdG9idWYvdGltZXN0YW1wLnByb3RvEg9nb29nbGUucHJvdG9idWYiKwoJVGltZXN0YW1wEg8KB3NlY29uZHMYASABKAMSDQoFbmFub3MYAiABKAVChQEKE2NvbS5nb29nbGUucHJvdG9idWZCDlRpbWVzdGFtcFByb3RvUAFaMmdvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL3RpbWVzdGFtcHBi+AEBogIDR1BCqgIeR29vZ2xlLlByb3RvYnVmLldlbGxLbm93blR5cGVzYgZwcm90bzM");
-var TimestampSchema = /* @__PURE__ */ messageDesc(file_google_protobuf_timestamp, 0);
+var file_google_protobuf_timestamp = /* @__PURE__ */ fileDesc(
+  "Ch9nb29nbGUvcHJvdG9idWYvdGltZXN0YW1wLnByb3RvEg9nb29nbGUucHJvdG9idWYiKwoJVGltZXN0YW1wEg8KB3NlY29uZHMYASABKAMSDQoFbmFub3MYAiABKAVChQEKE2NvbS5nb29nbGUucHJvdG9idWZCDlRpbWVzdGFtcFByb3RvUAFaMmdvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL3RpbWVzdGFtcHBi+AEBogIDR1BCqgIeR29vZ2xlLlByb3RvYnVmLldlbGxLbm93blR5cGVzYgZwcm90bzM",
+);
+var TimestampSchema = /* @__PURE__ */ messageDesc(
+  file_google_protobuf_timestamp,
+  0,
+);
 function timestampFromDate(date) {
   return timestampFromMs(date.getTime());
 }
@@ -3041,23 +4956,31 @@ function timestampFromMs(timestampMs) {
   const seconds = Math.floor(timestampMs / 1000);
   return create(TimestampSchema, {
     seconds: protoInt64.parse(seconds),
-    nanos: (timestampMs - seconds * 1000) * 1e6
+    nanos: (timestampMs - seconds * 1000) * 1e6,
   });
 }
 function timestampMs(timestamp) {
   return Number(timestamp.seconds) * 1000 + Math.round(timestamp.nanos / 1e6);
 }
-var file_google_protobuf_any = /* @__PURE__ */ fileDesc("Chlnb29nbGUvcHJvdG9idWYvYW55LnByb3RvEg9nb29nbGUucHJvdG9idWYiJgoDQW55EhAKCHR5cGVfdXJsGAEgASgJEg0KBXZhbHVlGAIgASgMQnYKE2NvbS5nb29nbGUucHJvdG9idWZCCEFueVByb3RvUAFaLGdvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL2FueXBiogIDR1BCqgIeR29vZ2xlLlByb3RvYnVmLldlbGxLbm93blR5cGVzYgZwcm90bzM");
+var file_google_protobuf_any = /* @__PURE__ */ fileDesc(
+  "Chlnb29nbGUvcHJvdG9idWYvYW55LnByb3RvEg9nb29nbGUucHJvdG9idWYiJgoDQW55EhAKCHR5cGVfdXJsGAEgASgJEg0KBXZhbHVlGAIgASgMQnYKE2NvbS5nb29nbGUucHJvdG9idWZCCEFueVByb3RvUAFaLGdvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL2FueXBiogIDR1BCqgIeR29vZ2xlLlByb3RvYnVmLldlbGxLbm93blR5cGVzYgZwcm90bzM",
+);
 var AnySchema = /* @__PURE__ */ messageDesc(file_google_protobuf_any, 0);
 var LEGACY_REQUIRED2 = 3;
 var writeDefaults = {
-  writeUnknownFields: true
+  writeUnknownFields: true,
 };
 function makeWriteOptions(options) {
-  return options ? Object.assign(Object.assign({}, writeDefaults), options) : writeDefaults;
+  return options
+    ? Object.assign(Object.assign({}, writeDefaults), options)
+    : writeDefaults;
 }
 function toBinary(schema, message, options) {
-  return writeFields(new BinaryWriter, makeWriteOptions(options), reflect(schema, message)).finish();
+  return writeFields(
+    new BinaryWriter(),
+    makeWriteOptions(options),
+    reflect(schema, message),
+  ).finish();
 }
 function writeFields(writer, opts, msg) {
   var _a;
@@ -3071,7 +4994,10 @@ function writeFields(writer, opts, msg) {
     writeField(writer, opts, msg, f);
   }
   if (opts.writeUnknownFields) {
-    for (const { no, wireType, data } of (_a = msg.getUnknown()) !== null && _a !== undefined ? _a : []) {
+    for (const { no, wireType, data } of (_a = msg.getUnknown()) !== null &&
+    _a !== undefined
+      ? _a
+      : []) {
       writer.tag(no, wireType).raw(data);
     }
   }
@@ -3082,7 +5008,16 @@ function writeField(writer, opts, msg, field) {
   switch (field.fieldKind) {
     case "scalar":
     case "enum":
-      writeScalar(writer, msg.desc.typeName, field.name, (_a = field.scalar) !== null && _a !== undefined ? _a : ScalarType.INT32, field.number, msg.get(field));
+      writeScalar(
+        writer,
+        msg.desc.typeName,
+        field.name,
+        (_a = field.scalar) !== null && _a !== undefined
+          ? _a
+          : ScalarType.INT32,
+        field.number,
+        msg.get(field),
+      );
       break;
     case "list":
       writeListField(writer, opts, field, msg.get(field));
@@ -3098,13 +5033,27 @@ function writeField(writer, opts, msg, field) {
   }
 }
 function writeScalar(writer, msgName, fieldName, scalarType, fieldNo, value) {
-  writeScalarValue(writer.tag(fieldNo, writeTypeOfScalar(scalarType)), msgName, fieldName, scalarType, value);
+  writeScalarValue(
+    writer.tag(fieldNo, writeTypeOfScalar(scalarType)),
+    msgName,
+    fieldName,
+    scalarType,
+    value,
+  );
 }
 function writeMessageField(writer, opts, field, message) {
   if (field.delimitedEncoding) {
-    writeFields(writer.tag(field.number, WireType.StartGroup), opts, message).tag(field.number, WireType.EndGroup);
+    writeFields(
+      writer.tag(field.number, WireType.StartGroup),
+      opts,
+      message,
+    ).tag(field.number, WireType.EndGroup);
   } else {
-    writeFields(writer.tag(field.number, WireType.LengthDelimited).fork(), opts, message).join();
+    writeFields(
+      writer.tag(field.number, WireType.LengthDelimited).fork(),
+      opts,
+      message,
+    ).join();
   }
 }
 function writeListField(writer, opts, field, list) {
@@ -3115,20 +5064,34 @@ function writeListField(writer, opts, field, list) {
     }
     return;
   }
-  const scalarType = (_a = field.scalar) !== null && _a !== undefined ? _a : ScalarType.INT32;
+  const scalarType =
+    (_a = field.scalar) !== null && _a !== undefined ? _a : ScalarType.INT32;
   if (field.packed) {
     if (!list.size) {
       return;
     }
     writer.tag(field.number, WireType.LengthDelimited).fork();
     for (const item of list) {
-      writeScalarValue(writer, field.parent.typeName, field.name, scalarType, item);
+      writeScalarValue(
+        writer,
+        field.parent.typeName,
+        field.name,
+        scalarType,
+        item,
+      );
     }
     writer.join();
     return;
   }
   for (const item of list) {
-    writeScalar(writer, field.parent.typeName, field.name, scalarType, field.number, item);
+    writeScalar(
+      writer,
+      field.parent.typeName,
+      field.name,
+      scalarType,
+      field.number,
+      item,
+    );
   }
 }
 function writeMapEntry(writer, opts, field, key, value) {
@@ -3138,10 +5101,23 @@ function writeMapEntry(writer, opts, field, key, value) {
   switch (field.mapKind) {
     case "scalar":
     case "enum":
-      writeScalar(writer, field.parent.typeName, field.name, (_a = field.scalar) !== null && _a !== undefined ? _a : ScalarType.INT32, 2, value);
+      writeScalar(
+        writer,
+        field.parent.typeName,
+        field.name,
+        (_a = field.scalar) !== null && _a !== undefined
+          ? _a
+          : ScalarType.INT32,
+        2,
+        value,
+      );
       break;
     case "message":
-      writeFields(writer.tag(2, WireType.LengthDelimited).fork(), opts, value).join();
+      writeFields(
+        writer.tag(2, WireType.LengthDelimited).fork(),
+        opts,
+        value,
+      ).join();
       break;
   }
   writer.join();
@@ -3197,7 +5173,9 @@ function writeScalarValue(writer, msgName, fieldName, type, value) {
     }
   } catch (e) {
     if (e instanceof Error) {
-      throw new Error(`cannot encode field ${msgName}.${fieldName} to binary: ${e.message}`);
+      throw new Error(
+        `cannot encode field ${msgName}.${fieldName} to binary: ${e.message}`,
+      );
     }
     throw e;
   }
@@ -3233,7 +5211,10 @@ function anyIs(any, descOrTypeName) {
   if (any.typeUrl === "") {
     return false;
   }
-  const want = typeof descOrTypeName == "string" ? descOrTypeName : descOrTypeName.typeName;
+  const want =
+    typeof descOrTypeName == "string"
+      ? descOrTypeName
+      : descOrTypeName.typeName;
   const got = typeUrlToName(any.typeUrl);
   return want === got;
 }
@@ -3241,7 +5222,10 @@ function anyUnpack(any, registryOrMessageDesc) {
   if (any.typeUrl === "") {
     return;
   }
-  const desc = registryOrMessageDesc.kind == "message" ? registryOrMessageDesc : registryOrMessageDesc.getMessage(typeUrlToName(any.typeUrl));
+  const desc =
+    registryOrMessageDesc.kind == "message"
+      ? registryOrMessageDesc
+      : registryOrMessageDesc.getMessage(typeUrlToName(any.typeUrl));
   if (!desc || !anyIs(any, desc)) {
     return;
   }
@@ -3258,22 +5242,33 @@ function typeUrlToName(url) {
   }
   return name;
 }
-var file_google_protobuf_duration = /* @__PURE__ */ fileDesc("Ch5nb29nbGUvcHJvdG9idWYvZHVyYXRpb24ucHJvdG8SD2dvb2dsZS5wcm90b2J1ZiIqCghEdXJhdGlvbhIPCgdzZWNvbmRzGAEgASgDEg0KBW5hbm9zGAIgASgFQoMBChNjb20uZ29vZ2xlLnByb3RvYnVmQg1EdXJhdGlvblByb3RvUAFaMWdvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL2R1cmF0aW9ucGL4AQGiAgNHUEKqAh5Hb29nbGUuUHJvdG9idWYuV2VsbEtub3duVHlwZXNiBnByb3RvMw");
-var file_google_protobuf_empty = /* @__PURE__ */ fileDesc("Chtnb29nbGUvcHJvdG9idWYvZW1wdHkucHJvdG8SD2dvb2dsZS5wcm90b2J1ZiIHCgVFbXB0eUJ9ChNjb20uZ29vZ2xlLnByb3RvYnVmQgpFbXB0eVByb3RvUAFaLmdvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL2VtcHR5cGL4AQGiAgNHUEKqAh5Hb29nbGUuUHJvdG9idWYuV2VsbEtub3duVHlwZXNiBnByb3RvMw");
-var file_google_protobuf_struct = /* @__PURE__ */ fileDesc("Chxnb29nbGUvcHJvdG9idWYvc3RydWN0LnByb3RvEg9nb29nbGUucHJvdG9idWYihAEKBlN0cnVjdBIzCgZmaWVsZHMYASADKAsyIy5nb29nbGUucHJvdG9idWYuU3RydWN0LkZpZWxkc0VudHJ5GkUKC0ZpZWxkc0VudHJ5EgsKA2tleRgBIAEoCRIlCgV2YWx1ZRgCIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5WYWx1ZToCOAEi6gEKBVZhbHVlEjAKCm51bGxfdmFsdWUYASABKA4yGi5nb29nbGUucHJvdG9idWYuTnVsbFZhbHVlSAASFgoMbnVtYmVyX3ZhbHVlGAIgASgBSAASFgoMc3RyaW5nX3ZhbHVlGAMgASgJSAASFAoKYm9vbF92YWx1ZRgEIAEoCEgAEi8KDHN0cnVjdF92YWx1ZRgFIAEoCzIXLmdvb2dsZS5wcm90b2J1Zi5TdHJ1Y3RIABIwCgpsaXN0X3ZhbHVlGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLkxpc3RWYWx1ZUgAQgYKBGtpbmQiMwoJTGlzdFZhbHVlEiYKBnZhbHVlcxgBIAMoCzIWLmdvb2dsZS5wcm90b2J1Zi5WYWx1ZSobCglOdWxsVmFsdWUSDgoKTlVMTF9WQUxVRRAAQn8KE2NvbS5nb29nbGUucHJvdG9idWZCC1N0cnVjdFByb3RvUAFaL2dvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL3N0cnVjdHBi+AEBogIDR1BCqgIeR29vZ2xlLlByb3RvYnVmLldlbGxLbm93blR5cGVzYgZwcm90bzM");
+var file_google_protobuf_duration = /* @__PURE__ */ fileDesc(
+  "Ch5nb29nbGUvcHJvdG9idWYvZHVyYXRpb24ucHJvdG8SD2dvb2dsZS5wcm90b2J1ZiIqCghEdXJhdGlvbhIPCgdzZWNvbmRzGAEgASgDEg0KBW5hbm9zGAIgASgFQoMBChNjb20uZ29vZ2xlLnByb3RvYnVmQg1EdXJhdGlvblByb3RvUAFaMWdvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL2R1cmF0aW9ucGL4AQGiAgNHUEKqAh5Hb29nbGUuUHJvdG9idWYuV2VsbEtub3duVHlwZXNiBnByb3RvMw",
+);
+var file_google_protobuf_empty = /* @__PURE__ */ fileDesc(
+  "Chtnb29nbGUvcHJvdG9idWYvZW1wdHkucHJvdG8SD2dvb2dsZS5wcm90b2J1ZiIHCgVFbXB0eUJ9ChNjb20uZ29vZ2xlLnByb3RvYnVmQgpFbXB0eVByb3RvUAFaLmdvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL2VtcHR5cGL4AQGiAgNHUEKqAh5Hb29nbGUuUHJvdG9idWYuV2VsbEtub3duVHlwZXNiBnByb3RvMw",
+);
+var file_google_protobuf_struct = /* @__PURE__ */ fileDesc(
+  "Chxnb29nbGUvcHJvdG9idWYvc3RydWN0LnByb3RvEg9nb29nbGUucHJvdG9idWYihAEKBlN0cnVjdBIzCgZmaWVsZHMYASADKAsyIy5nb29nbGUucHJvdG9idWYuU3RydWN0LkZpZWxkc0VudHJ5GkUKC0ZpZWxkc0VudHJ5EgsKA2tleRgBIAEoCRIlCgV2YWx1ZRgCIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5WYWx1ZToCOAEi6gEKBVZhbHVlEjAKCm51bGxfdmFsdWUYASABKA4yGi5nb29nbGUucHJvdG9idWYuTnVsbFZhbHVlSAASFgoMbnVtYmVyX3ZhbHVlGAIgASgBSAASFgoMc3RyaW5nX3ZhbHVlGAMgASgJSAASFAoKYm9vbF92YWx1ZRgEIAEoCEgAEi8KDHN0cnVjdF92YWx1ZRgFIAEoCzIXLmdvb2dsZS5wcm90b2J1Zi5TdHJ1Y3RIABIwCgpsaXN0X3ZhbHVlGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLkxpc3RWYWx1ZUgAQgYKBGtpbmQiMwoJTGlzdFZhbHVlEiYKBnZhbHVlcxgBIAMoCzIWLmdvb2dsZS5wcm90b2J1Zi5WYWx1ZSobCglOdWxsVmFsdWUSDgoKTlVMTF9WQUxVRRAAQn8KE2NvbS5nb29nbGUucHJvdG9idWZCC1N0cnVjdFByb3RvUAFaL2dvb2dsZS5nb2xhbmcub3JnL3Byb3RvYnVmL3R5cGVzL2tub3duL3N0cnVjdHBi+AEBogIDR1BCqgIeR29vZ2xlLlByb3RvYnVmLldlbGxLbm93blR5cGVzYgZwcm90bzM",
+);
 var StructSchema = /* @__PURE__ */ messageDesc(file_google_protobuf_struct, 0);
 var ValueSchema = /* @__PURE__ */ messageDesc(file_google_protobuf_struct, 1);
-var ListValueSchema = /* @__PURE__ */ messageDesc(file_google_protobuf_struct, 2);
+var ListValueSchema = /* @__PURE__ */ messageDesc(
+  file_google_protobuf_struct,
+  2,
+);
 var NullValue;
-(function(NullValue2) {
-  NullValue2[NullValue2["NULL_VALUE"] = 0] = "NULL_VALUE";
+(function (NullValue2) {
+  NullValue2[(NullValue2["NULL_VALUE"] = 0)] = "NULL_VALUE";
 })(NullValue || (NullValue = {}));
 function setExtension(message, extension, value) {
   var _a;
   assertExtendee(extension, message);
-  const ufs = ((_a = message.$unknown) !== null && _a !== undefined ? _a : []).filter((uf) => uf.no !== extension.number);
+  const ufs = (
+    (_a = message.$unknown) !== null && _a !== undefined ? _a : []
+  ).filter((uf) => uf.no !== extension.number);
   const [container, field] = createExtensionContainer(extension, value);
-  const writer = new BinaryWriter;
+  const writer = new BinaryWriter();
   writeField(writer, { writeUnknownFields: true }, container, field);
   const reader = new BinaryReader(writer.finish());
   while (reader.pos < reader.len) {
@@ -3285,9 +5280,20 @@ function setExtension(message, extension, value) {
 }
 function createExtensionContainer(extension, value) {
   const localName = extension.typeName;
-  const field = Object.assign(Object.assign({}, extension), { kind: "field", parent: extension.extendee, localName });
-  const desc = Object.assign(Object.assign({}, extension.extendee), { fields: [field], members: [field], oneofs: [] });
-  const container = create(desc, value !== undefined ? { [localName]: value } : undefined);
+  const field = Object.assign(Object.assign({}, extension), {
+    kind: "field",
+    parent: extension.extendee,
+    localName,
+  });
+  const desc = Object.assign(Object.assign({}, extension.extendee), {
+    fields: [field],
+    members: [field],
+    oneofs: [],
+  });
+  const container = create(
+    desc,
+    value !== undefined ? { [localName]: value } : undefined,
+  );
   return [
     reflect(desc, container),
     field,
@@ -3296,24 +5302,31 @@ function createExtensionContainer(extension, value) {
       if (value2 === undefined) {
         const desc2 = extension.message;
         if (isWrapperDesc(desc2)) {
-          return scalarZeroValue(desc2.fields[0].scalar, desc2.fields[0].longAsString);
+          return scalarZeroValue(
+            desc2.fields[0].scalar,
+            desc2.fields[0].longAsString,
+          );
         }
         return create(desc2);
       }
       return value2;
-    }
+    },
   ];
 }
 function assertExtendee(extension, message) {
   if (extension.extendee.typeName != message.$typeName) {
-    throw new Error(`extension ${extension.typeName} can only be applied to message ${extension.extendee.typeName}`);
+    throw new Error(
+      `extension ${extension.typeName} can only be applied to message ${extension.extendee.typeName}`,
+    );
   }
 }
 var jsonReadDefaults = {
-  ignoreUnknownFields: false
+  ignoreUnknownFields: false,
 };
 function makeReadOptions2(options) {
-  return options ? Object.assign(Object.assign({}, jsonReadDefaults), options) : jsonReadDefaults;
+  return options
+    ? Object.assign(Object.assign({}, jsonReadDefaults), options)
+    : jsonReadDefaults;
 }
 function fromJson(schema, json, options) {
   const msg = reflect(schema);
@@ -3322,7 +5335,7 @@ function fromJson(schema, json, options) {
   } catch (e) {
     if (isFieldError(e)) {
       throw new Error(`cannot decode ${e.field()} from JSON: ${e.message}`, {
-        cause: e
+        cause: e,
       });
     }
     throw e;
@@ -3337,8 +5350,8 @@ function readMessage2(msg, json, opts) {
   if (json == null || Array.isArray(json) || typeof json != "object") {
     throw new Error(`cannot decode ${msg.desc} from JSON: ${formatVal(json)}`);
   }
-  const oneofSeen = new Map;
-  const jsonNames = new Map;
+  const oneofSeen = new Map();
+  const jsonNames = new Map();
   for (const field of msg.desc.fields) {
     jsonNames.set(field.name, field).set(field.jsonName, field);
   }
@@ -3351,20 +5364,33 @@ function readMessage2(msg, json, opts) {
         }
         const seen = oneofSeen.get(field.oneof);
         if (seen !== undefined) {
-          throw new FieldError(field.oneof, `oneof set multiple times by ${seen.name} and ${field.name}`);
+          throw new FieldError(
+            field.oneof,
+            `oneof set multiple times by ${seen.name} and ${field.name}`,
+          );
         }
         oneofSeen.set(field.oneof, field);
       }
       readField2(msg, field, jsonValue, opts);
     } else {
       let extension = undefined;
-      if (jsonKey.startsWith("[") && jsonKey.endsWith("]") && (extension = (_a = opts.registry) === null || _a === undefined ? undefined : _a.getExtension(jsonKey.substring(1, jsonKey.length - 1))) && extension.extendee.typeName === msg.desc.typeName) {
+      if (
+        jsonKey.startsWith("[") &&
+        jsonKey.endsWith("]") &&
+        (extension =
+          (_a = opts.registry) === null || _a === undefined
+            ? undefined
+            : _a.getExtension(jsonKey.substring(1, jsonKey.length - 1))) &&
+        extension.extendee.typeName === msg.desc.typeName
+      ) {
         const [container, field2, get] = createExtensionContainer(extension);
         readField2(container, field2, jsonValue, opts);
         setExtension(msg.message, extension, get());
       }
       if (!extension && !opts.ignoreUnknownFields) {
-        throw new Error(`cannot decode ${msg.desc} from JSON: key "${jsonKey}" is unknown`);
+        throw new Error(
+          `cannot decode ${msg.desc} from JSON: key "${jsonKey}" is unknown`,
+        );
       }
     }
   }
@@ -3408,7 +5434,12 @@ function readMapField(map, json, opts) {
         value = msgValue;
         break;
       case "enum":
-        value = readEnum(field.enum, jsonMapValue, opts.ignoreUnknownFields, true);
+        value = readEnum(
+          field.enum,
+          jsonMapValue,
+          opts.ignoreUnknownFields,
+          true,
+        );
         if (value === tokenIgnoredUnknownEnum) {
           return;
         }
@@ -3440,7 +5471,12 @@ function readListField2(list, json, opts) {
         list.add(msgValue);
         break;
       case "enum":
-        const enumValue = readEnum(field.enum, jsonItem, opts.ignoreUnknownFields, true);
+        const enumValue = readEnum(
+          field.enum,
+          jsonItem,
+          opts.ignoreUnknownFields,
+          true,
+        );
         if (enumValue !== tokenIgnoredUnknownEnum) {
           list.add(enumValue);
         }
@@ -3513,12 +5549,9 @@ function scalarFromJson(field, json, nullAsZeroValue) {
   switch (field.scalar) {
     case ScalarType.DOUBLE:
     case ScalarType.FLOAT:
-      if (json === "NaN")
-        return NaN;
-      if (json === "Infinity")
-        return Number.POSITIVE_INFINITY;
-      if (json === "-Infinity")
-        return Number.NEGATIVE_INFINITY;
+      if (json === "NaN") return NaN;
+      if (json === "Infinity") return Number.POSITIVE_INFINITY;
+      if (json === "-Infinity") return Number.NEGATIVE_INFINITY;
       if (typeof json == "number") {
         if (Number.isNaN(json)) {
           throw new FieldError(field, "unexpected NaN number");
@@ -3642,25 +5675,41 @@ function tryWktFromJson(msg, jsonValue, opts) {
 function anyFromJson(any, json, opts) {
   var _a;
   if (json === null || Array.isArray(json) || typeof json != "object") {
-    throw new Error(`cannot decode message ${any.$typeName} from JSON: expected object but got ${formatVal(json)}`);
+    throw new Error(
+      `cannot decode message ${any.$typeName} from JSON: expected object but got ${formatVal(json)}`,
+    );
   }
   if (Object.keys(json).length == 0) {
     return;
   }
   const typeUrl = json["@type"];
   if (typeof typeUrl != "string" || typeUrl == "") {
-    throw new Error(`cannot decode message ${any.$typeName} from JSON: "@type" is empty`);
+    throw new Error(
+      `cannot decode message ${any.$typeName} from JSON: "@type" is empty`,
+    );
   }
-  const typeName = typeUrl.includes("/") ? typeUrl.substring(typeUrl.lastIndexOf("/") + 1) : typeUrl;
+  const typeName = typeUrl.includes("/")
+    ? typeUrl.substring(typeUrl.lastIndexOf("/") + 1)
+    : typeUrl;
   if (!typeName.length) {
-    throw new Error(`cannot decode message ${any.$typeName} from JSON: "@type" is invalid`);
+    throw new Error(
+      `cannot decode message ${any.$typeName} from JSON: "@type" is invalid`,
+    );
   }
-  const desc = (_a = opts.registry) === null || _a === undefined ? undefined : _a.getMessage(typeName);
+  const desc =
+    (_a = opts.registry) === null || _a === undefined
+      ? undefined
+      : _a.getMessage(typeName);
   if (!desc) {
-    throw new Error(`cannot decode message ${any.$typeName} from JSON: ${typeUrl} is not in the type registry`);
+    throw new Error(
+      `cannot decode message ${any.$typeName} from JSON: ${typeUrl} is not in the type registry`,
+    );
   }
   const msg = reflect(desc);
-  if (typeName.startsWith("google.protobuf.") && Object.prototype.hasOwnProperty.call(json, "value")) {
+  if (
+    typeName.startsWith("google.protobuf.") &&
+    Object.prototype.hasOwnProperty.call(json, "value")
+  ) {
     const value = json.value;
     readMessage2(msg, value, opts);
   } else {
@@ -3672,36 +5721,69 @@ function anyFromJson(any, json, opts) {
 }
 function timestampFromJson(timestamp, json) {
   if (typeof json !== "string") {
-    throw new Error(`cannot decode message ${timestamp.$typeName} from JSON: ${formatVal(json)}`);
+    throw new Error(
+      `cannot decode message ${timestamp.$typeName} from JSON: ${formatVal(json)}`,
+    );
   }
-  const matches = json.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:\.([0-9]{1,9}))?(?:Z|([+-][0-9][0-9]:[0-9][0-9]))$/);
+  const matches = json.match(
+    /^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:\.([0-9]{1,9}))?(?:Z|([+-][0-9][0-9]:[0-9][0-9]))$/,
+  );
   if (!matches) {
-    throw new Error(`cannot decode message ${timestamp.$typeName} from JSON: invalid RFC 3339 string`);
+    throw new Error(
+      `cannot decode message ${timestamp.$typeName} from JSON: invalid RFC 3339 string`,
+    );
   }
-  const ms = Date.parse(matches[1] + "-" + matches[2] + "-" + matches[3] + "T" + matches[4] + ":" + matches[5] + ":" + matches[6] + (matches[8] ? matches[8] : "Z"));
+  const ms = Date.parse(
+    matches[1] +
+      "-" +
+      matches[2] +
+      "-" +
+      matches[3] +
+      "T" +
+      matches[4] +
+      ":" +
+      matches[5] +
+      ":" +
+      matches[6] +
+      (matches[8] ? matches[8] : "Z"),
+  );
   if (Number.isNaN(ms)) {
-    throw new Error(`cannot decode message ${timestamp.$typeName} from JSON: invalid RFC 3339 string`);
+    throw new Error(
+      `cannot decode message ${timestamp.$typeName} from JSON: invalid RFC 3339 string`,
+    );
   }
-  if (ms < Date.parse("0001-01-01T00:00:00Z") || ms > Date.parse("9999-12-31T23:59:59Z")) {
-    throw new Error(`cannot decode message ${timestamp.$typeName} from JSON: must be from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59Z inclusive`);
+  if (
+    ms < Date.parse("0001-01-01T00:00:00Z") ||
+    ms > Date.parse("9999-12-31T23:59:59Z")
+  ) {
+    throw new Error(
+      `cannot decode message ${timestamp.$typeName} from JSON: must be from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59Z inclusive`,
+    );
   }
   timestamp.seconds = protoInt64.parse(ms / 1000);
   timestamp.nanos = 0;
   if (matches[7]) {
-    timestamp.nanos = parseInt("1" + matches[7] + "0".repeat(9 - matches[7].length)) - 1e9;
+    timestamp.nanos =
+      parseInt("1" + matches[7] + "0".repeat(9 - matches[7].length)) - 1e9;
   }
 }
 function durationFromJson(duration, json) {
   if (typeof json !== "string") {
-    throw new Error(`cannot decode message ${duration.$typeName} from JSON: ${formatVal(json)}`);
+    throw new Error(
+      `cannot decode message ${duration.$typeName} from JSON: ${formatVal(json)}`,
+    );
   }
   const match = json.match(/^(-?[0-9]+)(?:\.([0-9]+))?s/);
   if (match === null) {
-    throw new Error(`cannot decode message ${duration.$typeName} from JSON: ${formatVal(json)}`);
+    throw new Error(
+      `cannot decode message ${duration.$typeName} from JSON: ${formatVal(json)}`,
+    );
   }
   const longSeconds = Number(match[1]);
   if (longSeconds > 315576000000 || longSeconds < -315576000000) {
-    throw new Error(`cannot decode message ${duration.$typeName} from JSON: ${formatVal(json)}`);
+    throw new Error(
+      `cannot decode message ${duration.$typeName} from JSON: ${formatVal(json)}`,
+    );
   }
   duration.seconds = protoInt64.parse(longSeconds);
   if (typeof match[2] !== "string") {
@@ -3715,14 +5797,18 @@ function durationFromJson(duration, json) {
 }
 function fieldMaskFromJson(fieldMask, json) {
   if (typeof json !== "string") {
-    throw new Error(`cannot decode message ${fieldMask.$typeName} from JSON: ${formatVal(json)}`);
+    throw new Error(
+      `cannot decode message ${fieldMask.$typeName} from JSON: ${formatVal(json)}`,
+    );
   }
   if (json === "") {
     return;
   }
   function camelToSnake(str) {
     if (str.includes("_")) {
-      throw new Error(`cannot decode message ${fieldMask.$typeName} from JSON: path names must be lowerCamelCase`);
+      throw new Error(
+        `cannot decode message ${fieldMask.$typeName} from JSON: path names must be lowerCamelCase`,
+      );
     }
     const sc = str.replace(/[A-Z]/g, (letter) => "_" + letter.toLowerCase());
     return sc[0] === "_" ? sc.substring(1) : sc;
@@ -3731,7 +5817,9 @@ function fieldMaskFromJson(fieldMask, json) {
 }
 function structFromJson(struct, json) {
   if (typeof json != "object" || json == null || Array.isArray(json)) {
-    throw new Error(`cannot decode message ${struct.$typeName} from JSON ${formatVal(json)}`);
+    throw new Error(
+      `cannot decode message ${struct.$typeName} from JSON ${formatVal(json)}`,
+    );
   }
   for (const [k, v] of Object.entries(json)) {
     const parsedV = create(ValueSchema);
@@ -3764,13 +5852,17 @@ function valueFromJson(value, json) {
       }
       break;
     default:
-      throw new Error(`cannot decode message ${value.$typeName} from JSON ${formatVal(json)}`);
+      throw new Error(
+        `cannot decode message ${value.$typeName} from JSON ${formatVal(json)}`,
+      );
   }
   return value;
 }
 function listValueFromJson(listValue, json) {
   if (!Array.isArray(json)) {
-    throw new Error(`cannot decode message ${listValue.$typeName} from JSON ${formatVal(json)}`);
+    throw new Error(
+      `cannot decode message ${listValue.$typeName} from JSON ${formatVal(json)}`,
+    );
   }
   for (const e of json) {
     const value = create(ValueSchema);
@@ -3778,84 +5870,196 @@ function listValueFromJson(listValue, json) {
     listValue.values.push(value);
   }
 }
-var file_values_v1_values = /* @__PURE__ */ fileDesc("ChZ2YWx1ZXMvdjEvdmFsdWVzLnByb3RvEgl2YWx1ZXMudjEigQMKBVZhbHVlEhYKDHN0cmluZ192YWx1ZRgBIAEoCUgAEhQKCmJvb2xfdmFsdWUYAiABKAhIABIVCgtieXRlc192YWx1ZRgDIAEoDEgAEiMKCW1hcF92YWx1ZRgEIAEoCzIOLnZhbHVlcy52MS5NYXBIABIlCgpsaXN0X3ZhbHVlGAUgASgLMg8udmFsdWVzLnYxLkxpc3RIABIrCg1kZWNpbWFsX3ZhbHVlGAYgASgLMhIudmFsdWVzLnYxLkRlY2ltYWxIABIZCgtpbnQ2NF92YWx1ZRgHIAEoA0ICMABIABIpCgxiaWdpbnRfdmFsdWUYCSABKAsyES52YWx1ZXMudjEuQmlnSW50SAASMAoKdGltZV92YWx1ZRgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIABIXCg1mbG9hdDY0X3ZhbHVlGAsgASgBSAASGgoMdWludDY0X3ZhbHVlGAwgASgEQgIwAEgAQgcKBXZhbHVlSgQICBAJIisKBkJpZ0ludBIPCgdhYnNfdmFsGAEgASgMEhAKBHNpZ24YAiABKANCAjAAInIKA01hcBIqCgZmaWVsZHMYASADKAsyGi52YWx1ZXMudjEuTWFwLkZpZWxkc0VudHJ5Gj8KC0ZpZWxkc0VudHJ5EgsKA2tleRgBIAEoCRIfCgV2YWx1ZRgCIAEoCzIQLnZhbHVlcy52MS5WYWx1ZToCOAEiKAoETGlzdBIgCgZmaWVsZHMYAiADKAsyEC52YWx1ZXMudjEuVmFsdWUiQwoHRGVjaW1hbBImCgtjb2VmZmljaWVudBgBIAEoCzIRLnZhbHVlcy52MS5CaWdJbnQSEAoIZXhwb25lbnQYAiABKAVCYQoNY29tLnZhbHVlcy52MUILVmFsdWVzUHJvdG9QAaICA1ZYWKoCCVZhbHVlcy5WMcoCCVZhbHVlc1xWMeICFVZhbHVlc1xWMVxHUEJNZXRhZGF0YeoCClZhbHVlczo6VjFiBnByb3RvMw", [file_google_protobuf_timestamp]);
+var file_values_v1_values = /* @__PURE__ */ fileDesc(
+  "ChZ2YWx1ZXMvdjEvdmFsdWVzLnByb3RvEgl2YWx1ZXMudjEigQMKBVZhbHVlEhYKDHN0cmluZ192YWx1ZRgBIAEoCUgAEhQKCmJvb2xfdmFsdWUYAiABKAhIABIVCgtieXRlc192YWx1ZRgDIAEoDEgAEiMKCW1hcF92YWx1ZRgEIAEoCzIOLnZhbHVlcy52MS5NYXBIABIlCgpsaXN0X3ZhbHVlGAUgASgLMg8udmFsdWVzLnYxLkxpc3RIABIrCg1kZWNpbWFsX3ZhbHVlGAYgASgLMhIudmFsdWVzLnYxLkRlY2ltYWxIABIZCgtpbnQ2NF92YWx1ZRgHIAEoA0ICMABIABIpCgxiaWdpbnRfdmFsdWUYCSABKAsyES52YWx1ZXMudjEuQmlnSW50SAASMAoKdGltZV92YWx1ZRgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIABIXCg1mbG9hdDY0X3ZhbHVlGAsgASgBSAASGgoMdWludDY0X3ZhbHVlGAwgASgEQgIwAEgAQgcKBXZhbHVlSgQICBAJIisKBkJpZ0ludBIPCgdhYnNfdmFsGAEgASgMEhAKBHNpZ24YAiABKANCAjAAInIKA01hcBIqCgZmaWVsZHMYASADKAsyGi52YWx1ZXMudjEuTWFwLkZpZWxkc0VudHJ5Gj8KC0ZpZWxkc0VudHJ5EgsKA2tleRgBIAEoCRIfCgV2YWx1ZRgCIAEoCzIQLnZhbHVlcy52MS5WYWx1ZToCOAEiKAoETGlzdBIgCgZmaWVsZHMYAiADKAsyEC52YWx1ZXMudjEuVmFsdWUiQwoHRGVjaW1hbBImCgtjb2VmZmljaWVudBgBIAEoCzIRLnZhbHVlcy52MS5CaWdJbnQSEAoIZXhwb25lbnQYAiABKAVCYQoNY29tLnZhbHVlcy52MUILVmFsdWVzUHJvdG9QAaICA1ZYWKoCCVZhbHVlcy5WMcoCCVZhbHVlc1xWMeICFVZhbHVlc1xWMVxHUEJNZXRhZGF0YeoCClZhbHVlczo6VjFiBnByb3RvMw",
+  [file_google_protobuf_timestamp],
+);
 var ValueSchema2 = /* @__PURE__ */ messageDesc(file_values_v1_values, 0);
 var BigIntSchema = /* @__PURE__ */ messageDesc(file_values_v1_values, 1);
 var MapSchema = /* @__PURE__ */ messageDesc(file_values_v1_values, 2);
 var ListSchema = /* @__PURE__ */ messageDesc(file_values_v1_values, 3);
 var DecimalSchema = /* @__PURE__ */ messageDesc(file_values_v1_values, 4);
-var file_sdk_v1alpha_sdk = /* @__PURE__ */ fileDesc("ChVzZGsvdjFhbHBoYS9zZGsucHJvdG8SC3Nkay52MWFscGhhIrQBChVTaW1wbGVDb25zZW5zdXNJbnB1dHMSIQoFdmFsdWUYASABKAsyEC52YWx1ZXMudjEuVmFsdWVIABIPCgVlcnJvchgCIAEoCUgAEjUKC2Rlc2NyaXB0b3JzGAMgASgLMiAuc2RrLnYxYWxwaGEuQ29uc2Vuc3VzRGVzY3JpcHRvchIhCgdkZWZhdWx0GAQgASgLMhAudmFsdWVzLnYxLlZhbHVlQg0KC29ic2VydmF0aW9uIpABCglGaWVsZHNNYXASMgoGZmllbGRzGAEgAygLMiIuc2RrLnYxYWxwaGEuRmllbGRzTWFwLkZpZWxkc0VudHJ5Gk8KC0ZpZWxkc0VudHJ5EgsKA2tleRgBIAEoCRIvCgV2YWx1ZRgCIAEoCzIgLnNkay52MWFscGhhLkNvbnNlbnN1c0Rlc2NyaXB0b3I6AjgBIoYBChNDb25zZW5zdXNEZXNjcmlwdG9yEjMKC2FnZ3JlZ2F0aW9uGAEgASgOMhwuc2RrLnYxYWxwaGEuQWdncmVnYXRpb25UeXBlSAASLAoKZmllbGRzX21hcBgCIAEoCzIWLnNkay52MWFscGhhLkZpZWxkc01hcEgAQgwKCmRlc2NyaXB0b3IiagoNUmVwb3J0UmVxdWVzdBIXCg9lbmNvZGVkX3BheWxvYWQYASABKAwSFAoMZW5jb2Rlcl9uYW1lGAIgASgJEhQKDHNpZ25pbmdfYWxnbxgDIAEoCRIUCgxoYXNoaW5nX2FsZ28YBCABKAkilwEKDlJlcG9ydFJlc3BvbnNlEhUKDWNvbmZpZ19kaWdlc3QYASABKAwSEgoGc2VxX25yGAIgASgEQgIwABIWCg5yZXBvcnRfY29udGV4dBgDIAEoDBISCgpyYXdfcmVwb3J0GAQgASgMEi4KBHNpZ3MYBSADKAsyIC5zZGsudjFhbHBoYS5BdHRyaWJ1dGVkU2lnbmF0dXJlIjsKE0F0dHJpYnV0ZWRTaWduYXR1cmUSEQoJc2lnbmF0dXJlGAEgASgMEhEKCXNpZ25lcl9pZBgCIAEoDSJrChFDYXBhYmlsaXR5UmVxdWVzdBIKCgJpZBgBIAEoCRIlCgdwYXlsb2FkGAIgASgLMhQuZ29vZ2xlLnByb3RvYnVmLkFueRIOCgZtZXRob2QYAyABKAkSEwoLY2FsbGJhY2tfaWQYBCABKAUiWgoSQ2FwYWJpbGl0eVJlc3BvbnNlEicKB3BheWxvYWQYASABKAsyFC5nb29nbGUucHJvdG9idWYuQW55SAASDwoFZXJyb3IYAiABKAlIAEIKCghyZXNwb25zZSJYChNUcmlnZ2VyU3Vic2NyaXB0aW9uEgoKAmlkGAEgASgJEiUKB3BheWxvYWQYAiABKAsyFC5nb29nbGUucHJvdG9idWYuQW55Eg4KBm1ldGhvZBgDIAEoCSJVChpUcmlnZ2VyU3Vic2NyaXB0aW9uUmVxdWVzdBI3Cg1zdWJzY3JpcHRpb25zGAEgAygLMiAuc2RrLnYxYWxwaGEuVHJpZ2dlclN1YnNjcmlwdGlvbiJACgdUcmlnZ2VyEg4KAmlkGAEgASgEQgIwABIlCgdwYXlsb2FkGAIgASgLMhQuZ29vZ2xlLnByb3RvYnVmLkFueSInChhBd2FpdENhcGFiaWxpdGllc1JlcXVlc3QSCwoDaWRzGAEgAygFIrgBChlBd2FpdENhcGFiaWxpdGllc1Jlc3BvbnNlEkgKCXJlc3BvbnNlcxgBIAMoCzI1LnNkay52MWFscGhhLkF3YWl0Q2FwYWJpbGl0aWVzUmVzcG9uc2UuUmVzcG9uc2VzRW50cnkaUQoOUmVzcG9uc2VzRW50cnkSCwoDa2V5GAEgASgFEi4KBXZhbHVlGAIgASgLMh8uc2RrLnYxYWxwaGEuQ2FwYWJpbGl0eVJlc3BvbnNlOgI4ASKgAQoORXhlY3V0ZVJlcXVlc3QSDgoGY29uZmlnGAEgASgMEisKCXN1YnNjcmliZRgCIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eUgAEicKB3RyaWdnZXIYAyABKAsyFC5zZGsudjFhbHBoYS5UcmlnZ2VySAASHQoRbWF4X3Jlc3BvbnNlX3NpemUYBCABKARCAjAAQgkKB3JlcXVlc3QimQEKD0V4ZWN1dGlvblJlc3VsdBIhCgV2YWx1ZRgBIAEoCzIQLnZhbHVlcy52MS5WYWx1ZUgAEg8KBWVycm9yGAIgASgJSAASSAoVdHJpZ2dlcl9zdWJzY3JpcHRpb25zGAMgASgLMicuc2RrLnYxYWxwaGEuVHJpZ2dlclN1YnNjcmlwdGlvblJlcXVlc3RIAEIICgZyZXN1bHQiVgoRR2V0U2VjcmV0c1JlcXVlc3QSLAoIcmVxdWVzdHMYASADKAsyGi5zZGsudjFhbHBoYS5TZWNyZXRSZXF1ZXN0EhMKC2NhbGxiYWNrX2lkGAIgASgFIiIKE0F3YWl0U2VjcmV0c1JlcXVlc3QSCwoDaWRzGAEgAygFIqsBChRBd2FpdFNlY3JldHNSZXNwb25zZRJDCglyZXNwb25zZXMYASADKAsyMC5zZGsudjFhbHBoYS5Bd2FpdFNlY3JldHNSZXNwb25zZS5SZXNwb25zZXNFbnRyeRpOCg5SZXNwb25zZXNFbnRyeRILCgNrZXkYASABKAUSKwoFdmFsdWUYAiABKAsyHC5zZGsudjFhbHBoYS5TZWNyZXRSZXNwb25zZXM6AjgBIi4KDVNlY3JldFJlcXVlc3QSCgoCaWQYASABKAkSEQoJbmFtZXNwYWNlGAIgASgJIkUKBlNlY3JldBIKCgJpZBgBIAEoCRIRCgluYW1lc3BhY2UYAiABKAkSDQoFb3duZXIYAyABKAkSDQoFdmFsdWUYBCABKAkiSgoLU2VjcmV0RXJyb3ISCgoCaWQYASABKAkSEQoJbmFtZXNwYWNlGAIgASgJEg0KBW93bmVyGAMgASgJEg0KBWVycm9yGAQgASgJIm4KDlNlY3JldFJlc3BvbnNlEiUKBnNlY3JldBgBIAEoCzITLnNkay52MWFscGhhLlNlY3JldEgAEikKBWVycm9yGAIgASgLMhguc2RrLnYxYWxwaGEuU2VjcmV0RXJyb3JIAEIKCghyZXNwb25zZSJBCg9TZWNyZXRSZXNwb25zZXMSLgoJcmVzcG9uc2VzGAEgAygLMhsuc2RrLnYxYWxwaGEuU2VjcmV0UmVzcG9uc2UquAEKD0FnZ3JlZ2F0aW9uVHlwZRIgChxBR0dSRUdBVElPTl9UWVBFX1VOU1BFQ0lGSUVEEAASGwoXQUdHUkVHQVRJT05fVFlQRV9NRURJQU4QARIeChpBR0dSRUdBVElPTl9UWVBFX0lERU5USUNBTBACEiIKHkFHR1JFR0FUSU9OX1RZUEVfQ09NTU9OX1BSRUZJWBADEiIKHkFHR1JFR0FUSU9OX1RZUEVfQ09NTU9OX1NVRkZJWBAEKjkKBE1vZGUSFAoQTU9ERV9VTlNQRUNJRklFRBAAEgwKCE1PREVfRE9OEAESDQoJTU9ERV9OT0RFEAJCaAoPY29tLnNkay52MWFscGhhQghTZGtQcm90b1ABogIDU1hYqgILU2RrLlYxYWxwaGHKAgtTZGtcVjFhbHBoYeICF1Nka1xWMWFscGhhXEdQQk1ldGFkYXRh6gIMU2RrOjpWMWFscGhhYgZwcm90bzM", [file_google_protobuf_any, file_google_protobuf_empty, file_values_v1_values]);
-var SimpleConsensusInputsSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 0);
-var ConsensusDescriptorSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 2);
+var file_sdk_v1alpha_sdk = /* @__PURE__ */ fileDesc(
+  "ChVzZGsvdjFhbHBoYS9zZGsucHJvdG8SC3Nkay52MWFscGhhIrQBChVTaW1wbGVDb25zZW5zdXNJbnB1dHMSIQoFdmFsdWUYASABKAsyEC52YWx1ZXMudjEuVmFsdWVIABIPCgVlcnJvchgCIAEoCUgAEjUKC2Rlc2NyaXB0b3JzGAMgASgLMiAuc2RrLnYxYWxwaGEuQ29uc2Vuc3VzRGVzY3JpcHRvchIhCgdkZWZhdWx0GAQgASgLMhAudmFsdWVzLnYxLlZhbHVlQg0KC29ic2VydmF0aW9uIpABCglGaWVsZHNNYXASMgoGZmllbGRzGAEgAygLMiIuc2RrLnYxYWxwaGEuRmllbGRzTWFwLkZpZWxkc0VudHJ5Gk8KC0ZpZWxkc0VudHJ5EgsKA2tleRgBIAEoCRIvCgV2YWx1ZRgCIAEoCzIgLnNkay52MWFscGhhLkNvbnNlbnN1c0Rlc2NyaXB0b3I6AjgBIoYBChNDb25zZW5zdXNEZXNjcmlwdG9yEjMKC2FnZ3JlZ2F0aW9uGAEgASgOMhwuc2RrLnYxYWxwaGEuQWdncmVnYXRpb25UeXBlSAASLAoKZmllbGRzX21hcBgCIAEoCzIWLnNkay52MWFscGhhLkZpZWxkc01hcEgAQgwKCmRlc2NyaXB0b3IiagoNUmVwb3J0UmVxdWVzdBIXCg9lbmNvZGVkX3BheWxvYWQYASABKAwSFAoMZW5jb2Rlcl9uYW1lGAIgASgJEhQKDHNpZ25pbmdfYWxnbxgDIAEoCRIUCgxoYXNoaW5nX2FsZ28YBCABKAkilwEKDlJlcG9ydFJlc3BvbnNlEhUKDWNvbmZpZ19kaWdlc3QYASABKAwSEgoGc2VxX25yGAIgASgEQgIwABIWCg5yZXBvcnRfY29udGV4dBgDIAEoDBISCgpyYXdfcmVwb3J0GAQgASgMEi4KBHNpZ3MYBSADKAsyIC5zZGsudjFhbHBoYS5BdHRyaWJ1dGVkU2lnbmF0dXJlIjsKE0F0dHJpYnV0ZWRTaWduYXR1cmUSEQoJc2lnbmF0dXJlGAEgASgMEhEKCXNpZ25lcl9pZBgCIAEoDSJrChFDYXBhYmlsaXR5UmVxdWVzdBIKCgJpZBgBIAEoCRIlCgdwYXlsb2FkGAIgASgLMhQuZ29vZ2xlLnByb3RvYnVmLkFueRIOCgZtZXRob2QYAyABKAkSEwoLY2FsbGJhY2tfaWQYBCABKAUiWgoSQ2FwYWJpbGl0eVJlc3BvbnNlEicKB3BheWxvYWQYASABKAsyFC5nb29nbGUucHJvdG9idWYuQW55SAASDwoFZXJyb3IYAiABKAlIAEIKCghyZXNwb25zZSJYChNUcmlnZ2VyU3Vic2NyaXB0aW9uEgoKAmlkGAEgASgJEiUKB3BheWxvYWQYAiABKAsyFC5nb29nbGUucHJvdG9idWYuQW55Eg4KBm1ldGhvZBgDIAEoCSJVChpUcmlnZ2VyU3Vic2NyaXB0aW9uUmVxdWVzdBI3Cg1zdWJzY3JpcHRpb25zGAEgAygLMiAuc2RrLnYxYWxwaGEuVHJpZ2dlclN1YnNjcmlwdGlvbiJACgdUcmlnZ2VyEg4KAmlkGAEgASgEQgIwABIlCgdwYXlsb2FkGAIgASgLMhQuZ29vZ2xlLnByb3RvYnVmLkFueSInChhBd2FpdENhcGFiaWxpdGllc1JlcXVlc3QSCwoDaWRzGAEgAygFIrgBChlBd2FpdENhcGFiaWxpdGllc1Jlc3BvbnNlEkgKCXJlc3BvbnNlcxgBIAMoCzI1LnNkay52MWFscGhhLkF3YWl0Q2FwYWJpbGl0aWVzUmVzcG9uc2UuUmVzcG9uc2VzRW50cnkaUQoOUmVzcG9uc2VzRW50cnkSCwoDa2V5GAEgASgFEi4KBXZhbHVlGAIgASgLMh8uc2RrLnYxYWxwaGEuQ2FwYWJpbGl0eVJlc3BvbnNlOgI4ASKgAQoORXhlY3V0ZVJlcXVlc3QSDgoGY29uZmlnGAEgASgMEisKCXN1YnNjcmliZRgCIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eUgAEicKB3RyaWdnZXIYAyABKAsyFC5zZGsudjFhbHBoYS5UcmlnZ2VySAASHQoRbWF4X3Jlc3BvbnNlX3NpemUYBCABKARCAjAAQgkKB3JlcXVlc3QimQEKD0V4ZWN1dGlvblJlc3VsdBIhCgV2YWx1ZRgBIAEoCzIQLnZhbHVlcy52MS5WYWx1ZUgAEg8KBWVycm9yGAIgASgJSAASSAoVdHJpZ2dlcl9zdWJzY3JpcHRpb25zGAMgASgLMicuc2RrLnYxYWxwaGEuVHJpZ2dlclN1YnNjcmlwdGlvblJlcXVlc3RIAEIICgZyZXN1bHQiVgoRR2V0U2VjcmV0c1JlcXVlc3QSLAoIcmVxdWVzdHMYASADKAsyGi5zZGsudjFhbHBoYS5TZWNyZXRSZXF1ZXN0EhMKC2NhbGxiYWNrX2lkGAIgASgFIiIKE0F3YWl0U2VjcmV0c1JlcXVlc3QSCwoDaWRzGAEgAygFIqsBChRBd2FpdFNlY3JldHNSZXNwb25zZRJDCglyZXNwb25zZXMYASADKAsyMC5zZGsudjFhbHBoYS5Bd2FpdFNlY3JldHNSZXNwb25zZS5SZXNwb25zZXNFbnRyeRpOCg5SZXNwb25zZXNFbnRyeRILCgNrZXkYASABKAUSKwoFdmFsdWUYAiABKAsyHC5zZGsudjFhbHBoYS5TZWNyZXRSZXNwb25zZXM6AjgBIi4KDVNlY3JldFJlcXVlc3QSCgoCaWQYASABKAkSEQoJbmFtZXNwYWNlGAIgASgJIkUKBlNlY3JldBIKCgJpZBgBIAEoCRIRCgluYW1lc3BhY2UYAiABKAkSDQoFb3duZXIYAyABKAkSDQoFdmFsdWUYBCABKAkiSgoLU2VjcmV0RXJyb3ISCgoCaWQYASABKAkSEQoJbmFtZXNwYWNlGAIgASgJEg0KBW93bmVyGAMgASgJEg0KBWVycm9yGAQgASgJIm4KDlNlY3JldFJlc3BvbnNlEiUKBnNlY3JldBgBIAEoCzITLnNkay52MWFscGhhLlNlY3JldEgAEikKBWVycm9yGAIgASgLMhguc2RrLnYxYWxwaGEuU2VjcmV0RXJyb3JIAEIKCghyZXNwb25zZSJBCg9TZWNyZXRSZXNwb25zZXMSLgoJcmVzcG9uc2VzGAEgAygLMhsuc2RrLnYxYWxwaGEuU2VjcmV0UmVzcG9uc2UquAEKD0FnZ3JlZ2F0aW9uVHlwZRIgChxBR0dSRUdBVElPTl9UWVBFX1VOU1BFQ0lGSUVEEAASGwoXQUdHUkVHQVRJT05fVFlQRV9NRURJQU4QARIeChpBR0dSRUdBVElPTl9UWVBFX0lERU5USUNBTBACEiIKHkFHR1JFR0FUSU9OX1RZUEVfQ09NTU9OX1BSRUZJWBADEiIKHkFHR1JFR0FUSU9OX1RZUEVfQ09NTU9OX1NVRkZJWBAEKjkKBE1vZGUSFAoQTU9ERV9VTlNQRUNJRklFRBAAEgwKCE1PREVfRE9OEAESDQoJTU9ERV9OT0RFEAJCaAoPY29tLnNkay52MWFscGhhQghTZGtQcm90b1ABogIDU1hYqgILU2RrLlYxYWxwaGHKAgtTZGtcVjFhbHBoYeICF1Nka1xWMWFscGhhXEdQQk1ldGFkYXRh6gIMU2RrOjpWMWFscGhhYgZwcm90bzM",
+  [file_google_protobuf_any, file_google_protobuf_empty, file_values_v1_values],
+);
+var SimpleConsensusInputsSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  0,
+);
+var ConsensusDescriptorSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  2,
+);
 var ReportRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 3);
 var ReportResponseSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 4);
-var CapabilityRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 6);
-var TriggerSubscriptionRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 9);
-var AwaitCapabilitiesRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 11);
-var AwaitCapabilitiesResponseSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 12);
-var ExecuteRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 13);
-var ExecutionResultSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 14);
-var GetSecretsRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 15);
-var AwaitSecretsRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 16);
-var AwaitSecretsResponseSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 17);
+var CapabilityRequestSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  6,
+);
+var TriggerSubscriptionRequestSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  9,
+);
+var AwaitCapabilitiesRequestSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  11,
+);
+var AwaitCapabilitiesResponseSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  12,
+);
+var ExecuteRequestSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  13,
+);
+var ExecutionResultSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  14,
+);
+var GetSecretsRequestSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  15,
+);
+var AwaitSecretsRequestSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  16,
+);
+var AwaitSecretsResponseSchema = /* @__PURE__ */ messageDesc(
+  file_sdk_v1alpha_sdk,
+  17,
+);
 var SecretRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 18);
 var AggregationType;
-(function(AggregationType2) {
-  AggregationType2[AggregationType2["UNSPECIFIED"] = 0] = "UNSPECIFIED";
-  AggregationType2[AggregationType2["MEDIAN"] = 1] = "MEDIAN";
-  AggregationType2[AggregationType2["IDENTICAL"] = 2] = "IDENTICAL";
-  AggregationType2[AggregationType2["COMMON_PREFIX"] = 3] = "COMMON_PREFIX";
-  AggregationType2[AggregationType2["COMMON_SUFFIX"] = 4] = "COMMON_SUFFIX";
+(function (AggregationType2) {
+  AggregationType2[(AggregationType2["UNSPECIFIED"] = 0)] = "UNSPECIFIED";
+  AggregationType2[(AggregationType2["MEDIAN"] = 1)] = "MEDIAN";
+  AggregationType2[(AggregationType2["IDENTICAL"] = 2)] = "IDENTICAL";
+  AggregationType2[(AggregationType2["COMMON_PREFIX"] = 3)] = "COMMON_PREFIX";
+  AggregationType2[(AggregationType2["COMMON_SUFFIX"] = 4)] = "COMMON_SUFFIX";
 })(AggregationType || (AggregationType = {}));
 var Mode;
-(function(Mode2) {
-  Mode2[Mode2["UNSPECIFIED"] = 0] = "UNSPECIFIED";
-  Mode2[Mode2["DON"] = 1] = "DON";
-  Mode2[Mode2["NODE"] = 2] = "NODE";
+(function (Mode2) {
+  Mode2[(Mode2["UNSPECIFIED"] = 0)] = "UNSPECIFIED";
+  Mode2[(Mode2["DON"] = 1)] = "DON";
+  Mode2[(Mode2["NODE"] = 2)] = "NODE";
 })(Mode || (Mode = {}));
-var file_tools_generator_v1alpha_cre_metadata = /* @__PURE__ */ fileDesc("Cip0b29scy9nZW5lcmF0b3IvdjFhbHBoYS9jcmVfbWV0YWRhdGEucHJvdG8SF3Rvb2xzLmdlbmVyYXRvci52MWFscGhhIoQBCgtTdHJpbmdMYWJlbBJECghkZWZhdWx0cxgBIAMoCzIyLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLlN0cmluZ0xhYmVsLkRlZmF1bHRzRW50cnkaLwoNRGVmYXVsdHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIogBCgtVaW50NjRMYWJlbBJECghkZWZhdWx0cxgBIAMoCzIyLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLlVpbnQ2NExhYmVsLkRlZmF1bHRzRW50cnkaMwoNRGVmYXVsdHNFbnRyeRILCgNrZXkYASABKAkSEQoFdmFsdWUYAiABKARCAjAAOgI4ASKEAQoLVWludDMyTGFiZWwSRAoIZGVmYXVsdHMYASADKAsyMi50b29scy5nZW5lcmF0b3IudjFhbHBoYS5VaW50MzJMYWJlbC5EZWZhdWx0c0VudHJ5Gi8KDURlZmF1bHRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgNOgI4ASKGAQoKSW50NjRMYWJlbBJDCghkZWZhdWx0cxgBIAMoCzIxLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLkludDY0TGFiZWwuRGVmYXVsdHNFbnRyeRozCg1EZWZhdWx0c0VudHJ5EgsKA2tleRgBIAEoCRIRCgV2YWx1ZRgCIAEoA0ICMAA6AjgBIoIBCgpJbnQzMkxhYmVsEkMKCGRlZmF1bHRzGAEgAygLMjEudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuSW50MzJMYWJlbC5EZWZhdWx0c0VudHJ5Gi8KDURlZmF1bHRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgFOgI4ASLBAgoFTGFiZWwSPAoMc3RyaW5nX2xhYmVsGAEgASgLMiQudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuU3RyaW5nTGFiZWxIABI8Cgx1aW50NjRfbGFiZWwYAiABKAsyJC50b29scy5nZW5lcmF0b3IudjFhbHBoYS5VaW50NjRMYWJlbEgAEjoKC2ludDY0X2xhYmVsGAMgASgLMiMudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuSW50NjRMYWJlbEgAEjwKDHVpbnQzMl9sYWJlbBgEIAEoCzIkLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLlVpbnQzMkxhYmVsSAASOgoLaW50MzJfbGFiZWwYBSABKAsyIy50b29scy5nZW5lcmF0b3IudjFhbHBoYS5JbnQzMkxhYmVsSABCBgoEa2luZCLkAQoSQ2FwYWJpbGl0eU1ldGFkYXRhEh8KBG1vZGUYASABKA4yES5zZGsudjFhbHBoYS5Nb2RlEhUKDWNhcGFiaWxpdHlfaWQYAiABKAkSRwoGbGFiZWxzGAMgAygLMjcudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuQ2FwYWJpbGl0eU1ldGFkYXRhLkxhYmVsc0VudHJ5Gk0KC0xhYmVsc0VudHJ5EgsKA2tleRgBIAEoCRItCgV2YWx1ZRgCIAEoCzIeLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLkxhYmVsOgI4ASI2ChhDYXBhYmlsaXR5TWV0aG9kTWV0YWRhdGESGgoSbWFwX3RvX3VudHlwZWRfYXBpGAEgASgIOm4KCmNhcGFiaWxpdHkSHy5nb29nbGUucHJvdG9idWYuU2VydmljZU9wdGlvbnMY0IYDIAEoCzIrLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLkNhcGFiaWxpdHlNZXRhZGF0YVIKY2FwYWJpbGl0eTprCgZtZXRob2QSHi5nb29nbGUucHJvdG9idWYuTWV0aG9kT3B0aW9ucxjRhgMgASgLMjEudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuQ2FwYWJpbGl0eU1ldGhvZE1ldGFkYXRhUgZtZXRob2RCrwEKG2NvbS50b29scy5nZW5lcmF0b3IudjFhbHBoYUIQQ3JlTWV0YWRhdGFQcm90b1ABogIDVEdYqgIXVG9vbHMuR2VuZXJhdG9yLlYxYWxwaGHKAhhUb29sc1xHZW5lcmF0b3JfXFYxYWxwaGHiAiRUb29sc1xHZW5lcmF0b3JfXFYxYWxwaGFcR1BCTWV0YWRhdGHqAhlUb29sczo6R2VuZXJhdG9yOjpWMWFscGhhYgZwcm90bzM", [file_google_protobuf_descriptor, file_sdk_v1alpha_sdk]);
-var file_capabilities_blockchain_evm_v1alpha_client = /* @__PURE__ */ fileDesc("CjBjYXBhYmlsaXRpZXMvYmxvY2tjaGFpbi9ldm0vdjFhbHBoYS9jbGllbnQucHJvdG8SI2NhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhIh0KC1RvcGljVmFsdWVzEg4KBnZhbHVlcxgBIAMoDCK4AQoXRmlsdGVyTG9nVHJpZ2dlclJlcXVlc3QSEQoJYWRkcmVzc2VzGAEgAygMEkAKBnRvcGljcxgCIAMoCzIwLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLlRvcGljVmFsdWVzEkgKCmNvbmZpZGVuY2UYAyABKA4yNC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Db25maWRlbmNlTGV2ZWwiegoTQ2FsbENvbnRyYWN0UmVxdWVzdBI6CgRjYWxsGAEgASgLMiwuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuQ2FsbE1zZxInCgxibG9ja19udW1iZXIYAiABKAsyES52YWx1ZXMudjEuQmlnSW50IiEKEUNhbGxDb250cmFjdFJlcGx5EgwKBGRhdGEYASABKAwiWwoRRmlsdGVyTG9nc1JlcXVlc3QSRgoMZmlsdGVyX3F1ZXJ5GAEgASgLMjAuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRmlsdGVyUXVlcnkiSQoPRmlsdGVyTG9nc1JlcGx5EjYKBGxvZ3MYASADKAsyKC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Mb2cixwEKA0xvZxIPCgdhZGRyZXNzGAEgASgMEg4KBnRvcGljcxgCIAMoDBIPCgd0eF9oYXNoGAMgASgMEhIKCmJsb2NrX2hhc2gYBCABKAwSDAoEZGF0YRgFIAEoDBIRCglldmVudF9zaWcYBiABKAwSJwoMYmxvY2tfbnVtYmVyGAcgASgLMhEudmFsdWVzLnYxLkJpZ0ludBIQCgh0eF9pbmRleBgIIAEoDRINCgVpbmRleBgJIAEoDRIPCgdyZW1vdmVkGAogASgIIjEKB0NhbGxNc2cSDAoEZnJvbRgBIAEoDBIKCgJ0bxgCIAEoDBIMCgRkYXRhGAMgASgMIr0BCgtGaWx0ZXJRdWVyeRISCgpibG9ja19oYXNoGAEgASgMEiUKCmZyb21fYmxvY2sYAiABKAsyES52YWx1ZXMudjEuQmlnSW50EiMKCHRvX2Jsb2NrGAMgASgLMhEudmFsdWVzLnYxLkJpZ0ludBIRCglhZGRyZXNzZXMYBCADKAwSOwoGdG9waWNzGAUgAygLMisuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuVG9waWNzIhcKBlRvcGljcxINCgV0b3BpYxgBIAMoDCJMChBCYWxhbmNlQXRSZXF1ZXN0Eg8KB2FjY291bnQYASABKAwSJwoMYmxvY2tfbnVtYmVyGAIgASgLMhEudmFsdWVzLnYxLkJpZ0ludCI0Cg5CYWxhbmNlQXRSZXBseRIiCgdiYWxhbmNlGAEgASgLMhEudmFsdWVzLnYxLkJpZ0ludCJPChJFc3RpbWF0ZUdhc1JlcXVlc3QSOQoDbXNnGAEgASgLMiwuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuQ2FsbE1zZyIjChBFc3RpbWF0ZUdhc1JlcGx5Eg8KA2dhcxgBIAEoBEICMAAiKwobR2V0VHJhbnNhY3Rpb25CeUhhc2hSZXF1ZXN0EgwKBGhhc2gYASABKAwiYgoZR2V0VHJhbnNhY3Rpb25CeUhhc2hSZXBseRJFCgt0cmFuc2FjdGlvbhgBIAEoCzIwLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLlRyYW5zYWN0aW9uIqEBCgtUcmFuc2FjdGlvbhIRCgVub25jZRgBIAEoBEICMAASDwoDZ2FzGAIgASgEQgIwABIKCgJ0bxgDIAEoDBIMCgRkYXRhGAQgASgMEgwKBGhhc2gYBSABKAwSIAoFdmFsdWUYBiABKAsyES52YWx1ZXMudjEuQmlnSW50EiQKCWdhc19wcmljZRgHIAEoCzIRLnZhbHVlcy52MS5CaWdJbnQiLAocR2V0VHJhbnNhY3Rpb25SZWNlaXB0UmVxdWVzdBIMCgRoYXNoGAEgASgMIlsKGkdldFRyYW5zYWN0aW9uUmVjZWlwdFJlcGx5Ej0KB3JlY2VpcHQYASABKAsyLC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5SZWNlaXB0IpkCCgdSZWNlaXB0EhIKBnN0YXR1cxgBIAEoBEICMAASFAoIZ2FzX3VzZWQYAiABKARCAjAAEhQKCHR4X2luZGV4GAMgASgEQgIwABISCgpibG9ja19oYXNoGAQgASgMEjYKBGxvZ3MYBiADKAsyKC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Mb2cSDwoHdHhfaGFzaBgHIAEoDBIuChNlZmZlY3RpdmVfZ2FzX3ByaWNlGAggASgLMhEudmFsdWVzLnYxLkJpZ0ludBInCgxibG9ja19udW1iZXIYCSABKAsyES52YWx1ZXMudjEuQmlnSW50EhgKEGNvbnRyYWN0X2FkZHJlc3MYCiABKAwiQAoVSGVhZGVyQnlOdW1iZXJSZXF1ZXN0EicKDGJsb2NrX251bWJlchgBIAEoCzIRLnZhbHVlcy52MS5CaWdJbnQiUgoTSGVhZGVyQnlOdW1iZXJSZXBseRI7CgZoZWFkZXIYASABKAsyKy5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5IZWFkZXIiawoGSGVhZGVyEhUKCXRpbWVzdGFtcBgBIAEoBEICMAASJwoMYmxvY2tfbnVtYmVyGAIgASgLMhEudmFsdWVzLnYxLkJpZ0ludBIMCgRoYXNoGAMgASgMEhMKC3BhcmVudF9oYXNoGAQgASgMIqsBChJXcml0ZVJlcG9ydFJlcXVlc3QSEAoIcmVjZWl2ZXIYASABKAwSKwoGcmVwb3J0GAIgASgLMhsuc2RrLnYxYWxwaGEuUmVwb3J0UmVzcG9uc2USRwoKZ2FzX2NvbmZpZxgDIAEoCzIuLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLkdhc0NvbmZpZ0gAiAEBQg0KC19nYXNfY29uZmlnIiIKCUdhc0NvbmZpZxIVCglnYXNfbGltaXQYASABKARCAjAAIocDChBXcml0ZVJlcG9ydFJlcGx5EkAKCXR4X3N0YXR1cxgBIAEoDjItLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLlR4U3RhdHVzEnUKInJlY2VpdmVyX2NvbnRyYWN0X2V4ZWN1dGlvbl9zdGF0dXMYAiABKA4yRC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5SZWNlaXZlckNvbnRyYWN0RXhlY3V0aW9uU3RhdHVzSACIAQESFAoHdHhfaGFzaBgDIAEoDEgBiAEBEi8KD3RyYW5zYWN0aW9uX2ZlZRgEIAEoCzIRLnZhbHVlcy52MS5CaWdJbnRIAogBARIaCg1lcnJvcl9tZXNzYWdlGAUgASgJSAOIAQFCJQojX3JlY2VpdmVyX2NvbnRyYWN0X2V4ZWN1dGlvbl9zdGF0dXNCCgoIX3R4X2hhc2hCEgoQX3RyYW5zYWN0aW9uX2ZlZUIQCg5fZXJyb3JfbWVzc2FnZSppCg9Db25maWRlbmNlTGV2ZWwSGQoVQ09ORklERU5DRV9MRVZFTF9TQUZFEAASGwoXQ09ORklERU5DRV9MRVZFTF9MQVRFU1QQARIeChpDT05GSURFTkNFX0xFVkVMX0ZJTkFMSVpFRBACKoIBCh9SZWNlaXZlckNvbnRyYWN0RXhlY3V0aW9uU3RhdHVzEi4KKlJFQ0VJVkVSX0NPTlRSQUNUX0VYRUNVVElPTl9TVEFUVVNfU1VDQ0VTUxAAEi8KK1JFQ0VJVkVSX0NPTlRSQUNUX0VYRUNVVElPTl9TVEFUVVNfUkVWRVJURUQQASpOCghUeFN0YXR1cxITCg9UWF9TVEFUVVNfRkFUQUwQABIWChJUWF9TVEFUVVNfUkVWRVJURUQQARIVChFUWF9TVEFUVVNfU1VDQ0VTUxACMoUYCgZDbGllbnQSgAEKDENhbGxDb250cmFjdBI4LmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLkNhbGxDb250cmFjdFJlcXVlc3QaNi5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5DYWxsQ29udHJhY3RSZXBseRJ6CgpGaWx0ZXJMb2dzEjYuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRmlsdGVyTG9nc1JlcXVlc3QaNC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5GaWx0ZXJMb2dzUmVwbHkSdwoJQmFsYW5jZUF0EjUuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuQmFsYW5jZUF0UmVxdWVzdBozLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLkJhbGFuY2VBdFJlcGx5En0KC0VzdGltYXRlR2FzEjcuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRXN0aW1hdGVHYXNSZXF1ZXN0GjUuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRXN0aW1hdGVHYXNSZXBseRKYAQoUR2V0VHJhbnNhY3Rpb25CeUhhc2gSQC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5HZXRUcmFuc2FjdGlvbkJ5SGFzaFJlcXVlc3QaPi5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5HZXRUcmFuc2FjdGlvbkJ5SGFzaFJlcGx5EpsBChVHZXRUcmFuc2FjdGlvblJlY2VpcHQSQS5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5HZXRUcmFuc2FjdGlvblJlY2VpcHRSZXF1ZXN0Gj8uY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuR2V0VHJhbnNhY3Rpb25SZWNlaXB0UmVwbHkShgEKDkhlYWRlckJ5TnVtYmVyEjouY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuSGVhZGVyQnlOdW1iZXJSZXF1ZXN0GjguY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuSGVhZGVyQnlOdW1iZXJSZXBseRJ2CgpMb2dUcmlnZ2VyEjwuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRmlsdGVyTG9nVHJpZ2dlclJlcXVlc3QaKC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Mb2cwARJ9CgtXcml0ZVJlcG9ydBI3LmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLldyaXRlUmVwb3J0UmVxdWVzdBo1LmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLldyaXRlUmVwb3J0UmVwbHkayg6CtRjFDggBEglldm1AMS4wLjAatQ4KDUNoYWluU2VsZWN0b3ISow4SoA4KJAoXYXBlY2hhaW4tdGVzdG5ldC1jdXJ0aXMQwcO0+I3EkrKJAQoXCgthcmMtdGVzdG5ldBDnxoye19fQjSoKHQoRYXZhbGFuY2hlLW1haW5uZXQQ1eeKwOHVmKRZCiMKFmF2YWxhbmNoZS10ZXN0bmV0LWZ1amkQm/n8kKLjqPjMAQooChtiaW5hbmNlX3NtYXJ0X2NoYWluLW1haW5uZXQQz/eU8djtlbidAQooChtiaW5hbmNlX3NtYXJ0X2NoYWluLXRlc3RuZXQQ+62+nICu5Iq4AQoYCgxjZWxvLW1haW5uZXQQhtTo2IaTiNcSChoKDmNyb25vcy10ZXN0bmV0EP3Z7q3g3trIKQoiChVkdGNjLXRlc3RuZXQtYW5kZXNpdGUQ0oPj0JmW5aTXAQocChBldGhlcmV1bS1tYWlubmV0EJX28eTPsqbCRQonChtldGhlcmV1bS1tYWlubmV0LWFyYml0cnVtLTEQxOiNzY6boddECiQKF2V0aGVyZXVtLW1haW5uZXQtYmFzZS0xEIL/q6L+uZDT3QEKIgoWZXRoZXJldW0tbWFpbm5ldC1pbmstMRCgsKbpt+aqhDAKJAoYZXRoZXJldW0tbWFpbm5ldC1saW5lYS0xELa66ZjLvbCbQAolChlldGhlcmV1bS1tYWlubmV0LW1hbnRsZS0xEIrntJXnsIPMFQonChtldGhlcmV1bS1tYWlubmV0LW9wdGltaXNtLTEQuJWPw/f+0OkzCiYKGWV0aGVyZXVtLW1haW5uZXQtc2Nyb2xsLTEQuLzk68S+yJ+3AQopCh1ldGhlcmV1bS1tYWlubmV0LXdvcmxkY2hhaW4tMRCH77q3xbbCuBwKJQoZZXRoZXJldW0tbWFpbm5ldC14bGF5ZXItMRCWpfycpqjv7SkKJQoZZXRoZXJldW0tbWFpbm5ldC16a3N5bmMtMRCU7pfZ7bSx1xUKJQoYZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhENm15M78ye6g3gEKLwojZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhLWFyYml0cnVtLTEQ6s7u/+q2hKMwCiwKH2V0aGVyZXVtLXRlc3RuZXQtc2Vwb2xpYS1iYXNlLTEQuMq57/aQrsiPAQosCiBldGhlcmV1bS10ZXN0bmV0LXNlcG9saWEtbGluZWEtMRDrqtT+gvnmr08KLQohZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhLW1hbnRsZS0xENXGuO7N9vKmcgovCiNldGhlcmV1bS10ZXN0bmV0LXNlcG9saWEtb3B0aW1pc20tMRCfhsWhvtjDwEgKLQohZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhLXNjcm9sbC0xEIvptL7buu3RHwowCiNldGhlcmV1bS10ZXN0bmV0LXNlcG9saWEtdW5pY2hhaW4tMRC03v7g7JeplsQBCjEKJWV0aGVyZXVtLXRlc3RuZXQtc2Vwb2xpYS13b3JsZGNoYWluLTEQut/gxcep88VJCi0KIWV0aGVyZXVtLXRlc3RuZXQtc2Vwb2xpYS16a3N5bmMtMRC3wfz98sSA3l8KIAoUZ25vc2lzX2NoYWluLW1haW5uZXQQ9JKt2vKirroGCicKG2dub3Npc19jaGFpbi10ZXN0bmV0LWNoaWFkbxCzsYLQm6WPj3sKHwoTaHlwZXJsaXF1aWQtbWFpbm5ldBCns/jdztHp8iEKHwoTaHlwZXJsaXF1aWQtdGVzdG5ldBCIzt3Il+DJvTsKIAoTaW5rLXRlc3RuZXQtc2Vwb2xpYRDo9Kel8+aWwIcBChkKDWpvdmF5LW1haW5uZXQQtcPEmqGA35IVChkKDWpvdmF5LXRlc3RuZXQQ5M+KhN6y3o4NChsKD21lZ2FldGgtbWFpbm5ldBDqlbbIvOSmyFQKHgoRbWVnYWV0aC10ZXN0bmV0LTIQ443eiLGP/ZP9AQokChdwaGFyb3MtYXRsYW50aWMtdGVzdG5ldBDMme3gzryvtN8BChoKDnBoYXJvcy1tYWlubmV0EMjBh571782hbAobCg5wbGFzbWEtbWFpbm5ldBD4m/HR2snVxoEBChoKDnBsYXNtYS10ZXN0bmV0ENWbv6XDtJmHNwobCg9wb2x5Z29uLW1haW5uZXQQsavk8JqShp04CiEKFHBvbHlnb24tdGVzdG5ldC1hbW95EM2P1t/xx5D64QEKJAoYcHJpdmF0ZS10ZXN0bmV0LWFuZGVzaXRlENSmmKXBj9z8XwoZCg1zb25pYy1tYWlubmV0ENGy5e3ZoLKdFwoZCg1zb25pYy10ZXN0bmV0EMiI+9S0xvq8GAoYCgt0YWMtdGVzdG5ldBDV243j+5+T14MBChsKDnhsYXllci10ZXN0bmV0EMm+obStzLzdjQFC5QEKJ2NvbS5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYUILQ2xpZW50UHJvdG9QAaICA0NCRaoCI0NhcGFiaWxpdGllcy5CbG9ja2NoYWluLkV2bS5WMWFscGhhygIjQ2FwYWJpbGl0aWVzXEJsb2NrY2hhaW5cRXZtXFYxYWxwaGHiAi9DYXBhYmlsaXRpZXNcQmxvY2tjaGFpblxFdm1cVjFhbHBoYVxHUEJNZXRhZGF0YeoCJkNhcGFiaWxpdGllczo6QmxvY2tjaGFpbjo6RXZtOjpWMWFscGhhYgZwcm90bzM", [file_sdk_v1alpha_sdk, file_tools_generator_v1alpha_cre_metadata, file_values_v1_values]);
-var FilterLogTriggerRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 1);
-var CallContractRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 2);
-var CallContractReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 3);
-var FilterLogsRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 4);
-var FilterLogsReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 5);
-var LogSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 6);
-var BalanceAtRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 10);
-var BalanceAtReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 11);
-var EstimateGasRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 12);
-var EstimateGasReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 13);
-var GetTransactionByHashRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 14);
-var GetTransactionByHashReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 15);
-var GetTransactionReceiptRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 17);
-var GetTransactionReceiptReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 18);
-var HeaderByNumberRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 20);
-var HeaderByNumberReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 21);
-var WriteReportRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 23);
-var GasConfigSchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 24);
-var WriteReportReplySchema = /* @__PURE__ */ messageDesc(file_capabilities_blockchain_evm_v1alpha_client, 25);
+var file_tools_generator_v1alpha_cre_metadata = /* @__PURE__ */ fileDesc(
+  "Cip0b29scy9nZW5lcmF0b3IvdjFhbHBoYS9jcmVfbWV0YWRhdGEucHJvdG8SF3Rvb2xzLmdlbmVyYXRvci52MWFscGhhIoQBCgtTdHJpbmdMYWJlbBJECghkZWZhdWx0cxgBIAMoCzIyLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLlN0cmluZ0xhYmVsLkRlZmF1bHRzRW50cnkaLwoNRGVmYXVsdHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIogBCgtVaW50NjRMYWJlbBJECghkZWZhdWx0cxgBIAMoCzIyLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLlVpbnQ2NExhYmVsLkRlZmF1bHRzRW50cnkaMwoNRGVmYXVsdHNFbnRyeRILCgNrZXkYASABKAkSEQoFdmFsdWUYAiABKARCAjAAOgI4ASKEAQoLVWludDMyTGFiZWwSRAoIZGVmYXVsdHMYASADKAsyMi50b29scy5nZW5lcmF0b3IudjFhbHBoYS5VaW50MzJMYWJlbC5EZWZhdWx0c0VudHJ5Gi8KDURlZmF1bHRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgNOgI4ASKGAQoKSW50NjRMYWJlbBJDCghkZWZhdWx0cxgBIAMoCzIxLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLkludDY0TGFiZWwuRGVmYXVsdHNFbnRyeRozCg1EZWZhdWx0c0VudHJ5EgsKA2tleRgBIAEoCRIRCgV2YWx1ZRgCIAEoA0ICMAA6AjgBIoIBCgpJbnQzMkxhYmVsEkMKCGRlZmF1bHRzGAEgAygLMjEudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuSW50MzJMYWJlbC5EZWZhdWx0c0VudHJ5Gi8KDURlZmF1bHRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgFOgI4ASLBAgoFTGFiZWwSPAoMc3RyaW5nX2xhYmVsGAEgASgLMiQudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuU3RyaW5nTGFiZWxIABI8Cgx1aW50NjRfbGFiZWwYAiABKAsyJC50b29scy5nZW5lcmF0b3IudjFhbHBoYS5VaW50NjRMYWJlbEgAEjoKC2ludDY0X2xhYmVsGAMgASgLMiMudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuSW50NjRMYWJlbEgAEjwKDHVpbnQzMl9sYWJlbBgEIAEoCzIkLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLlVpbnQzMkxhYmVsSAASOgoLaW50MzJfbGFiZWwYBSABKAsyIy50b29scy5nZW5lcmF0b3IudjFhbHBoYS5JbnQzMkxhYmVsSABCBgoEa2luZCLkAQoSQ2FwYWJpbGl0eU1ldGFkYXRhEh8KBG1vZGUYASABKA4yES5zZGsudjFhbHBoYS5Nb2RlEhUKDWNhcGFiaWxpdHlfaWQYAiABKAkSRwoGbGFiZWxzGAMgAygLMjcudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuQ2FwYWJpbGl0eU1ldGFkYXRhLkxhYmVsc0VudHJ5Gk0KC0xhYmVsc0VudHJ5EgsKA2tleRgBIAEoCRItCgV2YWx1ZRgCIAEoCzIeLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLkxhYmVsOgI4ASI2ChhDYXBhYmlsaXR5TWV0aG9kTWV0YWRhdGESGgoSbWFwX3RvX3VudHlwZWRfYXBpGAEgASgIOm4KCmNhcGFiaWxpdHkSHy5nb29nbGUucHJvdG9idWYuU2VydmljZU9wdGlvbnMY0IYDIAEoCzIrLnRvb2xzLmdlbmVyYXRvci52MWFscGhhLkNhcGFiaWxpdHlNZXRhZGF0YVIKY2FwYWJpbGl0eTprCgZtZXRob2QSHi5nb29nbGUucHJvdG9idWYuTWV0aG9kT3B0aW9ucxjRhgMgASgLMjEudG9vbHMuZ2VuZXJhdG9yLnYxYWxwaGEuQ2FwYWJpbGl0eU1ldGhvZE1ldGFkYXRhUgZtZXRob2RCrwEKG2NvbS50b29scy5nZW5lcmF0b3IudjFhbHBoYUIQQ3JlTWV0YWRhdGFQcm90b1ABogIDVEdYqgIXVG9vbHMuR2VuZXJhdG9yLlYxYWxwaGHKAhhUb29sc1xHZW5lcmF0b3JfXFYxYWxwaGHiAiRUb29sc1xHZW5lcmF0b3JfXFYxYWxwaGFcR1BCTWV0YWRhdGHqAhlUb29sczo6R2VuZXJhdG9yOjpWMWFscGhhYgZwcm90bzM",
+  [file_google_protobuf_descriptor, file_sdk_v1alpha_sdk],
+);
+var file_capabilities_blockchain_evm_v1alpha_client = /* @__PURE__ */ fileDesc(
+  "CjBjYXBhYmlsaXRpZXMvYmxvY2tjaGFpbi9ldm0vdjFhbHBoYS9jbGllbnQucHJvdG8SI2NhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhIh0KC1RvcGljVmFsdWVzEg4KBnZhbHVlcxgBIAMoDCK4AQoXRmlsdGVyTG9nVHJpZ2dlclJlcXVlc3QSEQoJYWRkcmVzc2VzGAEgAygMEkAKBnRvcGljcxgCIAMoCzIwLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLlRvcGljVmFsdWVzEkgKCmNvbmZpZGVuY2UYAyABKA4yNC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Db25maWRlbmNlTGV2ZWwiegoTQ2FsbENvbnRyYWN0UmVxdWVzdBI6CgRjYWxsGAEgASgLMiwuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuQ2FsbE1zZxInCgxibG9ja19udW1iZXIYAiABKAsyES52YWx1ZXMudjEuQmlnSW50IiEKEUNhbGxDb250cmFjdFJlcGx5EgwKBGRhdGEYASABKAwiWwoRRmlsdGVyTG9nc1JlcXVlc3QSRgoMZmlsdGVyX3F1ZXJ5GAEgASgLMjAuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRmlsdGVyUXVlcnkiSQoPRmlsdGVyTG9nc1JlcGx5EjYKBGxvZ3MYASADKAsyKC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Mb2cixwEKA0xvZxIPCgdhZGRyZXNzGAEgASgMEg4KBnRvcGljcxgCIAMoDBIPCgd0eF9oYXNoGAMgASgMEhIKCmJsb2NrX2hhc2gYBCABKAwSDAoEZGF0YRgFIAEoDBIRCglldmVudF9zaWcYBiABKAwSJwoMYmxvY2tfbnVtYmVyGAcgASgLMhEudmFsdWVzLnYxLkJpZ0ludBIQCgh0eF9pbmRleBgIIAEoDRINCgVpbmRleBgJIAEoDRIPCgdyZW1vdmVkGAogASgIIjEKB0NhbGxNc2cSDAoEZnJvbRgBIAEoDBIKCgJ0bxgCIAEoDBIMCgRkYXRhGAMgASgMIr0BCgtGaWx0ZXJRdWVyeRISCgpibG9ja19oYXNoGAEgASgMEiUKCmZyb21fYmxvY2sYAiABKAsyES52YWx1ZXMudjEuQmlnSW50EiMKCHRvX2Jsb2NrGAMgASgLMhEudmFsdWVzLnYxLkJpZ0ludBIRCglhZGRyZXNzZXMYBCADKAwSOwoGdG9waWNzGAUgAygLMisuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuVG9waWNzIhcKBlRvcGljcxINCgV0b3BpYxgBIAMoDCJMChBCYWxhbmNlQXRSZXF1ZXN0Eg8KB2FjY291bnQYASABKAwSJwoMYmxvY2tfbnVtYmVyGAIgASgLMhEudmFsdWVzLnYxLkJpZ0ludCI0Cg5CYWxhbmNlQXRSZXBseRIiCgdiYWxhbmNlGAEgASgLMhEudmFsdWVzLnYxLkJpZ0ludCJPChJFc3RpbWF0ZUdhc1JlcXVlc3QSOQoDbXNnGAEgASgLMiwuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuQ2FsbE1zZyIjChBFc3RpbWF0ZUdhc1JlcGx5Eg8KA2dhcxgBIAEoBEICMAAiKwobR2V0VHJhbnNhY3Rpb25CeUhhc2hSZXF1ZXN0EgwKBGhhc2gYASABKAwiYgoZR2V0VHJhbnNhY3Rpb25CeUhhc2hSZXBseRJFCgt0cmFuc2FjdGlvbhgBIAEoCzIwLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLlRyYW5zYWN0aW9uIqEBCgtUcmFuc2FjdGlvbhIRCgVub25jZRgBIAEoBEICMAASDwoDZ2FzGAIgASgEQgIwABIKCgJ0bxgDIAEoDBIMCgRkYXRhGAQgASgMEgwKBGhhc2gYBSABKAwSIAoFdmFsdWUYBiABKAsyES52YWx1ZXMudjEuQmlnSW50EiQKCWdhc19wcmljZRgHIAEoCzIRLnZhbHVlcy52MS5CaWdJbnQiLAocR2V0VHJhbnNhY3Rpb25SZWNlaXB0UmVxdWVzdBIMCgRoYXNoGAEgASgMIlsKGkdldFRyYW5zYWN0aW9uUmVjZWlwdFJlcGx5Ej0KB3JlY2VpcHQYASABKAsyLC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5SZWNlaXB0IpkCCgdSZWNlaXB0EhIKBnN0YXR1cxgBIAEoBEICMAASFAoIZ2FzX3VzZWQYAiABKARCAjAAEhQKCHR4X2luZGV4GAMgASgEQgIwABISCgpibG9ja19oYXNoGAQgASgMEjYKBGxvZ3MYBiADKAsyKC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Mb2cSDwoHdHhfaGFzaBgHIAEoDBIuChNlZmZlY3RpdmVfZ2FzX3ByaWNlGAggASgLMhEudmFsdWVzLnYxLkJpZ0ludBInCgxibG9ja19udW1iZXIYCSABKAsyES52YWx1ZXMudjEuQmlnSW50EhgKEGNvbnRyYWN0X2FkZHJlc3MYCiABKAwiQAoVSGVhZGVyQnlOdW1iZXJSZXF1ZXN0EicKDGJsb2NrX251bWJlchgBIAEoCzIRLnZhbHVlcy52MS5CaWdJbnQiUgoTSGVhZGVyQnlOdW1iZXJSZXBseRI7CgZoZWFkZXIYASABKAsyKy5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5IZWFkZXIiawoGSGVhZGVyEhUKCXRpbWVzdGFtcBgBIAEoBEICMAASJwoMYmxvY2tfbnVtYmVyGAIgASgLMhEudmFsdWVzLnYxLkJpZ0ludBIMCgRoYXNoGAMgASgMEhMKC3BhcmVudF9oYXNoGAQgASgMIqsBChJXcml0ZVJlcG9ydFJlcXVlc3QSEAoIcmVjZWl2ZXIYASABKAwSKwoGcmVwb3J0GAIgASgLMhsuc2RrLnYxYWxwaGEuUmVwb3J0UmVzcG9uc2USRwoKZ2FzX2NvbmZpZxgDIAEoCzIuLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLkdhc0NvbmZpZ0gAiAEBQg0KC19nYXNfY29uZmlnIiIKCUdhc0NvbmZpZxIVCglnYXNfbGltaXQYASABKARCAjAAIocDChBXcml0ZVJlcG9ydFJlcGx5EkAKCXR4X3N0YXR1cxgBIAEoDjItLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLlR4U3RhdHVzEnUKInJlY2VpdmVyX2NvbnRyYWN0X2V4ZWN1dGlvbl9zdGF0dXMYAiABKA4yRC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5SZWNlaXZlckNvbnRyYWN0RXhlY3V0aW9uU3RhdHVzSACIAQESFAoHdHhfaGFzaBgDIAEoDEgBiAEBEi8KD3RyYW5zYWN0aW9uX2ZlZRgEIAEoCzIRLnZhbHVlcy52MS5CaWdJbnRIAogBARIaCg1lcnJvcl9tZXNzYWdlGAUgASgJSAOIAQFCJQojX3JlY2VpdmVyX2NvbnRyYWN0X2V4ZWN1dGlvbl9zdGF0dXNCCgoIX3R4X2hhc2hCEgoQX3RyYW5zYWN0aW9uX2ZlZUIQCg5fZXJyb3JfbWVzc2FnZSppCg9Db25maWRlbmNlTGV2ZWwSGQoVQ09ORklERU5DRV9MRVZFTF9TQUZFEAASGwoXQ09ORklERU5DRV9MRVZFTF9MQVRFU1QQARIeChpDT05GSURFTkNFX0xFVkVMX0ZJTkFMSVpFRBACKoIBCh9SZWNlaXZlckNvbnRyYWN0RXhlY3V0aW9uU3RhdHVzEi4KKlJFQ0VJVkVSX0NPTlRSQUNUX0VYRUNVVElPTl9TVEFUVVNfU1VDQ0VTUxAAEi8KK1JFQ0VJVkVSX0NPTlRSQUNUX0VYRUNVVElPTl9TVEFUVVNfUkVWRVJURUQQASpOCghUeFN0YXR1cxITCg9UWF9TVEFUVVNfRkFUQUwQABIWChJUWF9TVEFUVVNfUkVWRVJURUQQARIVChFUWF9TVEFUVVNfU1VDQ0VTUxACMoUYCgZDbGllbnQSgAEKDENhbGxDb250cmFjdBI4LmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLkNhbGxDb250cmFjdFJlcXVlc3QaNi5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5DYWxsQ29udHJhY3RSZXBseRJ6CgpGaWx0ZXJMb2dzEjYuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRmlsdGVyTG9nc1JlcXVlc3QaNC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5GaWx0ZXJMb2dzUmVwbHkSdwoJQmFsYW5jZUF0EjUuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuQmFsYW5jZUF0UmVxdWVzdBozLmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLkJhbGFuY2VBdFJlcGx5En0KC0VzdGltYXRlR2FzEjcuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRXN0aW1hdGVHYXNSZXF1ZXN0GjUuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRXN0aW1hdGVHYXNSZXBseRKYAQoUR2V0VHJhbnNhY3Rpb25CeUhhc2gSQC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5HZXRUcmFuc2FjdGlvbkJ5SGFzaFJlcXVlc3QaPi5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5HZXRUcmFuc2FjdGlvbkJ5SGFzaFJlcGx5EpsBChVHZXRUcmFuc2FjdGlvblJlY2VpcHQSQS5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5HZXRUcmFuc2FjdGlvblJlY2VpcHRSZXF1ZXN0Gj8uY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuR2V0VHJhbnNhY3Rpb25SZWNlaXB0UmVwbHkShgEKDkhlYWRlckJ5TnVtYmVyEjouY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuSGVhZGVyQnlOdW1iZXJSZXF1ZXN0GjguY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuSGVhZGVyQnlOdW1iZXJSZXBseRJ2CgpMb2dUcmlnZ2VyEjwuY2FwYWJpbGl0aWVzLmJsb2NrY2hhaW4uZXZtLnYxYWxwaGEuRmlsdGVyTG9nVHJpZ2dlclJlcXVlc3QaKC5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYS5Mb2cwARJ9CgtXcml0ZVJlcG9ydBI3LmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLldyaXRlUmVwb3J0UmVxdWVzdBo1LmNhcGFiaWxpdGllcy5ibG9ja2NoYWluLmV2bS52MWFscGhhLldyaXRlUmVwb3J0UmVwbHkayg6CtRjFDggBEglldm1AMS4wLjAatQ4KDUNoYWluU2VsZWN0b3ISow4SoA4KJAoXYXBlY2hhaW4tdGVzdG5ldC1jdXJ0aXMQwcO0+I3EkrKJAQoXCgthcmMtdGVzdG5ldBDnxoye19fQjSoKHQoRYXZhbGFuY2hlLW1haW5uZXQQ1eeKwOHVmKRZCiMKFmF2YWxhbmNoZS10ZXN0bmV0LWZ1amkQm/n8kKLjqPjMAQooChtiaW5hbmNlX3NtYXJ0X2NoYWluLW1haW5uZXQQz/eU8djtlbidAQooChtiaW5hbmNlX3NtYXJ0X2NoYWluLXRlc3RuZXQQ+62+nICu5Iq4AQoYCgxjZWxvLW1haW5uZXQQhtTo2IaTiNcSChoKDmNyb25vcy10ZXN0bmV0EP3Z7q3g3trIKQoiChVkdGNjLXRlc3RuZXQtYW5kZXNpdGUQ0oPj0JmW5aTXAQocChBldGhlcmV1bS1tYWlubmV0EJX28eTPsqbCRQonChtldGhlcmV1bS1tYWlubmV0LWFyYml0cnVtLTEQxOiNzY6boddECiQKF2V0aGVyZXVtLW1haW5uZXQtYmFzZS0xEIL/q6L+uZDT3QEKIgoWZXRoZXJldW0tbWFpbm5ldC1pbmstMRCgsKbpt+aqhDAKJAoYZXRoZXJldW0tbWFpbm5ldC1saW5lYS0xELa66ZjLvbCbQAolChlldGhlcmV1bS1tYWlubmV0LW1hbnRsZS0xEIrntJXnsIPMFQonChtldGhlcmV1bS1tYWlubmV0LW9wdGltaXNtLTEQuJWPw/f+0OkzCiYKGWV0aGVyZXVtLW1haW5uZXQtc2Nyb2xsLTEQuLzk68S+yJ+3AQopCh1ldGhlcmV1bS1tYWlubmV0LXdvcmxkY2hhaW4tMRCH77q3xbbCuBwKJQoZZXRoZXJldW0tbWFpbm5ldC14bGF5ZXItMRCWpfycpqjv7SkKJQoZZXRoZXJldW0tbWFpbm5ldC16a3N5bmMtMRCU7pfZ7bSx1xUKJQoYZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhENm15M78ye6g3gEKLwojZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhLWFyYml0cnVtLTEQ6s7u/+q2hKMwCiwKH2V0aGVyZXVtLXRlc3RuZXQtc2Vwb2xpYS1iYXNlLTEQuMq57/aQrsiPAQosCiBldGhlcmV1bS10ZXN0bmV0LXNlcG9saWEtbGluZWEtMRDrqtT+gvnmr08KLQohZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhLW1hbnRsZS0xENXGuO7N9vKmcgovCiNldGhlcmV1bS10ZXN0bmV0LXNlcG9saWEtb3B0aW1pc20tMRCfhsWhvtjDwEgKLQohZXRoZXJldW0tdGVzdG5ldC1zZXBvbGlhLXNjcm9sbC0xEIvptL7buu3RHwowCiNldGhlcmV1bS10ZXN0bmV0LXNlcG9saWEtdW5pY2hhaW4tMRC03v7g7JeplsQBCjEKJWV0aGVyZXVtLXRlc3RuZXQtc2Vwb2xpYS13b3JsZGNoYWluLTEQut/gxcep88VJCi0KIWV0aGVyZXVtLXRlc3RuZXQtc2Vwb2xpYS16a3N5bmMtMRC3wfz98sSA3l8KIAoUZ25vc2lzX2NoYWluLW1haW5uZXQQ9JKt2vKirroGCicKG2dub3Npc19jaGFpbi10ZXN0bmV0LWNoaWFkbxCzsYLQm6WPj3sKHwoTaHlwZXJsaXF1aWQtbWFpbm5ldBCns/jdztHp8iEKHwoTaHlwZXJsaXF1aWQtdGVzdG5ldBCIzt3Il+DJvTsKIAoTaW5rLXRlc3RuZXQtc2Vwb2xpYRDo9Kel8+aWwIcBChkKDWpvdmF5LW1haW5uZXQQtcPEmqGA35IVChkKDWpvdmF5LXRlc3RuZXQQ5M+KhN6y3o4NChsKD21lZ2FldGgtbWFpbm5ldBDqlbbIvOSmyFQKHgoRbWVnYWV0aC10ZXN0bmV0LTIQ443eiLGP/ZP9AQokChdwaGFyb3MtYXRsYW50aWMtdGVzdG5ldBDMme3gzryvtN8BChoKDnBoYXJvcy1tYWlubmV0EMjBh571782hbAobCg5wbGFzbWEtbWFpbm5ldBD4m/HR2snVxoEBChoKDnBsYXNtYS10ZXN0bmV0ENWbv6XDtJmHNwobCg9wb2x5Z29uLW1haW5uZXQQsavk8JqShp04CiEKFHBvbHlnb24tdGVzdG5ldC1hbW95EM2P1t/xx5D64QEKJAoYcHJpdmF0ZS10ZXN0bmV0LWFuZGVzaXRlENSmmKXBj9z8XwoZCg1zb25pYy1tYWlubmV0ENGy5e3ZoLKdFwoZCg1zb25pYy10ZXN0bmV0EMiI+9S0xvq8GAoYCgt0YWMtdGVzdG5ldBDV243j+5+T14MBChsKDnhsYXllci10ZXN0bmV0EMm+obStzLzdjQFC5QEKJ2NvbS5jYXBhYmlsaXRpZXMuYmxvY2tjaGFpbi5ldm0udjFhbHBoYUILQ2xpZW50UHJvdG9QAaICA0NCRaoCI0NhcGFiaWxpdGllcy5CbG9ja2NoYWluLkV2bS5WMWFscGhhygIjQ2FwYWJpbGl0aWVzXEJsb2NrY2hhaW5cRXZtXFYxYWxwaGHiAi9DYXBhYmlsaXRpZXNcQmxvY2tjaGFpblxFdm1cVjFhbHBoYVxHUEJNZXRhZGF0YeoCJkNhcGFiaWxpdGllczo6QmxvY2tjaGFpbjo6RXZtOjpWMWFscGhhYgZwcm90bzM",
+  [
+    file_sdk_v1alpha_sdk,
+    file_tools_generator_v1alpha_cre_metadata,
+    file_values_v1_values,
+  ],
+);
+var FilterLogTriggerRequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  1,
+);
+var CallContractRequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  2,
+);
+var CallContractReplySchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  3,
+);
+var FilterLogsRequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  4,
+);
+var FilterLogsReplySchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  5,
+);
+var LogSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  6,
+);
+var BalanceAtRequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  10,
+);
+var BalanceAtReplySchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  11,
+);
+var EstimateGasRequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  12,
+);
+var EstimateGasReplySchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  13,
+);
+var GetTransactionByHashRequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  14,
+);
+var GetTransactionByHashReplySchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  15,
+);
+var GetTransactionReceiptRequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  17,
+);
+var GetTransactionReceiptReplySchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  18,
+);
+var HeaderByNumberRequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  20,
+);
+var HeaderByNumberReplySchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  21,
+);
+var WriteReportRequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  23,
+);
+var GasConfigSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  24,
+);
+var WriteReportReplySchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_blockchain_evm_v1alpha_client,
+  25,
+);
 var ConfidenceLevel;
-(function(ConfidenceLevel2) {
-  ConfidenceLevel2[ConfidenceLevel2["SAFE"] = 0] = "SAFE";
-  ConfidenceLevel2[ConfidenceLevel2["LATEST"] = 1] = "LATEST";
-  ConfidenceLevel2[ConfidenceLevel2["FINALIZED"] = 2] = "FINALIZED";
+(function (ConfidenceLevel2) {
+  ConfidenceLevel2[(ConfidenceLevel2["SAFE"] = 0)] = "SAFE";
+  ConfidenceLevel2[(ConfidenceLevel2["LATEST"] = 1)] = "LATEST";
+  ConfidenceLevel2[(ConfidenceLevel2["FINALIZED"] = 2)] = "FINALIZED";
 })(ConfidenceLevel || (ConfidenceLevel = {}));
 var ReceiverContractExecutionStatus;
-(function(ReceiverContractExecutionStatus2) {
-  ReceiverContractExecutionStatus2[ReceiverContractExecutionStatus2["SUCCESS"] = 0] = "SUCCESS";
-  ReceiverContractExecutionStatus2[ReceiverContractExecutionStatus2["REVERTED"] = 1] = "REVERTED";
+(function (ReceiverContractExecutionStatus2) {
+  ReceiverContractExecutionStatus2[
+    (ReceiverContractExecutionStatus2["SUCCESS"] = 0)
+  ] = "SUCCESS";
+  ReceiverContractExecutionStatus2[
+    (ReceiverContractExecutionStatus2["REVERTED"] = 1)
+  ] = "REVERTED";
 })(ReceiverContractExecutionStatus || (ReceiverContractExecutionStatus = {}));
 var TxStatus;
-(function(TxStatus2) {
-  TxStatus2[TxStatus2["FATAL"] = 0] = "FATAL";
-  TxStatus2[TxStatus2["REVERTED"] = 1] = "REVERTED";
-  TxStatus2[TxStatus2["SUCCESS"] = 2] = "SUCCESS";
+(function (TxStatus2) {
+  TxStatus2[(TxStatus2["FATAL"] = 0)] = "FATAL";
+  TxStatus2[(TxStatus2["REVERTED"] = 1)] = "REVERTED";
+  TxStatus2[(TxStatus2["SUCCESS"] = 2)] = "SUCCESS";
 })(TxStatus || (TxStatus = {}));
 
 class Report {
   report;
   constructor(report) {
-    this.report = report.$typeName ? report : fromJson(ReportResponseSchema, report);
+    this.report = report.$typeName
+      ? report
+      : fromJson(ReportResponseSchema, report);
   }
   x_generatedCodeOnly_unwrap() {
     return this.report;
@@ -3869,11 +6073,13 @@ var hexToBytes = (hexStr) => {
     throw new Error(`Invalid hex string: ${hexStr}`);
   }
   if ((hexStr.length - 2) % 2 !== 0) {
-    throw new Error(`Hex string must have an even number of characters: ${hexStr}`);
+    throw new Error(
+      `Hex string must have an even number of characters: ${hexStr}`,
+    );
   }
   const hex = hexStr.slice(2);
   const bytes = new Uint8Array(hex.length / 2);
-  for (let i = 0;i < hex.length; i += 2) {
+  for (let i = 0; i < hex.length; i += 2) {
     bytes[i / 2] = Number.parseInt(hex.slice(i, i + 2), 16);
   }
   return bytes;
@@ -3884,7 +6090,9 @@ var hexToBase64 = (hex) => {
     return "";
   }
   if (cleanHex.length % 2 !== 0) {
-    throw new Error(`Hex string must have an even number of characters: ${hex}`);
+    throw new Error(
+      `Hex string must have an even number of characters: ${hex}`,
+    );
   }
   if (!/^[0-9a-fA-F]*$/.test(cleanHex)) {
     throw new Error(`Invalid hex string: ${hex}`);
@@ -3895,15 +6103,21 @@ function createWriteCreReportRequest(input) {
   return {
     receiver: hexToBytes(input.receiver),
     report: input.report,
-    gasConfig: input.gasConfig !== undefined ? fromJson(GasConfigSchema, input.gasConfig) : undefined,
-    $report: true
+    gasConfig:
+      input.gasConfig !== undefined
+        ? fromJson(GasConfigSchema, input.gasConfig)
+        : undefined,
+    $report: true,
   };
 }
 function x_generatedCodeOnly_unwrap_WriteCreReportRequest(input) {
   return create(WriteReportRequestSchema, {
     receiver: input.receiver,
-    report: input.report !== undefined ? input.report.x_generatedCodeOnly_unwrap() : undefined,
-    gasConfig: input.gasConfig
+    report:
+      input.report !== undefined
+        ? input.report.x_generatedCodeOnly_unwrap()
+        : undefined,
+    gasConfig: input.gasConfig,
   });
 }
 
@@ -3962,7 +6176,7 @@ class ClientCapability {
     "sonic-mainnet": 1673871237479749969n,
     "sonic-testnet": 1763698235108410440n,
     "tac-testnet": 9488606126177218005n,
-    "xlayer-testnet": 10212741611335999305n
+    "xlayer-testnet": 10212741611335999305n,
   };
   constructor(ChainSelector) {
     this.ChainSelector = ChainSelector;
@@ -3980,13 +6194,13 @@ class ClientCapability {
       method: "CallContract",
       payload,
       inputSchema: CallContractRequestSchema,
-      outputSchema: CallContractReplySchema
+      outputSchema: CallContractReplySchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
   filterLogs(runtime, input) {
@@ -4002,13 +6216,13 @@ class ClientCapability {
       method: "FilterLogs",
       payload,
       inputSchema: FilterLogsRequestSchema,
-      outputSchema: FilterLogsReplySchema
+      outputSchema: FilterLogsReplySchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
   balanceAt(runtime, input) {
@@ -4024,13 +6238,13 @@ class ClientCapability {
       method: "BalanceAt",
       payload,
       inputSchema: BalanceAtRequestSchema,
-      outputSchema: BalanceAtReplySchema
+      outputSchema: BalanceAtReplySchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
   estimateGas(runtime, input) {
@@ -4046,13 +6260,13 @@ class ClientCapability {
       method: "EstimateGas",
       payload,
       inputSchema: EstimateGasRequestSchema,
-      outputSchema: EstimateGasReplySchema
+      outputSchema: EstimateGasReplySchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
   getTransactionByHash(runtime, input) {
@@ -4068,13 +6282,13 @@ class ClientCapability {
       method: "GetTransactionByHash",
       payload,
       inputSchema: GetTransactionByHashRequestSchema,
-      outputSchema: GetTransactionByHashReplySchema
+      outputSchema: GetTransactionByHashReplySchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
   getTransactionReceipt(runtime, input) {
@@ -4090,13 +6304,13 @@ class ClientCapability {
       method: "GetTransactionReceipt",
       payload,
       inputSchema: GetTransactionReceiptRequestSchema,
-      outputSchema: GetTransactionReceiptReplySchema
+      outputSchema: GetTransactionReceiptReplySchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
   headerByNumber(runtime, input) {
@@ -4112,25 +6326,32 @@ class ClientCapability {
       method: "HeaderByNumber",
       payload,
       inputSchema: HeaderByNumberRequestSchema,
-      outputSchema: HeaderByNumberReplySchema
+      outputSchema: HeaderByNumberReplySchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
   logTrigger(config) {
     const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
-    return new ClientLogTrigger(config, capabilityId, "LogTrigger", this.ChainSelector);
+    return new ClientLogTrigger(
+      config,
+      capabilityId,
+      "LogTrigger",
+      this.ChainSelector,
+    );
   }
   writeReport(runtime, input) {
     let payload;
     if (input.$report) {
       payload = x_generatedCodeOnly_unwrap_WriteCreReportRequest(input);
     } else {
-      payload = x_generatedCodeOnly_unwrap_WriteCreReportRequest(createWriteCreReportRequest(input));
+      payload = x_generatedCodeOnly_unwrap_WriteCreReportRequest(
+        createWriteCreReportRequest(input),
+      );
     }
     const capabilityId = `${ClientCapability.CAPABILITY_NAME}:ChainSelector:${this.ChainSelector}@${ClientCapability.CAPABILITY_VERSION}`;
     const capabilityResponse = runtime.callCapability({
@@ -4138,13 +6359,13 @@ class ClientCapability {
       method: "WriteReport",
       payload,
       inputSchema: WriteReportRequestSchema,
-      outputSchema: WriteReportReplySchema
+      outputSchema: WriteReportReplySchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
 }
@@ -4158,7 +6379,9 @@ class ClientLogTrigger {
     this._capabilityId = _capabilityId;
     this._method = _method;
     this.ChainSelector = ChainSelector;
-    this.config = config.$typeName ? config : fromJson(FilterLogTriggerRequestSchema, config);
+    this.config = config.$typeName
+      ? config
+      : fromJson(FilterLogTriggerRequestSchema, config);
   }
   capabilityId() {
     return this._capabilityId;
@@ -4176,9 +6399,18 @@ class ClientLogTrigger {
     return rawOutput;
   }
 }
-var file_capabilities_networking_http_v1alpha_client = /* @__PURE__ */ fileDesc("CjFjYXBhYmlsaXRpZXMvbmV0d29ya2luZy9odHRwL3YxYWxwaGEvY2xpZW50LnByb3RvEiRjYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEiSgoNQ2FjaGVTZXR0aW5ncxINCgVzdG9yZRgBIAEoCBIqCgdtYXhfYWdlGAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uIh4KDEhlYWRlclZhbHVlcxIOCgZ2YWx1ZXMYASADKAki7wMKB1JlcXVlc3QSCwoDdXJsGAEgASgJEg4KBm1ldGhvZBgCIAEoCRJPCgdoZWFkZXJzGAMgAygLMjouY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlcXVlc3QuSGVhZGVyc0VudHJ5QgIYARIMCgRib2R5GAQgASgMEioKB3RpbWVvdXQYBSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SSwoOY2FjaGVfc2V0dGluZ3MYBiABKAsyMy5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuQ2FjaGVTZXR0aW5ncxJWCg1tdWx0aV9oZWFkZXJzGAcgAygLMj8uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlcXVlc3QuTXVsdGlIZWFkZXJzRW50cnkaLgoMSGVhZGVyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaZwoRTXVsdGlIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEkEKBXZhbHVlGAIgASgLMjIuY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLkhlYWRlclZhbHVlczoCOAEi8QIKCFJlc3BvbnNlEhMKC3N0YXR1c19jb2RlGAEgASgNElAKB2hlYWRlcnMYAiADKAsyOy5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuUmVzcG9uc2UuSGVhZGVyc0VudHJ5QgIYARIMCgRib2R5GAMgASgMElcKDW11bHRpX2hlYWRlcnMYBCADKAsyQC5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuUmVzcG9uc2UuTXVsdGlIZWFkZXJzRW50cnkaLgoMSGVhZGVyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaZwoRTXVsdGlIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEkEKBXZhbHVlGAIgASgLMjIuY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLkhlYWRlclZhbHVlczoCOAEymAEKBkNsaWVudBJsCgtTZW5kUmVxdWVzdBItLmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYS5SZXF1ZXN0Gi4uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlc3BvbnNlGiCCtRgcCAISGGh0dHAtYWN0aW9uc0AxLjAuMC1hbHBoYULqAQooY29tLmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYUILQ2xpZW50UHJvdG9QAaICA0NOSKoCJENhcGFiaWxpdGllcy5OZXR3b3JraW5nLkh0dHAuVjFhbHBoYcoCJENhcGFiaWxpdGllc1xOZXR3b3JraW5nXEh0dHBcVjFhbHBoYeICMENhcGFiaWxpdGllc1xOZXR3b3JraW5nXEh0dHBcVjFhbHBoYVxHUEJNZXRhZGF0YeoCJ0NhcGFiaWxpdGllczo6TmV0d29ya2luZzo6SHR0cDo6VjFhbHBoYWIGcHJvdG8z", [file_google_protobuf_duration, file_tools_generator_v1alpha_cre_metadata]);
-var RequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_http_v1alpha_client, 2);
-var ResponseSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_http_v1alpha_client, 3);
+var file_capabilities_networking_http_v1alpha_client = /* @__PURE__ */ fileDesc(
+  "CjFjYXBhYmlsaXRpZXMvbmV0d29ya2luZy9odHRwL3YxYWxwaGEvY2xpZW50LnByb3RvEiRjYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEiSgoNQ2FjaGVTZXR0aW5ncxINCgVzdG9yZRgBIAEoCBIqCgdtYXhfYWdlGAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uIh4KDEhlYWRlclZhbHVlcxIOCgZ2YWx1ZXMYASADKAki7wMKB1JlcXVlc3QSCwoDdXJsGAEgASgJEg4KBm1ldGhvZBgCIAEoCRJPCgdoZWFkZXJzGAMgAygLMjouY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlcXVlc3QuSGVhZGVyc0VudHJ5QgIYARIMCgRib2R5GAQgASgMEioKB3RpbWVvdXQYBSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SSwoOY2FjaGVfc2V0dGluZ3MYBiABKAsyMy5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuQ2FjaGVTZXR0aW5ncxJWCg1tdWx0aV9oZWFkZXJzGAcgAygLMj8uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlcXVlc3QuTXVsdGlIZWFkZXJzRW50cnkaLgoMSGVhZGVyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaZwoRTXVsdGlIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEkEKBXZhbHVlGAIgASgLMjIuY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLkhlYWRlclZhbHVlczoCOAEi8QIKCFJlc3BvbnNlEhMKC3N0YXR1c19jb2RlGAEgASgNElAKB2hlYWRlcnMYAiADKAsyOy5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuUmVzcG9uc2UuSGVhZGVyc0VudHJ5QgIYARIMCgRib2R5GAMgASgMElcKDW11bHRpX2hlYWRlcnMYBCADKAsyQC5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuUmVzcG9uc2UuTXVsdGlIZWFkZXJzRW50cnkaLgoMSGVhZGVyc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaZwoRTXVsdGlIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEkEKBXZhbHVlGAIgASgLMjIuY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLkhlYWRlclZhbHVlczoCOAEymAEKBkNsaWVudBJsCgtTZW5kUmVxdWVzdBItLmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYS5SZXF1ZXN0Gi4uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlc3BvbnNlGiCCtRgcCAISGGh0dHAtYWN0aW9uc0AxLjAuMC1hbHBoYULqAQooY29tLmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYUILQ2xpZW50UHJvdG9QAaICA0NOSKoCJENhcGFiaWxpdGllcy5OZXR3b3JraW5nLkh0dHAuVjFhbHBoYcoCJENhcGFiaWxpdGllc1xOZXR3b3JraW5nXEh0dHBcVjFhbHBoYeICMENhcGFiaWxpdGllc1xOZXR3b3JraW5nXEh0dHBcVjFhbHBoYVxHUEJNZXRhZGF0YeoCJ0NhcGFiaWxpdGllczo6TmV0d29ya2luZzo6SHR0cDo6VjFhbHBoYWIGcHJvdG8z",
+  [file_google_protobuf_duration, file_tools_generator_v1alpha_cre_metadata],
+);
+var RequestSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_networking_http_v1alpha_client,
+  2,
+);
+var ResponseSchema = /* @__PURE__ */ messageDesc(
+  file_capabilities_networking_http_v1alpha_client,
+  3,
+);
 
 class SendRequester {
   runtime;
@@ -4199,7 +6431,12 @@ class ClientCapability2 {
   sendRequest(...args) {
     if (typeof args[1] === "function") {
       const [runtime2, fn, consensusAggregation, unwrapOptions] = args;
-      return this.sendRequestSugarHelper(runtime2, fn, consensusAggregation, unwrapOptions);
+      return this.sendRequestSugarHelper(
+        runtime2,
+        fn,
+        consensusAggregation,
+        unwrapOptions,
+      );
     }
     const [runtime, input] = args;
     return this.sendRequestCallHelper(runtime, input);
@@ -4217,13 +6454,13 @@ class ClientCapability2 {
       method: "SendRequest",
       payload,
       inputSchema: RequestSchema,
-      outputSchema: ResponseSchema
+      outputSchema: ResponseSchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
   sendRequestSugarHelper(runtime, fn, consensusAggregation, unwrapOptions) {
@@ -4231,19 +6468,23 @@ class ClientCapability2 {
       const sendRequester = new SendRequester(runtime2, this);
       return fn(sendRequester, ...args);
     };
-    return runtime.runInNodeMode(wrappedFn, consensusAggregation, unwrapOptions);
+    return runtime.runInNodeMode(
+      wrappedFn,
+      consensusAggregation,
+      unwrapOptions,
+    );
   }
 }
 var KeyType;
-(function(KeyType2) {
-  KeyType2[KeyType2["UNSPECIFIED"] = 0] = "UNSPECIFIED";
-  KeyType2[KeyType2["ECDSA_EVM"] = 1] = "ECDSA_EVM";
+(function (KeyType2) {
+  KeyType2[(KeyType2["UNSPECIFIED"] = 0)] = "UNSPECIFIED";
+  KeyType2[(KeyType2["ECDSA_EVM"] = 1)] = "ECDSA_EVM";
 })(KeyType || (KeyType = {}));
 var lookup = [];
 var revLookup = [];
 var code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-for (i = 0, len = code.length;i < len; ++i)
-  lookup[i] = code[i], revLookup[code.charCodeAt(i)] = i;
+for (i = 0, len = code.length; i < len; ++i)
+  ((lookup[i] = code[i]), (revLookup[code.charCodeAt(i)] = i));
 var i;
 var len;
 revLookup[45] = 62;
@@ -4253,87 +6494,150 @@ function getLens(b64) {
   if (len2 % 4 > 0)
     throw Error("Invalid string. Length must be a multiple of 4");
   var validLen = b64.indexOf("=");
-  if (validLen === -1)
-    validLen = len2;
-  var placeHoldersLen = validLen === len2 ? 0 : 4 - validLen % 4;
+  if (validLen === -1) validLen = len2;
+  var placeHoldersLen = validLen === len2 ? 0 : 4 - (validLen % 4);
   return [validLen, placeHoldersLen];
 }
 function _byteLength(validLen, placeHoldersLen) {
-  return (validLen + placeHoldersLen) * 3 / 4 - placeHoldersLen;
+  return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
 }
 function toByteArray(b64) {
-  var tmp, lens = getLens(b64), validLen = lens[0], placeHoldersLen = lens[1], arr = new Uint8Array(_byteLength(validLen, placeHoldersLen)), curByte = 0, len2 = placeHoldersLen > 0 ? validLen - 4 : validLen, i2;
-  for (i2 = 0;i2 < len2; i2 += 4)
-    tmp = revLookup[b64.charCodeAt(i2)] << 18 | revLookup[b64.charCodeAt(i2 + 1)] << 12 | revLookup[b64.charCodeAt(i2 + 2)] << 6 | revLookup[b64.charCodeAt(i2 + 3)], arr[curByte++] = tmp >> 16 & 255, arr[curByte++] = tmp >> 8 & 255, arr[curByte++] = tmp & 255;
+  var tmp,
+    lens = getLens(b64),
+    validLen = lens[0],
+    placeHoldersLen = lens[1],
+    arr = new Uint8Array(_byteLength(validLen, placeHoldersLen)),
+    curByte = 0,
+    len2 = placeHoldersLen > 0 ? validLen - 4 : validLen,
+    i2;
+  for (i2 = 0; i2 < len2; i2 += 4)
+    ((tmp =
+      (revLookup[b64.charCodeAt(i2)] << 18) |
+      (revLookup[b64.charCodeAt(i2 + 1)] << 12) |
+      (revLookup[b64.charCodeAt(i2 + 2)] << 6) |
+      revLookup[b64.charCodeAt(i2 + 3)]),
+      (arr[curByte++] = (tmp >> 16) & 255),
+      (arr[curByte++] = (tmp >> 8) & 255),
+      (arr[curByte++] = tmp & 255));
   if (placeHoldersLen === 2)
-    tmp = revLookup[b64.charCodeAt(i2)] << 2 | revLookup[b64.charCodeAt(i2 + 1)] >> 4, arr[curByte++] = tmp & 255;
+    ((tmp =
+      (revLookup[b64.charCodeAt(i2)] << 2) |
+      (revLookup[b64.charCodeAt(i2 + 1)] >> 4)),
+      (arr[curByte++] = tmp & 255));
   if (placeHoldersLen === 1)
-    tmp = revLookup[b64.charCodeAt(i2)] << 10 | revLookup[b64.charCodeAt(i2 + 1)] << 4 | revLookup[b64.charCodeAt(i2 + 2)] >> 2, arr[curByte++] = tmp >> 8 & 255, arr[curByte++] = tmp & 255;
+    ((tmp =
+      (revLookup[b64.charCodeAt(i2)] << 10) |
+      (revLookup[b64.charCodeAt(i2 + 1)] << 4) |
+      (revLookup[b64.charCodeAt(i2 + 2)] >> 2)),
+      (arr[curByte++] = (tmp >> 8) & 255),
+      (arr[curByte++] = tmp & 255));
   return arr;
 }
 function tripletToBase64(num) {
-  return lookup[num >> 18 & 63] + lookup[num >> 12 & 63] + lookup[num >> 6 & 63] + lookup[num & 63];
+  return (
+    lookup[(num >> 18) & 63] +
+    lookup[(num >> 12) & 63] +
+    lookup[(num >> 6) & 63] +
+    lookup[num & 63]
+  );
 }
 function encodeChunk(uint8, start, end) {
-  var tmp, output = [];
-  for (var i2 = start;i2 < end; i2 += 3)
-    tmp = (uint8[i2] << 16 & 16711680) + (uint8[i2 + 1] << 8 & 65280) + (uint8[i2 + 2] & 255), output.push(tripletToBase64(tmp));
+  var tmp,
+    output = [];
+  for (var i2 = start; i2 < end; i2 += 3)
+    ((tmp =
+      ((uint8[i2] << 16) & 16711680) +
+      ((uint8[i2 + 1] << 8) & 65280) +
+      (uint8[i2 + 2] & 255)),
+      output.push(tripletToBase64(tmp)));
   return output.join("");
 }
 function fromByteArray(uint8) {
-  var tmp, len2 = uint8.length, extraBytes = len2 % 3, parts = [], maxChunkLength = 16383;
-  for (var i2 = 0, len22 = len2 - extraBytes;i2 < len22; i2 += maxChunkLength)
-    parts.push(encodeChunk(uint8, i2, i2 + maxChunkLength > len22 ? len22 : i2 + maxChunkLength));
+  var tmp,
+    len2 = uint8.length,
+    extraBytes = len2 % 3,
+    parts = [],
+    maxChunkLength = 16383;
+  for (var i2 = 0, len22 = len2 - extraBytes; i2 < len22; i2 += maxChunkLength)
+    parts.push(
+      encodeChunk(
+        uint8,
+        i2,
+        i2 + maxChunkLength > len22 ? len22 : i2 + maxChunkLength,
+      ),
+    );
   if (extraBytes === 1)
-    tmp = uint8[len2 - 1], parts.push(lookup[tmp >> 2] + lookup[tmp << 4 & 63] + "==");
+    ((tmp = uint8[len2 - 1]),
+      parts.push(lookup[tmp >> 2] + lookup[(tmp << 4) & 63] + "=="));
   else if (extraBytes === 2)
-    tmp = (uint8[len2 - 2] << 8) + uint8[len2 - 1], parts.push(lookup[tmp >> 10] + lookup[tmp >> 4 & 63] + lookup[tmp << 2 & 63] + "=");
+    ((tmp = (uint8[len2 - 2] << 8) + uint8[len2 - 1]),
+      parts.push(
+        lookup[tmp >> 10] +
+          lookup[(tmp >> 4) & 63] +
+          lookup[(tmp << 2) & 63] +
+          "=",
+      ));
   return parts.join("");
 }
 function read(buffer, offset, isLE, mLen, nBytes) {
-  var e, m, eLen = nBytes * 8 - mLen - 1, eMax = (1 << eLen) - 1, eBias = eMax >> 1, nBits = -7, i2 = isLE ? nBytes - 1 : 0, d = isLE ? -1 : 1, s = buffer[offset + i2];
-  i2 += d, e = s & (1 << -nBits) - 1, s >>= -nBits, nBits += eLen;
-  for (;nBits > 0; e = e * 256 + buffer[offset + i2], i2 += d, nBits -= 8)
-    ;
-  m = e & (1 << -nBits) - 1, e >>= -nBits, nBits += mLen;
-  for (;nBits > 0; m = m * 256 + buffer[offset + i2], i2 += d, nBits -= 8)
-    ;
-  if (e === 0)
-    e = 1 - eBias;
-  else if (e === eMax)
-    return m ? NaN : (s ? -1 : 1) * (1 / 0);
-  else
-    m = m + Math.pow(2, mLen), e = e - eBias;
+  var e,
+    m,
+    eLen = nBytes * 8 - mLen - 1,
+    eMax = (1 << eLen) - 1,
+    eBias = eMax >> 1,
+    nBits = -7,
+    i2 = isLE ? nBytes - 1 : 0,
+    d = isLE ? -1 : 1,
+    s = buffer[offset + i2];
+  ((i2 += d), (e = s & ((1 << -nBits) - 1)), (s >>= -nBits), (nBits += eLen));
+  for (; nBits > 0; e = e * 256 + buffer[offset + i2], i2 += d, nBits -= 8);
+  ((m = e & ((1 << -nBits) - 1)), (e >>= -nBits), (nBits += mLen));
+  for (; nBits > 0; m = m * 256 + buffer[offset + i2], i2 += d, nBits -= 8);
+  if (e === 0) e = 1 - eBias;
+  else if (e === eMax) return m ? NaN : (s ? -1 : 1) * (1 / 0);
+  else ((m = m + Math.pow(2, mLen)), (e = e - eBias));
   return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
 }
 function write(buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c, eLen = nBytes * 8 - mLen - 1, eMax = (1 << eLen) - 1, eBias = eMax >> 1, rt = mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0, i2 = isLE ? 0 : nBytes - 1, d = isLE ? 1 : -1, s = value < 0 || value === 0 && 1 / value < 0 ? 1 : 0;
-  if (value = Math.abs(value), isNaN(value) || value === 1 / 0)
-    m = isNaN(value) ? 1 : 0, e = eMax;
+  var e,
+    m,
+    c,
+    eLen = nBytes * 8 - mLen - 1,
+    eMax = (1 << eLen) - 1,
+    eBias = eMax >> 1,
+    rt = mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0,
+    i2 = isLE ? 0 : nBytes - 1,
+    d = isLE ? 1 : -1,
+    s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0;
+  if (((value = Math.abs(value)), isNaN(value) || value === 1 / 0))
+    ((m = isNaN(value) ? 1 : 0), (e = eMax));
   else {
-    if (e = Math.floor(Math.log(value) / Math.LN2), value * (c = Math.pow(2, -e)) < 1)
-      e--, c *= 2;
-    if (e + eBias >= 1)
-      value += rt / c;
-    else
-      value += rt * Math.pow(2, 1 - eBias);
-    if (value * c >= 2)
-      e++, c /= 2;
-    if (e + eBias >= eMax)
-      m = 0, e = eMax;
+    if (
+      ((e = Math.floor(Math.log(value) / Math.LN2)),
+      value * (c = Math.pow(2, -e)) < 1)
+    )
+      (e--, (c *= 2));
+    if (e + eBias >= 1) value += rt / c;
+    else value += rt * Math.pow(2, 1 - eBias);
+    if (value * c >= 2) (e++, (c /= 2));
+    if (e + eBias >= eMax) ((m = 0), (e = eMax));
     else if (e + eBias >= 1)
-      m = (value * c - 1) * Math.pow(2, mLen), e = e + eBias;
-    else
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen), e = 0;
+      ((m = (value * c - 1) * Math.pow(2, mLen)), (e = e + eBias));
+    else ((m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)), (e = 0));
   }
-  for (;mLen >= 8; buffer[offset + i2] = m & 255, i2 += d, m /= 256, mLen -= 8)
+  for (
     ;
-  e = e << mLen | m, eLen += mLen;
-  for (;eLen > 0; buffer[offset + i2] = e & 255, i2 += d, e /= 256, eLen -= 8)
-    ;
+    mLen >= 8;
+    buffer[offset + i2] = m & 255, i2 += d, m /= 256, mLen -= 8
+  );
+  ((e = (e << mLen) | m), (eLen += mLen));
+  for (; eLen > 0; buffer[offset + i2] = e & 255, i2 += d, e /= 256, eLen -= 8);
   buffer[offset + i2 - d] |= s * 128;
 }
-var customInspectSymbol = typeof Symbol === "function" && typeof Symbol.for === "function" ? Symbol.for("nodejs.util.inspect.custom") : null;
+var customInspectSymbol =
+  typeof Symbol === "function" && typeof Symbol.for === "function"
+    ? Symbol.for("nodejs.util.inspect.custom")
+    : null;
 var INSPECT_MAX_BYTES = 50;
 var kMaxLength = 2147483647;
 var btoa = globalThis.btoa;
@@ -4344,87 +6648,140 @@ function createBuffer(length) {
   if (length > kMaxLength)
     throw RangeError('The value "' + length + '" is invalid for option "size"');
   let buf = new Uint8Array(length);
-  return Object.setPrototypeOf(buf, Buffer2.prototype), buf;
+  return (Object.setPrototypeOf(buf, Buffer2.prototype), buf);
 }
 function E(sym, getMessage, Base) {
   return class extends Base {
     constructor() {
       super();
-      Object.defineProperty(this, "message", { value: getMessage.apply(this, arguments), writable: true, configurable: true }), this.name = `${this.name} [${sym}]`, this.stack, delete this.name;
+      (Object.defineProperty(this, "message", {
+        value: getMessage.apply(this, arguments),
+        writable: true,
+        configurable: true,
+      }),
+        (this.name = `${this.name} [${sym}]`),
+        this.stack,
+        delete this.name);
     }
     get code() {
       return sym;
     }
     set code(value) {
-      Object.defineProperty(this, "code", { configurable: true, enumerable: true, value, writable: true });
+      Object.defineProperty(this, "code", {
+        configurable: true,
+        enumerable: true,
+        value,
+        writable: true,
+      });
     }
     toString() {
       return `${this.name} [${sym}]: ${this.message}`;
     }
   };
 }
-var ERR_BUFFER_OUT_OF_BOUNDS = E("ERR_BUFFER_OUT_OF_BOUNDS", function(name) {
-  if (name)
-    return `${name} is outside of buffer bounds`;
-  return "Attempt to access memory outside buffer bounds";
-}, RangeError);
-var ERR_INVALID_ARG_TYPE = E("ERR_INVALID_ARG_TYPE", function(name, actual) {
-  return `The "${name}" argument must be of type number. Received type ${typeof actual}`;
-}, TypeError);
-var ERR_OUT_OF_RANGE = E("ERR_OUT_OF_RANGE", function(str, range, input) {
-  let msg = `The value of "${str}" is out of range.`, received = input;
-  if (Number.isInteger(input) && Math.abs(input) > 4294967296)
-    received = addNumericalSeparator(String(input));
-  else if (typeof input === "bigint") {
-    if (received = String(input), input > BigInt(2) ** BigInt(32) || input < -(BigInt(2) ** BigInt(32)))
-      received = addNumericalSeparator(received);
-    received += "n";
-  }
-  return msg += ` It must be ${range}. Received ${received}`, msg;
-}, RangeError);
+var ERR_BUFFER_OUT_OF_BOUNDS = E(
+  "ERR_BUFFER_OUT_OF_BOUNDS",
+  function (name) {
+    if (name) return `${name} is outside of buffer bounds`;
+    return "Attempt to access memory outside buffer bounds";
+  },
+  RangeError,
+);
+var ERR_INVALID_ARG_TYPE = E(
+  "ERR_INVALID_ARG_TYPE",
+  function (name, actual) {
+    return `The "${name}" argument must be of type number. Received type ${typeof actual}`;
+  },
+  TypeError,
+);
+var ERR_OUT_OF_RANGE = E(
+  "ERR_OUT_OF_RANGE",
+  function (str, range, input) {
+    let msg = `The value of "${str}" is out of range.`,
+      received = input;
+    if (Number.isInteger(input) && Math.abs(input) > 4294967296)
+      received = addNumericalSeparator(String(input));
+    else if (typeof input === "bigint") {
+      if (
+        ((received = String(input)),
+        input > BigInt(2) ** BigInt(32) || input < -(BigInt(2) ** BigInt(32)))
+      )
+        received = addNumericalSeparator(received);
+      received += "n";
+    }
+    return ((msg += ` It must be ${range}. Received ${received}`), msg);
+  },
+  RangeError,
+);
 function Buffer2(arg, encodingOrOffset, length) {
   if (typeof arg === "number") {
     if (typeof encodingOrOffset === "string")
-      throw TypeError('The "string" argument must be of type string. Received type number');
+      throw TypeError(
+        'The "string" argument must be of type string. Received type number',
+      );
     return allocUnsafe(arg);
   }
   return from(arg, encodingOrOffset, length);
 }
-Object.defineProperty(Buffer2.prototype, "parent", { enumerable: true, get: function() {
-  if (!Buffer2.isBuffer(this))
-    return;
-  return this.buffer;
-} });
-Object.defineProperty(Buffer2.prototype, "offset", { enumerable: true, get: function() {
-  if (!Buffer2.isBuffer(this))
-    return;
-  return this.byteOffset;
-} });
+Object.defineProperty(Buffer2.prototype, "parent", {
+  enumerable: true,
+  get: function () {
+    if (!Buffer2.isBuffer(this)) return;
+    return this.buffer;
+  },
+});
+Object.defineProperty(Buffer2.prototype, "offset", {
+  enumerable: true,
+  get: function () {
+    if (!Buffer2.isBuffer(this)) return;
+    return this.byteOffset;
+  },
+});
 Buffer2.poolSize = 8192;
 function from(value, encodingOrOffset, length) {
-  if (typeof value === "string")
-    return fromString(value, encodingOrOffset);
-  if (ArrayBuffer.isView(value))
-    return fromArrayView(value);
+  if (typeof value === "string") return fromString(value, encodingOrOffset);
+  if (ArrayBuffer.isView(value)) return fromArrayView(value);
   if (value == null)
-    throw TypeError("The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " + typeof value);
-  if (isInstance(value, ArrayBuffer) || value && isInstance(value.buffer, ArrayBuffer))
+    throw TypeError(
+      "The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " +
+        typeof value,
+    );
+  if (
+    isInstance(value, ArrayBuffer) ||
+    (value && isInstance(value.buffer, ArrayBuffer))
+  )
     return fromArrayBuffer(value, encodingOrOffset, length);
-  if (typeof SharedArrayBuffer < "u" && (isInstance(value, SharedArrayBuffer) || value && isInstance(value.buffer, SharedArrayBuffer)))
+  if (
+    typeof SharedArrayBuffer < "u" &&
+    (isInstance(value, SharedArrayBuffer) ||
+      (value && isInstance(value.buffer, SharedArrayBuffer)))
+  )
     return fromArrayBuffer(value, encodingOrOffset, length);
   if (typeof value === "number")
-    throw TypeError('The "value" argument must not be of type number. Received type number');
+    throw TypeError(
+      'The "value" argument must not be of type number. Received type number',
+    );
   let valueOf = value.valueOf && value.valueOf();
   if (valueOf != null && valueOf !== value)
     return Buffer2.from(valueOf, encodingOrOffset, length);
   let b = fromObject(value);
-  if (b)
-    return b;
-  if (typeof Symbol < "u" && Symbol.toPrimitive != null && typeof value[Symbol.toPrimitive] === "function")
-    return Buffer2.from(value[Symbol.toPrimitive]("string"), encodingOrOffset, length);
-  throw TypeError("The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " + typeof value);
+  if (b) return b;
+  if (
+    typeof Symbol < "u" &&
+    Symbol.toPrimitive != null &&
+    typeof value[Symbol.toPrimitive] === "function"
+  )
+    return Buffer2.from(
+      value[Symbol.toPrimitive]("string"),
+      encodingOrOffset,
+      length,
+    );
+  throw TypeError(
+    "The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " +
+      typeof value,
+  );
 }
-Buffer2.from = function(value, encodingOrOffset, length) {
+Buffer2.from = function (value, encodingOrOffset, length) {
   return from(value, encodingOrOffset, length);
 };
 Object.setPrototypeOf(Buffer2.prototype, Uint8Array.prototype);
@@ -4436,38 +6793,39 @@ function assertSize(size) {
     throw RangeError('The value "' + size + '" is invalid for option "size"');
 }
 function alloc(size, fill, encoding) {
-  if (assertSize(size), size <= 0)
-    return createBuffer(size);
+  if ((assertSize(size), size <= 0)) return createBuffer(size);
   if (fill !== undefined)
-    return typeof encoding === "string" ? createBuffer(size).fill(fill, encoding) : createBuffer(size).fill(fill);
+    return typeof encoding === "string"
+      ? createBuffer(size).fill(fill, encoding)
+      : createBuffer(size).fill(fill);
   return createBuffer(size);
 }
-Buffer2.alloc = function(size, fill, encoding) {
+Buffer2.alloc = function (size, fill, encoding) {
   return alloc(size, fill, encoding);
 };
 function allocUnsafe(size) {
-  return assertSize(size), createBuffer(size < 0 ? 0 : checked(size) | 0);
+  return (assertSize(size), createBuffer(size < 0 ? 0 : checked(size) | 0));
 }
-Buffer2.allocUnsafe = function(size) {
+Buffer2.allocUnsafe = function (size) {
   return allocUnsafe(size);
 };
-Buffer2.allocUnsafeSlow = function(size) {
+Buffer2.allocUnsafeSlow = function (size) {
   return allocUnsafe(size);
 };
 function fromString(string, encoding) {
-  if (typeof encoding !== "string" || encoding === "")
-    encoding = "utf8";
+  if (typeof encoding !== "string" || encoding === "") encoding = "utf8";
   if (!Buffer2.isEncoding(encoding))
     throw TypeError("Unknown encoding: " + encoding);
-  let length = byteLength(string, encoding) | 0, buf = createBuffer(length), actual = buf.write(string, encoding);
-  if (actual !== length)
-    buf = buf.slice(0, actual);
+  let length = byteLength(string, encoding) | 0,
+    buf = createBuffer(length),
+    actual = buf.write(string, encoding);
+  if (actual !== length) buf = buf.slice(0, actual);
   return buf;
 }
 function fromArrayLike(array) {
-  let length = array.length < 0 ? 0 : checked(array.length) | 0, buf = createBuffer(length);
-  for (let i2 = 0;i2 < length; i2 += 1)
-    buf[i2] = array[i2] & 255;
+  let length = array.length < 0 ? 0 : checked(array.length) | 0,
+    buf = createBuffer(length);
+  for (let i2 = 0; i2 < length; i2 += 1) buf[i2] = array[i2] & 255;
   return buf;
 }
 function fromArrayView(arrayView) {
@@ -4485,18 +6843,16 @@ function fromArrayBuffer(array, byteOffset, length) {
   let buf;
   if (byteOffset === undefined && length === undefined)
     buf = new Uint8Array(array);
-  else if (length === undefined)
-    buf = new Uint8Array(array, byteOffset);
-  else
-    buf = new Uint8Array(array, byteOffset, length);
-  return Object.setPrototypeOf(buf, Buffer2.prototype), buf;
+  else if (length === undefined) buf = new Uint8Array(array, byteOffset);
+  else buf = new Uint8Array(array, byteOffset, length);
+  return (Object.setPrototypeOf(buf, Buffer2.prototype), buf);
 }
 function fromObject(obj) {
   if (Buffer2.isBuffer(obj)) {
-    let len2 = checked(obj.length) | 0, buf = createBuffer(len2);
-    if (buf.length === 0)
-      return buf;
-    return obj.copy(buf, 0, 0, len2), buf;
+    let len2 = checked(obj.length) | 0,
+      buf = createBuffer(len2);
+    if (buf.length === 0) return buf;
+    return (obj.copy(buf, 0, 0, len2), buf);
   }
   if (obj.length !== undefined) {
     if (typeof obj.length !== "number" || Number.isNaN(obj.length))
@@ -4508,34 +6864,36 @@ function fromObject(obj) {
 }
 function checked(length) {
   if (length >= kMaxLength)
-    throw RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + kMaxLength.toString(16) + " bytes");
+    throw RangeError(
+      "Attempt to allocate Buffer larger than maximum size: 0x" +
+        kMaxLength.toString(16) +
+        " bytes",
+    );
   return length | 0;
 }
-Buffer2.isBuffer = function(b) {
+Buffer2.isBuffer = function (b) {
   return b != null && b._isBuffer === true && b !== Buffer2.prototype;
 };
-Buffer2.compare = function(a, b) {
-  if (isInstance(a, Uint8Array))
-    a = Buffer2.from(a, a.offset, a.byteLength);
-  if (isInstance(b, Uint8Array))
-    b = Buffer2.from(b, b.offset, b.byteLength);
+Buffer2.compare = function (a, b) {
+  if (isInstance(a, Uint8Array)) a = Buffer2.from(a, a.offset, a.byteLength);
+  if (isInstance(b, Uint8Array)) b = Buffer2.from(b, b.offset, b.byteLength);
   if (!Buffer2.isBuffer(a) || !Buffer2.isBuffer(b))
-    throw TypeError('The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array');
-  if (a === b)
-    return 0;
-  let x = a.length, y = b.length;
-  for (let i2 = 0, len2 = Math.min(x, y);i2 < len2; ++i2)
+    throw TypeError(
+      'The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array',
+    );
+  if (a === b) return 0;
+  let x = a.length,
+    y = b.length;
+  for (let i2 = 0, len2 = Math.min(x, y); i2 < len2; ++i2)
     if (a[i2] !== b[i2]) {
-      x = a[i2], y = b[i2];
+      ((x = a[i2]), (y = b[i2]));
       break;
     }
-  if (x < y)
-    return -1;
-  if (y < x)
-    return 1;
+  if (x < y) return -1;
+  if (y < x) return 1;
   return 0;
 };
-Buffer2.isEncoding = function(encoding) {
+Buffer2.isEncoding = function (encoding) {
   switch (String(encoding).toLowerCase()) {
     case "hex":
     case "utf8":
@@ -4553,47 +6911,45 @@ Buffer2.isEncoding = function(encoding) {
       return false;
   }
 };
-Buffer2.concat = function(list, length) {
+Buffer2.concat = function (list, length) {
   if (!Array.isArray(list))
     throw TypeError('"list" argument must be an Array of Buffers');
-  if (list.length === 0)
-    return Buffer2.alloc(0);
+  if (list.length === 0) return Buffer2.alloc(0);
   let i2;
   if (length === undefined) {
     length = 0;
-    for (i2 = 0;i2 < list.length; ++i2)
-      length += list[i2].length;
+    for (i2 = 0; i2 < list.length; ++i2) length += list[i2].length;
   }
-  let buffer = Buffer2.allocUnsafe(length), pos = 0;
-  for (i2 = 0;i2 < list.length; ++i2) {
+  let buffer = Buffer2.allocUnsafe(length),
+    pos = 0;
+  for (i2 = 0; i2 < list.length; ++i2) {
     let buf = list[i2];
     if (isInstance(buf, Uint8Array))
       if (pos + buf.length > buffer.length) {
-        if (!Buffer2.isBuffer(buf))
-          buf = Buffer2.from(buf);
+        if (!Buffer2.isBuffer(buf)) buf = Buffer2.from(buf);
         buf.copy(buffer, pos);
-      } else
-        Uint8Array.prototype.set.call(buffer, buf, pos);
+      } else Uint8Array.prototype.set.call(buffer, buf, pos);
     else if (!Buffer2.isBuffer(buf))
       throw TypeError('"list" argument must be an Array of Buffers');
-    else
-      buf.copy(buffer, pos);
+    else buf.copy(buffer, pos);
     pos += buf.length;
   }
   return buffer;
 };
 function byteLength(string, encoding) {
-  if (Buffer2.isBuffer(string))
-    return string.length;
+  if (Buffer2.isBuffer(string)) return string.length;
   if (ArrayBuffer.isView(string) || isInstance(string, ArrayBuffer))
     return string.byteLength;
   if (typeof string !== "string")
-    throw TypeError('The "string" argument must be one of type string, Buffer, or ArrayBuffer. Received type ' + typeof string);
-  let len2 = string.length, mustMatch = arguments.length > 2 && arguments[2] === true;
-  if (!mustMatch && len2 === 0)
-    return 0;
+    throw TypeError(
+      'The "string" argument must be one of type string, Buffer, or ArrayBuffer. Received type ' +
+        typeof string,
+    );
+  let len2 = string.length,
+    mustMatch = arguments.length > 2 && arguments[2] === true;
+  if (!mustMatch && len2 === 0) return 0;
   let loweredCase = false;
-  for (;; )
+  for (;;)
     switch (encoding) {
       case "ascii":
       case "latin1":
@@ -4612,26 +6968,19 @@ function byteLength(string, encoding) {
       case "base64":
         return base64ToBytes(string).length;
       default:
-        if (loweredCase)
-          return mustMatch ? -1 : utf8ToBytes(string).length;
-        encoding = ("" + encoding).toLowerCase(), loweredCase = true;
+        if (loweredCase) return mustMatch ? -1 : utf8ToBytes(string).length;
+        ((encoding = ("" + encoding).toLowerCase()), (loweredCase = true));
     }
 }
 Buffer2.byteLength = byteLength;
 function slowToString(encoding, start, end) {
   let loweredCase = false;
-  if (start === undefined || start < 0)
-    start = 0;
-  if (start > this.length)
-    return "";
-  if (end === undefined || end > this.length)
-    end = this.length;
-  if (end <= 0)
-    return "";
-  if (end >>>= 0, start >>>= 0, end <= start)
-    return "";
-  if (!encoding)
-    encoding = "utf8";
+  if (start === undefined || start < 0) start = 0;
+  if (start > this.length) return "";
+  if (end === undefined || end > this.length) end = this.length;
+  if (end <= 0) return "";
+  if (((end >>>= 0), (start >>>= 0), end <= start)) return "";
+  if (!encoding) encoding = "utf8";
   while (true)
     switch (encoding) {
       case "hex":
@@ -4652,130 +7001,132 @@ function slowToString(encoding, start, end) {
       case "utf-16le":
         return utf16leSlice(this, start, end);
       default:
-        if (loweredCase)
-          throw TypeError("Unknown encoding: " + encoding);
-        encoding = (encoding + "").toLowerCase(), loweredCase = true;
+        if (loweredCase) throw TypeError("Unknown encoding: " + encoding);
+        ((encoding = (encoding + "").toLowerCase()), (loweredCase = true));
     }
 }
 Buffer2.prototype._isBuffer = true;
 function swap(b, n, m) {
   let i2 = b[n];
-  b[n] = b[m], b[m] = i2;
+  ((b[n] = b[m]), (b[m] = i2));
 }
-Buffer2.prototype.swap16 = function() {
+Buffer2.prototype.swap16 = function () {
   let len2 = this.length;
   if (len2 % 2 !== 0)
     throw RangeError("Buffer size must be a multiple of 16-bits");
-  for (let i2 = 0;i2 < len2; i2 += 2)
-    swap(this, i2, i2 + 1);
+  for (let i2 = 0; i2 < len2; i2 += 2) swap(this, i2, i2 + 1);
   return this;
 };
-Buffer2.prototype.swap32 = function() {
+Buffer2.prototype.swap32 = function () {
   let len2 = this.length;
   if (len2 % 4 !== 0)
     throw RangeError("Buffer size must be a multiple of 32-bits");
-  for (let i2 = 0;i2 < len2; i2 += 4)
-    swap(this, i2, i2 + 3), swap(this, i2 + 1, i2 + 2);
+  for (let i2 = 0; i2 < len2; i2 += 4)
+    (swap(this, i2, i2 + 3), swap(this, i2 + 1, i2 + 2));
   return this;
 };
-Buffer2.prototype.swap64 = function() {
+Buffer2.prototype.swap64 = function () {
   let len2 = this.length;
   if (len2 % 8 !== 0)
     throw RangeError("Buffer size must be a multiple of 64-bits");
-  for (let i2 = 0;i2 < len2; i2 += 8)
-    swap(this, i2, i2 + 7), swap(this, i2 + 1, i2 + 6), swap(this, i2 + 2, i2 + 5), swap(this, i2 + 3, i2 + 4);
+  for (let i2 = 0; i2 < len2; i2 += 8)
+    (swap(this, i2, i2 + 7),
+      swap(this, i2 + 1, i2 + 6),
+      swap(this, i2 + 2, i2 + 5),
+      swap(this, i2 + 3, i2 + 4));
   return this;
 };
-Buffer2.prototype.toString = function() {
+Buffer2.prototype.toString = function () {
   let length = this.length;
-  if (length === 0)
-    return "";
-  if (arguments.length === 0)
-    return utf8Slice(this, 0, length);
+  if (length === 0) return "";
+  if (arguments.length === 0) return utf8Slice(this, 0, length);
   return slowToString.apply(this, arguments);
 };
 Buffer2.prototype.toLocaleString = Buffer2.prototype.toString;
-Buffer2.prototype.equals = function(b) {
-  if (!Buffer2.isBuffer(b))
-    throw TypeError("Argument must be a Buffer");
-  if (this === b)
-    return true;
+Buffer2.prototype.equals = function (b) {
+  if (!Buffer2.isBuffer(b)) throw TypeError("Argument must be a Buffer");
+  if (this === b) return true;
   return Buffer2.compare(this, b) === 0;
 };
-Buffer2.prototype.inspect = function() {
-  let str = "", max = INSPECT_MAX_BYTES;
-  if (str = this.toString("hex", 0, max).replace(/(.{2})/g, "$1 ").trim(), this.length > max)
+Buffer2.prototype.inspect = function () {
+  let str = "",
+    max = INSPECT_MAX_BYTES;
+  if (
+    ((str = this.toString("hex", 0, max)
+      .replace(/(.{2})/g, "$1 ")
+      .trim()),
+    this.length > max)
+  )
     str += " ... ";
   return "<Buffer " + str + ">";
 };
 if (customInspectSymbol)
   Buffer2.prototype[customInspectSymbol] = Buffer2.prototype.inspect;
-Buffer2.prototype.compare = function(target, start, end, thisStart, thisEnd) {
+Buffer2.prototype.compare = function (target, start, end, thisStart, thisEnd) {
   if (isInstance(target, Uint8Array))
     target = Buffer2.from(target, target.offset, target.byteLength);
   if (!Buffer2.isBuffer(target))
-    throw TypeError('The "target" argument must be one of type Buffer or Uint8Array. Received type ' + typeof target);
-  if (start === undefined)
-    start = 0;
-  if (end === undefined)
-    end = target ? target.length : 0;
-  if (thisStart === undefined)
-    thisStart = 0;
-  if (thisEnd === undefined)
-    thisEnd = this.length;
-  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length)
+    throw TypeError(
+      'The "target" argument must be one of type Buffer or Uint8Array. Received type ' +
+        typeof target,
+    );
+  if (start === undefined) start = 0;
+  if (end === undefined) end = target ? target.length : 0;
+  if (thisStart === undefined) thisStart = 0;
+  if (thisEnd === undefined) thisEnd = this.length;
+  if (
+    start < 0 ||
+    end > target.length ||
+    thisStart < 0 ||
+    thisEnd > this.length
+  )
     throw RangeError("out of range index");
-  if (thisStart >= thisEnd && start >= end)
+  if (thisStart >= thisEnd && start >= end) return 0;
+  if (thisStart >= thisEnd) return -1;
+  if (start >= end) return 1;
+  if (
+    ((start >>>= 0),
+    (end >>>= 0),
+    (thisStart >>>= 0),
+    (thisEnd >>>= 0),
+    this === target)
+  )
     return 0;
-  if (thisStart >= thisEnd)
-    return -1;
-  if (start >= end)
-    return 1;
-  if (start >>>= 0, end >>>= 0, thisStart >>>= 0, thisEnd >>>= 0, this === target)
-    return 0;
-  let x = thisEnd - thisStart, y = end - start, len2 = Math.min(x, y), thisCopy = this.slice(thisStart, thisEnd), targetCopy = target.slice(start, end);
-  for (let i2 = 0;i2 < len2; ++i2)
+  let x = thisEnd - thisStart,
+    y = end - start,
+    len2 = Math.min(x, y),
+    thisCopy = this.slice(thisStart, thisEnd),
+    targetCopy = target.slice(start, end);
+  for (let i2 = 0; i2 < len2; ++i2)
     if (thisCopy[i2] !== targetCopy[i2]) {
-      x = thisCopy[i2], y = targetCopy[i2];
+      ((x = thisCopy[i2]), (y = targetCopy[i2]));
       break;
     }
-  if (x < y)
-    return -1;
-  if (y < x)
-    return 1;
+  if (x < y) return -1;
+  if (y < x) return 1;
   return 0;
 };
 function bidirectionalIndexOf(buffer, val, byteOffset, encoding, dir) {
-  if (buffer.length === 0)
-    return -1;
+  if (buffer.length === 0) return -1;
   if (typeof byteOffset === "string")
-    encoding = byteOffset, byteOffset = 0;
-  else if (byteOffset > 2147483647)
-    byteOffset = 2147483647;
-  else if (byteOffset < -2147483648)
-    byteOffset = -2147483648;
-  if (byteOffset = +byteOffset, Number.isNaN(byteOffset))
+    ((encoding = byteOffset), (byteOffset = 0));
+  else if (byteOffset > 2147483647) byteOffset = 2147483647;
+  else if (byteOffset < -2147483648) byteOffset = -2147483648;
+  if (((byteOffset = +byteOffset), Number.isNaN(byteOffset)))
     byteOffset = dir ? 0 : buffer.length - 1;
-  if (byteOffset < 0)
-    byteOffset = buffer.length + byteOffset;
+  if (byteOffset < 0) byteOffset = buffer.length + byteOffset;
   if (byteOffset >= buffer.length)
-    if (dir)
-      return -1;
-    else
-      byteOffset = buffer.length - 1;
+    if (dir) return -1;
+    else byteOffset = buffer.length - 1;
   else if (byteOffset < 0)
-    if (dir)
-      byteOffset = 0;
-    else
-      return -1;
-  if (typeof val === "string")
-    val = Buffer2.from(val, encoding);
+    if (dir) byteOffset = 0;
+    else return -1;
+  if (typeof val === "string") val = Buffer2.from(val, encoding);
   if (Buffer2.isBuffer(val)) {
-    if (val.length === 0)
-      return -1;
+    if (val.length === 0) return -1;
     return arrayIndexOf(buffer, val, byteOffset, encoding, dir);
   } else if (typeof val === "number") {
-    if (val = val & 255, typeof Uint8Array.prototype.indexOf === "function")
+    if (((val = val & 255), typeof Uint8Array.prototype.indexOf === "function"))
       if (dir)
         return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset);
       else
@@ -4785,80 +7136,83 @@ function bidirectionalIndexOf(buffer, val, byteOffset, encoding, dir) {
   throw TypeError("val must be string, number or Buffer");
 }
 function arrayIndexOf(arr, val, byteOffset, encoding, dir) {
-  let indexSize = 1, arrLength = arr.length, valLength = val.length;
+  let indexSize = 1,
+    arrLength = arr.length,
+    valLength = val.length;
   if (encoding !== undefined) {
-    if (encoding = String(encoding).toLowerCase(), encoding === "ucs2" || encoding === "ucs-2" || encoding === "utf16le" || encoding === "utf-16le") {
-      if (arr.length < 2 || val.length < 2)
-        return -1;
-      indexSize = 2, arrLength /= 2, valLength /= 2, byteOffset /= 2;
+    if (
+      ((encoding = String(encoding).toLowerCase()),
+      encoding === "ucs2" ||
+        encoding === "ucs-2" ||
+        encoding === "utf16le" ||
+        encoding === "utf-16le")
+    ) {
+      if (arr.length < 2 || val.length < 2) return -1;
+      ((indexSize = 2), (arrLength /= 2), (valLength /= 2), (byteOffset /= 2));
     }
   }
   function read2(buf, i3) {
-    if (indexSize === 1)
-      return buf[i3];
-    else
-      return buf.readUInt16BE(i3 * indexSize);
+    if (indexSize === 1) return buf[i3];
+    else return buf.readUInt16BE(i3 * indexSize);
   }
   let i2;
   if (dir) {
     let foundIndex = -1;
-    for (i2 = byteOffset;i2 < arrLength; i2++)
-      if (read2(arr, i2) === read2(val, foundIndex === -1 ? 0 : i2 - foundIndex)) {
-        if (foundIndex === -1)
-          foundIndex = i2;
-        if (i2 - foundIndex + 1 === valLength)
-          return foundIndex * indexSize;
+    for (i2 = byteOffset; i2 < arrLength; i2++)
+      if (
+        read2(arr, i2) === read2(val, foundIndex === -1 ? 0 : i2 - foundIndex)
+      ) {
+        if (foundIndex === -1) foundIndex = i2;
+        if (i2 - foundIndex + 1 === valLength) return foundIndex * indexSize;
       } else {
-        if (foundIndex !== -1)
-          i2 -= i2 - foundIndex;
+        if (foundIndex !== -1) i2 -= i2 - foundIndex;
         foundIndex = -1;
       }
   } else {
-    if (byteOffset + valLength > arrLength)
-      byteOffset = arrLength - valLength;
-    for (i2 = byteOffset;i2 >= 0; i2--) {
+    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength;
+    for (i2 = byteOffset; i2 >= 0; i2--) {
       let found = true;
-      for (let j = 0;j < valLength; j++)
+      for (let j = 0; j < valLength; j++)
         if (read2(arr, i2 + j) !== read2(val, j)) {
           found = false;
           break;
         }
-      if (found)
-        return i2;
+      if (found) return i2;
     }
   }
   return -1;
 }
-Buffer2.prototype.includes = function(val, byteOffset, encoding) {
+Buffer2.prototype.includes = function (val, byteOffset, encoding) {
   return this.indexOf(val, byteOffset, encoding) !== -1;
 };
-Buffer2.prototype.indexOf = function(val, byteOffset, encoding) {
+Buffer2.prototype.indexOf = function (val, byteOffset, encoding) {
   return bidirectionalIndexOf(this, val, byteOffset, encoding, true);
 };
-Buffer2.prototype.lastIndexOf = function(val, byteOffset, encoding) {
+Buffer2.prototype.lastIndexOf = function (val, byteOffset, encoding) {
   return bidirectionalIndexOf(this, val, byteOffset, encoding, false);
 };
 function hexWrite(buf, string, offset, length) {
   offset = Number(offset) || 0;
   let remaining = buf.length - offset;
-  if (!length)
-    length = remaining;
-  else if (length = Number(length), length > remaining)
-    length = remaining;
+  if (!length) length = remaining;
+  else if (((length = Number(length)), length > remaining)) length = remaining;
   let strLen = string.length;
-  if (length > strLen / 2)
-    length = strLen / 2;
+  if (length > strLen / 2) length = strLen / 2;
   let i2;
-  for (i2 = 0;i2 < length; ++i2) {
+  for (i2 = 0; i2 < length; ++i2) {
     let parsed = parseInt(string.substr(i2 * 2, 2), 16);
-    if (Number.isNaN(parsed))
-      return i2;
+    if (Number.isNaN(parsed)) return i2;
     buf[offset + i2] = parsed;
   }
   return i2;
 }
 function utf8Write(buf, string, offset, length) {
-  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length);
+  return blitBuffer(
+    utf8ToBytes(string, buf.length - offset),
+    buf,
+    offset,
+    length,
+  );
 }
 function asciiWrite(buf, string, offset, length) {
   return blitBuffer(asciiToBytes(string), buf, offset, length);
@@ -4867,30 +7221,33 @@ function base64Write(buf, string, offset, length) {
   return blitBuffer(base64ToBytes(string), buf, offset, length);
 }
 function ucs2Write(buf, string, offset, length) {
-  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length);
+  return blitBuffer(
+    utf16leToBytes(string, buf.length - offset),
+    buf,
+    offset,
+    length,
+  );
 }
-Buffer2.prototype.write = function(string, offset, length, encoding) {
+Buffer2.prototype.write = function (string, offset, length, encoding) {
   if (offset === undefined)
-    encoding = "utf8", length = this.length, offset = 0;
+    ((encoding = "utf8"), (length = this.length), (offset = 0));
   else if (length === undefined && typeof offset === "string")
-    encoding = offset, length = this.length, offset = 0;
+    ((encoding = offset), (length = this.length), (offset = 0));
   else if (isFinite(offset))
-    if (offset = offset >>> 0, isFinite(length)) {
-      if (length = length >>> 0, encoding === undefined)
-        encoding = "utf8";
-    } else
-      encoding = length, length = undefined;
+    if (((offset = offset >>> 0), isFinite(length))) {
+      if (((length = length >>> 0), encoding === undefined)) encoding = "utf8";
+    } else ((encoding = length), (length = undefined));
   else
-    throw Error("Buffer.write(string, encoding, offset[, length]) is no longer supported");
+    throw Error(
+      "Buffer.write(string, encoding, offset[, length]) is no longer supported",
+    );
   let remaining = this.length - offset;
-  if (length === undefined || length > remaining)
-    length = remaining;
-  if (string.length > 0 && (length < 0 || offset < 0) || offset > this.length)
+  if (length === undefined || length > remaining) length = remaining;
+  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length)
     throw RangeError("Attempt to write outside buffer bounds");
-  if (!encoding)
-    encoding = "utf8";
+  if (!encoding) encoding = "utf8";
   let loweredCase = false;
-  for (;; )
+  for (;;)
     switch (encoding) {
       case "hex":
         return hexWrite(this, string, offset, length);
@@ -4909,56 +7266,88 @@ Buffer2.prototype.write = function(string, offset, length, encoding) {
       case "utf-16le":
         return ucs2Write(this, string, offset, length);
       default:
-        if (loweredCase)
-          throw TypeError("Unknown encoding: " + encoding);
-        encoding = ("" + encoding).toLowerCase(), loweredCase = true;
+        if (loweredCase) throw TypeError("Unknown encoding: " + encoding);
+        ((encoding = ("" + encoding).toLowerCase()), (loweredCase = true));
     }
 };
-Buffer2.prototype.toJSON = function() {
-  return { type: "Buffer", data: Array.prototype.slice.call(this._arr || this, 0) };
+Buffer2.prototype.toJSON = function () {
+  return {
+    type: "Buffer",
+    data: Array.prototype.slice.call(this._arr || this, 0),
+  };
 };
 function base64Slice(buf, start, end) {
-  if (start === 0 && end === buf.length)
-    return fromByteArray(buf);
-  else
-    return fromByteArray(buf.slice(start, end));
+  if (start === 0 && end === buf.length) return fromByteArray(buf);
+  else return fromByteArray(buf.slice(start, end));
 }
 function utf8Slice(buf, start, end) {
   end = Math.min(buf.length, end);
-  let res = [], i2 = start;
+  let res = [],
+    i2 = start;
   while (i2 < end) {
-    let firstByte = buf[i2], codePoint = null, bytesPerSequence = firstByte > 239 ? 4 : firstByte > 223 ? 3 : firstByte > 191 ? 2 : 1;
+    let firstByte = buf[i2],
+      codePoint = null,
+      bytesPerSequence =
+        firstByte > 239 ? 4 : firstByte > 223 ? 3 : firstByte > 191 ? 2 : 1;
     if (i2 + bytesPerSequence <= end) {
       let secondByte, thirdByte, fourthByte, tempCodePoint;
       switch (bytesPerSequence) {
         case 1:
-          if (firstByte < 128)
-            codePoint = firstByte;
+          if (firstByte < 128) codePoint = firstByte;
           break;
         case 2:
-          if (secondByte = buf[i2 + 1], (secondByte & 192) === 128) {
-            if (tempCodePoint = (firstByte & 31) << 6 | secondByte & 63, tempCodePoint > 127)
+          if (((secondByte = buf[i2 + 1]), (secondByte & 192) === 128)) {
+            if (
+              ((tempCodePoint = ((firstByte & 31) << 6) | (secondByte & 63)),
+              tempCodePoint > 127)
+            )
               codePoint = tempCodePoint;
           }
           break;
         case 3:
-          if (secondByte = buf[i2 + 1], thirdByte = buf[i2 + 2], (secondByte & 192) === 128 && (thirdByte & 192) === 128) {
-            if (tempCodePoint = (firstByte & 15) << 12 | (secondByte & 63) << 6 | thirdByte & 63, tempCodePoint > 2047 && (tempCodePoint < 55296 || tempCodePoint > 57343))
+          if (
+            ((secondByte = buf[i2 + 1]),
+            (thirdByte = buf[i2 + 2]),
+            (secondByte & 192) === 128 && (thirdByte & 192) === 128)
+          ) {
+            if (
+              ((tempCodePoint =
+                ((firstByte & 15) << 12) |
+                ((secondByte & 63) << 6) |
+                (thirdByte & 63)),
+              tempCodePoint > 2047 &&
+                (tempCodePoint < 55296 || tempCodePoint > 57343))
+            )
               codePoint = tempCodePoint;
           }
           break;
         case 4:
-          if (secondByte = buf[i2 + 1], thirdByte = buf[i2 + 2], fourthByte = buf[i2 + 3], (secondByte & 192) === 128 && (thirdByte & 192) === 128 && (fourthByte & 192) === 128) {
-            if (tempCodePoint = (firstByte & 15) << 18 | (secondByte & 63) << 12 | (thirdByte & 63) << 6 | fourthByte & 63, tempCodePoint > 65535 && tempCodePoint < 1114112)
+          if (
+            ((secondByte = buf[i2 + 1]),
+            (thirdByte = buf[i2 + 2]),
+            (fourthByte = buf[i2 + 3]),
+            (secondByte & 192) === 128 &&
+              (thirdByte & 192) === 128 &&
+              (fourthByte & 192) === 128)
+          ) {
+            if (
+              ((tempCodePoint =
+                ((firstByte & 15) << 18) |
+                ((secondByte & 63) << 12) |
+                ((thirdByte & 63) << 6) |
+                (fourthByte & 63)),
+              tempCodePoint > 65535 && tempCodePoint < 1114112)
+            )
               codePoint = tempCodePoint;
           }
       }
     }
-    if (codePoint === null)
-      codePoint = 65533, bytesPerSequence = 1;
+    if (codePoint === null) ((codePoint = 65533), (bytesPerSequence = 1));
     else if (codePoint > 65535)
-      codePoint -= 65536, res.push(codePoint >>> 10 & 1023 | 55296), codePoint = 56320 | codePoint & 1023;
-    res.push(codePoint), i2 += bytesPerSequence;
+      ((codePoint -= 65536),
+        res.push(((codePoint >>> 10) & 1023) | 55296),
+        (codePoint = 56320 | (codePoint & 1023)));
+    (res.push(codePoint), (i2 += bytesPerSequence));
   }
   return decodeCodePointsArray(res);
 }
@@ -4967,205 +7356,274 @@ function decodeCodePointsArray(codePoints) {
   let len2 = codePoints.length;
   if (len2 <= MAX_ARGUMENTS_LENGTH)
     return String.fromCharCode.apply(String, codePoints);
-  let res = "", i2 = 0;
+  let res = "",
+    i2 = 0;
   while (i2 < len2)
-    res += String.fromCharCode.apply(String, codePoints.slice(i2, i2 += MAX_ARGUMENTS_LENGTH));
+    res += String.fromCharCode.apply(
+      String,
+      codePoints.slice(i2, (i2 += MAX_ARGUMENTS_LENGTH)),
+    );
   return res;
 }
 function asciiSlice(buf, start, end) {
   let ret = "";
   end = Math.min(buf.length, end);
-  for (let i2 = start;i2 < end; ++i2)
+  for (let i2 = start; i2 < end; ++i2)
     ret += String.fromCharCode(buf[i2] & 127);
   return ret;
 }
 function latin1Slice(buf, start, end) {
   let ret = "";
   end = Math.min(buf.length, end);
-  for (let i2 = start;i2 < end; ++i2)
-    ret += String.fromCharCode(buf[i2]);
+  for (let i2 = start; i2 < end; ++i2) ret += String.fromCharCode(buf[i2]);
   return ret;
 }
 function hexSlice(buf, start, end) {
   let len2 = buf.length;
-  if (!start || start < 0)
-    start = 0;
-  if (!end || end < 0 || end > len2)
-    end = len2;
+  if (!start || start < 0) start = 0;
+  if (!end || end < 0 || end > len2) end = len2;
   let out = "";
-  for (let i2 = start;i2 < end; ++i2)
-    out += hexSliceLookupTable[buf[i2]];
+  for (let i2 = start; i2 < end; ++i2) out += hexSliceLookupTable[buf[i2]];
   return out;
 }
 function utf16leSlice(buf, start, end) {
-  let bytes = buf.slice(start, end), res = "";
-  for (let i2 = 0;i2 < bytes.length - 1; i2 += 2)
+  let bytes = buf.slice(start, end),
+    res = "";
+  for (let i2 = 0; i2 < bytes.length - 1; i2 += 2)
     res += String.fromCharCode(bytes[i2] + bytes[i2 + 1] * 256);
   return res;
 }
-Buffer2.prototype.slice = function(start, end) {
+Buffer2.prototype.slice = function (start, end) {
   let len2 = this.length;
-  if (start = ~~start, end = end === undefined ? len2 : ~~end, start < 0) {
-    if (start += len2, start < 0)
-      start = 0;
-  } else if (start > len2)
-    start = len2;
+  if (
+    ((start = ~~start), (end = end === undefined ? len2 : ~~end), start < 0)
+  ) {
+    if (((start += len2), start < 0)) start = 0;
+  } else if (start > len2) start = len2;
   if (end < 0) {
-    if (end += len2, end < 0)
-      end = 0;
-  } else if (end > len2)
-    end = len2;
-  if (end < start)
-    end = start;
+    if (((end += len2), end < 0)) end = 0;
+  } else if (end > len2) end = len2;
+  if (end < start) end = start;
   let newBuf = this.subarray(start, end);
-  return Object.setPrototypeOf(newBuf, Buffer2.prototype), newBuf;
+  return (Object.setPrototypeOf(newBuf, Buffer2.prototype), newBuf);
 };
 function checkOffset(offset, ext, length) {
-  if (offset % 1 !== 0 || offset < 0)
-    throw RangeError("offset is not uint");
+  if (offset % 1 !== 0 || offset < 0) throw RangeError("offset is not uint");
   if (offset + ext > length)
     throw RangeError("Trying to access beyond buffer length");
 }
-Buffer2.prototype.readUintLE = Buffer2.prototype.readUIntLE = function(offset, byteLength2, noAssert) {
-  if (offset = offset >>> 0, byteLength2 = byteLength2 >>> 0, !noAssert)
+Buffer2.prototype.readUintLE = Buffer2.prototype.readUIntLE = function (
+  offset,
+  byteLength2,
+  noAssert,
+) {
+  if (((offset = offset >>> 0), (byteLength2 = byteLength2 >>> 0), !noAssert))
     checkOffset(offset, byteLength2, this.length);
-  let val = this[offset], mul = 1, i2 = 0;
-  while (++i2 < byteLength2 && (mul *= 256))
-    val += this[offset + i2] * mul;
+  let val = this[offset],
+    mul = 1,
+    i2 = 0;
+  while (++i2 < byteLength2 && (mul *= 256)) val += this[offset + i2] * mul;
   return val;
 };
-Buffer2.prototype.readUintBE = Buffer2.prototype.readUIntBE = function(offset, byteLength2, noAssert) {
-  if (offset = offset >>> 0, byteLength2 = byteLength2 >>> 0, !noAssert)
+Buffer2.prototype.readUintBE = Buffer2.prototype.readUIntBE = function (
+  offset,
+  byteLength2,
+  noAssert,
+) {
+  if (((offset = offset >>> 0), (byteLength2 = byteLength2 >>> 0), !noAssert))
     checkOffset(offset, byteLength2, this.length);
-  let val = this[offset + --byteLength2], mul = 1;
+  let val = this[offset + --byteLength2],
+    mul = 1;
   while (byteLength2 > 0 && (mul *= 256))
     val += this[offset + --byteLength2] * mul;
   return val;
 };
-Buffer2.prototype.readUint8 = Buffer2.prototype.readUInt8 = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 1, this.length);
+Buffer2.prototype.readUint8 = Buffer2.prototype.readUInt8 = function (
+  offset,
+  noAssert,
+) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 1, this.length);
   return this[offset];
 };
-Buffer2.prototype.readUint16LE = Buffer2.prototype.readUInt16LE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 2, this.length);
-  return this[offset] | this[offset + 1] << 8;
+Buffer2.prototype.readUint16LE = Buffer2.prototype.readUInt16LE = function (
+  offset,
+  noAssert,
+) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 2, this.length);
+  return this[offset] | (this[offset + 1] << 8);
 };
-Buffer2.prototype.readUint16BE = Buffer2.prototype.readUInt16BE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 2, this.length);
-  return this[offset] << 8 | this[offset + 1];
+Buffer2.prototype.readUint16BE = Buffer2.prototype.readUInt16BE = function (
+  offset,
+  noAssert,
+) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 2, this.length);
+  return (this[offset] << 8) | this[offset + 1];
 };
-Buffer2.prototype.readUint32LE = Buffer2.prototype.readUInt32LE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 4, this.length);
-  return (this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16) + this[offset + 3] * 16777216;
+Buffer2.prototype.readUint32LE = Buffer2.prototype.readUInt32LE = function (
+  offset,
+  noAssert,
+) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 4, this.length);
+  return (
+    (this[offset] | (this[offset + 1] << 8) | (this[offset + 2] << 16)) +
+    this[offset + 3] * 16777216
+  );
 };
-Buffer2.prototype.readUint32BE = Buffer2.prototype.readUInt32BE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 4, this.length);
-  return this[offset] * 16777216 + (this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3]);
+Buffer2.prototype.readUint32BE = Buffer2.prototype.readUInt32BE = function (
+  offset,
+  noAssert,
+) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 4, this.length);
+  return (
+    this[offset] * 16777216 +
+    ((this[offset + 1] << 16) | (this[offset + 2] << 8) | this[offset + 3])
+  );
 };
-Buffer2.prototype.readBigUInt64LE = defineBigIntMethod(function(offset) {
-  offset = offset >>> 0, validateNumber(offset, "offset");
-  let first = this[offset], last = this[offset + 7];
+Buffer2.prototype.readBigUInt64LE = defineBigIntMethod(function (offset) {
+  ((offset = offset >>> 0), validateNumber(offset, "offset"));
+  let first = this[offset],
+    last = this[offset + 7];
   if (first === undefined || last === undefined)
     boundsError(offset, this.length - 8);
-  let lo = first + this[++offset] * 256 + this[++offset] * 65536 + this[++offset] * 16777216, hi = this[++offset] + this[++offset] * 256 + this[++offset] * 65536 + last * 16777216;
+  let lo =
+      first +
+      this[++offset] * 256 +
+      this[++offset] * 65536 +
+      this[++offset] * 16777216,
+    hi =
+      this[++offset] +
+      this[++offset] * 256 +
+      this[++offset] * 65536 +
+      last * 16777216;
   return BigInt(lo) + (BigInt(hi) << BigInt(32));
 });
-Buffer2.prototype.readBigUInt64BE = defineBigIntMethod(function(offset) {
-  offset = offset >>> 0, validateNumber(offset, "offset");
-  let first = this[offset], last = this[offset + 7];
+Buffer2.prototype.readBigUInt64BE = defineBigIntMethod(function (offset) {
+  ((offset = offset >>> 0), validateNumber(offset, "offset"));
+  let first = this[offset],
+    last = this[offset + 7];
   if (first === undefined || last === undefined)
     boundsError(offset, this.length - 8);
-  let hi = first * 16777216 + this[++offset] * 65536 + this[++offset] * 256 + this[++offset], lo = this[++offset] * 16777216 + this[++offset] * 65536 + this[++offset] * 256 + last;
+  let hi =
+      first * 16777216 +
+      this[++offset] * 65536 +
+      this[++offset] * 256 +
+      this[++offset],
+    lo =
+      this[++offset] * 16777216 +
+      this[++offset] * 65536 +
+      this[++offset] * 256 +
+      last;
   return (BigInt(hi) << BigInt(32)) + BigInt(lo);
 });
-Buffer2.prototype.readIntLE = function(offset, byteLength2, noAssert) {
-  if (offset = offset >>> 0, byteLength2 = byteLength2 >>> 0, !noAssert)
+Buffer2.prototype.readIntLE = function (offset, byteLength2, noAssert) {
+  if (((offset = offset >>> 0), (byteLength2 = byteLength2 >>> 0), !noAssert))
     checkOffset(offset, byteLength2, this.length);
-  let val = this[offset], mul = 1, i2 = 0;
-  while (++i2 < byteLength2 && (mul *= 256))
-    val += this[offset + i2] * mul;
-  if (mul *= 128, val >= mul)
-    val -= Math.pow(2, 8 * byteLength2);
+  let val = this[offset],
+    mul = 1,
+    i2 = 0;
+  while (++i2 < byteLength2 && (mul *= 256)) val += this[offset + i2] * mul;
+  if (((mul *= 128), val >= mul)) val -= Math.pow(2, 8 * byteLength2);
   return val;
 };
-Buffer2.prototype.readIntBE = function(offset, byteLength2, noAssert) {
-  if (offset = offset >>> 0, byteLength2 = byteLength2 >>> 0, !noAssert)
+Buffer2.prototype.readIntBE = function (offset, byteLength2, noAssert) {
+  if (((offset = offset >>> 0), (byteLength2 = byteLength2 >>> 0), !noAssert))
     checkOffset(offset, byteLength2, this.length);
-  let i2 = byteLength2, mul = 1, val = this[offset + --i2];
-  while (i2 > 0 && (mul *= 256))
-    val += this[offset + --i2] * mul;
-  if (mul *= 128, val >= mul)
-    val -= Math.pow(2, 8 * byteLength2);
+  let i2 = byteLength2,
+    mul = 1,
+    val = this[offset + --i2];
+  while (i2 > 0 && (mul *= 256)) val += this[offset + --i2] * mul;
+  if (((mul *= 128), val >= mul)) val -= Math.pow(2, 8 * byteLength2);
   return val;
 };
-Buffer2.prototype.readInt8 = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 1, this.length);
-  if (!(this[offset] & 128))
-    return this[offset];
+Buffer2.prototype.readInt8 = function (offset, noAssert) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 1, this.length);
+  if (!(this[offset] & 128)) return this[offset];
   return (255 - this[offset] + 1) * -1;
 };
-Buffer2.prototype.readInt16LE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 2, this.length);
-  let val = this[offset] | this[offset + 1] << 8;
+Buffer2.prototype.readInt16LE = function (offset, noAssert) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 2, this.length);
+  let val = this[offset] | (this[offset + 1] << 8);
   return val & 32768 ? val | 4294901760 : val;
 };
-Buffer2.prototype.readInt16BE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 2, this.length);
-  let val = this[offset + 1] | this[offset] << 8;
+Buffer2.prototype.readInt16BE = function (offset, noAssert) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 2, this.length);
+  let val = this[offset + 1] | (this[offset] << 8);
   return val & 32768 ? val | 4294901760 : val;
 };
-Buffer2.prototype.readInt32LE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 4, this.length);
-  return this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16 | this[offset + 3] << 24;
+Buffer2.prototype.readInt32LE = function (offset, noAssert) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 4, this.length);
+  return (
+    this[offset] |
+    (this[offset + 1] << 8) |
+    (this[offset + 2] << 16) |
+    (this[offset + 3] << 24)
+  );
 };
-Buffer2.prototype.readInt32BE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 4, this.length);
-  return this[offset] << 24 | this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3];
+Buffer2.prototype.readInt32BE = function (offset, noAssert) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 4, this.length);
+  return (
+    (this[offset] << 24) |
+    (this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    this[offset + 3]
+  );
 };
-Buffer2.prototype.readBigInt64LE = defineBigIntMethod(function(offset) {
-  offset = offset >>> 0, validateNumber(offset, "offset");
-  let first = this[offset], last = this[offset + 7];
+Buffer2.prototype.readBigInt64LE = defineBigIntMethod(function (offset) {
+  ((offset = offset >>> 0), validateNumber(offset, "offset"));
+  let first = this[offset],
+    last = this[offset + 7];
   if (first === undefined || last === undefined)
     boundsError(offset, this.length - 8);
-  let val = this[offset + 4] + this[offset + 5] * 256 + this[offset + 6] * 65536 + (last << 24);
-  return (BigInt(val) << BigInt(32)) + BigInt(first + this[++offset] * 256 + this[++offset] * 65536 + this[++offset] * 16777216);
+  let val =
+    this[offset + 4] +
+    this[offset + 5] * 256 +
+    this[offset + 6] * 65536 +
+    (last << 24);
+  return (
+    (BigInt(val) << BigInt(32)) +
+    BigInt(
+      first +
+        this[++offset] * 256 +
+        this[++offset] * 65536 +
+        this[++offset] * 16777216,
+    )
+  );
 });
-Buffer2.prototype.readBigInt64BE = defineBigIntMethod(function(offset) {
-  offset = offset >>> 0, validateNumber(offset, "offset");
-  let first = this[offset], last = this[offset + 7];
+Buffer2.prototype.readBigInt64BE = defineBigIntMethod(function (offset) {
+  ((offset = offset >>> 0), validateNumber(offset, "offset"));
+  let first = this[offset],
+    last = this[offset + 7];
   if (first === undefined || last === undefined)
     boundsError(offset, this.length - 8);
-  let val = (first << 24) + this[++offset] * 65536 + this[++offset] * 256 + this[++offset];
-  return (BigInt(val) << BigInt(32)) + BigInt(this[++offset] * 16777216 + this[++offset] * 65536 + this[++offset] * 256 + last);
+  let val =
+    (first << 24) +
+    this[++offset] * 65536 +
+    this[++offset] * 256 +
+    this[++offset];
+  return (
+    (BigInt(val) << BigInt(32)) +
+    BigInt(
+      this[++offset] * 16777216 +
+        this[++offset] * 65536 +
+        this[++offset] * 256 +
+        last,
+    )
+  );
 });
-Buffer2.prototype.readFloatLE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 4, this.length);
+Buffer2.prototype.readFloatLE = function (offset, noAssert) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 4, this.length);
   return read(this, offset, true, 23, 4);
 };
-Buffer2.prototype.readFloatBE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 4, this.length);
+Buffer2.prototype.readFloatBE = function (offset, noAssert) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 4, this.length);
   return read(this, offset, false, 23, 4);
 };
-Buffer2.prototype.readDoubleLE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 8, this.length);
+Buffer2.prototype.readDoubleLE = function (offset, noAssert) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 8, this.length);
   return read(this, offset, true, 52, 8);
 };
-Buffer2.prototype.readDoubleBE = function(offset, noAssert) {
-  if (offset = offset >>> 0, !noAssert)
-    checkOffset(offset, 8, this.length);
+Buffer2.prototype.readDoubleBE = function (offset, noAssert) {
+  if (((offset = offset >>> 0), !noAssert)) checkOffset(offset, 8, this.length);
   return read(this, offset, false, 52, 8);
 };
 function checkInt(buf, value, offset, ext, max, min) {
@@ -5173,259 +7631,413 @@ function checkInt(buf, value, offset, ext, max, min) {
     throw TypeError('"buffer" argument must be a Buffer instance');
   if (value > max || value < min)
     throw RangeError('"value" argument is out of bounds');
-  if (offset + ext > buf.length)
-    throw RangeError("Index out of range");
+  if (offset + ext > buf.length) throw RangeError("Index out of range");
 }
-Buffer2.prototype.writeUintLE = Buffer2.prototype.writeUIntLE = function(value, offset, byteLength2, noAssert) {
-  if (value = +value, offset = offset >>> 0, byteLength2 = byteLength2 >>> 0, !noAssert) {
+Buffer2.prototype.writeUintLE = Buffer2.prototype.writeUIntLE = function (
+  value,
+  offset,
+  byteLength2,
+  noAssert,
+) {
+  if (
+    ((value = +value),
+    (offset = offset >>> 0),
+    (byteLength2 = byteLength2 >>> 0),
+    !noAssert)
+  ) {
     let maxBytes = Math.pow(2, 8 * byteLength2) - 1;
     checkInt(this, value, offset, byteLength2, maxBytes, 0);
   }
-  let mul = 1, i2 = 0;
+  let mul = 1,
+    i2 = 0;
   this[offset] = value & 255;
   while (++i2 < byteLength2 && (mul *= 256))
-    this[offset + i2] = value / mul & 255;
+    this[offset + i2] = (value / mul) & 255;
   return offset + byteLength2;
 };
-Buffer2.prototype.writeUintBE = Buffer2.prototype.writeUIntBE = function(value, offset, byteLength2, noAssert) {
-  if (value = +value, offset = offset >>> 0, byteLength2 = byteLength2 >>> 0, !noAssert) {
+Buffer2.prototype.writeUintBE = Buffer2.prototype.writeUIntBE = function (
+  value,
+  offset,
+  byteLength2,
+  noAssert,
+) {
+  if (
+    ((value = +value),
+    (offset = offset >>> 0),
+    (byteLength2 = byteLength2 >>> 0),
+    !noAssert)
+  ) {
     let maxBytes = Math.pow(2, 8 * byteLength2) - 1;
     checkInt(this, value, offset, byteLength2, maxBytes, 0);
   }
-  let i2 = byteLength2 - 1, mul = 1;
+  let i2 = byteLength2 - 1,
+    mul = 1;
   this[offset + i2] = value & 255;
-  while (--i2 >= 0 && (mul *= 256))
-    this[offset + i2] = value / mul & 255;
+  while (--i2 >= 0 && (mul *= 256)) this[offset + i2] = (value / mul) & 255;
   return offset + byteLength2;
 };
-Buffer2.prototype.writeUint8 = Buffer2.prototype.writeUInt8 = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeUint8 = Buffer2.prototype.writeUInt8 = function (
+  value,
+  offset,
+  noAssert,
+) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 1, 255, 0);
-  return this[offset] = value & 255, offset + 1;
+  return ((this[offset] = value & 255), offset + 1);
 };
-Buffer2.prototype.writeUint16LE = Buffer2.prototype.writeUInt16LE = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeUint16LE = Buffer2.prototype.writeUInt16LE = function (
+  value,
+  offset,
+  noAssert,
+) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 2, 65535, 0);
-  return this[offset] = value & 255, this[offset + 1] = value >>> 8, offset + 2;
+  return (
+    (this[offset] = value & 255),
+    (this[offset + 1] = value >>> 8),
+    offset + 2
+  );
 };
-Buffer2.prototype.writeUint16BE = Buffer2.prototype.writeUInt16BE = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeUint16BE = Buffer2.prototype.writeUInt16BE = function (
+  value,
+  offset,
+  noAssert,
+) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 2, 65535, 0);
-  return this[offset] = value >>> 8, this[offset + 1] = value & 255, offset + 2;
+  return (
+    (this[offset] = value >>> 8),
+    (this[offset + 1] = value & 255),
+    offset + 2
+  );
 };
-Buffer2.prototype.writeUint32LE = Buffer2.prototype.writeUInt32LE = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeUint32LE = Buffer2.prototype.writeUInt32LE = function (
+  value,
+  offset,
+  noAssert,
+) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 4, 4294967295, 0);
-  return this[offset + 3] = value >>> 24, this[offset + 2] = value >>> 16, this[offset + 1] = value >>> 8, this[offset] = value & 255, offset + 4;
+  return (
+    (this[offset + 3] = value >>> 24),
+    (this[offset + 2] = value >>> 16),
+    (this[offset + 1] = value >>> 8),
+    (this[offset] = value & 255),
+    offset + 4
+  );
 };
-Buffer2.prototype.writeUint32BE = Buffer2.prototype.writeUInt32BE = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeUint32BE = Buffer2.prototype.writeUInt32BE = function (
+  value,
+  offset,
+  noAssert,
+) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 4, 4294967295, 0);
-  return this[offset] = value >>> 24, this[offset + 1] = value >>> 16, this[offset + 2] = value >>> 8, this[offset + 3] = value & 255, offset + 4;
+  return (
+    (this[offset] = value >>> 24),
+    (this[offset + 1] = value >>> 16),
+    (this[offset + 2] = value >>> 8),
+    (this[offset + 3] = value & 255),
+    offset + 4
+  );
 };
 function wrtBigUInt64LE(buf, value, offset, min, max) {
   checkIntBI(value, min, max, buf, offset, 7);
   let lo = Number(value & BigInt(4294967295));
-  buf[offset++] = lo, lo = lo >> 8, buf[offset++] = lo, lo = lo >> 8, buf[offset++] = lo, lo = lo >> 8, buf[offset++] = lo;
-  let hi = Number(value >> BigInt(32) & BigInt(4294967295));
-  return buf[offset++] = hi, hi = hi >> 8, buf[offset++] = hi, hi = hi >> 8, buf[offset++] = hi, hi = hi >> 8, buf[offset++] = hi, offset;
+  ((buf[offset++] = lo),
+    (lo = lo >> 8),
+    (buf[offset++] = lo),
+    (lo = lo >> 8),
+    (buf[offset++] = lo),
+    (lo = lo >> 8),
+    (buf[offset++] = lo));
+  let hi = Number((value >> BigInt(32)) & BigInt(4294967295));
+  return (
+    (buf[offset++] = hi),
+    (hi = hi >> 8),
+    (buf[offset++] = hi),
+    (hi = hi >> 8),
+    (buf[offset++] = hi),
+    (hi = hi >> 8),
+    (buf[offset++] = hi),
+    offset
+  );
 }
 function wrtBigUInt64BE(buf, value, offset, min, max) {
   checkIntBI(value, min, max, buf, offset, 7);
   let lo = Number(value & BigInt(4294967295));
-  buf[offset + 7] = lo, lo = lo >> 8, buf[offset + 6] = lo, lo = lo >> 8, buf[offset + 5] = lo, lo = lo >> 8, buf[offset + 4] = lo;
-  let hi = Number(value >> BigInt(32) & BigInt(4294967295));
-  return buf[offset + 3] = hi, hi = hi >> 8, buf[offset + 2] = hi, hi = hi >> 8, buf[offset + 1] = hi, hi = hi >> 8, buf[offset] = hi, offset + 8;
+  ((buf[offset + 7] = lo),
+    (lo = lo >> 8),
+    (buf[offset + 6] = lo),
+    (lo = lo >> 8),
+    (buf[offset + 5] = lo),
+    (lo = lo >> 8),
+    (buf[offset + 4] = lo));
+  let hi = Number((value >> BigInt(32)) & BigInt(4294967295));
+  return (
+    (buf[offset + 3] = hi),
+    (hi = hi >> 8),
+    (buf[offset + 2] = hi),
+    (hi = hi >> 8),
+    (buf[offset + 1] = hi),
+    (hi = hi >> 8),
+    (buf[offset] = hi),
+    offset + 8
+  );
 }
-Buffer2.prototype.writeBigUInt64LE = defineBigIntMethod(function(value, offset = 0) {
-  return wrtBigUInt64LE(this, value, offset, BigInt(0), BigInt("0xffffffffffffffff"));
+Buffer2.prototype.writeBigUInt64LE = defineBigIntMethod(function (
+  value,
+  offset = 0,
+) {
+  return wrtBigUInt64LE(
+    this,
+    value,
+    offset,
+    BigInt(0),
+    BigInt("0xffffffffffffffff"),
+  );
 });
-Buffer2.prototype.writeBigUInt64BE = defineBigIntMethod(function(value, offset = 0) {
-  return wrtBigUInt64BE(this, value, offset, BigInt(0), BigInt("0xffffffffffffffff"));
+Buffer2.prototype.writeBigUInt64BE = defineBigIntMethod(function (
+  value,
+  offset = 0,
+) {
+  return wrtBigUInt64BE(
+    this,
+    value,
+    offset,
+    BigInt(0),
+    BigInt("0xffffffffffffffff"),
+  );
 });
-Buffer2.prototype.writeIntLE = function(value, offset, byteLength2, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert) {
+Buffer2.prototype.writeIntLE = function (value, offset, byteLength2, noAssert) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert)) {
     let limit = Math.pow(2, 8 * byteLength2 - 1);
     checkInt(this, value, offset, byteLength2, limit - 1, -limit);
   }
-  let i2 = 0, mul = 1, sub = 0;
+  let i2 = 0,
+    mul = 1,
+    sub = 0;
   this[offset] = value & 255;
   while (++i2 < byteLength2 && (mul *= 256)) {
-    if (value < 0 && sub === 0 && this[offset + i2 - 1] !== 0)
-      sub = 1;
-    this[offset + i2] = (value / mul >> 0) - sub & 255;
+    if (value < 0 && sub === 0 && this[offset + i2 - 1] !== 0) sub = 1;
+    this[offset + i2] = (((value / mul) >> 0) - sub) & 255;
   }
   return offset + byteLength2;
 };
-Buffer2.prototype.writeIntBE = function(value, offset, byteLength2, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert) {
+Buffer2.prototype.writeIntBE = function (value, offset, byteLength2, noAssert) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert)) {
     let limit = Math.pow(2, 8 * byteLength2 - 1);
     checkInt(this, value, offset, byteLength2, limit - 1, -limit);
   }
-  let i2 = byteLength2 - 1, mul = 1, sub = 0;
+  let i2 = byteLength2 - 1,
+    mul = 1,
+    sub = 0;
   this[offset + i2] = value & 255;
   while (--i2 >= 0 && (mul *= 256)) {
-    if (value < 0 && sub === 0 && this[offset + i2 + 1] !== 0)
-      sub = 1;
-    this[offset + i2] = (value / mul >> 0) - sub & 255;
+    if (value < 0 && sub === 0 && this[offset + i2 + 1] !== 0) sub = 1;
+    this[offset + i2] = (((value / mul) >> 0) - sub) & 255;
   }
   return offset + byteLength2;
 };
-Buffer2.prototype.writeInt8 = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeInt8 = function (value, offset, noAssert) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 1, 127, -128);
-  if (value < 0)
-    value = 255 + value + 1;
-  return this[offset] = value & 255, offset + 1;
+  if (value < 0) value = 255 + value + 1;
+  return ((this[offset] = value & 255), offset + 1);
 };
-Buffer2.prototype.writeInt16LE = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeInt16LE = function (value, offset, noAssert) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 2, 32767, -32768);
-  return this[offset] = value & 255, this[offset + 1] = value >>> 8, offset + 2;
+  return (
+    (this[offset] = value & 255),
+    (this[offset + 1] = value >>> 8),
+    offset + 2
+  );
 };
-Buffer2.prototype.writeInt16BE = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeInt16BE = function (value, offset, noAssert) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 2, 32767, -32768);
-  return this[offset] = value >>> 8, this[offset + 1] = value & 255, offset + 2;
+  return (
+    (this[offset] = value >>> 8),
+    (this[offset + 1] = value & 255),
+    offset + 2
+  );
 };
-Buffer2.prototype.writeInt32LE = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeInt32LE = function (value, offset, noAssert) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 4, 2147483647, -2147483648);
-  return this[offset] = value & 255, this[offset + 1] = value >>> 8, this[offset + 2] = value >>> 16, this[offset + 3] = value >>> 24, offset + 4;
+  return (
+    (this[offset] = value & 255),
+    (this[offset + 1] = value >>> 8),
+    (this[offset + 2] = value >>> 16),
+    (this[offset + 3] = value >>> 24),
+    offset + 4
+  );
 };
-Buffer2.prototype.writeInt32BE = function(value, offset, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
+Buffer2.prototype.writeInt32BE = function (value, offset, noAssert) {
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
     checkInt(this, value, offset, 4, 2147483647, -2147483648);
-  if (value < 0)
-    value = 4294967295 + value + 1;
-  return this[offset] = value >>> 24, this[offset + 1] = value >>> 16, this[offset + 2] = value >>> 8, this[offset + 3] = value & 255, offset + 4;
+  if (value < 0) value = 4294967295 + value + 1;
+  return (
+    (this[offset] = value >>> 24),
+    (this[offset + 1] = value >>> 16),
+    (this[offset + 2] = value >>> 8),
+    (this[offset + 3] = value & 255),
+    offset + 4
+  );
 };
-Buffer2.prototype.writeBigInt64LE = defineBigIntMethod(function(value, offset = 0) {
-  return wrtBigUInt64LE(this, value, offset, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"));
+Buffer2.prototype.writeBigInt64LE = defineBigIntMethod(function (
+  value,
+  offset = 0,
+) {
+  return wrtBigUInt64LE(
+    this,
+    value,
+    offset,
+    -BigInt("0x8000000000000000"),
+    BigInt("0x7fffffffffffffff"),
+  );
 });
-Buffer2.prototype.writeBigInt64BE = defineBigIntMethod(function(value, offset = 0) {
-  return wrtBigUInt64BE(this, value, offset, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"));
+Buffer2.prototype.writeBigInt64BE = defineBigIntMethod(function (
+  value,
+  offset = 0,
+) {
+  return wrtBigUInt64BE(
+    this,
+    value,
+    offset,
+    -BigInt("0x8000000000000000"),
+    BigInt("0x7fffffffffffffff"),
+  );
 });
 function checkIEEE754(buf, value, offset, ext, max, min) {
-  if (offset + ext > buf.length)
-    throw RangeError("Index out of range");
-  if (offset < 0)
-    throw RangeError("Index out of range");
+  if (offset + ext > buf.length) throw RangeError("Index out of range");
+  if (offset < 0) throw RangeError("Index out of range");
 }
 function writeFloat(buf, value, offset, littleEndian, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
-    checkIEEE754(buf, value, offset, 4, 340282346638528860000000000000000000000, -340282346638528860000000000000000000000);
-  return write(buf, value, offset, littleEndian, 23, 4), offset + 4;
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
+    checkIEEE754(
+      buf,
+      value,
+      offset,
+      4,
+      340282346638528860000000000000000000000,
+      -340282346638528860000000000000000000000,
+    );
+  return (write(buf, value, offset, littleEndian, 23, 4), offset + 4);
 }
-Buffer2.prototype.writeFloatLE = function(value, offset, noAssert) {
+Buffer2.prototype.writeFloatLE = function (value, offset, noAssert) {
   return writeFloat(this, value, offset, true, noAssert);
 };
-Buffer2.prototype.writeFloatBE = function(value, offset, noAssert) {
+Buffer2.prototype.writeFloatBE = function (value, offset, noAssert) {
   return writeFloat(this, value, offset, false, noAssert);
 };
 function writeDouble(buf, value, offset, littleEndian, noAssert) {
-  if (value = +value, offset = offset >>> 0, !noAssert)
-    checkIEEE754(buf, value, offset, 8, 179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, -179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000);
-  return write(buf, value, offset, littleEndian, 52, 8), offset + 8;
+  if (((value = +value), (offset = offset >>> 0), !noAssert))
+    checkIEEE754(
+      buf,
+      value,
+      offset,
+      8,
+      179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+      -179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+    );
+  return (write(buf, value, offset, littleEndian, 52, 8), offset + 8);
 }
-Buffer2.prototype.writeDoubleLE = function(value, offset, noAssert) {
+Buffer2.prototype.writeDoubleLE = function (value, offset, noAssert) {
   return writeDouble(this, value, offset, true, noAssert);
 };
-Buffer2.prototype.writeDoubleBE = function(value, offset, noAssert) {
+Buffer2.prototype.writeDoubleBE = function (value, offset, noAssert) {
   return writeDouble(this, value, offset, false, noAssert);
 };
-Buffer2.prototype.copy = function(target, targetStart, start, end) {
-  if (!Buffer2.isBuffer(target))
-    throw TypeError("argument should be a Buffer");
-  if (!start)
-    start = 0;
-  if (!end && end !== 0)
-    end = this.length;
-  if (targetStart >= target.length)
-    targetStart = target.length;
-  if (!targetStart)
-    targetStart = 0;
-  if (end > 0 && end < start)
-    end = start;
-  if (end === start)
-    return 0;
-  if (target.length === 0 || this.length === 0)
-    return 0;
-  if (targetStart < 0)
-    throw RangeError("targetStart out of bounds");
-  if (start < 0 || start >= this.length)
-    throw RangeError("Index out of range");
-  if (end < 0)
-    throw RangeError("sourceEnd out of bounds");
-  if (end > this.length)
-    end = this.length;
+Buffer2.prototype.copy = function (target, targetStart, start, end) {
+  if (!Buffer2.isBuffer(target)) throw TypeError("argument should be a Buffer");
+  if (!start) start = 0;
+  if (!end && end !== 0) end = this.length;
+  if (targetStart >= target.length) targetStart = target.length;
+  if (!targetStart) targetStart = 0;
+  if (end > 0 && end < start) end = start;
+  if (end === start) return 0;
+  if (target.length === 0 || this.length === 0) return 0;
+  if (targetStart < 0) throw RangeError("targetStart out of bounds");
+  if (start < 0 || start >= this.length) throw RangeError("Index out of range");
+  if (end < 0) throw RangeError("sourceEnd out of bounds");
+  if (end > this.length) end = this.length;
   if (target.length - targetStart < end - start)
     end = target.length - targetStart + start;
   let len2 = end - start;
   if (this === target && typeof Uint8Array.prototype.copyWithin === "function")
     this.copyWithin(targetStart, start, end);
   else
-    Uint8Array.prototype.set.call(target, this.subarray(start, end), targetStart);
+    Uint8Array.prototype.set.call(
+      target,
+      this.subarray(start, end),
+      targetStart,
+    );
   return len2;
 };
-Buffer2.prototype.fill = function(val, start, end, encoding) {
+Buffer2.prototype.fill = function (val, start, end, encoding) {
   if (typeof val === "string") {
     if (typeof start === "string")
-      encoding = start, start = 0, end = this.length;
-    else if (typeof end === "string")
-      encoding = end, end = this.length;
+      ((encoding = start), (start = 0), (end = this.length));
+    else if (typeof end === "string") ((encoding = end), (end = this.length));
     if (encoding !== undefined && typeof encoding !== "string")
       throw TypeError("encoding must be a string");
     if (typeof encoding === "string" && !Buffer2.isEncoding(encoding))
       throw TypeError("Unknown encoding: " + encoding);
     if (val.length === 1) {
       let code2 = val.charCodeAt(0);
-      if (encoding === "utf8" && code2 < 128 || encoding === "latin1")
+      if ((encoding === "utf8" && code2 < 128) || encoding === "latin1")
         val = code2;
     }
-  } else if (typeof val === "number")
-    val = val & 255;
-  else if (typeof val === "boolean")
-    val = Number(val);
+  } else if (typeof val === "number") val = val & 255;
+  else if (typeof val === "boolean") val = Number(val);
   if (start < 0 || this.length < start || this.length < end)
     throw RangeError("Out of range index");
-  if (end <= start)
-    return this;
-  if (start = start >>> 0, end = end === undefined ? this.length : end >>> 0, !val)
+  if (end <= start) return this;
+  if (
+    ((start = start >>> 0),
+    (end = end === undefined ? this.length : end >>> 0),
+    !val)
+  )
     val = 0;
   let i2;
-  if (typeof val === "number")
-    for (i2 = start;i2 < end; ++i2)
-      this[i2] = val;
+  if (typeof val === "number") for (i2 = start; i2 < end; ++i2) this[i2] = val;
   else {
-    let bytes = Buffer2.isBuffer(val) ? val : Buffer2.from(val, encoding), len2 = bytes.length;
+    let bytes = Buffer2.isBuffer(val) ? val : Buffer2.from(val, encoding),
+      len2 = bytes.length;
     if (len2 === 0)
-      throw TypeError('The value "' + val + '" is invalid for argument "value"');
-    for (i2 = 0;i2 < end - start; ++i2)
-      this[i2 + start] = bytes[i2 % len2];
+      throw TypeError(
+        'The value "' + val + '" is invalid for argument "value"',
+      );
+    for (i2 = 0; i2 < end - start; ++i2) this[i2 + start] = bytes[i2 % len2];
   }
   return this;
 };
 function addNumericalSeparator(val) {
-  let res = "", i2 = val.length, start = val[0] === "-" ? 1 : 0;
-  for (;i2 >= start + 4; i2 -= 3)
-    res = `_${val.slice(i2 - 3, i2)}${res}`;
+  let res = "",
+    i2 = val.length,
+    start = val[0] === "-" ? 1 : 0;
+  for (; i2 >= start + 4; i2 -= 3) res = `_${val.slice(i2 - 3, i2)}${res}`;
   return `${val.slice(0, i2)}${res}`;
 }
 function checkBounds(buf, offset, byteLength2) {
-  if (validateNumber(offset, "offset"), buf[offset] === undefined || buf[offset + byteLength2] === undefined)
+  if (
+    (validateNumber(offset, "offset"),
+    buf[offset] === undefined || buf[offset + byteLength2] === undefined)
+  )
     boundsError(offset, buf.length - (byteLength2 + 1));
 }
 function checkIntBI(value, min, max, buf, offset, byteLength2) {
   if (value > max || value < min) {
-    let n = typeof min === "bigint" ? "n" : "", range;
+    let n = typeof min === "bigint" ? "n" : "",
+      range;
     if (byteLength2 > 3)
       if (min === 0 || min === BigInt(0))
         range = `>= 0${n} and < 2${n} ** ${(byteLength2 + 1) * 8}${n}`;
       else
         range = `>= -(2${n} ** ${(byteLength2 + 1) * 8 - 1}${n}) and < 2 ** ${(byteLength2 + 1) * 8 - 1}${n}`;
-    else
-      range = `>= ${min}${n} and <= ${max}${n}`;
+    else range = `>= ${min}${n} and <= ${max}${n}`;
     throw new ERR_OUT_OF_RANGE("value", range, value);
   }
   checkBounds(buf, offset, byteLength2);
@@ -5436,81 +8048,103 @@ function validateNumber(value, name) {
 }
 function boundsError(value, length, type) {
   if (Math.floor(value) !== value)
-    throw validateNumber(value, type), new ERR_OUT_OF_RANGE(type || "offset", "an integer", value);
-  if (length < 0)
-    throw new ERR_BUFFER_OUT_OF_BOUNDS;
-  throw new ERR_OUT_OF_RANGE(type || "offset", `>= ${type ? 1 : 0} and <= ${length}`, value);
+    throw (
+      validateNumber(value, type),
+      new ERR_OUT_OF_RANGE(type || "offset", "an integer", value)
+    );
+  if (length < 0) throw new ERR_BUFFER_OUT_OF_BOUNDS();
+  throw new ERR_OUT_OF_RANGE(
+    type || "offset",
+    `>= ${type ? 1 : 0} and <= ${length}`,
+    value,
+  );
 }
 var INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g;
 function base64clean(str) {
-  if (str = str.split("=")[0], str = str.trim().replace(INVALID_BASE64_RE, ""), str.length < 2)
+  if (
+    ((str = str.split("=")[0]),
+    (str = str.trim().replace(INVALID_BASE64_RE, "")),
+    str.length < 2)
+  )
     return "";
-  while (str.length % 4 !== 0)
-    str = str + "=";
+  while (str.length % 4 !== 0) str = str + "=";
   return str;
 }
 function utf8ToBytes(string, units) {
   units = units || 1 / 0;
-  let codePoint, length = string.length, leadSurrogate = null, bytes = [];
-  for (let i2 = 0;i2 < length; ++i2) {
-    if (codePoint = string.charCodeAt(i2), codePoint > 55295 && codePoint < 57344) {
+  let codePoint,
+    length = string.length,
+    leadSurrogate = null,
+    bytes = [];
+  for (let i2 = 0; i2 < length; ++i2) {
+    if (
+      ((codePoint = string.charCodeAt(i2)),
+      codePoint > 55295 && codePoint < 57344)
+    ) {
       if (!leadSurrogate) {
         if (codePoint > 56319) {
-          if ((units -= 3) > -1)
-            bytes.push(239, 191, 189);
+          if ((units -= 3) > -1) bytes.push(239, 191, 189);
           continue;
         } else if (i2 + 1 === length) {
-          if ((units -= 3) > -1)
-            bytes.push(239, 191, 189);
+          if ((units -= 3) > -1) bytes.push(239, 191, 189);
           continue;
         }
         leadSurrogate = codePoint;
         continue;
       }
       if (codePoint < 56320) {
-        if ((units -= 3) > -1)
-          bytes.push(239, 191, 189);
+        if ((units -= 3) > -1) bytes.push(239, 191, 189);
         leadSurrogate = codePoint;
         continue;
       }
-      codePoint = (leadSurrogate - 55296 << 10 | codePoint - 56320) + 65536;
+      codePoint =
+        (((leadSurrogate - 55296) << 10) | (codePoint - 56320)) + 65536;
     } else if (leadSurrogate) {
-      if ((units -= 3) > -1)
-        bytes.push(239, 191, 189);
+      if ((units -= 3) > -1) bytes.push(239, 191, 189);
     }
-    if (leadSurrogate = null, codePoint < 128) {
-      if ((units -= 1) < 0)
-        break;
+    if (((leadSurrogate = null), codePoint < 128)) {
+      if ((units -= 1) < 0) break;
       bytes.push(codePoint);
     } else if (codePoint < 2048) {
-      if ((units -= 2) < 0)
-        break;
-      bytes.push(codePoint >> 6 | 192, codePoint & 63 | 128);
+      if ((units -= 2) < 0) break;
+      bytes.push((codePoint >> 6) | 192, (codePoint & 63) | 128);
     } else if (codePoint < 65536) {
-      if ((units -= 3) < 0)
-        break;
-      bytes.push(codePoint >> 12 | 224, codePoint >> 6 & 63 | 128, codePoint & 63 | 128);
+      if ((units -= 3) < 0) break;
+      bytes.push(
+        (codePoint >> 12) | 224,
+        ((codePoint >> 6) & 63) | 128,
+        (codePoint & 63) | 128,
+      );
     } else if (codePoint < 1114112) {
-      if ((units -= 4) < 0)
-        break;
-      bytes.push(codePoint >> 18 | 240, codePoint >> 12 & 63 | 128, codePoint >> 6 & 63 | 128, codePoint & 63 | 128);
-    } else
-      throw Error("Invalid code point");
+      if ((units -= 4) < 0) break;
+      bytes.push(
+        (codePoint >> 18) | 240,
+        ((codePoint >> 12) & 63) | 128,
+        ((codePoint >> 6) & 63) | 128,
+        (codePoint & 63) | 128,
+      );
+    } else throw Error("Invalid code point");
   }
   return bytes;
 }
 function asciiToBytes(str) {
   let byteArray = [];
-  for (let i2 = 0;i2 < str.length; ++i2)
+  for (let i2 = 0; i2 < str.length; ++i2)
     byteArray.push(str.charCodeAt(i2) & 255);
   return byteArray;
 }
 function utf16leToBytes(str, units) {
-  let c, hi, lo, byteArray = [];
-  for (let i2 = 0;i2 < str.length; ++i2) {
-    if ((units -= 2) < 0)
-      break;
-    c = str.charCodeAt(i2), hi = c >> 8, lo = c % 256, byteArray.push(lo), byteArray.push(hi);
+  let c,
+    hi,
+    lo,
+    byteArray = [];
+  for (let i2 = 0; i2 < str.length; ++i2) {
+    if ((units -= 2) < 0) break;
+    ((c = str.charCodeAt(i2)),
+      (hi = c >> 8),
+      (lo = c % 256),
+      byteArray.push(lo),
+      byteArray.push(hi));
   }
   return byteArray;
 }
@@ -5519,25 +8153,30 @@ function base64ToBytes(str) {
 }
 function blitBuffer(src, dst, offset, length) {
   let i2;
-  for (i2 = 0;i2 < length; ++i2) {
-    if (i2 + offset >= dst.length || i2 >= src.length)
-      break;
+  for (i2 = 0; i2 < length; ++i2) {
+    if (i2 + offset >= dst.length || i2 >= src.length) break;
     dst[i2 + offset] = src[i2];
   }
   return i2;
 }
 function isInstance(obj, type) {
-  return obj instanceof type || obj != null && obj.constructor != null && obj.constructor.name != null && obj.constructor.name === type.name;
+  return (
+    obj instanceof type ||
+    (obj != null &&
+      obj.constructor != null &&
+      obj.constructor.name != null &&
+      obj.constructor.name === type.name)
+  );
 }
-var hexSliceLookupTable = function() {
+var hexSliceLookupTable = (function () {
   let table = Array(256);
-  for (let i2 = 0;i2 < 16; ++i2) {
+  for (let i2 = 0; i2 < 16; ++i2) {
     let i16 = i2 * 16;
-    for (let j = 0;j < 16; ++j)
+    for (let j = 0; j < 16; ++j)
       table[i16 + j] = "0123456789abcdef"[i2] + "0123456789abcdef"[j];
   }
   return table;
-}();
+})();
 function defineBigIntMethod(fn) {
   return typeof BigInt > "u" ? BufferBigIntNotDefined : fn;
 }
@@ -5566,13 +8205,33 @@ function util_isNullOrUndefined(arg) {
   return arg == null;
 }
 function Url() {
-  this.protocol = null, this.slashes = null, this.auth = null, this.host = null, this.port = null, this.hostname = null, this.hash = null, this.search = null, this.query = null, this.pathname = null, this.path = null, this.href = null;
+  ((this.protocol = null),
+    (this.slashes = null),
+    (this.auth = null),
+    (this.host = null),
+    (this.port = null),
+    (this.hostname = null),
+    (this.hash = null),
+    (this.search = null),
+    (this.query = null),
+    (this.pathname = null),
+    (this.path = null),
+    (this.href = null));
 }
 var protocolPattern = /^([a-z0-9.+-]+:)/i;
 var portPattern = /:[0-9]*$/;
 var simplePathPattern = /^(\/\/?(?!\/)[^\?\s]*)(\?[^\s]*)?$/;
-var delims = ["<", ">", '"', "`", " ", "\r", `
-`, "\t"];
+var delims = [
+  "<",
+  ">",
+  '"',
+  "`",
+  " ",
+  "\r",
+  `
+`,
+  "\t",
+];
 var unwise = ["{", "}", "|", "\\", "^", "`"].concat(delims);
 var autoEscape = ["'"].concat(unwise);
 var nonHostChars = ["%", "/", "?", ";", "#"].concat(autoEscape);
@@ -5582,43 +8241,81 @@ var hostnamePartPattern = /^[+a-z0-9A-Z_-]{0,63}$/;
 var hostnamePartStart = /^([+a-z0-9A-Z_-]{0,63})(.*)$/;
 var unsafeProtocol = { javascript: true, "javascript:": true };
 var hostlessProtocol = { javascript: true, "javascript:": true };
-var slashedProtocol = { http: true, https: true, ftp: true, gopher: true, file: true, "http:": true, "https:": true, "ftp:": true, "gopher:": true, "file:": true };
-var querystring = { parse(str) {
-  var decode = decodeURIComponent;
-  return (str + "").replace(/\+/g, " ").split("&").filter(Boolean).reduce(function(obj, item, index) {
-    var ref = item.split("="), key = decode(ref[0] || ""), val = decode(ref[1] || ""), prev = obj[key];
-    return obj[key] = prev === undefined ? val : [].concat(prev, val), obj;
-  }, {});
-}, stringify(obj) {
-  var encode = encodeURIComponent;
-  return Object.keys(obj || {}).reduce(function(arr, key) {
-    return [].concat(obj[key]).forEach(function(v) {
-      arr.push(encode(key) + "=" + encode(v));
-    }), arr;
-  }, []).join("&").replace(/\s/g, "+");
-} };
+var slashedProtocol = {
+  http: true,
+  https: true,
+  ftp: true,
+  gopher: true,
+  file: true,
+  "http:": true,
+  "https:": true,
+  "ftp:": true,
+  "gopher:": true,
+  "file:": true,
+};
+var querystring = {
+  parse(str) {
+    var decode = decodeURIComponent;
+    return (str + "")
+      .replace(/\+/g, " ")
+      .split("&")
+      .filter(Boolean)
+      .reduce(function (obj, item, index) {
+        var ref = item.split("="),
+          key = decode(ref[0] || ""),
+          val = decode(ref[1] || ""),
+          prev = obj[key];
+        return (
+          (obj[key] = prev === undefined ? val : [].concat(prev, val)),
+          obj
+        );
+      }, {});
+  },
+  stringify(obj) {
+    var encode = encodeURIComponent;
+    return Object.keys(obj || {})
+      .reduce(function (arr, key) {
+        return (
+          [].concat(obj[key]).forEach(function (v) {
+            arr.push(encode(key) + "=" + encode(v));
+          }),
+          arr
+        );
+      }, [])
+      .join("&")
+      .replace(/\s/g, "+");
+  },
+};
 function urlParse(url, parseQueryString, slashesDenoteHost) {
-  if (url && util_isObject(url) && url instanceof Url)
-    return url;
-  var u = new Url;
-  return u.parse(url, parseQueryString, slashesDenoteHost), u;
+  if (url && util_isObject(url) && url instanceof Url) return url;
+  var u = new Url();
+  return (u.parse(url, parseQueryString, slashesDenoteHost), u);
 }
-Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
+Url.prototype.parse = function (url, parseQueryString, slashesDenoteHost) {
   if (!util_isString(url))
     throw TypeError("Parameter 'url' must be a string, not " + typeof url);
-  var queryIndex = url.indexOf("?"), splitter = queryIndex !== -1 && queryIndex < url.indexOf("#") ? "?" : "#", uSplit = url.split(splitter), slashRegex = /\\/g;
-  uSplit[0] = uSplit[0].replace(slashRegex, "/"), url = uSplit.join(splitter);
+  var queryIndex = url.indexOf("?"),
+    splitter = queryIndex !== -1 && queryIndex < url.indexOf("#") ? "?" : "#",
+    uSplit = url.split(splitter),
+    slashRegex = /\\/g;
+  ((uSplit[0] = uSplit[0].replace(slashRegex, "/")),
+    (url = uSplit.join(splitter)));
   var rest = url;
-  if (rest = rest.trim(), !slashesDenoteHost && url.split("#").length === 1) {
+  if (
+    ((rest = rest.trim()), !slashesDenoteHost && url.split("#").length === 1)
+  ) {
     var simplePath = simplePathPattern.exec(rest);
     if (simplePath) {
-      if (this.path = rest, this.href = rest, this.pathname = simplePath[1], simplePath[2])
-        if (this.search = simplePath[2], parseQueryString)
+      if (
+        ((this.path = rest),
+        (this.href = rest),
+        (this.pathname = simplePath[1]),
+        simplePath[2])
+      )
+        if (((this.search = simplePath[2]), parseQueryString))
           this.query = querystring.parse(this.search.substr(1));
-        else
-          this.query = this.search.substr(1);
-      else if (parseQueryString)
-        this.search = "", this.query = {};
+        else this.query = this.search.substr(1);
+      else if (parseQueryString) ((this.search = ""), (this.query = {}));
       return this;
     }
   }
@@ -5626,271 +8323,344 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
   if (proto) {
     proto = proto[0];
     var lowerProto = proto.toLowerCase();
-    this.protocol = lowerProto, rest = rest.substr(proto.length);
+    ((this.protocol = lowerProto), (rest = rest.substr(proto.length)));
   }
   if (slashesDenoteHost || proto || rest.match(/^\/\/[^@\/]+@[^@\/]+/)) {
     var slashes = rest.substr(0, 2) === "//";
     if (slashes && !(proto && hostlessProtocol[proto]))
-      rest = rest.substr(2), this.slashes = true;
+      ((rest = rest.substr(2)), (this.slashes = true));
   }
-  if (!hostlessProtocol[proto] && (slashes || proto && !slashedProtocol[proto])) {
+  if (
+    !hostlessProtocol[proto] &&
+    (slashes || (proto && !slashedProtocol[proto]))
+  ) {
     var hostEnd = -1;
-    for (var i2 = 0;i2 < hostEndingChars.length; i2++) {
+    for (var i2 = 0; i2 < hostEndingChars.length; i2++) {
       var hec = rest.indexOf(hostEndingChars[i2]);
-      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))
-        hostEnd = hec;
+      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd)) hostEnd = hec;
     }
     var auth, atSign;
-    if (hostEnd === -1)
-      atSign = rest.lastIndexOf("@");
-    else
-      atSign = rest.lastIndexOf("@", hostEnd);
+    if (hostEnd === -1) atSign = rest.lastIndexOf("@");
+    else atSign = rest.lastIndexOf("@", hostEnd);
     if (atSign !== -1)
-      auth = rest.slice(0, atSign), rest = rest.slice(atSign + 1), this.auth = decodeURIComponent(auth);
+      ((auth = rest.slice(0, atSign)),
+        (rest = rest.slice(atSign + 1)),
+        (this.auth = decodeURIComponent(auth)));
     hostEnd = -1;
-    for (var i2 = 0;i2 < nonHostChars.length; i2++) {
+    for (var i2 = 0; i2 < nonHostChars.length; i2++) {
       var hec = rest.indexOf(nonHostChars[i2]);
-      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))
-        hostEnd = hec;
+      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd)) hostEnd = hec;
     }
-    if (hostEnd === -1)
-      hostEnd = rest.length;
-    this.host = rest.slice(0, hostEnd), rest = rest.slice(hostEnd), this.parseHost(), this.hostname = this.hostname || "";
-    var ipv6Hostname = this.hostname[0] === "[" && this.hostname[this.hostname.length - 1] === "]";
+    if (hostEnd === -1) hostEnd = rest.length;
+    ((this.host = rest.slice(0, hostEnd)),
+      (rest = rest.slice(hostEnd)),
+      this.parseHost(),
+      (this.hostname = this.hostname || ""));
+    var ipv6Hostname =
+      this.hostname[0] === "[" &&
+      this.hostname[this.hostname.length - 1] === "]";
     if (!ipv6Hostname) {
       var hostparts = this.hostname.split(/\./);
-      for (var i2 = 0, l = hostparts.length;i2 < l; i2++) {
+      for (var i2 = 0, l = hostparts.length; i2 < l; i2++) {
         var part = hostparts[i2];
-        if (!part)
-          continue;
+        if (!part) continue;
         if (!part.match(hostnamePartPattern)) {
           var newpart = "";
-          for (var j = 0, k = part.length;j < k; j++)
-            if (part.charCodeAt(j) > 127)
-              newpart += "x";
-            else
-              newpart += part[j];
+          for (var j = 0, k = part.length; j < k; j++)
+            if (part.charCodeAt(j) > 127) newpart += "x";
+            else newpart += part[j];
           if (!newpart.match(hostnamePartPattern)) {
-            var validParts = hostparts.slice(0, i2), notHost = hostparts.slice(i2 + 1), bit = part.match(hostnamePartStart);
-            if (bit)
-              validParts.push(bit[1]), notHost.unshift(bit[2]);
-            if (notHost.length)
-              rest = "/" + notHost.join(".") + rest;
+            var validParts = hostparts.slice(0, i2),
+              notHost = hostparts.slice(i2 + 1),
+              bit = part.match(hostnamePartStart);
+            if (bit) (validParts.push(bit[1]), notHost.unshift(bit[2]));
+            if (notHost.length) rest = "/" + notHost.join(".") + rest;
             this.hostname = validParts.join(".");
             break;
           }
         }
       }
     }
-    if (this.hostname.length > hostnameMaxLen)
-      this.hostname = "";
-    else
-      this.hostname = this.hostname.toLowerCase();
+    if (this.hostname.length > hostnameMaxLen) this.hostname = "";
+    else this.hostname = this.hostname.toLowerCase();
     if (!ipv6Hostname)
       this.hostname = new URL2(`https://${this.hostname}`).hostname;
-    var p = this.port ? ":" + this.port : "", h = this.hostname || "";
-    if (this.host = h + p, this.href += this.host, ipv6Hostname) {
-      if (this.hostname = this.hostname.substr(1, this.hostname.length - 2), rest[0] !== "/")
+    var p = this.port ? ":" + this.port : "",
+      h = this.hostname || "";
+    if (((this.host = h + p), (this.href += this.host), ipv6Hostname)) {
+      if (
+        ((this.hostname = this.hostname.substr(1, this.hostname.length - 2)),
+        rest[0] !== "/")
+      )
         rest = "/" + rest;
     }
   }
   if (!unsafeProtocol[lowerProto])
-    for (var i2 = 0, l = autoEscape.length;i2 < l; i2++) {
+    for (var i2 = 0, l = autoEscape.length; i2 < l; i2++) {
       var ae = autoEscape[i2];
-      if (rest.indexOf(ae) === -1)
-        continue;
+      if (rest.indexOf(ae) === -1) continue;
       var esc = encodeURIComponent(ae);
-      if (esc === ae)
-        esc = escape(ae);
+      if (esc === ae) esc = escape(ae);
       rest = rest.split(ae).join(esc);
     }
   var hash = rest.indexOf("#");
   if (hash !== -1)
-    this.hash = rest.substr(hash), rest = rest.slice(0, hash);
+    ((this.hash = rest.substr(hash)), (rest = rest.slice(0, hash)));
   var qm = rest.indexOf("?");
   if (qm !== -1) {
-    if (this.search = rest.substr(qm), this.query = rest.substr(qm + 1), parseQueryString)
+    if (
+      ((this.search = rest.substr(qm)),
+      (this.query = rest.substr(qm + 1)),
+      parseQueryString)
+    )
       this.query = querystring.parse(this.query);
     rest = rest.slice(0, qm);
-  } else if (parseQueryString)
-    this.search = "", this.query = {};
-  if (rest)
-    this.pathname = rest;
+  } else if (parseQueryString) ((this.search = ""), (this.query = {}));
+  if (rest) this.pathname = rest;
   if (slashedProtocol[lowerProto] && this.hostname && !this.pathname)
     this.pathname = "/";
   if (this.pathname || this.search) {
-    var p = this.pathname || "", s = this.search || "";
+    var p = this.pathname || "",
+      s = this.search || "";
     this.path = p + s;
   }
-  return this.href = this.format(), this;
+  return ((this.href = this.format()), this);
 };
-Url.prototype.format = function() {
+Url.prototype.format = function () {
   var auth = this.auth || "";
   if (auth)
-    auth = encodeURIComponent(auth), auth = auth.replace(/%3A/i, ":"), auth += "@";
-  var protocol = this.protocol || "", pathname = this.pathname || "", hash = this.hash || "", host = false, query = "";
-  if (this.host)
-    host = auth + this.host;
+    ((auth = encodeURIComponent(auth)),
+      (auth = auth.replace(/%3A/i, ":")),
+      (auth += "@"));
+  var protocol = this.protocol || "",
+    pathname = this.pathname || "",
+    hash = this.hash || "",
+    host = false,
+    query = "";
+  if (this.host) host = auth + this.host;
   else if (this.hostname) {
-    if (host = auth + (this.hostname.indexOf(":") === -1 ? this.hostname : "[" + this.hostname + "]"), this.port)
+    if (
+      ((host =
+        auth +
+        (this.hostname.indexOf(":") === -1
+          ? this.hostname
+          : "[" + this.hostname + "]")),
+      this.port)
+    )
       host += ":" + this.port;
   }
   if (this.query && util_isObject(this.query) && Object.keys(this.query).length)
     query = querystring.stringify(this.query);
-  var search = this.search || query && "?" + query || "";
-  if (protocol && protocol.substr(-1) !== ":")
-    protocol += ":";
-  if (this.slashes || (!protocol || slashedProtocol[protocol]) && host !== false) {
-    if (host = "//" + (host || ""), pathname && pathname.charAt(0) !== "/")
+  var search = this.search || (query && "?" + query) || "";
+  if (protocol && protocol.substr(-1) !== ":") protocol += ":";
+  if (
+    this.slashes ||
+    ((!protocol || slashedProtocol[protocol]) && host !== false)
+  ) {
+    if (((host = "//" + (host || "")), pathname && pathname.charAt(0) !== "/"))
       pathname = "/" + pathname;
-  } else if (!host)
-    host = "";
-  if (hash && hash.charAt(0) !== "#")
-    hash = "#" + hash;
-  if (search && search.charAt(0) !== "?")
-    search = "?" + search;
-  return pathname = pathname.replace(/[?#]/g, function(match) {
-    return encodeURIComponent(match);
-  }), search = search.replace("#", "%23"), protocol + host + pathname + search + hash;
+  } else if (!host) host = "";
+  if (hash && hash.charAt(0) !== "#") hash = "#" + hash;
+  if (search && search.charAt(0) !== "?") search = "?" + search;
+  return (
+    (pathname = pathname.replace(/[?#]/g, function (match) {
+      return encodeURIComponent(match);
+    })),
+    (search = search.replace("#", "%23")),
+    protocol + host + pathname + search + hash
+  );
 };
-Url.prototype.resolve = function(relative) {
+Url.prototype.resolve = function (relative) {
   return this.resolveObject(urlParse(relative, false, true)).format();
 };
-Url.prototype.resolveObject = function(relative) {
+Url.prototype.resolveObject = function (relative) {
   if (util_isString(relative)) {
-    var rel = new Url;
-    rel.parse(relative, false, true), relative = rel;
+    var rel = new Url();
+    (rel.parse(relative, false, true), (relative = rel));
   }
-  var result = new Url, tkeys = Object.keys(this);
-  for (var tk = 0;tk < tkeys.length; tk++) {
+  var result = new Url(),
+    tkeys = Object.keys(this);
+  for (var tk = 0; tk < tkeys.length; tk++) {
     var tkey = tkeys[tk];
     result[tkey] = this[tkey];
   }
-  if (result.hash = relative.hash, relative.href === "")
-    return result.href = result.format(), result;
+  if (((result.hash = relative.hash), relative.href === ""))
+    return ((result.href = result.format()), result);
   if (relative.slashes && !relative.protocol) {
     var rkeys = Object.keys(relative);
-    for (var rk = 0;rk < rkeys.length; rk++) {
+    for (var rk = 0; rk < rkeys.length; rk++) {
       var rkey = rkeys[rk];
-      if (rkey !== "protocol")
-        result[rkey] = relative[rkey];
+      if (rkey !== "protocol") result[rkey] = relative[rkey];
     }
     if (slashedProtocol[result.protocol] && result.hostname && !result.pathname)
       result.path = result.pathname = "/";
-    return result.href = result.format(), result;
+    return ((result.href = result.format()), result);
   }
   if (relative.protocol && relative.protocol !== result.protocol) {
     if (!slashedProtocol[relative.protocol]) {
       var keys = Object.keys(relative);
-      for (var v = 0;v < keys.length; v++) {
+      for (var v = 0; v < keys.length; v++) {
         var k = keys[v];
         result[k] = relative[k];
       }
-      return result.href = result.format(), result;
+      return ((result.href = result.format()), result);
     }
-    if (result.protocol = relative.protocol, !relative.host && !hostlessProtocol[relative.protocol]) {
+    if (
+      ((result.protocol = relative.protocol),
+      !relative.host && !hostlessProtocol[relative.protocol])
+    ) {
       var relPath = (relative.pathname || "").split("/");
-      while (relPath.length && !(relative.host = relPath.shift()))
-        ;
-      if (!relative.host)
-        relative.host = "";
-      if (!relative.hostname)
-        relative.hostname = "";
-      if (relPath[0] !== "")
-        relPath.unshift("");
-      if (relPath.length < 2)
-        relPath.unshift("");
+      while (relPath.length && !(relative.host = relPath.shift()));
+      if (!relative.host) relative.host = "";
+      if (!relative.hostname) relative.hostname = "";
+      if (relPath[0] !== "") relPath.unshift("");
+      if (relPath.length < 2) relPath.unshift("");
       result.pathname = relPath.join("/");
-    } else
-      result.pathname = relative.pathname;
-    if (result.search = relative.search, result.query = relative.query, result.host = relative.host || "", result.auth = relative.auth, result.hostname = relative.hostname || relative.host, result.port = relative.port, result.pathname || result.search) {
-      var p = result.pathname || "", s = result.search || "";
+    } else result.pathname = relative.pathname;
+    if (
+      ((result.search = relative.search),
+      (result.query = relative.query),
+      (result.host = relative.host || ""),
+      (result.auth = relative.auth),
+      (result.hostname = relative.hostname || relative.host),
+      (result.port = relative.port),
+      result.pathname || result.search)
+    ) {
+      var p = result.pathname || "",
+        s = result.search || "";
       result.path = p + s;
     }
-    return result.slashes = result.slashes || relative.slashes, result.href = result.format(), result;
+    return (
+      (result.slashes = result.slashes || relative.slashes),
+      (result.href = result.format()),
+      result
+    );
   }
-  var isSourceAbs = result.pathname && result.pathname.charAt(0) === "/", isRelAbs = relative.host || relative.pathname && relative.pathname.charAt(0) === "/", mustEndAbs = isRelAbs || isSourceAbs || result.host && relative.pathname, removeAllDots = mustEndAbs, srcPath = result.pathname && result.pathname.split("/") || [], relPath = relative.pathname && relative.pathname.split("/") || [], psychotic = result.protocol && !slashedProtocol[result.protocol];
+  var isSourceAbs = result.pathname && result.pathname.charAt(0) === "/",
+    isRelAbs =
+      relative.host ||
+      (relative.pathname && relative.pathname.charAt(0) === "/"),
+    mustEndAbs = isRelAbs || isSourceAbs || (result.host && relative.pathname),
+    removeAllDots = mustEndAbs,
+    srcPath = (result.pathname && result.pathname.split("/")) || [],
+    relPath = (relative.pathname && relative.pathname.split("/")) || [],
+    psychotic = result.protocol && !slashedProtocol[result.protocol];
   if (psychotic) {
-    if (result.hostname = "", result.port = null, result.host)
-      if (srcPath[0] === "")
-        srcPath[0] = result.host;
-      else
-        srcPath.unshift(result.host);
-    if (result.host = "", relative.protocol) {
-      if (relative.hostname = null, relative.port = null, relative.host)
-        if (relPath[0] === "")
-          relPath[0] = relative.host;
-        else
-          relPath.unshift(relative.host);
+    if (((result.hostname = ""), (result.port = null), result.host))
+      if (srcPath[0] === "") srcPath[0] = result.host;
+      else srcPath.unshift(result.host);
+    if (((result.host = ""), relative.protocol)) {
+      if (((relative.hostname = null), (relative.port = null), relative.host))
+        if (relPath[0] === "") relPath[0] = relative.host;
+        else relPath.unshift(relative.host);
       relative.host = null;
     }
     mustEndAbs = mustEndAbs && (relPath[0] === "" || srcPath[0] === "");
   }
   if (isRelAbs)
-    result.host = relative.host || relative.host === "" ? relative.host : result.host, result.hostname = relative.hostname || relative.hostname === "" ? relative.hostname : result.hostname, result.search = relative.search, result.query = relative.query, srcPath = relPath;
+    ((result.host =
+      relative.host || relative.host === "" ? relative.host : result.host),
+      (result.hostname =
+        relative.hostname || relative.hostname === ""
+          ? relative.hostname
+          : result.hostname),
+      (result.search = relative.search),
+      (result.query = relative.query),
+      (srcPath = relPath));
   else if (relPath.length) {
-    if (!srcPath)
-      srcPath = [];
-    srcPath.pop(), srcPath = srcPath.concat(relPath), result.search = relative.search, result.query = relative.query;
+    if (!srcPath) srcPath = [];
+    (srcPath.pop(),
+      (srcPath = srcPath.concat(relPath)),
+      (result.search = relative.search),
+      (result.query = relative.query));
   } else if (!util_isNullOrUndefined(relative.search)) {
     if (psychotic) {
       result.hostname = result.host = srcPath.shift();
-      var authInHost = result.host && result.host.indexOf("@") > 0 ? result.host.split("@") : false;
+      var authInHost =
+        result.host && result.host.indexOf("@") > 0
+          ? result.host.split("@")
+          : false;
       if (authInHost)
-        result.auth = authInHost.shift(), result.host = result.hostname = authInHost.shift();
+        ((result.auth = authInHost.shift()),
+          (result.host = result.hostname = authInHost.shift()));
     }
-    if (result.search = relative.search, result.query = relative.query, !util_isNull(result.pathname) || !util_isNull(result.search))
-      result.path = (result.pathname ? result.pathname : "") + (result.search ? result.search : "");
-    return result.href = result.format(), result;
+    if (
+      ((result.search = relative.search),
+      (result.query = relative.query),
+      !util_isNull(result.pathname) || !util_isNull(result.search))
+    )
+      result.path =
+        (result.pathname ? result.pathname : "") +
+        (result.search ? result.search : "");
+    return ((result.href = result.format()), result);
   }
   if (!srcPath.length) {
-    if (result.pathname = null, result.search)
+    if (((result.pathname = null), result.search))
       result.path = "/" + result.search;
-    else
-      result.path = null;
-    return result.href = result.format(), result;
+    else result.path = null;
+    return ((result.href = result.format()), result);
   }
-  var last = srcPath.slice(-1)[0], hasTrailingSlash = (result.host || relative.host || srcPath.length > 1) && (last === "." || last === "..") || last === "", up = 0;
-  for (var i2 = srcPath.length;i2 >= 0; i2--)
-    if (last = srcPath[i2], last === ".")
-      srcPath.splice(i2, 1);
-    else if (last === "..")
-      srcPath.splice(i2, 1), up++;
-    else if (up)
-      srcPath.splice(i2, 1), up--;
-  if (!mustEndAbs && !removeAllDots)
-    for (;up--; up)
-      srcPath.unshift("..");
-  if (mustEndAbs && srcPath[0] !== "" && (!srcPath[0] || srcPath[0].charAt(0) !== "/"))
+  var last = srcPath.slice(-1)[0],
+    hasTrailingSlash =
+      ((result.host || relative.host || srcPath.length > 1) &&
+        (last === "." || last === "..")) ||
+      last === "",
+    up = 0;
+  for (var i2 = srcPath.length; i2 >= 0; i2--)
+    if (((last = srcPath[i2]), last === ".")) srcPath.splice(i2, 1);
+    else if (last === "..") (srcPath.splice(i2, 1), up++);
+    else if (up) (srcPath.splice(i2, 1), up--);
+  if (!mustEndAbs && !removeAllDots) for (; up--; up) srcPath.unshift("..");
+  if (
+    mustEndAbs &&
+    srcPath[0] !== "" &&
+    (!srcPath[0] || srcPath[0].charAt(0) !== "/")
+  )
     srcPath.unshift("");
   if (hasTrailingSlash && srcPath.join("/").substr(-1) !== "/")
     srcPath.push("");
-  var isAbsolute = srcPath[0] === "" || srcPath[0] && srcPath[0].charAt(0) === "/";
+  var isAbsolute =
+    srcPath[0] === "" || (srcPath[0] && srcPath[0].charAt(0) === "/");
   if (psychotic) {
-    result.hostname = result.host = isAbsolute ? "" : srcPath.length ? srcPath.shift() : "";
-    var authInHost = result.host && result.host.indexOf("@") > 0 ? result.host.split("@") : false;
+    result.hostname = result.host = isAbsolute
+      ? ""
+      : srcPath.length
+        ? srcPath.shift()
+        : "";
+    var authInHost =
+      result.host && result.host.indexOf("@") > 0
+        ? result.host.split("@")
+        : false;
     if (authInHost)
-      result.auth = authInHost.shift(), result.host = result.hostname = authInHost.shift();
+      ((result.auth = authInHost.shift()),
+        (result.host = result.hostname = authInHost.shift()));
   }
-  if (mustEndAbs = mustEndAbs || result.host && srcPath.length, mustEndAbs && !isAbsolute)
+  if (
+    ((mustEndAbs = mustEndAbs || (result.host && srcPath.length)),
+    mustEndAbs && !isAbsolute)
+  )
     srcPath.unshift("");
-  if (!srcPath.length)
-    result.pathname = null, result.path = null;
-  else
-    result.pathname = srcPath.join("/");
+  if (!srcPath.length) ((result.pathname = null), (result.path = null));
+  else result.pathname = srcPath.join("/");
   if (!util_isNull(result.pathname) || !util_isNull(result.search))
-    result.path = (result.pathname ? result.pathname : "") + (result.search ? result.search : "");
-  return result.auth = relative.auth || result.auth, result.slashes = result.slashes || relative.slashes, result.href = result.format(), result;
+    result.path =
+      (result.pathname ? result.pathname : "") +
+      (result.search ? result.search : "");
+  return (
+    (result.auth = relative.auth || result.auth),
+    (result.slashes = result.slashes || relative.slashes),
+    (result.href = result.format()),
+    result
+  );
 };
-Url.prototype.parseHost = function() {
-  var host = this.host, port = portPattern.exec(host);
+Url.prototype.parseHost = function () {
+  var host = this.host,
+    port = portPattern.exec(host);
   if (port) {
-    if (port = port[0], port !== ":")
-      this.port = port.substr(1);
+    if (((port = port[0]), port !== ":")) this.port = port.substr(1);
     host = host.substr(0, host.length - port.length);
   }
-  if (host)
-    this.hostname = host;
+  if (host) this.hostname = host;
 };
 var prepareRuntime = () => {
   globalThis.Buffer = Buffer2;
@@ -5901,33 +8671,39 @@ var prepareRuntime = () => {
 };
 var handler = (trigger, fn) => ({
   trigger,
-  fn
+  fn,
 });
 prepareRuntime();
 var LAST_FINALIZED_BLOCK_NUMBER = {
   absVal: Buffer.from([3]).toString("base64"),
-  sign: "-1"
+  sign: "-1",
 };
 var LATEST_BLOCK_NUMBER = {
   absVal: Buffer.from([2]).toString("base64"),
-  sign: "-1"
+  sign: "-1",
 };
 var validateHexByteLength = (hex, expectedBytes, fieldLabel) => {
   const bytes = hexToBytes(hex);
   if (bytes.length !== expectedBytes) {
-    throw new Error(`Invalid ${fieldLabel}: expected ${expectedBytes} bytes, got ${bytes.length} bytes from '${hex.length > 200 ? hex.slice(0, 200) + "..." : hex}'. EVM ${fieldLabel}s must be exactly ${expectedBytes} bytes.`);
+    throw new Error(
+      `Invalid ${fieldLabel}: expected ${expectedBytes} bytes, got ${bytes.length} bytes from '${hex.length > 200 ? hex.slice(0, 200) + "..." : hex}'. EVM ${fieldLabel}s must be exactly ${expectedBytes} bytes.`,
+    );
   }
   return hexToBase64(hex);
 };
 var logTriggerConfig = (opts) => {
   if (!opts.addresses || opts.addresses.length === 0) {
-    throw new Error("logTriggerConfig requires at least one address. Provide an array of hex-encoded EVM addresses (20 bytes each).");
+    throw new Error(
+      "logTriggerConfig requires at least one address. Provide an array of hex-encoded EVM addresses (20 bytes each).",
+    );
   }
   const addresses = opts.addresses.map((addr, i2) => {
     try {
       return validateHexByteLength(addr, 20, "address");
     } catch (e) {
-      throw new Error(`Invalid address at index ${i2}: ${e instanceof Error ? e.message : String(e)}`);
+      throw new Error(
+        `Invalid address at index ${i2}: ${e instanceof Error ? e.message : String(e)}`,
+      );
     }
   });
   const topics = opts.topics?.map((topicSlot, slotIndex) => ({
@@ -5935,15 +8711,19 @@ var logTriggerConfig = (opts) => {
       try {
         return validateHexByteLength(topic, 32, "topic");
       } catch (e) {
-        throw new Error(`Invalid topic at topics[${slotIndex}][${valueIndex}]: ${e instanceof Error ? e.message : String(e)}`);
+        throw new Error(
+          `Invalid topic at topics[${slotIndex}][${valueIndex}]: ${e instanceof Error ? e.message : String(e)}`,
+        );
       }
-    })
+    }),
   }));
-  const confidence = opts.confidence ? `CONFIDENCE_LEVEL_${opts.confidence}` : undefined;
+  const confidence = opts.confidence
+    ? `CONFIDENCE_LEVEL_${opts.confidence}`
+    : undefined;
   return {
     addresses,
-    ...topics ? { topics } : {},
-    ...confidence ? { confidence } : {}
+    ...(topics ? { topics } : {}),
+    ...(confidence ? { confidence } : {}),
   };
 };
 var decodeJson = (input) => {
@@ -5954,7 +8734,7 @@ var decodeJson = (input) => {
 function json(responseOrFn) {
   if (typeof responseOrFn === "function") {
     return {
-      result: () => json(responseOrFn().result)
+      result: () => json(responseOrFn().result),
     };
   }
   return decodeJson(responseOrFn.body);
@@ -5975,2810 +8755,2810 @@ var network = {
   chainId: "1",
   chainSelector: {
     name: "aptos-mainnet",
-    selector: 4741433654826277614n
+    selector: 4741433654826277614n,
   },
   chainFamily: "aptos",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var aptos_mainnet_default = network;
 var network2 = {
   chainId: "16661",
   chainSelector: {
     name: "0g-mainnet",
-    selector: 4426351306075016396n
+    selector: 4426351306075016396n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var _0g_mainnet_default = network2;
 var network3 = {
   chainId: "36888",
   chainSelector: {
     name: "ab-mainnet",
-    selector: 4829375610284793157n
+    selector: 4829375610284793157n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ab_mainnet_default = network3;
 var network4 = {
   chainId: "2741",
   chainSelector: {
     name: "abstract-mainnet",
-    selector: 3577778157919314504n
+    selector: 3577778157919314504n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var abstract_mainnet_default = network4;
 var network5 = {
   chainId: "36900",
   chainSelector: {
     name: "adi-mainnet",
-    selector: 4059281736450291836n
+    selector: 4059281736450291836n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var adi_mainnet_default = network5;
 var network6 = {
   chainId: "33139",
   chainSelector: {
     name: "apechain-mainnet",
-    selector: 14894068710063348487n
+    selector: 14894068710063348487n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var apechain_mainnet_default = network6;
 var network7 = {
   chainId: "463",
   chainSelector: {
     name: "areon-mainnet",
-    selector: 1939936305787790600n
+    selector: 1939936305787790600n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var areon_mainnet_default = network7;
 var network8 = {
   chainId: "43114",
   chainSelector: {
     name: "avalanche-mainnet",
-    selector: 6433500567565415381n
+    selector: 6433500567565415381n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var avalanche_mainnet_default = network8;
 var network9 = {
   chainId: "432204",
   chainSelector: {
     name: "avalanche-subnet-dexalot-mainnet",
-    selector: 5463201557265485081n
+    selector: 5463201557265485081n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var avalanche_subnet_dexalot_mainnet_default = network9;
 var network10 = {
   chainId: "80094",
   chainSelector: {
     name: "berachain-mainnet",
-    selector: 1294465214383781161n
+    selector: 1294465214383781161n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var berachain_mainnet_default = network10;
 var network11 = {
   chainId: "56",
   chainSelector: {
     name: "binance_smart_chain-mainnet",
-    selector: 11344663589394136015n
+    selector: 11344663589394136015n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var binance_smart_chain_mainnet_default = network11;
 var network12 = {
   chainId: "204",
   chainSelector: {
     name: "binance_smart_chain-mainnet-opbnb-1",
-    selector: 465944652040885897n
+    selector: 465944652040885897n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var binance_smart_chain_mainnet_opbnb_1_default = network12;
 var network13 = {
   chainId: "1907",
   chainSelector: {
     name: "bitcichain-mainnet",
-    selector: 4874388048629246000n
+    selector: 4874388048629246000n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var bitcichain_mainnet_default = network13;
 var network14 = {
   chainId: "200901",
   chainSelector: {
     name: "bitcoin-mainnet-bitlayer-1",
-    selector: 7937294810946806131n
+    selector: 7937294810946806131n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var bitcoin_mainnet_bitlayer_1_default = network14;
 var network15 = {
   chainId: "60808",
   chainSelector: {
     name: "bitcoin-mainnet-bob-1",
-    selector: 3849287863852499584n
+    selector: 3849287863852499584n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var bitcoin_mainnet_bob_1_default = network15;
 var network16 = {
   chainId: "3637",
   chainSelector: {
     name: "bitcoin-mainnet-botanix",
-    selector: 4560701533377838164n
+    selector: 4560701533377838164n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var bitcoin_mainnet_botanix_default = network16;
 var network17 = {
   chainId: "223",
   chainSelector: {
     name: "bitcoin-mainnet-bsquared-1",
-    selector: 5406759801798337480n
+    selector: 5406759801798337480n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var bitcoin_mainnet_bsquared_1_default = network17;
 var network18 = {
   chainId: "4200",
   chainSelector: {
     name: "bitcoin-merlin-mainnet",
-    selector: 241851231317828981n
+    selector: 241851231317828981n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var bitcoin_merlin_mainnet_default = network18;
 var network19 = {
   chainId: "964",
   chainSelector: {
     name: "bittensor-mainnet",
-    selector: 2135107236357186872n
+    selector: 2135107236357186872n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var bittensor_mainnet_default = network19;
 var network20 = {
   chainId: "199",
   chainSelector: {
     name: "bittorrent_chain-mainnet",
-    selector: 3776006016387883143n
+    selector: 3776006016387883143n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var bittorrent_chain_mainnet_default = network20;
 var network21 = {
   chainId: "42220",
   chainSelector: {
     name: "celo-mainnet",
-    selector: 1346049177634351622n
+    selector: 1346049177634351622n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var celo_mainnet_default = network21;
 var network22 = {
   chainId: "81224",
   chainSelector: {
     name: "codex-mainnet",
-    selector: 9478124434908827753n
+    selector: 9478124434908827753n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var codex_mainnet_default = network22;
 var network23 = {
   chainId: "52",
   chainSelector: {
     name: "coinex_smart_chain-mainnet",
-    selector: 1761333065194157300n
+    selector: 1761333065194157300n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var coinex_smart_chain_mainnet_default = network23;
 var network24 = {
   chainId: "1030",
   chainSelector: {
     name: "conflux-mainnet",
-    selector: 3358365939762719202n
+    selector: 3358365939762719202n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var conflux_mainnet_default = network24;
 var network25 = {
   chainId: "1116",
   chainSelector: {
     name: "core-mainnet",
-    selector: 1224752112135636129n
+    selector: 1224752112135636129n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var core_mainnet_default = network25;
 var network26 = {
   chainId: "21000000",
   chainSelector: {
     name: "corn-mainnet",
-    selector: 9043146809313071210n
+    selector: 9043146809313071210n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var corn_mainnet_default = network26;
 var network27 = {
   chainId: "25",
   chainSelector: {
     name: "cronos-mainnet",
-    selector: 1456215246176062136n
+    selector: 1456215246176062136n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var cronos_mainnet_default = network27;
 var network28 = {
   chainId: "388",
   chainSelector: {
     name: "cronos-zkevm-mainnet",
-    selector: 8788096068760390840n
+    selector: 8788096068760390840n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var cronos_zkevm_mainnet_default = network28;
 var network29 = {
   chainId: "3343",
   chainSelector: {
     name: "edge-mainnet",
-    selector: 6325494908023253251n
+    selector: 6325494908023253251n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var edge_mainnet_default = network29;
 var network30 = {
   chainId: "1",
   chainSelector: {
     name: "ethereum-mainnet",
-    selector: 5009297550715157269n
+    selector: 5009297550715157269n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_default = network30;
 var network31 = {
   chainId: "42161",
   chainSelector: {
     name: "ethereum-mainnet-arbitrum-1",
-    selector: 4949039107694359620n
+    selector: 4949039107694359620n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_arbitrum_1_default = network31;
 var network32 = {
   chainId: "12324",
   chainSelector: {
     name: "ethereum-mainnet-arbitrum-1-l3x-1",
-    selector: 3162193654116181371n
+    selector: 3162193654116181371n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_arbitrum_1_l3x_1_default = network32;
 var network33 = {
   chainId: "978670",
   chainSelector: {
     name: "ethereum-mainnet-arbitrum-1-treasure-1",
-    selector: 1010349088906777999n
+    selector: 1010349088906777999n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_arbitrum_1_treasure_1_default = network33;
 var network34 = {
   chainId: "3776",
   chainSelector: {
     name: "ethereum-mainnet-astar-zkevm-1",
-    selector: 1540201334317828111n
+    selector: 1540201334317828111n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_astar_zkevm_1_default = network34;
 var network35 = {
   chainId: "8453",
   chainSelector: {
     name: "ethereum-mainnet-base-1",
-    selector: 15971525489660198786n
+    selector: 15971525489660198786n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_base_1_default = network35;
 var network36 = {
   chainId: "81457",
   chainSelector: {
     name: "ethereum-mainnet-blast-1",
-    selector: 4411394078118774322n
+    selector: 4411394078118774322n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_blast_1_default = network36;
 var network37 = {
   chainId: "177",
   chainSelector: {
     name: "ethereum-mainnet-hashkey-1",
-    selector: 7613811247471741961n
+    selector: 7613811247471741961n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_hashkey_1_default = network37;
 var network38 = {
   chainId: "13371",
   chainSelector: {
     name: "ethereum-mainnet-immutable-zkevm-1",
-    selector: 1237925231416731909n
+    selector: 1237925231416731909n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_immutable_zkevm_1_default = network38;
 var network39 = {
   chainId: "57073",
   chainSelector: {
     name: "ethereum-mainnet-ink-1",
-    selector: 3461204551265785888n
+    selector: 3461204551265785888n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_ink_1_default = network39;
 var network40 = {
   chainId: "255",
   chainSelector: {
     name: "ethereum-mainnet-kroma-1",
-    selector: 3719320017875267166n
+    selector: 3719320017875267166n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_kroma_1_default = network40;
 var network41 = {
   chainId: "59144",
   chainSelector: {
     name: "ethereum-mainnet-linea-1",
-    selector: 4627098889531055414n
+    selector: 4627098889531055414n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_linea_1_default = network41;
 var network42 = {
   chainId: "5000",
   chainSelector: {
     name: "ethereum-mainnet-mantle-1",
-    selector: 1556008542357238666n
+    selector: 1556008542357238666n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_mantle_1_default = network42;
 var network43 = {
   chainId: "1088",
   chainSelector: {
     name: "ethereum-mainnet-metis-1",
-    selector: 8805746078405598895n
+    selector: 8805746078405598895n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_metis_1_default = network43;
 var network44 = {
   chainId: "34443",
   chainSelector: {
     name: "ethereum-mainnet-mode-1",
-    selector: 7264351850409363825n
+    selector: 7264351850409363825n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_mode_1_default = network44;
 var network45 = {
   chainId: "10",
   chainSelector: {
     name: "ethereum-mainnet-optimism-1",
-    selector: 3734403246176062136n
+    selector: 3734403246176062136n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_optimism_1_default = network45;
 var network46 = {
   chainId: "1101",
   chainSelector: {
     name: "ethereum-mainnet-polygon-zkevm-1",
-    selector: 4348158687435793198n
+    selector: 4348158687435793198n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_polygon_zkevm_1_default = network46;
 var network47 = {
   chainId: "534352",
   chainSelector: {
     name: "ethereum-mainnet-scroll-1",
-    selector: 13204309965629103672n
+    selector: 13204309965629103672n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_scroll_1_default = network47;
 var network48 = {
   chainId: "167000",
   chainSelector: {
     name: "ethereum-mainnet-taiko-1",
-    selector: 16468599424800719238n
+    selector: 16468599424800719238n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_taiko_1_default = network48;
 var network49 = {
   chainId: "130",
   chainSelector: {
     name: "ethereum-mainnet-unichain-1",
-    selector: 1923510103922296319n
+    selector: 1923510103922296319n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_unichain_1_default = network49;
 var network50 = {
   chainId: "480",
   chainSelector: {
     name: "ethereum-mainnet-worldchain-1",
-    selector: 2049429975587534727n
+    selector: 2049429975587534727n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_worldchain_1_default = network50;
 var network51 = {
   chainId: "196",
   chainSelector: {
     name: "ethereum-mainnet-xlayer-1",
-    selector: 3016212468291539606n
+    selector: 3016212468291539606n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_xlayer_1_default = network51;
 var network52 = {
   chainId: "48900",
   chainSelector: {
     name: "ethereum-mainnet-zircuit-1",
-    selector: 17198166215261833993n
+    selector: 17198166215261833993n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_zircuit_1_default = network52;
 var network53 = {
   chainId: "324",
   chainSelector: {
     name: "ethereum-mainnet-zksync-1",
-    selector: 1562403441176082196n
+    selector: 1562403441176082196n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ethereum_mainnet_zksync_1_default = network53;
 var network54 = {
   chainId: "42793",
   chainSelector: {
     name: "etherlink-mainnet",
-    selector: 13624601974233774587n
+    selector: 13624601974233774587n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var etherlink_mainnet_default = network54;
 var network55 = {
   chainId: "25327",
   chainSelector: {
     name: "everclear-mainnet",
-    selector: 9723842205701363942n
+    selector: 9723842205701363942n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var everclear_mainnet_default = network55;
 var network56 = {
   chainId: "250",
   chainSelector: {
     name: "fantom-mainnet",
-    selector: 3768048213127883732n
+    selector: 3768048213127883732n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var fantom_mainnet_default = network56;
 var network57 = {
   chainId: "314",
   chainSelector: {
     name: "filecoin-mainnet",
-    selector: 4561443241176882990n
+    selector: 4561443241176882990n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var filecoin_mainnet_default = network57;
 var network58 = {
   chainId: "252",
   chainSelector: {
     name: "fraxtal-mainnet",
-    selector: 1462016016387883143n
+    selector: 1462016016387883143n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var fraxtal_mainnet_default = network58;
 var network59 = {
   chainId: "86",
   chainSelector: {
     name: "gate-chain-mainnet",
-    selector: 9688382747979139404n
+    selector: 9688382747979139404n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var gate_chain_mainnet_default = network59;
 var network60 = {
   chainId: "10088",
   chainSelector: {
     name: "gate-layer-mainnet",
-    selector: 9373518659714509671n
+    selector: 9373518659714509671n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var gate_layer_mainnet_default = network60;
 var network61 = {
   chainId: "100",
   chainSelector: {
     name: "gnosis_chain-mainnet",
-    selector: 465200170687744372n
+    selector: 465200170687744372n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var gnosis_chain_mainnet_default = network61;
 var network62 = {
   chainId: "295",
   chainSelector: {
     name: "hedera-mainnet",
-    selector: 3229138320728879060n
+    selector: 3229138320728879060n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var hedera_mainnet_default = network62;
 var network63 = {
   chainId: "43111",
   chainSelector: {
     name: "hemi-mainnet",
-    selector: 1804312132722180201n
+    selector: 1804312132722180201n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var hemi_mainnet_default = network63;
 var network64 = {
   chainId: "999",
   chainSelector: {
     name: "hyperliquid-mainnet",
-    selector: 2442541497099098535n
+    selector: 2442541497099098535n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var hyperliquid_mainnet_default = network64;
 var network65 = {
   chainId: "678",
   chainSelector: {
     name: "janction-mainnet",
-    selector: 9107126442626377432n
+    selector: 9107126442626377432n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var janction_mainnet_default = network65;
 var network66 = {
   chainId: "5734951",
   chainSelector: {
     name: "jovay-mainnet",
-    selector: 1523760397290643893n
+    selector: 1523760397290643893n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var jovay_mainnet_default = network66;
 var network67 = {
   chainId: "8217",
   chainSelector: {
     name: "kaia-mainnet",
-    selector: 9813823125703490621n
+    selector: 9813823125703490621n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var kaia_mainnet_default = network67;
 var network68 = {
   chainId: "2222",
   chainSelector: {
     name: "kava-mainnet",
-    selector: 7550000543357438061n
+    selector: 7550000543357438061n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var kava_mainnet_default = network68;
 var network69 = {
   chainId: "1285",
   chainSelector: {
     name: "kusama-mainnet-moonriver",
-    selector: 1355020143337428062n
+    selector: 1355020143337428062n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var kusama_mainnet_moonriver_default = network69;
 var network70 = {
   chainId: "232",
   chainSelector: {
     name: "lens-mainnet",
-    selector: 5608378062013572713n
+    selector: 5608378062013572713n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var lens_mainnet_default = network70;
 var network71 = {
   chainId: "1135",
   chainSelector: {
     name: "lisk-mainnet",
-    selector: 15293031020466096408n
+    selector: 15293031020466096408n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var lisk_mainnet_default = network71;
 var network72 = {
   chainId: "4326",
   chainSelector: {
     name: "megaeth-mainnet",
-    selector: 6093540873831549674n
+    selector: 6093540873831549674n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var megaeth_mainnet_default = network72;
 var network73 = {
   chainId: "51888",
   chainSelector: {
     name: "memento-mainnet",
-    selector: 6473245816409426016n
+    selector: 6473245816409426016n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var memento_mainnet_default = network73;
 var network74 = {
   chainId: "1750",
   chainSelector: {
     name: "metal-mainnet",
-    selector: 13447077090413146373n
+    selector: 13447077090413146373n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var metal_mainnet_default = network74;
 var network75 = {
   chainId: "228",
   chainSelector: {
     name: "mind-mainnet",
-    selector: 11690709103138290329n
+    selector: 11690709103138290329n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var mind_mainnet_default = network75;
 var network76 = {
   chainId: "185",
   chainSelector: {
     name: "mint-mainnet",
-    selector: 17164792800244661392n
+    selector: 17164792800244661392n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var mint_mainnet_default = network76;
 var network77 = {
   chainId: "143",
   chainSelector: {
     name: "monad-mainnet",
-    selector: 8481857512324358265n
+    selector: 8481857512324358265n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var monad_mainnet_default = network77;
 var network78 = {
   chainId: "2818",
   chainSelector: {
     name: "morph-mainnet",
-    selector: 18164309074156128038n
+    selector: 18164309074156128038n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var morph_mainnet_default = network78;
 var network79 = {
   chainId: "397",
   chainSelector: {
     name: "near-mainnet",
-    selector: 2039744413822257700n
+    selector: 2039744413822257700n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var near_mainnet_default = network79;
 var network80 = {
   chainId: "259",
   chainSelector: {
     name: "neonlink-mainnet",
-    selector: 8239338020728974000n
+    selector: 8239338020728974000n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var neonlink_mainnet_default = network80;
 var network81 = {
   chainId: "47763",
   chainSelector: {
     name: "neox-mainnet",
-    selector: 7222032299962346917n
+    selector: 7222032299962346917n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var neox_mainnet_default = network81;
 var network82 = {
   chainId: "68414",
   chainSelector: {
     name: "nexon-mainnet-henesys",
-    selector: 12657445206920369324n
+    selector: 12657445206920369324n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var nexon_mainnet_henesys_default = network82;
 var network83 = {
   chainId: "60118",
   chainSelector: {
     name: "nexon-mainnet-lith",
-    selector: 15758750456714168963n
+    selector: 15758750456714168963n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var nexon_mainnet_lith_default = network83;
 var network84 = {
   chainId: "807424",
   chainSelector: {
     name: "nexon-qa",
-    selector: 14632960069656270105n
+    selector: 14632960069656270105n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var nexon_qa_default = network84;
 var network85 = {
   chainId: "847799",
   chainSelector: {
     name: "nexon-stage",
-    selector: 5556806327594153475n
+    selector: 5556806327594153475n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var nexon_stage_default = network85;
 var network86 = {
   chainId: "6900",
   chainSelector: {
     name: "nibiru-mainnet",
-    selector: 17349189558768828726n
+    selector: 17349189558768828726n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var nibiru_mainnet_default = network86;
 var network87 = {
   chainId: "1672",
   chainSelector: {
     name: "pharos-mainnet",
-    selector: 7801139999541420232n
+    selector: 7801139999541420232n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var pharos_mainnet_default = network87;
 var network88 = {
   chainId: "9745",
   chainSelector: {
     name: "plasma-mainnet",
-    selector: 9335212494177455608n
+    selector: 9335212494177455608n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var plasma_mainnet_default = network88;
 var network89 = {
   chainId: "98866",
   chainSelector: {
     name: "plume-mainnet",
-    selector: 17912061998839310979n
+    selector: 17912061998839310979n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var plume_mainnet_default = network89;
 var network90 = {
   chainId: "592",
   chainSelector: {
     name: "polkadot-mainnet-astar",
-    selector: 6422105447186081193n
+    selector: 6422105447186081193n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var polkadot_mainnet_astar_default = network90;
 var network91 = {
   chainId: "2031",
   chainSelector: {
     name: "polkadot-mainnet-centrifuge",
-    selector: 8175830712062617656n
+    selector: 8175830712062617656n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var polkadot_mainnet_centrifuge_default = network91;
 var network92 = {
   chainId: "46",
   chainSelector: {
     name: "polkadot-mainnet-darwinia",
-    selector: 8866418665544333000n
+    selector: 8866418665544333000n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var polkadot_mainnet_darwinia_default = network92;
 var network93 = {
   chainId: "1284",
   chainSelector: {
     name: "polkadot-mainnet-moonbeam",
-    selector: 1252863800116739621n
+    selector: 1252863800116739621n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var polkadot_mainnet_moonbeam_default = network93;
 var network94 = {
   chainId: "137",
   chainSelector: {
     name: "polygon-mainnet",
-    selector: 4051577828743386545n
+    selector: 4051577828743386545n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var polygon_mainnet_default = network94;
 var network95 = {
   chainId: "747474",
   chainSelector: {
     name: "polygon-mainnet-katana",
-    selector: 2459028469735686113n
+    selector: 2459028469735686113n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var polygon_mainnet_katana_default = network95;
 var network96 = {
   chainId: "2020",
   chainSelector: {
     name: "ronin-mainnet",
-    selector: 6916147374840168594n
+    selector: 6916147374840168594n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ronin_mainnet_default = network96;
 var network97 = {
   chainId: "30",
   chainSelector: {
     name: "rootstock-mainnet",
-    selector: 11964252391146578476n
+    selector: 11964252391146578476n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var rootstock_mainnet_default = network97;
 var network98 = {
   chainId: "1329",
   chainSelector: {
     name: "sei-mainnet",
-    selector: 9027416829622342829n
+    selector: 9027416829622342829n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var sei_mainnet_default = network98;
 var network99 = {
   chainId: "109",
   chainSelector: {
     name: "shibarium-mainnet",
-    selector: 3993510008929295315n
+    selector: 3993510008929295315n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var shibarium_mainnet_default = network99;
 var network100 = {
   chainId: "1868",
   chainSelector: {
     name: "soneium-mainnet",
-    selector: 12505351618335765396n
+    selector: 12505351618335765396n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var soneium_mainnet_default = network100;
 var network101 = {
   chainId: "146",
   chainSelector: {
     name: "sonic-mainnet",
-    selector: 1673871237479749969n
+    selector: 1673871237479749969n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var sonic_mainnet_default = network101;
 var network102 = {
   chainId: "988",
   chainSelector: {
     name: "stable-mainnet",
-    selector: 16978377838628290997n
+    selector: 16978377838628290997n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var stable_mainnet_default = network102;
 var network103 = {
   chainId: "5330",
   chainSelector: {
     name: "superseed-mainnet",
-    selector: 470401360549526817n
+    selector: 470401360549526817n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var superseed_mainnet_default = network103;
 var network104 = {
   chainId: "239",
   chainSelector: {
     name: "tac-mainnet",
-    selector: 5936861837188149645n
+    selector: 5936861837188149645n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var tac_mainnet_default = network104;
 var network105 = {
   chainId: "40",
   chainSelector: {
     name: "telos-evm-mainnet",
-    selector: 1477345371608778000n
+    selector: 1477345371608778000n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var telos_evm_mainnet_default = network105;
 var network106 = {
   chainId: "4217",
   chainSelector: {
     name: "tempo-mainnet",
-    selector: 7281642695469137430n
+    selector: 7281642695469137430n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var tempo_mainnet_default = network106;
 var network107 = {
   chainId: "61166",
   chainSelector: {
     name: "treasure-mainnet",
-    selector: 5214452172935136222n
+    selector: 5214452172935136222n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var treasure_mainnet_default = network107;
 var network108 = {
   chainId: "728126428",
   chainSelector: {
     name: "tron-mainnet-evm",
-    selector: 1546563616611573946n
+    selector: 1546563616611573946n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var tron_mainnet_evm_default = network108;
 var network109 = {
   chainId: "106",
   chainSelector: {
     name: "velas-mainnet",
-    selector: 374210358663784372n
+    selector: 374210358663784372n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var velas_mainnet_default = network109;
 var network110 = {
   chainId: "1111",
   chainSelector: {
     name: "wemix-mainnet",
-    selector: 5142893604156789321n
+    selector: 5142893604156789321n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var wemix_mainnet_default = network110;
 var network111 = {
   chainId: "50",
   chainSelector: {
     name: "xdc-mainnet",
-    selector: 17673274061779414707n
+    selector: 17673274061779414707n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var xdc_mainnet_default = network111;
 var network112 = {
   chainId: "7000",
   chainSelector: {
     name: "zetachain-mainnet",
-    selector: 10817664450262215148n
+    selector: 10817664450262215148n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var zetachain_mainnet_default = network112;
 var network113 = {
   chainId: "810180",
   chainSelector: {
     name: "zklink_nova-mainnet",
-    selector: 4350319965322101699n
+    selector: 4350319965322101699n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var zklink_nova_mainnet_default = network113;
 var network114 = {
   chainId: "7777777",
   chainSelector: {
     name: "zora-mainnet",
-    selector: 3555797439612589184n
+    selector: 3555797439612589184n,
   },
   chainFamily: "evm",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var zora_mainnet_default = network114;
 var network115 = {
   chainId: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
   chainSelector: {
     name: "solana-mainnet",
-    selector: 124615329519749607n
+    selector: 124615329519749607n,
   },
   chainFamily: "solana",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var solana_mainnet_default = network115;
 var network116 = {
   chainId: "1",
   chainSelector: {
     name: "sui-mainnet",
-    selector: 17529533435026248318n
+    selector: 17529533435026248318n,
   },
   chainFamily: "sui",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var sui_mainnet_default = network116;
 var network117 = {
   chainId: "-239",
   chainSelector: {
     name: "ton-mainnet",
-    selector: 16448340667252469081n
+    selector: 16448340667252469081n,
   },
   chainFamily: "ton",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var ton_mainnet_default = network117;
 var network118 = {
   chainId: "728126428",
   chainSelector: {
     name: "tron-mainnet",
-    selector: 1546563616611573945n
+    selector: 1546563616611573945n,
   },
   chainFamily: "tron",
-  networkType: "mainnet"
+  networkType: "mainnet",
 };
 var tron_mainnet_default = network118;
 var network119 = {
   chainId: "4",
   chainSelector: {
     name: "aptos-localnet",
-    selector: 4457093679053095497n
+    selector: 4457093679053095497n,
   },
   chainFamily: "aptos",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var aptos_localnet_default = network119;
 var network120 = {
   chainId: "2",
   chainSelector: {
     name: "aptos-testnet",
-    selector: 743186221051783445n
+    selector: 743186221051783445n,
   },
   chainFamily: "aptos",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var aptos_testnet_default = network120;
 var network121 = {
   chainId: "16601",
   chainSelector: {
     name: "0g-testnet-galileo",
-    selector: 2131427466778448014n
+    selector: 2131427466778448014n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var _0g_testnet_galileo_default = network121;
 var network122 = {
   chainId: "16602",
   chainSelector: {
     name: "0g-testnet-galileo-1",
-    selector: 6892437333620424805n
+    selector: 6892437333620424805n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var _0g_testnet_galileo_1_default = network122;
 var network123 = {
   chainId: "16600",
   chainSelector: {
     name: "0g-testnet-newton",
-    selector: 16088006396410204581n
+    selector: 16088006396410204581n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var _0g_testnet_newton_default = network123;
 var network124 = {
   chainId: "26888",
   chainSelector: {
     name: "ab-testnet",
-    selector: 7051849327615092843n
+    selector: 7051849327615092843n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ab_testnet_default = network124;
 var network125 = {
   chainId: "11124",
   chainSelector: {
     name: "abstract-testnet",
-    selector: 16235373811196386733n
+    selector: 16235373811196386733n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var abstract_testnet_default = network125;
 var network126 = {
   chainId: "99999",
   chainSelector: {
     name: "adi-testnet",
-    selector: 9418205736192840573n
+    selector: 9418205736192840573n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var adi_testnet_default = network126;
 var network127 = {
   chainId: "31337",
   chainSelector: {
     name: "anvil-devnet",
-    selector: 7759470850252068959n
+    selector: 7759470850252068959n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var anvil_devnet_default = network127;
 var network128 = {
   chainId: "33111",
   chainSelector: {
     name: "apechain-testnet-curtis",
-    selector: 9900119385908781505n
+    selector: 9900119385908781505n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var apechain_testnet_curtis_default = network128;
 var network129 = {
   chainId: "5042002",
   chainSelector: {
     name: "arc-testnet",
-    selector: 3034092155422581607n
+    selector: 3034092155422581607n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var arc_testnet_default = network129;
 var network130 = {
   chainId: "462",
   chainSelector: {
     name: "areon-testnet",
-    selector: 7317911323415911000n
+    selector: 7317911323415911000n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var areon_testnet_default = network130;
 var network131 = {
   chainId: "432201",
   chainSelector: {
     name: "avalanche-subnet-dexalot-testnet",
-    selector: 1458281248224512906n
+    selector: 1458281248224512906n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var avalanche_subnet_dexalot_testnet_default = network131;
 var network132 = {
   chainId: "43113",
   chainSelector: {
     name: "avalanche-testnet-fuji",
-    selector: 14767482510784806043n
+    selector: 14767482510784806043n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var avalanche_testnet_fuji_default = network132;
 var network133 = {
   chainId: "595581",
   chainSelector: {
     name: "avalanche-testnet-nexon",
-    selector: 7837562506228496256n
+    selector: 7837562506228496256n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var avalanche_testnet_nexon_default = network133;
 var network134 = {
   chainId: "80085",
   chainSelector: {
     name: "berachain-testnet-artio",
-    selector: 12336603543561911511n
+    selector: 12336603543561911511n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var berachain_testnet_artio_default = network134;
 var network135 = {
   chainId: "80084",
   chainSelector: {
     name: "berachain-testnet-bartio",
-    selector: 8999465244383784164n
+    selector: 8999465244383784164n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var berachain_testnet_bartio_default = network135;
 var network136 = {
   chainId: "80069",
   chainSelector: {
     name: "berachain-testnet-bepolia",
-    selector: 7728255861635209484n
+    selector: 7728255861635209484n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var berachain_testnet_bepolia_default = network136;
 var network137 = {
   chainId: "97",
   chainSelector: {
     name: "binance_smart_chain-testnet",
-    selector: 13264668187771770619n
+    selector: 13264668187771770619n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var binance_smart_chain_testnet_default = network137;
 var network138 = {
   chainId: "5611",
   chainSelector: {
     name: "binance_smart_chain-testnet-opbnb-1",
-    selector: 13274425992935471758n
+    selector: 13274425992935471758n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var binance_smart_chain_testnet_opbnb_1_default = network138;
 var network139 = {
   chainId: "1908",
   chainSelector: {
     name: "bitcichain-testnet",
-    selector: 4888058894222120000n
+    selector: 4888058894222120000n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var bitcichain_testnet_default = network139;
 var network140 = {
   chainId: "200810",
   chainSelector: {
     name: "bitcoin-testnet-bitlayer-1",
-    selector: 3789623672476206327n
+    selector: 3789623672476206327n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var bitcoin_testnet_bitlayer_1_default = network140;
 var network141 = {
   chainId: "3636",
   chainSelector: {
     name: "bitcoin-testnet-botanix",
-    selector: 1467223411771711614n
+    selector: 1467223411771711614n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var bitcoin_testnet_botanix_default = network141;
 var network142 = {
   chainId: "1123",
   chainSelector: {
     name: "bitcoin-testnet-bsquared-1",
-    selector: 1948510578179542068n
+    selector: 1948510578179542068n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var bitcoin_testnet_bsquared_1_default = network142;
 var network143 = {
   chainId: "686868",
   chainSelector: {
     name: "bitcoin-testnet-merlin",
-    selector: 5269261765892944301n
+    selector: 5269261765892944301n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var bitcoin_testnet_merlin_default = network143;
 var network144 = {
   chainId: "31",
   chainSelector: {
     name: "bitcoin-testnet-rootstock",
-    selector: 8953668971247136127n
+    selector: 8953668971247136127n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var bitcoin_testnet_rootstock_default = network144;
 var network145 = {
   chainId: "808813",
   chainSelector: {
     name: "bitcoin-testnet-sepolia-bob-1",
-    selector: 5535534526963509396n
+    selector: 5535534526963509396n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var bitcoin_testnet_sepolia_bob_1_default = network145;
 var network146 = {
   chainId: "945",
   chainSelector: {
     name: "bittensor-testnet",
-    selector: 2177900824115119161n
+    selector: 2177900824115119161n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var bittensor_testnet_default = network146;
 var network147 = {
   chainId: "1029",
   chainSelector: {
     name: "bittorrent_chain-testnet",
-    selector: 4459371029167934217n
+    selector: 4459371029167934217n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var bittorrent_chain_testnet_default = network147;
 var network148 = {
   chainId: "11142220",
   chainSelector: {
     name: "celo-sepolia",
-    selector: 3761762704474186180n
+    selector: 3761762704474186180n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var celo_sepolia_default = network148;
 var network149 = {
   chainId: "44787",
   chainSelector: {
     name: "celo-testnet-alfajores",
-    selector: 3552045678561919002n
+    selector: 3552045678561919002n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var celo_testnet_alfajores_default = network149;
 var network150 = {
   chainId: "812242",
   chainSelector: {
     name: "codex-testnet",
-    selector: 7225665875429174318n
+    selector: 7225665875429174318n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var codex_testnet_default = network150;
 var network151 = {
   chainId: "53",
   chainSelector: {
     name: "coinex_smart_chain-testnet",
-    selector: 8955032871639343000n
+    selector: 8955032871639343000n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var coinex_smart_chain_testnet_default = network151;
 var network152 = {
   chainId: "1114",
   chainSelector: {
     name: "core-testnet",
-    selector: 4264732132125536123n
+    selector: 4264732132125536123n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var core_testnet_default = network152;
 var network153 = {
   chainId: "338",
   chainSelector: {
     name: "cronos-testnet",
-    selector: 2995292832068775165n
+    selector: 2995292832068775165n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var cronos_testnet_default = network153;
 var network154 = {
   chainId: "282",
   chainSelector: {
     name: "cronos-testnet-zkevm-1",
-    selector: 3842103497652714138n
+    selector: 3842103497652714138n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var cronos_testnet_zkevm_1_default = network154;
 var network155 = {
   chainId: "240",
   chainSelector: {
     name: "cronos-zkevm-testnet-sepolia",
-    selector: 16487132492576884721n
+    selector: 16487132492576884721n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var cronos_zkevm_testnet_sepolia_default = network155;
 var network156 = {
   chainId: "6281971",
   chainSelector: {
     name: "dogeos-testnet-chikyu",
-    selector: 7254999290874773717n
+    selector: 7254999290874773717n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var dogeos_testnet_chikyu_default = network156;
 var network157 = {
   chainId: "2025",
   chainSelector: {
     name: "dtcc-testnet-andesite",
-    selector: 15513093881969820114n
+    selector: 15513093881969820114n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var dtcc_testnet_andesite_default = network157;
 var network158 = {
   chainId: "33431",
   chainSelector: {
     name: "edge-testnet",
-    selector: 13222148116102326311n
+    selector: 13222148116102326311n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var edge_testnet_default = network158;
 var network159 = {
   chainId: "421613",
   chainSelector: {
     name: "ethereum-testnet-goerli-arbitrum-1",
-    selector: 6101244977088475029n
+    selector: 6101244977088475029n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_goerli_arbitrum_1_default = network159;
 var network160 = {
   chainId: "84531",
   chainSelector: {
     name: "ethereum-testnet-goerli-base-1",
-    selector: 5790810961207155433n
+    selector: 5790810961207155433n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_goerli_base_1_default = network160;
 var network161 = {
   chainId: "59140",
   chainSelector: {
     name: "ethereum-testnet-goerli-linea-1",
-    selector: 1355246678561316402n
+    selector: 1355246678561316402n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_goerli_linea_1_default = network161;
 var network162 = {
   chainId: "5001",
   chainSelector: {
     name: "ethereum-testnet-goerli-mantle-1",
-    selector: 4168263376276232250n
+    selector: 4168263376276232250n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_goerli_mantle_1_default = network162;
 var network163 = {
   chainId: "420",
   chainSelector: {
     name: "ethereum-testnet-goerli-optimism-1",
-    selector: 2664363617261496610n
+    selector: 2664363617261496610n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_goerli_optimism_1_default = network163;
 var network164 = {
   chainId: "1442",
   chainSelector: {
     name: "ethereum-testnet-goerli-polygon-zkevm-1",
-    selector: 11059667695644972511n
+    selector: 11059667695644972511n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_goerli_polygon_zkevm_1_default = network164;
 var network165 = {
   chainId: "280",
   chainSelector: {
     name: "ethereum-testnet-goerli-zksync-1",
-    selector: 6802309497652714138n
+    selector: 6802309497652714138n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_goerli_zksync_1_default = network165;
 var network166 = {
   chainId: "17000",
   chainSelector: {
     name: "ethereum-testnet-holesky",
-    selector: 7717148896336251131n
+    selector: 7717148896336251131n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_holesky_default = network166;
 var network167 = {
   chainId: "2522",
   chainSelector: {
     name: "ethereum-testnet-holesky-fraxtal-1",
-    selector: 8901520481741771655n
+    selector: 8901520481741771655n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_holesky_fraxtal_1_default = network167;
 var network168 = {
   chainId: "2810",
   chainSelector: {
     name: "ethereum-testnet-holesky-morph-1",
-    selector: 8304510386741731151n
+    selector: 8304510386741731151n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_holesky_morph_1_default = network168;
 var network169 = {
   chainId: "167009",
   chainSelector: {
     name: "ethereum-testnet-holesky-taiko-1",
-    selector: 7248756420937879088n
+    selector: 7248756420937879088n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_holesky_taiko_1_default = network169;
 var network170 = {
   chainId: "560048",
   chainSelector: {
     name: "ethereum-testnet-hoodi",
-    selector: 10380998176179737091n
+    selector: 10380998176179737091n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_hoodi_default = network170;
 var network171 = {
   chainId: "2910",
   chainSelector: {
     name: "ethereum-testnet-hoodi-morph",
-    selector: 1064004874793747259n
+    selector: 1064004874793747259n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_hoodi_morph_default = network171;
 var network172 = {
   chainId: "167012",
   chainSelector: {
     name: "ethereum-testnet-hoodi-taiko",
-    selector: 9873759436596923887n
+    selector: 9873759436596923887n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_hoodi_taiko_default = network172;
 var network173 = {
   chainId: "167013",
   chainSelector: {
     name: "ethereum-testnet-hoodi-taiko-1",
-    selector: 15858691699034549072n
+    selector: 15858691699034549072n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_hoodi_taiko_1_default = network173;
 var network174 = {
   chainId: "11155111",
   chainSelector: {
     name: "ethereum-testnet-sepolia",
-    selector: 16015286601757825753n
+    selector: 16015286601757825753n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_default = network174;
 var network175 = {
   chainId: "421614",
   chainSelector: {
     name: "ethereum-testnet-sepolia-arbitrum-1",
-    selector: 3478487238524512106n
+    selector: 3478487238524512106n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_arbitrum_1_default = network175;
 var network176 = {
   chainId: "12325",
   chainSelector: {
     name: "ethereum-testnet-sepolia-arbitrum-1-l3x-1",
-    selector: 3486622437121596122n
+    selector: 3486622437121596122n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_arbitrum_1_l3x_1_default = network176;
 var network177 = {
   chainId: "978657",
   chainSelector: {
     name: "ethereum-testnet-sepolia-arbitrum-1-treasure-1",
-    selector: 10443705513486043421n
+    selector: 10443705513486043421n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_arbitrum_1_treasure_1_default = network177;
 var network178 = {
   chainId: "84532",
   chainSelector: {
     name: "ethereum-testnet-sepolia-base-1",
-    selector: 10344971235874465080n
+    selector: 10344971235874465080n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_base_1_default = network178;
 var network179 = {
   chainId: "168587773",
   chainSelector: {
     name: "ethereum-testnet-sepolia-blast-1",
-    selector: 2027362563942762617n
+    selector: 2027362563942762617n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_blast_1_default = network179;
 var network180 = {
   chainId: "21000001",
   chainSelector: {
     name: "ethereum-testnet-sepolia-corn-1",
-    selector: 1467427327723633929n
+    selector: 1467427327723633929n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_corn_1_default = network180;
 var network181 = {
   chainId: "133",
   chainSelector: {
     name: "ethereum-testnet-sepolia-hashkey-1",
-    selector: 4356164186791070119n
+    selector: 4356164186791070119n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_hashkey_1_default = network181;
 var network182 = {
   chainId: "13473",
   chainSelector: {
     name: "ethereum-testnet-sepolia-immutable-zkevm-1",
-    selector: 4526165231216331901n
+    selector: 4526165231216331901n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_immutable_zkevm_1_default = network182;
 var network183 = {
   chainId: "2358",
   chainSelector: {
     name: "ethereum-testnet-sepolia-kroma-1",
-    selector: 5990477251245693094n
+    selector: 5990477251245693094n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_kroma_1_default = network183;
 var network184 = {
   chainId: "37111",
   chainSelector: {
     name: "ethereum-testnet-sepolia-lens-1",
-    selector: 6827576821754315911n
+    selector: 6827576821754315911n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_lens_1_default = network184;
 var network185 = {
   chainId: "59141",
   chainSelector: {
     name: "ethereum-testnet-sepolia-linea-1",
-    selector: 5719461335882077547n
+    selector: 5719461335882077547n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_linea_1_default = network185;
 var network186 = {
   chainId: "4202",
   chainSelector: {
     name: "ethereum-testnet-sepolia-lisk-1",
-    selector: 5298399861320400553n
+    selector: 5298399861320400553n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_lisk_1_default = network186;
 var network187 = {
   chainId: "5003",
   chainSelector: {
     name: "ethereum-testnet-sepolia-mantle-1",
-    selector: 8236463271206331221n
+    selector: 8236463271206331221n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_mantle_1_default = network187;
 var network188 = {
   chainId: "59902",
   chainSelector: {
     name: "ethereum-testnet-sepolia-metis-1",
-    selector: 3777822886988675105n
+    selector: 3777822886988675105n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_metis_1_default = network188;
 var network189 = {
   chainId: "919",
   chainSelector: {
     name: "ethereum-testnet-sepolia-mode-1",
-    selector: 829525985033418733n
+    selector: 829525985033418733n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_mode_1_default = network189;
 var network190 = {
   chainId: "11155420",
   chainSelector: {
     name: "ethereum-testnet-sepolia-optimism-1",
-    selector: 5224473277236331295n
+    selector: 5224473277236331295n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_optimism_1_default = network190;
 var network191 = {
   chainId: "717160",
   chainSelector: {
     name: "ethereum-testnet-sepolia-polygon-validium-1",
-    selector: 4418231248214522936n
+    selector: 4418231248214522936n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_polygon_validium_1_default = network191;
 var network192 = {
   chainId: "2442",
   chainSelector: {
     name: "ethereum-testnet-sepolia-polygon-zkevm-1",
-    selector: 1654667687261492630n
+    selector: 1654667687261492630n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_polygon_zkevm_1_default = network192;
 var network193 = {
   chainId: "202601",
   chainSelector: {
     name: "ethereum-testnet-sepolia-ronin-1",
-    selector: 1091131740251125869n
+    selector: 1091131740251125869n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_ronin_1_default = network193;
 var network194 = {
   chainId: "534351",
   chainSelector: {
     name: "ethereum-testnet-sepolia-scroll-1",
-    selector: 2279865765895943307n
+    selector: 2279865765895943307n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_scroll_1_default = network194;
 var network195 = {
   chainId: "1946",
   chainSelector: {
     name: "ethereum-testnet-sepolia-soneium-1",
-    selector: 686603546605904534n
+    selector: 686603546605904534n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_soneium_1_default = network195;
 var network196 = {
   chainId: "1301",
   chainSelector: {
     name: "ethereum-testnet-sepolia-unichain-1",
-    selector: 14135854469784514356n
+    selector: 14135854469784514356n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_unichain_1_default = network196;
 var network197 = {
   chainId: "4801",
   chainSelector: {
     name: "ethereum-testnet-sepolia-worldchain-1",
-    selector: 5299555114858065850n
+    selector: 5299555114858065850n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_worldchain_1_default = network197;
 var network198 = {
   chainId: "195",
   chainSelector: {
     name: "ethereum-testnet-sepolia-xlayer-1",
-    selector: 2066098519157881736n
+    selector: 2066098519157881736n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_xlayer_1_default = network198;
 var network199 = {
   chainId: "48899",
   chainSelector: {
     name: "ethereum-testnet-sepolia-zircuit-1",
-    selector: 4562743618362911021n
+    selector: 4562743618362911021n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_zircuit_1_default = network199;
 var network200 = {
   chainId: "300",
   chainSelector: {
     name: "ethereum-testnet-sepolia-zksync-1",
-    selector: 6898391096552792247n
+    selector: 6898391096552792247n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ethereum_testnet_sepolia_zksync_1_default = network200;
 var network201 = {
   chainId: "128123",
   chainSelector: {
     name: "etherlink-testnet",
-    selector: 1910019406958449359n
+    selector: 1910019406958449359n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var etherlink_testnet_default = network201;
 var network202 = {
   chainId: "6398",
   chainSelector: {
     name: "everclear-testnet-sepolia",
-    selector: 379340054879810246n
+    selector: 379340054879810246n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var everclear_testnet_sepolia_default = network202;
 var network203 = {
   chainId: "4002",
   chainSelector: {
     name: "fantom-testnet",
-    selector: 4905564228793744293n
+    selector: 4905564228793744293n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var fantom_testnet_default = network203;
 var network204 = {
   chainId: "31415926",
   chainSelector: {
     name: "filecoin-testnet",
-    selector: 7060342227814389000n
+    selector: 7060342227814389000n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var filecoin_testnet_default = network204;
 var network205 = {
   chainId: "85",
   chainSelector: {
     name: "gate-chain-testnet-meteora",
-    selector: 3558960680482140165n
+    selector: 3558960680482140165n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var gate_chain_testnet_meteora_default = network205;
 var network206 = {
   chainId: "10087",
   chainSelector: {
     name: "gate-layer-testnet",
-    selector: 3667207123485082040n
+    selector: 3667207123485082040n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var gate_layer_testnet_default = network206;
 var network207 = {
   chainId: "1337",
   chainSelector: {
     name: "geth-testnet",
-    selector: 3379446385462418246n
+    selector: 3379446385462418246n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var geth_testnet_default = network207;
 var network208 = {
   chainId: "10200",
   chainSelector: {
     name: "gnosis_chain-testnet-chiado",
-    selector: 8871595565390010547n
+    selector: 8871595565390010547n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var gnosis_chain_testnet_chiado_default = network208;
 var network209 = {
   chainId: "296",
   chainSelector: {
     name: "hedera-testnet",
-    selector: 222782988166878823n
+    selector: 222782988166878823n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var hedera_testnet_default = network209;
 var network210 = {
   chainId: "743111",
   chainSelector: {
     name: "hemi-testnet-sepolia",
-    selector: 16126893759944359622n
+    selector: 16126893759944359622n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var hemi_testnet_sepolia_default = network210;
 var network211 = {
   chainId: "998",
   chainSelector: {
     name: "hyperliquid-testnet",
-    selector: 4286062357653186312n
+    selector: 4286062357653186312n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var hyperliquid_testnet_default = network211;
 var network212 = {
   chainId: "763373",
   chainSelector: {
     name: "ink-testnet-sepolia",
-    selector: 9763904284804119144n
+    selector: 9763904284804119144n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ink_testnet_sepolia_default = network212;
 var network213 = {
   chainId: "679",
   chainSelector: {
     name: "janction-testnet-sepolia",
-    selector: 5059197667603797935n
+    selector: 5059197667603797935n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var janction_testnet_sepolia_default = network213;
 var network214 = {
   chainId: "2019775",
   chainSelector: {
     name: "jovay-testnet",
-    selector: 945045181441419236n
+    selector: 945045181441419236n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var jovay_testnet_default = network214;
 var network215 = {
   chainId: "1001",
   chainSelector: {
     name: "kaia-testnet-kairos",
-    selector: 2624132734533621656n
+    selector: 2624132734533621656n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var kaia_testnet_kairos_default = network215;
 var network216 = {
   chainId: "2221",
   chainSelector: {
     name: "kava-testnet",
-    selector: 2110537777356199208n
+    selector: 2110537777356199208n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var kava_testnet_default = network216;
 var network217 = {
   chainId: "6342",
   chainSelector: {
     name: "megaeth-testnet",
-    selector: 2443239559770384419n
+    selector: 2443239559770384419n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var megaeth_testnet_default = network217;
 var network218 = {
   chainId: "6343",
   chainSelector: {
     name: "megaeth-testnet-2",
-    selector: 18241817625092392675n
+    selector: 18241817625092392675n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var megaeth_testnet_2_default = network218;
 var network219 = {
   chainId: "2129",
   chainSelector: {
     name: "memento-testnet",
-    selector: 12168171414969487009n
+    selector: 12168171414969487009n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var memento_testnet_default = network219;
 var network220 = {
   chainId: "1740",
   chainSelector: {
     name: "metal-testnet",
-    selector: 6286293440461807648n
+    selector: 6286293440461807648n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var metal_testnet_default = network220;
 var network221 = {
   chainId: "192940",
   chainSelector: {
     name: "mind-testnet",
-    selector: 7189150270347329685n
+    selector: 7189150270347329685n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var mind_testnet_default = network221;
 var network222 = {
   chainId: "1687",
   chainSelector: {
     name: "mint-testnet",
-    selector: 10749384167430721561n
+    selector: 10749384167430721561n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var mint_testnet_default = network222;
 var network223 = {
   chainId: "10143",
   chainSelector: {
     name: "monad-testnet",
-    selector: 2183018362218727504n
+    selector: 2183018362218727504n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var monad_testnet_default = network223;
 var network224 = {
   chainId: "398",
   chainSelector: {
     name: "near-testnet",
-    selector: 5061593697262339000n
+    selector: 5061593697262339000n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var near_testnet_default = network224;
 var network225 = {
   chainId: "9559",
   chainSelector: {
     name: "neonlink-testnet",
-    selector: 1113014352258747600n
+    selector: 1113014352258747600n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var neonlink_testnet_default = network225;
 var network226 = {
   chainId: "12227332",
   chainSelector: {
     name: "neox-testnet-t4",
-    selector: 2217764097022649312n
+    selector: 2217764097022649312n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var neox_testnet_t4_default = network226;
 var network227 = {
   chainId: "5668",
   chainSelector: {
     name: "nexon-dev",
-    selector: 8911150974185440581n
+    selector: 8911150974185440581n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var nexon_dev_default = network227;
 var network228 = {
   chainId: "6930",
   chainSelector: {
     name: "nibiru-testnet",
-    selector: 305104239123120457n
+    selector: 305104239123120457n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var nibiru_testnet_default = network228;
 var network229 = {
   chainId: "9000",
   chainSelector: {
     name: "ondo-testnet",
-    selector: 344208382356656551n
+    selector: 344208382356656551n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ondo_testnet_default = network229;
 var network230 = {
   chainId: "688689",
   chainSelector: {
     name: "pharos-atlantic-testnet",
-    selector: 16098325658947243212n
+    selector: 16098325658947243212n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var pharos_atlantic_testnet_default = network230;
 var network231 = {
   chainId: "688688",
   chainSelector: {
     name: "pharos-testnet",
-    selector: 4012524741200567430n
+    selector: 4012524741200567430n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var pharos_testnet_default = network231;
 var network232 = {
   chainId: "9746",
   chainSelector: {
     name: "plasma-testnet",
-    selector: 3967220077692964309n
+    selector: 3967220077692964309n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var plasma_testnet_default = network232;
 var network233 = {
   chainId: "98864",
   chainSelector: {
     name: "plume-devnet",
-    selector: 3743020999916460931n
+    selector: 3743020999916460931n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var plume_devnet_default = network233;
 var network234 = {
   chainId: "161221135",
   chainSelector: {
     name: "plume-testnet",
-    selector: 14684575664602284776n
+    selector: 14684575664602284776n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var plume_testnet_default = network234;
 var network235 = {
   chainId: "98867",
   chainSelector: {
     name: "plume-testnet-sepolia",
-    selector: 13874588925447303949n
+    selector: 13874588925447303949n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var plume_testnet_sepolia_default = network235;
 var network236 = {
   chainId: "81",
   chainSelector: {
     name: "polkadot-testnet-astar-shibuya",
-    selector: 6955638871347136141n
+    selector: 6955638871347136141n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var polkadot_testnet_astar_shibuya_default = network236;
 var network237 = {
   chainId: "2088",
   chainSelector: {
     name: "polkadot-testnet-centrifuge-altair",
-    selector: 2333097300889804761n
+    selector: 2333097300889804761n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var polkadot_testnet_centrifuge_altair_default = network237;
 var network238 = {
   chainId: "45",
   chainSelector: {
     name: "polkadot-testnet-darwinia-pangoro",
-    selector: 4340886533089894000n
+    selector: 4340886533089894000n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var polkadot_testnet_darwinia_pangoro_default = network238;
 var network239 = {
   chainId: "1287",
   chainSelector: {
     name: "polkadot-testnet-moonbeam-moonbase",
-    selector: 5361632739113536121n
+    selector: 5361632739113536121n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var polkadot_testnet_moonbeam_moonbase_default = network239;
 var network240 = {
   chainId: "80002",
   chainSelector: {
     name: "polygon-testnet-amoy",
-    selector: 16281711391670634445n
+    selector: 16281711391670634445n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var polygon_testnet_amoy_default = network240;
 var network241 = {
   chainId: "80001",
   chainSelector: {
     name: "polygon-testnet-mumbai",
-    selector: 12532609583862916517n
+    selector: 12532609583862916517n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var polygon_testnet_mumbai_default = network241;
 var network242 = {
   chainId: "129399",
   chainSelector: {
     name: "polygon-testnet-tatara",
-    selector: 9090863410735740267n
+    selector: 9090863410735740267n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var polygon_testnet_tatara_default = network242;
 var network243 = {
   chainId: "2024",
   chainSelector: {
     name: "private-testnet-andesite",
-    selector: 6915682381028791124n
+    selector: 6915682381028791124n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var private_testnet_andesite_default = network243;
 var network244 = {
   chainId: "2023",
   chainSelector: {
     name: "private-testnet-granite",
-    selector: 3260900564719373474n
+    selector: 3260900564719373474n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var private_testnet_granite_default = network244;
 var network245 = {
   chainId: "424242",
   chainSelector: {
     name: "private-testnet-mica",
-    selector: 4489326297382772450n
+    selector: 4489326297382772450n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var private_testnet_mica_default = network245;
 var network246 = {
   chainId: "682",
   chainSelector: {
     name: "private-testnet-obsidian",
-    selector: 6260932437388305511n
+    selector: 6260932437388305511n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var private_testnet_obsidian_default = network246;
 var network247 = {
   chainId: "45439",
   chainSelector: {
     name: "private-testnet-opala",
-    selector: 8446413392851542429n
+    selector: 8446413392851542429n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var private_testnet_opala_default = network247;
 var network248 = {
   chainId: "46630",
   chainSelector: {
     name: "robinhood-testnet",
-    selector: 2032988798112970440n
+    selector: 2032988798112970440n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var robinhood_testnet_default = network248;
 var network249 = {
   chainId: "2021",
   chainSelector: {
     name: "ronin-testnet-saigon",
-    selector: 13116810400804392105n
+    selector: 13116810400804392105n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ronin_testnet_saigon_default = network249;
 var network250 = {
   chainId: "1328",
   chainSelector: {
     name: "sei-testnet-atlantic",
-    selector: 1216300075444106652n
+    selector: 1216300075444106652n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var sei_testnet_atlantic_default = network250;
 var network251 = {
   chainId: "157",
   chainSelector: {
     name: "shibarium-testnet-puppynet",
-    selector: 17833296867764334567n
+    selector: 17833296867764334567n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var shibarium_testnet_puppynet_default = network251;
 var network252 = {
   chainId: "14601",
   chainSelector: {
     name: "sonic-testnet",
-    selector: 1763698235108410440n
+    selector: 1763698235108410440n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var sonic_testnet_default = network252;
 var network253 = {
   chainId: "57054",
   chainSelector: {
     name: "sonic-testnet-blaze",
-    selector: 3676871237479449268n
+    selector: 3676871237479449268n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var sonic_testnet_blaze_default = network253;
 var network254 = {
   chainId: "2201",
   chainSelector: {
     name: "stable-testnet",
-    selector: 11793402411494852765n
+    selector: 11793402411494852765n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var stable_testnet_default = network254;
 var network255 = {
   chainId: "1513",
   chainSelector: {
     name: "story-testnet",
-    selector: 4237030917318060427n
+    selector: 4237030917318060427n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var story_testnet_default = network255;
 var network256 = {
   chainId: "53302",
   chainSelector: {
     name: "superseed-testnet",
-    selector: 13694007683517087973n
+    selector: 13694007683517087973n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var superseed_testnet_default = network256;
 var network257 = {
   chainId: "2391",
   chainSelector: {
     name: "tac-testnet",
-    selector: 9488606126177218005n
+    selector: 9488606126177218005n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var tac_testnet_default = network257;
 var network258 = {
   chainId: "41",
   chainSelector: {
     name: "telos-evm-testnet",
-    selector: 729797994450396300n
+    selector: 729797994450396300n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var telos_evm_testnet_default = network258;
 var network259 = {
   chainId: "42429",
   chainSelector: {
     name: "tempo-testnet",
-    selector: 3963528237232804922n
+    selector: 3963528237232804922n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var tempo_testnet_default = network259;
 var network260 = {
   chainId: "42431",
   chainSelector: {
     name: "tempo-testnet-moderato",
-    selector: 8457817439310187923n
+    selector: 8457817439310187923n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var tempo_testnet_moderato_default = network260;
 var network261 = {
   chainId: "978658",
   chainSelector: {
     name: "treasure-testnet-topaz",
-    selector: 3676916124122457866n
+    selector: 3676916124122457866n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var treasure_testnet_topaz_default = network261;
 var network262 = {
   chainId: "3360022319",
   chainSelector: {
     name: "tron-devnet-evm",
-    selector: 13231703482326770600n
+    selector: 13231703482326770600n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var tron_devnet_evm_default = network262;
 var network263 = {
   chainId: "3448148188",
   chainSelector: {
     name: "tron-testnet-nile-evm",
-    selector: 2052925811360307749n
+    selector: 2052925811360307749n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var tron_testnet_nile_evm_default = network263;
 var network264 = {
   chainId: "2494104990",
   chainSelector: {
     name: "tron-testnet-shasta-evm",
-    selector: 13231703482326770598n
+    selector: 13231703482326770598n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var tron_testnet_shasta_evm_default = network264;
 var network265 = {
   chainId: "111",
   chainSelector: {
     name: "velas-testnet",
-    selector: 572210378683744374n
+    selector: 572210378683744374n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var velas_testnet_default = network265;
 var network266 = {
   chainId: "1112",
   chainSelector: {
     name: "wemix-testnet",
-    selector: 9284632837123596123n
+    selector: 9284632837123596123n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var wemix_testnet_default = network266;
 var network267 = {
   chainId: "51",
   chainSelector: {
     name: "xdc-testnet",
-    selector: 3017758115101368649n
+    selector: 3017758115101368649n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var xdc_testnet_default = network267;
 var network268 = {
   chainId: "1952",
   chainSelector: {
     name: "xlayer-testnet",
-    selector: 10212741611335999305n
+    selector: 10212741611335999305n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var xlayer_testnet_default = network268;
 var network269 = {
   chainId: "80087",
   chainSelector: {
     name: "zero-g-testnet-galileo",
-    selector: 2285225387454015855n
+    selector: 2285225387454015855n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var zero_g_testnet_galileo_default = network269;
 var network270 = {
   chainId: "48898",
   chainSelector: {
     name: "zircuit-testnet-garfield",
-    selector: 13781831279385219069n
+    selector: 13781831279385219069n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var zircuit_testnet_garfield_default = network270;
 var network271 = {
   chainId: "810181",
   chainSelector: {
     name: "zklink_nova-testnet",
-    selector: 5837261596322416298n
+    selector: 5837261596322416298n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var zklink_nova_testnet_default = network271;
 var network272 = {
   chainId: "999999999",
   chainSelector: {
     name: "zora-testnet",
-    selector: 16244020411108056671n
+    selector: 16244020411108056671n,
   },
   chainFamily: "evm",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var zora_testnet_default = network272;
 var network273 = {
   chainId: "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
   chainSelector: {
     name: "solana-devnet",
-    selector: 16423721717087811551n
+    selector: 16423721717087811551n,
   },
   chainFamily: "solana",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var solana_devnet_default = network273;
 var network274 = {
   chainId: "4uhcVJyU9pJkvQyS88uRDiswHXSCkY3zQawwpjk2NsNY",
   chainSelector: {
     name: "solana-testnet",
-    selector: 6302590918974934319n
+    selector: 6302590918974934319n,
   },
   chainFamily: "solana",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var solana_testnet_default = network274;
 var network275 = {
   chainId: "4",
   chainSelector: {
     name: "sui-localnet",
-    selector: 18395503381733958356n
+    selector: 18395503381733958356n,
   },
   chainFamily: "sui",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var sui_localnet_default = network275;
 var network276 = {
   chainId: "2",
   chainSelector: {
     name: "sui-testnet",
-    selector: 9762610643973837292n
+    selector: 9762610643973837292n,
   },
   chainFamily: "sui",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var sui_testnet_default = network276;
 var network277 = {
   chainId: "-217",
   chainSelector: {
     name: "ton-localnet",
-    selector: 13879075125137744094n
+    selector: 13879075125137744094n,
   },
   chainFamily: "ton",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ton_localnet_default = network277;
 var network278 = {
   chainId: "-3",
   chainSelector: {
     name: "ton-testnet",
-    selector: 1399300952838017768n
+    selector: 1399300952838017768n,
   },
   chainFamily: "ton",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var ton_testnet_default = network278;
 var network279 = {
   chainId: "3360022319",
   chainSelector: {
     name: "tron-devnet",
-    selector: 13231703482326770599n
+    selector: 13231703482326770599n,
   },
   chainFamily: "tron",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var tron_devnet_default = network279;
 var network280 = {
   chainId: "3448148188",
   chainSelector: {
     name: "tron-testnet-nile",
-    selector: 2052925811360307740n
+    selector: 2052925811360307740n,
   },
   chainFamily: "tron",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var tron_testnet_nile_default = network280;
 var network281 = {
   chainId: "2494104990",
   chainSelector: {
     name: "tron-testnet-shasta",
-    selector: 13231703482326770597n
+    selector: 13231703482326770597n,
   },
   chainFamily: "tron",
-  networkType: "testnet"
+  networkType: "testnet",
 };
 var tron_testnet_shasta_default = network281;
 var mainnetBySelector = new Map([
@@ -8899,7 +11679,7 @@ var mainnetBySelector = new Map([
   [4741433654826277614n, aptos_mainnet_default],
   [17529533435026248318n, sui_mainnet_default],
   [16448340667252469081n, ton_mainnet_default],
-  [1546563616611573945n, tron_mainnet_default]
+  [1546563616611573945n, tron_mainnet_default],
 ]);
 var testnetBySelector = new Map([
   [8953668971247136127n, bitcoin_testnet_rootstock_default],
@@ -9037,7 +11817,10 @@ var testnetBySelector = new Map([
   [5535534526963509396n, bitcoin_testnet_sepolia_bob_1_default],
   [5837261596322416298n, zklink_nova_testnet_default],
   [7225665875429174318n, codex_testnet_default],
-  [10443705513486043421n, ethereum_testnet_sepolia_arbitrum_1_treasure_1_default],
+  [
+    10443705513486043421n,
+    ethereum_testnet_sepolia_arbitrum_1_treasure_1_default,
+  ],
   [3676916124122457866n, treasure_testnet_topaz_default],
   [945045181441419236n, jovay_testnet_default],
   [3034092155422581607n, arc_testnet_default],
@@ -9064,7 +11847,7 @@ var testnetBySelector = new Map([
   [13879075125137744094n, ton_localnet_default],
   [13231703482326770597n, tron_testnet_shasta_default],
   [13231703482326770599n, tron_devnet_default],
-  [2052925811360307740n, tron_testnet_nile_default]
+  [2052925811360307740n, tron_testnet_nile_default],
 ]);
 var mainnetByName = new Map([
   ["ethereum-mainnet", ethereum_mainnet_default],
@@ -9088,7 +11871,10 @@ var mainnetByName = new Map([
   ["mint-mainnet", mint_mainnet_default],
   ["ethereum-mainnet-xlayer-1", ethereum_mainnet_xlayer_1_default],
   ["bittorrent_chain-mainnet", bittorrent_chain_mainnet_default],
-  ["binance_smart_chain-mainnet-opbnb-1", binance_smart_chain_mainnet_opbnb_1_default],
+  [
+    "binance_smart_chain-mainnet-opbnb-1",
+    binance_smart_chain_mainnet_opbnb_1_default,
+  ],
   ["bitcoin-mainnet-bsquared-1", bitcoin_mainnet_bsquared_1_default],
   ["mind-mainnet", mind_mainnet_default],
   ["lens-mainnet", lens_mainnet_default],
@@ -9111,7 +11897,10 @@ var mainnetByName = new Map([
   ["hyperliquid-mainnet", hyperliquid_mainnet_default],
   ["conflux-mainnet", conflux_mainnet_default],
   ["ethereum-mainnet-metis-1", ethereum_mainnet_metis_1_default],
-  ["ethereum-mainnet-polygon-zkevm-1", ethereum_mainnet_polygon_zkevm_1_default],
+  [
+    "ethereum-mainnet-polygon-zkevm-1",
+    ethereum_mainnet_polygon_zkevm_1_default,
+  ],
   ["wemix-mainnet", wemix_mainnet_default],
   ["core-mainnet", core_mainnet_default],
   ["lisk-mainnet", lisk_mainnet_default],
@@ -9141,8 +11930,14 @@ var mainnetByName = new Map([
   ["ethereum-mainnet-base-1", ethereum_mainnet_base_1_default],
   ["plasma-mainnet", plasma_mainnet_default],
   ["gate-layer-mainnet", gate_layer_mainnet_default],
-  ["ethereum-mainnet-arbitrum-1-l3x-1", ethereum_mainnet_arbitrum_1_l3x_1_default],
-  ["ethereum-mainnet-immutable-zkevm-1", ethereum_mainnet_immutable_zkevm_1_default],
+  [
+    "ethereum-mainnet-arbitrum-1-l3x-1",
+    ethereum_mainnet_arbitrum_1_l3x_1_default,
+  ],
+  [
+    "ethereum-mainnet-immutable-zkevm-1",
+    ethereum_mainnet_immutable_zkevm_1_default,
+  ],
   ["0g-mainnet", _0g_mainnet_default],
   ["everclear-mainnet", everclear_mainnet_default],
   ["apechain-mainnet", apechain_mainnet_default],
@@ -9169,13 +11964,19 @@ var mainnetByName = new Map([
   ["plume-mainnet", plume_mainnet_default],
   ["ethereum-mainnet-taiko-1", ethereum_mainnet_taiko_1_default],
   ["bitcoin-mainnet-bitlayer-1", bitcoin_mainnet_bitlayer_1_default],
-  ["avalanche-subnet-dexalot-mainnet", avalanche_subnet_dexalot_mainnet_default],
+  [
+    "avalanche-subnet-dexalot-mainnet",
+    avalanche_subnet_dexalot_mainnet_default,
+  ],
   ["ethereum-mainnet-scroll-1", ethereum_mainnet_scroll_1_default],
   ["polygon-mainnet-katana", polygon_mainnet_katana_default],
   ["nexon-qa", nexon_qa_default],
   ["zklink_nova-mainnet", zklink_nova_mainnet_default],
   ["nexon-stage", nexon_stage_default],
-  ["ethereum-mainnet-arbitrum-1-treasure-1", ethereum_mainnet_arbitrum_1_treasure_1_default],
+  [
+    "ethereum-mainnet-arbitrum-1-treasure-1",
+    ethereum_mainnet_arbitrum_1_treasure_1_default,
+  ],
   ["jovay-mainnet", jovay_mainnet_default],
   ["zora-mainnet", zora_mainnet_default],
   ["corn-mainnet", corn_mainnet_default],
@@ -9184,29 +11985,47 @@ var mainnetByName = new Map([
   ["aptos-mainnet", aptos_mainnet_default],
   ["sui-mainnet", sui_mainnet_default],
   ["ton-mainnet", ton_mainnet_default],
-  ["tron-mainnet", tron_mainnet_default]
+  ["tron-mainnet", tron_mainnet_default],
 ]);
 var testnetByName = new Map([
   ["bitcoin-testnet-rootstock", bitcoin_testnet_rootstock_default],
   ["telos-evm-testnet", telos_evm_testnet_default],
-  ["polkadot-testnet-darwinia-pangoro", polkadot_testnet_darwinia_pangoro_default],
+  [
+    "polkadot-testnet-darwinia-pangoro",
+    polkadot_testnet_darwinia_pangoro_default,
+  ],
   ["xdc-testnet", xdc_testnet_default],
   ["coinex_smart_chain-testnet", coinex_smart_chain_testnet_default],
   ["polkadot-testnet-astar-shibuya", polkadot_testnet_astar_shibuya_default],
   ["gate-chain-testnet-meteora", gate_chain_testnet_meteora_default],
   ["binance_smart_chain-testnet", binance_smart_chain_testnet_default],
   ["velas-testnet", velas_testnet_default],
-  ["ethereum-testnet-sepolia-hashkey-1", ethereum_testnet_sepolia_hashkey_1_default],
+  [
+    "ethereum-testnet-sepolia-hashkey-1",
+    ethereum_testnet_sepolia_hashkey_1_default,
+  ],
   ["shibarium-testnet-puppynet", shibarium_testnet_puppynet_default],
-  ["ethereum-testnet-sepolia-xlayer-1", ethereum_testnet_sepolia_xlayer_1_default],
+  [
+    "ethereum-testnet-sepolia-xlayer-1",
+    ethereum_testnet_sepolia_xlayer_1_default,
+  ],
   ["cronos-zkevm-testnet-sepolia", cronos_zkevm_testnet_sepolia_default],
-  ["ethereum-testnet-goerli-zksync-1", ethereum_testnet_goerli_zksync_1_default],
+  [
+    "ethereum-testnet-goerli-zksync-1",
+    ethereum_testnet_goerli_zksync_1_default,
+  ],
   ["cronos-testnet-zkevm-1", cronos_testnet_zkevm_1_default],
   ["hedera-testnet", hedera_testnet_default],
-  ["ethereum-testnet-sepolia-zksync-1", ethereum_testnet_sepolia_zksync_1_default],
+  [
+    "ethereum-testnet-sepolia-zksync-1",
+    ethereum_testnet_sepolia_zksync_1_default,
+  ],
   ["cronos-testnet", cronos_testnet_default],
   ["near-testnet", near_testnet_default],
-  ["ethereum-testnet-goerli-optimism-1", ethereum_testnet_goerli_optimism_1_default],
+  [
+    "ethereum-testnet-goerli-optimism-1",
+    ethereum_testnet_goerli_optimism_1_default,
+  ],
   ["areon-testnet", areon_testnet_default],
   ["janction-testnet-sepolia", janction_testnet_sepolia_default],
   ["private-testnet-obsidian", private_testnet_obsidian_default],
@@ -9218,41 +12037,77 @@ var testnetByName = new Map([
   ["wemix-testnet", wemix_testnet_default],
   ["core-testnet", core_testnet_default],
   ["bitcoin-testnet-bsquared-1", bitcoin_testnet_bsquared_1_default],
-  ["polkadot-testnet-moonbeam-moonbase", polkadot_testnet_moonbeam_moonbase_default],
-  ["ethereum-testnet-sepolia-unichain-1", ethereum_testnet_sepolia_unichain_1_default],
+  [
+    "polkadot-testnet-moonbeam-moonbase",
+    polkadot_testnet_moonbeam_moonbase_default,
+  ],
+  [
+    "ethereum-testnet-sepolia-unichain-1",
+    ethereum_testnet_sepolia_unichain_1_default,
+  ],
   ["sei-testnet-atlantic", sei_testnet_atlantic_default],
   ["geth-testnet", geth_testnet_default],
-  ["ethereum-testnet-goerli-polygon-zkevm-1", ethereum_testnet_goerli_polygon_zkevm_1_default],
+  [
+    "ethereum-testnet-goerli-polygon-zkevm-1",
+    ethereum_testnet_goerli_polygon_zkevm_1_default,
+  ],
   ["story-testnet", story_testnet_default],
   ["mint-testnet", mint_testnet_default],
   ["metal-testnet", metal_testnet_default],
   ["bitcichain-testnet", bitcichain_testnet_default],
-  ["ethereum-testnet-sepolia-soneium-1", ethereum_testnet_sepolia_soneium_1_default],
+  [
+    "ethereum-testnet-sepolia-soneium-1",
+    ethereum_testnet_sepolia_soneium_1_default,
+  ],
   ["xlayer-testnet", xlayer_testnet_default],
   ["ronin-testnet-saigon", ronin_testnet_saigon_default],
   ["private-testnet-granite", private_testnet_granite_default],
   ["private-testnet-andesite", private_testnet_andesite_default],
   ["dtcc-testnet-andesite", dtcc_testnet_andesite_default],
-  ["polkadot-testnet-centrifuge-altair", polkadot_testnet_centrifuge_altair_default],
+  [
+    "polkadot-testnet-centrifuge-altair",
+    polkadot_testnet_centrifuge_altair_default,
+  ],
   ["memento-testnet", memento_testnet_default],
   ["stable-testnet", stable_testnet_default],
   ["kava-testnet", kava_testnet_default],
-  ["ethereum-testnet-sepolia-kroma-1", ethereum_testnet_sepolia_kroma_1_default],
+  [
+    "ethereum-testnet-sepolia-kroma-1",
+    ethereum_testnet_sepolia_kroma_1_default,
+  ],
   ["tac-testnet", tac_testnet_default],
   [
     "ethereum-testnet-sepolia-polygon-zkevm-1",
-    ethereum_testnet_sepolia_polygon_zkevm_1_default
+    ethereum_testnet_sepolia_polygon_zkevm_1_default,
   ],
-  ["ethereum-testnet-holesky-fraxtal-1", ethereum_testnet_holesky_fraxtal_1_default],
-  ["ethereum-testnet-holesky-morph-1", ethereum_testnet_holesky_morph_1_default],
+  [
+    "ethereum-testnet-holesky-fraxtal-1",
+    ethereum_testnet_holesky_fraxtal_1_default,
+  ],
+  [
+    "ethereum-testnet-holesky-morph-1",
+    ethereum_testnet_holesky_morph_1_default,
+  ],
   ["ethereum-testnet-hoodi-morph", ethereum_testnet_hoodi_morph_default],
   ["bitcoin-testnet-botanix", bitcoin_testnet_botanix_default],
   ["fantom-testnet", fantom_testnet_default],
   ["ethereum-testnet-sepolia-lisk-1", ethereum_testnet_sepolia_lisk_1_default],
-  ["ethereum-testnet-sepolia-worldchain-1", ethereum_testnet_sepolia_worldchain_1_default],
-  ["ethereum-testnet-goerli-mantle-1", ethereum_testnet_goerli_mantle_1_default],
-  ["ethereum-testnet-sepolia-mantle-1", ethereum_testnet_sepolia_mantle_1_default],
-  ["binance_smart_chain-testnet-opbnb-1", binance_smart_chain_testnet_opbnb_1_default],
+  [
+    "ethereum-testnet-sepolia-worldchain-1",
+    ethereum_testnet_sepolia_worldchain_1_default,
+  ],
+  [
+    "ethereum-testnet-goerli-mantle-1",
+    ethereum_testnet_goerli_mantle_1_default,
+  ],
+  [
+    "ethereum-testnet-sepolia-mantle-1",
+    ethereum_testnet_sepolia_mantle_1_default,
+  ],
+  [
+    "binance_smart_chain-testnet-opbnb-1",
+    binance_smart_chain_testnet_opbnb_1_default,
+  ],
   ["nexon-dev", nexon_dev_default],
   ["megaeth-testnet", megaeth_testnet_default],
   ["megaeth-testnet-2", megaeth_testnet_2_default],
@@ -9267,11 +12122,11 @@ var testnetByName = new Map([
   ["abstract-testnet", abstract_testnet_default],
   [
     "ethereum-testnet-sepolia-arbitrum-1-l3x-1",
-    ethereum_testnet_sepolia_arbitrum_1_l3x_1_default
+    ethereum_testnet_sepolia_arbitrum_1_l3x_1_default,
   ],
   [
     "ethereum-testnet-sepolia-immutable-zkevm-1",
-    ethereum_testnet_sepolia_immutable_zkevm_1_default
+    ethereum_testnet_sepolia_immutable_zkevm_1_default,
   ],
   ["sonic-testnet", sonic_testnet_default],
   ["0g-testnet-newton", _0g_testnet_newton_default],
@@ -9290,12 +12145,21 @@ var testnetByName = new Map([
   ["private-testnet-opala", private_testnet_opala_default],
   ["robinhood-testnet", robinhood_testnet_default],
   ["zircuit-testnet-garfield", zircuit_testnet_garfield_default],
-  ["ethereum-testnet-sepolia-zircuit-1", ethereum_testnet_sepolia_zircuit_1_default],
+  [
+    "ethereum-testnet-sepolia-zircuit-1",
+    ethereum_testnet_sepolia_zircuit_1_default,
+  ],
   ["superseed-testnet", superseed_testnet_default],
   ["sonic-testnet-blaze", sonic_testnet_blaze_default],
   ["ethereum-testnet-goerli-linea-1", ethereum_testnet_goerli_linea_1_default],
-  ["ethereum-testnet-sepolia-linea-1", ethereum_testnet_sepolia_linea_1_default],
-  ["ethereum-testnet-sepolia-metis-1", ethereum_testnet_sepolia_metis_1_default],
+  [
+    "ethereum-testnet-sepolia-linea-1",
+    ethereum_testnet_sepolia_linea_1_default,
+  ],
+  [
+    "ethereum-testnet-sepolia-metis-1",
+    ethereum_testnet_sepolia_metis_1_default,
+  ],
   ["polygon-testnet-mumbai", polygon_testnet_mumbai_default],
   ["polygon-testnet-amoy", polygon_testnet_amoy_default],
   ["berachain-testnet-bepolia", berachain_testnet_bepolia_default],
@@ -9309,17 +12173,35 @@ var testnetByName = new Map([
   ["adi-testnet", adi_testnet_default],
   ["etherlink-testnet", etherlink_testnet_default],
   ["polygon-testnet-tatara", polygon_testnet_tatara_default],
-  ["ethereum-testnet-holesky-taiko-1", ethereum_testnet_holesky_taiko_1_default],
+  [
+    "ethereum-testnet-holesky-taiko-1",
+    ethereum_testnet_holesky_taiko_1_default,
+  ],
   ["ethereum-testnet-hoodi-taiko", ethereum_testnet_hoodi_taiko_default],
   ["ethereum-testnet-hoodi-taiko-1", ethereum_testnet_hoodi_taiko_1_default],
   ["mind-testnet", mind_testnet_default],
   ["bitcoin-testnet-bitlayer-1", bitcoin_testnet_bitlayer_1_default],
-  ["ethereum-testnet-sepolia-ronin-1", ethereum_testnet_sepolia_ronin_1_default],
-  ["ethereum-testnet-goerli-arbitrum-1", ethereum_testnet_goerli_arbitrum_1_default],
-  ["ethereum-testnet-sepolia-arbitrum-1", ethereum_testnet_sepolia_arbitrum_1_default],
+  [
+    "ethereum-testnet-sepolia-ronin-1",
+    ethereum_testnet_sepolia_ronin_1_default,
+  ],
+  [
+    "ethereum-testnet-goerli-arbitrum-1",
+    ethereum_testnet_goerli_arbitrum_1_default,
+  ],
+  [
+    "ethereum-testnet-sepolia-arbitrum-1",
+    ethereum_testnet_sepolia_arbitrum_1_default,
+  ],
   ["private-testnet-mica", private_testnet_mica_default],
-  ["avalanche-subnet-dexalot-testnet", avalanche_subnet_dexalot_testnet_default],
-  ["ethereum-testnet-sepolia-scroll-1", ethereum_testnet_sepolia_scroll_1_default],
+  [
+    "avalanche-subnet-dexalot-testnet",
+    avalanche_subnet_dexalot_testnet_default,
+  ],
+  [
+    "ethereum-testnet-sepolia-scroll-1",
+    ethereum_testnet_sepolia_scroll_1_default,
+  ],
   ["ethereum-testnet-hoodi", ethereum_testnet_hoodi_default],
   ["avalanche-testnet-nexon", avalanche_testnet_nexon_default],
   ["bitcoin-testnet-merlin", bitcoin_testnet_merlin_default],
@@ -9327,7 +12209,7 @@ var testnetByName = new Map([
   ["pharos-atlantic-testnet", pharos_atlantic_testnet_default],
   [
     "ethereum-testnet-sepolia-polygon-validium-1",
-    ethereum_testnet_sepolia_polygon_validium_1_default
+    ethereum_testnet_sepolia_polygon_validium_1_default,
   ],
   ["hemi-testnet-sepolia", hemi_testnet_sepolia_default],
   ["ink-testnet-sepolia", ink_testnet_sepolia_default],
@@ -9336,7 +12218,7 @@ var testnetByName = new Map([
   ["codex-testnet", codex_testnet_default],
   [
     "ethereum-testnet-sepolia-arbitrum-1-treasure-1",
-    ethereum_testnet_sepolia_arbitrum_1_treasure_1_default
+    ethereum_testnet_sepolia_arbitrum_1_treasure_1_default,
   ],
   ["treasure-testnet-topaz", treasure_testnet_topaz_default],
   ["jovay-testnet", jovay_testnet_default],
@@ -9344,12 +12226,18 @@ var testnetByName = new Map([
   ["dogeos-testnet-chikyu", dogeos_testnet_chikyu_default],
   ["celo-sepolia", celo_sepolia_default],
   ["ethereum-testnet-sepolia", ethereum_testnet_sepolia_default],
-  ["ethereum-testnet-sepolia-optimism-1", ethereum_testnet_sepolia_optimism_1_default],
+  [
+    "ethereum-testnet-sepolia-optimism-1",
+    ethereum_testnet_sepolia_optimism_1_default,
+  ],
   ["neox-testnet-t4", neox_testnet_t4_default],
   ["ethereum-testnet-sepolia-corn-1", ethereum_testnet_sepolia_corn_1_default],
   ["filecoin-testnet", filecoin_testnet_default],
   ["plume-testnet", plume_testnet_default],
-  ["ethereum-testnet-sepolia-blast-1", ethereum_testnet_sepolia_blast_1_default],
+  [
+    "ethereum-testnet-sepolia-blast-1",
+    ethereum_testnet_sepolia_blast_1_default,
+  ],
   ["zora-testnet", zora_testnet_default],
   ["tron-testnet-shasta-evm", tron_testnet_shasta_evm_default],
   ["tron-devnet-evm", tron_devnet_evm_default],
@@ -9364,7 +12252,7 @@ var testnetByName = new Map([
   ["ton-localnet", ton_localnet_default],
   ["tron-testnet-shasta", tron_testnet_shasta_default],
   ["tron-devnet", tron_devnet_default],
-  ["tron-testnet-nile", tron_testnet_nile_default]
+  ["tron-testnet-nile", tron_testnet_nile_default],
 ]);
 var mainnetBySelectorByFamily = {
   evm: new Map([
@@ -9480,13 +12368,13 @@ var mainnetBySelectorByFamily = {
     [1523760397290643893n, jovay_mainnet_default],
     [3555797439612589184n, zora_mainnet_default],
     [9043146809313071210n, corn_mainnet_default],
-    [1546563616611573946n, tron_mainnet_evm_default]
+    [1546563616611573946n, tron_mainnet_evm_default],
   ]),
   solana: new Map([[124615329519749607n, solana_mainnet_default]]),
   aptos: new Map([[4741433654826277614n, aptos_mainnet_default]]),
   sui: new Map([[17529533435026248318n, sui_mainnet_default]]),
   ton: new Map([[16448340667252469081n, ton_mainnet_default]]),
-  tron: new Map([[1546563616611573945n, tron_mainnet_default]])
+  tron: new Map([[1546563616611573945n, tron_mainnet_default]]),
 };
 var testnetBySelectorByFamily = {
   evm: new Map([
@@ -9625,7 +12513,10 @@ var testnetBySelectorByFamily = {
     [5535534526963509396n, bitcoin_testnet_sepolia_bob_1_default],
     [5837261596322416298n, zklink_nova_testnet_default],
     [7225665875429174318n, codex_testnet_default],
-    [10443705513486043421n, ethereum_testnet_sepolia_arbitrum_1_treasure_1_default],
+    [
+      10443705513486043421n,
+      ethereum_testnet_sepolia_arbitrum_1_treasure_1_default,
+    ],
     [3676916124122457866n, treasure_testnet_topaz_default],
     [945045181441419236n, jovay_testnet_default],
     [3034092155422581607n, arc_testnet_default],
@@ -9641,29 +12532,29 @@ var testnetBySelectorByFamily = {
     [16244020411108056671n, zora_testnet_default],
     [13231703482326770598n, tron_testnet_shasta_evm_default],
     [13231703482326770600n, tron_devnet_evm_default],
-    [2052925811360307749n, tron_testnet_nile_evm_default]
+    [2052925811360307749n, tron_testnet_nile_evm_default],
   ]),
   solana: new Map([
     [6302590918974934319n, solana_testnet_default],
-    [16423721717087811551n, solana_devnet_default]
+    [16423721717087811551n, solana_devnet_default],
   ]),
   aptos: new Map([
     [743186221051783445n, aptos_testnet_default],
-    [4457093679053095497n, aptos_localnet_default]
+    [4457093679053095497n, aptos_localnet_default],
   ]),
   sui: new Map([
     [9762610643973837292n, sui_testnet_default],
-    [18395503381733958356n, sui_localnet_default]
+    [18395503381733958356n, sui_localnet_default],
   ]),
   ton: new Map([
     [1399300952838017768n, ton_testnet_default],
-    [13879075125137744094n, ton_localnet_default]
+    [13879075125137744094n, ton_localnet_default],
   ]),
   tron: new Map([
     [13231703482326770597n, tron_testnet_shasta_default],
     [13231703482326770599n, tron_devnet_default],
-    [2052925811360307740n, tron_testnet_nile_default]
-  ])
+    [2052925811360307740n, tron_testnet_nile_default],
+  ]),
 };
 var mainnetByNameByFamily = {
   evm: new Map([
@@ -9688,7 +12579,10 @@ var mainnetByNameByFamily = {
     ["mint-mainnet", mint_mainnet_default],
     ["ethereum-mainnet-xlayer-1", ethereum_mainnet_xlayer_1_default],
     ["bittorrent_chain-mainnet", bittorrent_chain_mainnet_default],
-    ["binance_smart_chain-mainnet-opbnb-1", binance_smart_chain_mainnet_opbnb_1_default],
+    [
+      "binance_smart_chain-mainnet-opbnb-1",
+      binance_smart_chain_mainnet_opbnb_1_default,
+    ],
     ["bitcoin-mainnet-bsquared-1", bitcoin_mainnet_bsquared_1_default],
     ["mind-mainnet", mind_mainnet_default],
     ["lens-mainnet", lens_mainnet_default],
@@ -9711,7 +12605,10 @@ var mainnetByNameByFamily = {
     ["hyperliquid-mainnet", hyperliquid_mainnet_default],
     ["conflux-mainnet", conflux_mainnet_default],
     ["ethereum-mainnet-metis-1", ethereum_mainnet_metis_1_default],
-    ["ethereum-mainnet-polygon-zkevm-1", ethereum_mainnet_polygon_zkevm_1_default],
+    [
+      "ethereum-mainnet-polygon-zkevm-1",
+      ethereum_mainnet_polygon_zkevm_1_default,
+    ],
     ["wemix-mainnet", wemix_mainnet_default],
     ["core-mainnet", core_mainnet_default],
     ["lisk-mainnet", lisk_mainnet_default],
@@ -9741,8 +12638,14 @@ var mainnetByNameByFamily = {
     ["ethereum-mainnet-base-1", ethereum_mainnet_base_1_default],
     ["plasma-mainnet", plasma_mainnet_default],
     ["gate-layer-mainnet", gate_layer_mainnet_default],
-    ["ethereum-mainnet-arbitrum-1-l3x-1", ethereum_mainnet_arbitrum_1_l3x_1_default],
-    ["ethereum-mainnet-immutable-zkevm-1", ethereum_mainnet_immutable_zkevm_1_default],
+    [
+      "ethereum-mainnet-arbitrum-1-l3x-1",
+      ethereum_mainnet_arbitrum_1_l3x_1_default,
+    ],
+    [
+      "ethereum-mainnet-immutable-zkevm-1",
+      ethereum_mainnet_immutable_zkevm_1_default,
+    ],
     ["0g-mainnet", _0g_mainnet_default],
     ["everclear-mainnet", everclear_mainnet_default],
     ["apechain-mainnet", apechain_mainnet_default],
@@ -9769,50 +12672,77 @@ var mainnetByNameByFamily = {
     ["plume-mainnet", plume_mainnet_default],
     ["ethereum-mainnet-taiko-1", ethereum_mainnet_taiko_1_default],
     ["bitcoin-mainnet-bitlayer-1", bitcoin_mainnet_bitlayer_1_default],
-    ["avalanche-subnet-dexalot-mainnet", avalanche_subnet_dexalot_mainnet_default],
+    [
+      "avalanche-subnet-dexalot-mainnet",
+      avalanche_subnet_dexalot_mainnet_default,
+    ],
     ["ethereum-mainnet-scroll-1", ethereum_mainnet_scroll_1_default],
     ["polygon-mainnet-katana", polygon_mainnet_katana_default],
     ["nexon-qa", nexon_qa_default],
     ["zklink_nova-mainnet", zklink_nova_mainnet_default],
     ["nexon-stage", nexon_stage_default],
-    ["ethereum-mainnet-arbitrum-1-treasure-1", ethereum_mainnet_arbitrum_1_treasure_1_default],
+    [
+      "ethereum-mainnet-arbitrum-1-treasure-1",
+      ethereum_mainnet_arbitrum_1_treasure_1_default,
+    ],
     ["jovay-mainnet", jovay_mainnet_default],
     ["zora-mainnet", zora_mainnet_default],
     ["corn-mainnet", corn_mainnet_default],
-    ["tron-mainnet-evm", tron_mainnet_evm_default]
+    ["tron-mainnet-evm", tron_mainnet_evm_default],
   ]),
   solana: new Map([["solana-mainnet", solana_mainnet_default]]),
   aptos: new Map([["aptos-mainnet", aptos_mainnet_default]]),
   sui: new Map([["sui-mainnet", sui_mainnet_default]]),
   ton: new Map([["ton-mainnet", ton_mainnet_default]]),
-  tron: new Map([["tron-mainnet", tron_mainnet_default]])
+  tron: new Map([["tron-mainnet", tron_mainnet_default]]),
 };
 var testnetByNameByFamily = {
   evm: new Map([
     ["bitcoin-testnet-rootstock", bitcoin_testnet_rootstock_default],
     ["telos-evm-testnet", telos_evm_testnet_default],
-    ["polkadot-testnet-darwinia-pangoro", polkadot_testnet_darwinia_pangoro_default],
+    [
+      "polkadot-testnet-darwinia-pangoro",
+      polkadot_testnet_darwinia_pangoro_default,
+    ],
     ["xdc-testnet", xdc_testnet_default],
     ["coinex_smart_chain-testnet", coinex_smart_chain_testnet_default],
     ["polkadot-testnet-astar-shibuya", polkadot_testnet_astar_shibuya_default],
     ["gate-chain-testnet-meteora", gate_chain_testnet_meteora_default],
     ["binance_smart_chain-testnet", binance_smart_chain_testnet_default],
     ["velas-testnet", velas_testnet_default],
-    ["ethereum-testnet-sepolia-hashkey-1", ethereum_testnet_sepolia_hashkey_1_default],
+    [
+      "ethereum-testnet-sepolia-hashkey-1",
+      ethereum_testnet_sepolia_hashkey_1_default,
+    ],
     ["shibarium-testnet-puppynet", shibarium_testnet_puppynet_default],
-    ["ethereum-testnet-sepolia-xlayer-1", ethereum_testnet_sepolia_xlayer_1_default],
+    [
+      "ethereum-testnet-sepolia-xlayer-1",
+      ethereum_testnet_sepolia_xlayer_1_default,
+    ],
     ["cronos-zkevm-testnet-sepolia", cronos_zkevm_testnet_sepolia_default],
-    ["ethereum-testnet-goerli-zksync-1", ethereum_testnet_goerli_zksync_1_default],
+    [
+      "ethereum-testnet-goerli-zksync-1",
+      ethereum_testnet_goerli_zksync_1_default,
+    ],
     ["cronos-testnet-zkevm-1", cronos_testnet_zkevm_1_default],
     ["hedera-testnet", hedera_testnet_default],
-    ["ethereum-testnet-sepolia-zksync-1", ethereum_testnet_sepolia_zksync_1_default],
+    [
+      "ethereum-testnet-sepolia-zksync-1",
+      ethereum_testnet_sepolia_zksync_1_default,
+    ],
     ["cronos-testnet", cronos_testnet_default],
     ["near-testnet", near_testnet_default],
-    ["ethereum-testnet-goerli-optimism-1", ethereum_testnet_goerli_optimism_1_default],
+    [
+      "ethereum-testnet-goerli-optimism-1",
+      ethereum_testnet_goerli_optimism_1_default,
+    ],
     ["areon-testnet", areon_testnet_default],
     ["janction-testnet-sepolia", janction_testnet_sepolia_default],
     ["private-testnet-obsidian", private_testnet_obsidian_default],
-    ["ethereum-testnet-sepolia-mode-1", ethereum_testnet_sepolia_mode_1_default],
+    [
+      "ethereum-testnet-sepolia-mode-1",
+      ethereum_testnet_sepolia_mode_1_default,
+    ],
     ["bittensor-testnet", bittensor_testnet_default],
     ["hyperliquid-testnet", hyperliquid_testnet_default],
     ["kaia-testnet-kairos", kaia_testnet_kairos_default],
@@ -9820,44 +12750,80 @@ var testnetByNameByFamily = {
     ["wemix-testnet", wemix_testnet_default],
     ["core-testnet", core_testnet_default],
     ["bitcoin-testnet-bsquared-1", bitcoin_testnet_bsquared_1_default],
-    ["polkadot-testnet-moonbeam-moonbase", polkadot_testnet_moonbeam_moonbase_default],
-    ["ethereum-testnet-sepolia-unichain-1", ethereum_testnet_sepolia_unichain_1_default],
+    [
+      "polkadot-testnet-moonbeam-moonbase",
+      polkadot_testnet_moonbeam_moonbase_default,
+    ],
+    [
+      "ethereum-testnet-sepolia-unichain-1",
+      ethereum_testnet_sepolia_unichain_1_default,
+    ],
     ["sei-testnet-atlantic", sei_testnet_atlantic_default],
     ["geth-testnet", geth_testnet_default],
     [
       "ethereum-testnet-goerli-polygon-zkevm-1",
-      ethereum_testnet_goerli_polygon_zkevm_1_default
+      ethereum_testnet_goerli_polygon_zkevm_1_default,
     ],
     ["story-testnet", story_testnet_default],
     ["mint-testnet", mint_testnet_default],
     ["metal-testnet", metal_testnet_default],
     ["bitcichain-testnet", bitcichain_testnet_default],
-    ["ethereum-testnet-sepolia-soneium-1", ethereum_testnet_sepolia_soneium_1_default],
+    [
+      "ethereum-testnet-sepolia-soneium-1",
+      ethereum_testnet_sepolia_soneium_1_default,
+    ],
     ["xlayer-testnet", xlayer_testnet_default],
     ["ronin-testnet-saigon", ronin_testnet_saigon_default],
     ["private-testnet-granite", private_testnet_granite_default],
     ["private-testnet-andesite", private_testnet_andesite_default],
     ["dtcc-testnet-andesite", dtcc_testnet_andesite_default],
-    ["polkadot-testnet-centrifuge-altair", polkadot_testnet_centrifuge_altair_default],
+    [
+      "polkadot-testnet-centrifuge-altair",
+      polkadot_testnet_centrifuge_altair_default,
+    ],
     ["memento-testnet", memento_testnet_default],
     ["stable-testnet", stable_testnet_default],
     ["kava-testnet", kava_testnet_default],
-    ["ethereum-testnet-sepolia-kroma-1", ethereum_testnet_sepolia_kroma_1_default],
+    [
+      "ethereum-testnet-sepolia-kroma-1",
+      ethereum_testnet_sepolia_kroma_1_default,
+    ],
     ["tac-testnet", tac_testnet_default],
     [
       "ethereum-testnet-sepolia-polygon-zkevm-1",
-      ethereum_testnet_sepolia_polygon_zkevm_1_default
+      ethereum_testnet_sepolia_polygon_zkevm_1_default,
     ],
-    ["ethereum-testnet-holesky-fraxtal-1", ethereum_testnet_holesky_fraxtal_1_default],
-    ["ethereum-testnet-holesky-morph-1", ethereum_testnet_holesky_morph_1_default],
+    [
+      "ethereum-testnet-holesky-fraxtal-1",
+      ethereum_testnet_holesky_fraxtal_1_default,
+    ],
+    [
+      "ethereum-testnet-holesky-morph-1",
+      ethereum_testnet_holesky_morph_1_default,
+    ],
     ["ethereum-testnet-hoodi-morph", ethereum_testnet_hoodi_morph_default],
     ["bitcoin-testnet-botanix", bitcoin_testnet_botanix_default],
     ["fantom-testnet", fantom_testnet_default],
-    ["ethereum-testnet-sepolia-lisk-1", ethereum_testnet_sepolia_lisk_1_default],
-    ["ethereum-testnet-sepolia-worldchain-1", ethereum_testnet_sepolia_worldchain_1_default],
-    ["ethereum-testnet-goerli-mantle-1", ethereum_testnet_goerli_mantle_1_default],
-    ["ethereum-testnet-sepolia-mantle-1", ethereum_testnet_sepolia_mantle_1_default],
-    ["binance_smart_chain-testnet-opbnb-1", binance_smart_chain_testnet_opbnb_1_default],
+    [
+      "ethereum-testnet-sepolia-lisk-1",
+      ethereum_testnet_sepolia_lisk_1_default,
+    ],
+    [
+      "ethereum-testnet-sepolia-worldchain-1",
+      ethereum_testnet_sepolia_worldchain_1_default,
+    ],
+    [
+      "ethereum-testnet-goerli-mantle-1",
+      ethereum_testnet_goerli_mantle_1_default,
+    ],
+    [
+      "ethereum-testnet-sepolia-mantle-1",
+      ethereum_testnet_sepolia_mantle_1_default,
+    ],
+    [
+      "binance_smart_chain-testnet-opbnb-1",
+      binance_smart_chain_testnet_opbnb_1_default,
+    ],
     ["nexon-dev", nexon_dev_default],
     ["megaeth-testnet", megaeth_testnet_default],
     ["megaeth-testnet-2", megaeth_testnet_2_default],
@@ -9872,11 +12838,11 @@ var testnetByNameByFamily = {
     ["abstract-testnet", abstract_testnet_default],
     [
       "ethereum-testnet-sepolia-arbitrum-1-l3x-1",
-      ethereum_testnet_sepolia_arbitrum_1_l3x_1_default
+      ethereum_testnet_sepolia_arbitrum_1_l3x_1_default,
     ],
     [
       "ethereum-testnet-sepolia-immutable-zkevm-1",
-      ethereum_testnet_sepolia_immutable_zkevm_1_default
+      ethereum_testnet_sepolia_immutable_zkevm_1_default,
     ],
     ["sonic-testnet", sonic_testnet_default],
     ["0g-testnet-newton", _0g_testnet_newton_default],
@@ -9887,7 +12853,10 @@ var testnetByNameByFamily = {
     ["anvil-devnet", anvil_devnet_default],
     ["apechain-testnet-curtis", apechain_testnet_curtis_default],
     ["edge-testnet", edge_testnet_default],
-    ["ethereum-testnet-sepolia-lens-1", ethereum_testnet_sepolia_lens_1_default],
+    [
+      "ethereum-testnet-sepolia-lens-1",
+      ethereum_testnet_sepolia_lens_1_default,
+    ],
     ["tempo-testnet", tempo_testnet_default],
     ["tempo-testnet-moderato", tempo_testnet_moderato_default],
     ["avalanche-testnet-fuji", avalanche_testnet_fuji_default],
@@ -9895,12 +12864,24 @@ var testnetByNameByFamily = {
     ["private-testnet-opala", private_testnet_opala_default],
     ["robinhood-testnet", robinhood_testnet_default],
     ["zircuit-testnet-garfield", zircuit_testnet_garfield_default],
-    ["ethereum-testnet-sepolia-zircuit-1", ethereum_testnet_sepolia_zircuit_1_default],
+    [
+      "ethereum-testnet-sepolia-zircuit-1",
+      ethereum_testnet_sepolia_zircuit_1_default,
+    ],
     ["superseed-testnet", superseed_testnet_default],
     ["sonic-testnet-blaze", sonic_testnet_blaze_default],
-    ["ethereum-testnet-goerli-linea-1", ethereum_testnet_goerli_linea_1_default],
-    ["ethereum-testnet-sepolia-linea-1", ethereum_testnet_sepolia_linea_1_default],
-    ["ethereum-testnet-sepolia-metis-1", ethereum_testnet_sepolia_metis_1_default],
+    [
+      "ethereum-testnet-goerli-linea-1",
+      ethereum_testnet_goerli_linea_1_default,
+    ],
+    [
+      "ethereum-testnet-sepolia-linea-1",
+      ethereum_testnet_sepolia_linea_1_default,
+    ],
+    [
+      "ethereum-testnet-sepolia-metis-1",
+      ethereum_testnet_sepolia_metis_1_default,
+    ],
     ["polygon-testnet-mumbai", polygon_testnet_mumbai_default],
     ["polygon-testnet-amoy", polygon_testnet_amoy_default],
     ["berachain-testnet-bepolia", berachain_testnet_bepolia_default],
@@ -9908,23 +12889,44 @@ var testnetByNameByFamily = {
     ["berachain-testnet-artio", berachain_testnet_artio_default],
     ["zero-g-testnet-galileo", zero_g_testnet_galileo_default],
     ["ethereum-testnet-goerli-base-1", ethereum_testnet_goerli_base_1_default],
-    ["ethereum-testnet-sepolia-base-1", ethereum_testnet_sepolia_base_1_default],
+    [
+      "ethereum-testnet-sepolia-base-1",
+      ethereum_testnet_sepolia_base_1_default,
+    ],
     ["plume-devnet", plume_devnet_default],
     ["plume-testnet-sepolia", plume_testnet_sepolia_default],
     ["adi-testnet", adi_testnet_default],
     ["etherlink-testnet", etherlink_testnet_default],
     ["polygon-testnet-tatara", polygon_testnet_tatara_default],
-    ["ethereum-testnet-holesky-taiko-1", ethereum_testnet_holesky_taiko_1_default],
+    [
+      "ethereum-testnet-holesky-taiko-1",
+      ethereum_testnet_holesky_taiko_1_default,
+    ],
     ["ethereum-testnet-hoodi-taiko", ethereum_testnet_hoodi_taiko_default],
     ["ethereum-testnet-hoodi-taiko-1", ethereum_testnet_hoodi_taiko_1_default],
     ["mind-testnet", mind_testnet_default],
     ["bitcoin-testnet-bitlayer-1", bitcoin_testnet_bitlayer_1_default],
-    ["ethereum-testnet-sepolia-ronin-1", ethereum_testnet_sepolia_ronin_1_default],
-    ["ethereum-testnet-goerli-arbitrum-1", ethereum_testnet_goerli_arbitrum_1_default],
-    ["ethereum-testnet-sepolia-arbitrum-1", ethereum_testnet_sepolia_arbitrum_1_default],
+    [
+      "ethereum-testnet-sepolia-ronin-1",
+      ethereum_testnet_sepolia_ronin_1_default,
+    ],
+    [
+      "ethereum-testnet-goerli-arbitrum-1",
+      ethereum_testnet_goerli_arbitrum_1_default,
+    ],
+    [
+      "ethereum-testnet-sepolia-arbitrum-1",
+      ethereum_testnet_sepolia_arbitrum_1_default,
+    ],
     ["private-testnet-mica", private_testnet_mica_default],
-    ["avalanche-subnet-dexalot-testnet", avalanche_subnet_dexalot_testnet_default],
-    ["ethereum-testnet-sepolia-scroll-1", ethereum_testnet_sepolia_scroll_1_default],
+    [
+      "avalanche-subnet-dexalot-testnet",
+      avalanche_subnet_dexalot_testnet_default,
+    ],
+    [
+      "ethereum-testnet-sepolia-scroll-1",
+      ethereum_testnet_sepolia_scroll_1_default,
+    ],
     ["ethereum-testnet-hoodi", ethereum_testnet_hoodi_default],
     ["avalanche-testnet-nexon", avalanche_testnet_nexon_default],
     ["bitcoin-testnet-merlin", bitcoin_testnet_merlin_default],
@@ -9932,7 +12934,7 @@ var testnetByNameByFamily = {
     ["pharos-atlantic-testnet", pharos_atlantic_testnet_default],
     [
       "ethereum-testnet-sepolia-polygon-validium-1",
-      ethereum_testnet_sepolia_polygon_validium_1_default
+      ethereum_testnet_sepolia_polygon_validium_1_default,
     ],
     ["hemi-testnet-sepolia", hemi_testnet_sepolia_default],
     ["ink-testnet-sepolia", ink_testnet_sepolia_default],
@@ -9941,7 +12943,7 @@ var testnetByNameByFamily = {
     ["codex-testnet", codex_testnet_default],
     [
       "ethereum-testnet-sepolia-arbitrum-1-treasure-1",
-      ethereum_testnet_sepolia_arbitrum_1_treasure_1_default
+      ethereum_testnet_sepolia_arbitrum_1_treasure_1_default,
     ],
     ["treasure-testnet-topaz", treasure_testnet_topaz_default],
     ["jovay-testnet", jovay_testnet_default],
@@ -9949,38 +12951,47 @@ var testnetByNameByFamily = {
     ["dogeos-testnet-chikyu", dogeos_testnet_chikyu_default],
     ["celo-sepolia", celo_sepolia_default],
     ["ethereum-testnet-sepolia", ethereum_testnet_sepolia_default],
-    ["ethereum-testnet-sepolia-optimism-1", ethereum_testnet_sepolia_optimism_1_default],
+    [
+      "ethereum-testnet-sepolia-optimism-1",
+      ethereum_testnet_sepolia_optimism_1_default,
+    ],
     ["neox-testnet-t4", neox_testnet_t4_default],
-    ["ethereum-testnet-sepolia-corn-1", ethereum_testnet_sepolia_corn_1_default],
+    [
+      "ethereum-testnet-sepolia-corn-1",
+      ethereum_testnet_sepolia_corn_1_default,
+    ],
     ["filecoin-testnet", filecoin_testnet_default],
     ["plume-testnet", plume_testnet_default],
-    ["ethereum-testnet-sepolia-blast-1", ethereum_testnet_sepolia_blast_1_default],
+    [
+      "ethereum-testnet-sepolia-blast-1",
+      ethereum_testnet_sepolia_blast_1_default,
+    ],
     ["zora-testnet", zora_testnet_default],
     ["tron-testnet-shasta-evm", tron_testnet_shasta_evm_default],
     ["tron-devnet-evm", tron_devnet_evm_default],
-    ["tron-testnet-nile-evm", tron_testnet_nile_evm_default]
+    ["tron-testnet-nile-evm", tron_testnet_nile_evm_default],
   ]),
   solana: new Map([
     ["solana-testnet", solana_testnet_default],
-    ["solana-devnet", solana_devnet_default]
+    ["solana-devnet", solana_devnet_default],
   ]),
   aptos: new Map([
     ["aptos-testnet", aptos_testnet_default],
-    ["aptos-localnet", aptos_localnet_default]
+    ["aptos-localnet", aptos_localnet_default],
   ]),
   sui: new Map([
     ["sui-testnet", sui_testnet_default],
-    ["sui-localnet", sui_localnet_default]
+    ["sui-localnet", sui_localnet_default],
   ]),
   ton: new Map([
     ["ton-testnet", ton_testnet_default],
-    ["ton-localnet", ton_localnet_default]
+    ["ton-localnet", ton_localnet_default],
   ]),
   tron: new Map([
     ["tron-testnet-shasta", tron_testnet_shasta_default],
     ["tron-devnet", tron_devnet_default],
-    ["tron-testnet-nile", tron_testnet_nile_default]
-  ])
+    ["tron-testnet-nile", tron_testnet_nile_default],
+  ]),
 };
 
 class NetworkLookup {
@@ -9989,10 +13000,10 @@ class NetworkLookup {
     this.maps = maps;
   }
   find(options) {
-    const { chainSelector, chainSelectorName, isTestnet, chainFamily } = options;
+    const { chainSelector, chainSelectorName, isTestnet, chainFamily } =
+      options;
     const getBySelector = (map) => {
-      if (chainSelector === undefined)
-        return;
+      if (chainSelector === undefined) return;
       return map.get(chainSelector);
     };
     if (chainSelector === undefined && !chainSelectorName) {
@@ -10005,22 +13016,32 @@ class NetworkLookup {
       if (isTestnet === true) {
         return getBySelector(this.maps.testnetBySelectorByFamily[chainFamily]);
       }
-      let network282 = getBySelector(this.maps.testnetBySelectorByFamily[chainFamily]);
+      let network282 = getBySelector(
+        this.maps.testnetBySelectorByFamily[chainFamily],
+      );
       if (!network282) {
-        network282 = getBySelector(this.maps.mainnetBySelectorByFamily[chainFamily]);
+        network282 = getBySelector(
+          this.maps.mainnetBySelectorByFamily[chainFamily],
+        );
       }
       return network282;
     }
     if (chainFamily && chainSelectorName) {
       if (isTestnet === false) {
-        return this.maps.mainnetByNameByFamily[chainFamily].get(chainSelectorName);
+        return this.maps.mainnetByNameByFamily[chainFamily].get(
+          chainSelectorName,
+        );
       }
       if (isTestnet === true) {
-        return this.maps.testnetByNameByFamily[chainFamily].get(chainSelectorName);
+        return this.maps.testnetByNameByFamily[chainFamily].get(
+          chainSelectorName,
+        );
       }
-      let network282 = this.maps.testnetByNameByFamily[chainFamily].get(chainSelectorName);
+      let network282 =
+        this.maps.testnetByNameByFamily[chainFamily].get(chainSelectorName);
       if (!network282) {
-        network282 = this.maps.mainnetByNameByFamily[chainFamily].get(chainSelectorName);
+        network282 =
+          this.maps.mainnetByNameByFamily[chainFamily].get(chainSelectorName);
       }
       return network282;
     }
@@ -10061,7 +13082,7 @@ var defaultLookup = new NetworkLookup({
   testnetByName,
   testnetByNameByFamily,
   testnetBySelector,
-  testnetBySelectorByFamily
+  testnetBySelectorByFamily,
 });
 function consensusIdenticalAggregation() {
   return simpleConsensus(AggregationType.IDENTICAL);
@@ -10086,8 +13107,8 @@ function simpleDescriptor(agg) {
   return create(ConsensusDescriptorSchema, {
     descriptor: {
       case: "aggregation",
-      value: agg
-    }
+      value: agg,
+    },
   });
 }
 
@@ -10101,35 +13122,39 @@ class Int64 {
       return Int64.toInt64Bigint(bi2);
     }
     if (typeof v === "bigint") {
-      if (v > Int64.INT64_MAX)
-        throw new Error("int64 overflow");
-      else if (v < Int64.INT64_MIN)
-        throw new Error("int64 underflow");
+      if (v > Int64.INT64_MAX) throw new Error("int64 overflow");
+      else if (v < Int64.INT64_MIN) throw new Error("int64 underflow");
       return v;
     }
     if (!Number.isFinite(v) || !Number.isInteger(v))
       throw new Error("int64 requires an integer number");
     const bi = BigInt(v);
-    if (bi > Int64.INT64_MAX)
-      throw new Error("int64 overflow");
-    else if (bi < Int64.INT64_MIN)
-      throw new Error("int64 underflow");
+    if (bi > Int64.INT64_MAX) throw new Error("int64 overflow");
+    else if (bi < Int64.INT64_MIN) throw new Error("int64 underflow");
     return bi;
   }
   constructor(v) {
     this.value = Int64.toInt64Bigint(v);
   }
   add(i2, safe = true) {
-    return safe ? new Int64(this.value + i2.value) : new Int64(BigInt.asIntN(64, this.value + i2.value));
+    return safe
+      ? new Int64(this.value + i2.value)
+      : new Int64(BigInt.asIntN(64, this.value + i2.value));
   }
   sub(i2, safe = true) {
-    return safe ? new Int64(this.value - i2.value) : new Int64(BigInt.asIntN(64, this.value - i2.value));
+    return safe
+      ? new Int64(this.value - i2.value)
+      : new Int64(BigInt.asIntN(64, this.value - i2.value));
   }
   mul(i2, safe = true) {
-    return safe ? new Int64(this.value * i2.value) : new Int64(BigInt.asIntN(64, this.value * i2.value));
+    return safe
+      ? new Int64(this.value * i2.value)
+      : new Int64(BigInt.asIntN(64, this.value * i2.value));
   }
   div(i2, safe = true) {
-    return safe ? new Int64(this.value / i2.value) : new Int64(BigInt.asIntN(64, this.value / i2.value));
+    return safe
+      ? new Int64(this.value / i2.value)
+      : new Int64(BigInt.asIntN(64, this.value / i2.value));
   }
 }
 
@@ -10142,35 +13167,39 @@ class UInt64 {
       return UInt64.toUint64Bigint(bi2);
     }
     if (typeof v === "bigint") {
-      if (v > UInt64.UINT64_MAX)
-        throw new Error("uint64 overflow");
-      else if (v < 0n)
-        throw new Error("uint64 underflow");
+      if (v > UInt64.UINT64_MAX) throw new Error("uint64 overflow");
+      else if (v < 0n) throw new Error("uint64 underflow");
       return v;
     }
     if (!Number.isFinite(v) || !Number.isInteger(v))
       throw new Error("uint64 requires an integer number");
     const bi = BigInt(v);
-    if (bi > UInt64.UINT64_MAX)
-      throw new Error("uint64 overflow");
-    else if (bi < 0n)
-      throw new Error("uint64 underflow");
+    if (bi > UInt64.UINT64_MAX) throw new Error("uint64 overflow");
+    else if (bi < 0n) throw new Error("uint64 underflow");
     return bi;
   }
   constructor(v) {
     this.value = UInt64.toUint64Bigint(v);
   }
   add(i2, safe = true) {
-    return safe ? new UInt64(this.value + i2.value) : new UInt64(BigInt.asUintN(64, this.value + i2.value));
+    return safe
+      ? new UInt64(this.value + i2.value)
+      : new UInt64(BigInt.asUintN(64, this.value + i2.value));
   }
   sub(i2, safe = true) {
-    return safe ? new UInt64(this.value - i2.value) : new UInt64(BigInt.asUintN(64, this.value - i2.value));
+    return safe
+      ? new UInt64(this.value - i2.value)
+      : new UInt64(BigInt.asUintN(64, this.value - i2.value));
   }
   mul(i2, safe = true) {
-    return safe ? new UInt64(this.value * i2.value) : new UInt64(BigInt.asUintN(64, this.value * i2.value));
+    return safe
+      ? new UInt64(this.value * i2.value)
+      : new UInt64(BigInt.asUintN(64, this.value * i2.value));
   }
   div(i2, safe = true) {
-    return safe ? new UInt64(this.value / i2.value) : new UInt64(BigInt.asUintN(64, this.value / i2.value));
+    return safe
+      ? new UInt64(this.value / i2.value)
+      : new UInt64(BigInt.asUintN(64, this.value / i2.value));
   }
 }
 
@@ -10179,7 +13208,7 @@ class Decimal {
   exponent;
   static parse(s) {
     const m = /^([+-])?(\d*)(?:\.(\d*))?$/.exec(s.trim());
-    if (!m || m[2] === "" && (m[3] === undefined || m[3] === ""))
+    if (!m || (m[2] === "" && (m[3] === undefined || m[3] === "")))
       throw new Error("invalid decimal string");
     const signStr = m[1] ?? "+";
     const intPart = m[2] ?? "0";
@@ -10222,14 +13251,12 @@ class Value {
     return input instanceof Uint8Array ? input : new Uint8Array(input);
   }
   static bigintToBytesBE(abs) {
-    if (abs === 0n)
-      return new Uint8Array;
+    if (abs === 0n) return new Uint8Array();
     let hex = abs.toString(16);
-    if (hex.length % 2 === 1)
-      hex = "0" + hex;
+    if (hex.length % 2 === 1) hex = "0" + hex;
     const len2 = hex.length / 2;
     const out = new Uint8Array(len2);
-    for (let i2 = 0;i2 < len2; i2++) {
+    for (let i2 = 0; i2 < len2; i2++) {
       out[i2] = parseInt(hex.slice(i2 * 2, i2 * 2 + 2), 16);
     }
     return out;
@@ -10239,7 +13266,7 @@ class Value {
     const abs = v < 0n ? -v : v;
     return create(BigIntSchema, {
       absVal: Value.bigintToBytesBE(abs),
-      sign
+      sign,
     });
   }
   static toTimestamp(d) {
@@ -10262,46 +13289,46 @@ class Value {
       return create(ValueSchema2, { value: { case: "bytesValue", value: v } });
     if (v instanceof ArrayBuffer)
       return create(ValueSchema2, {
-        value: { case: "bytesValue", value: Value.toUint8Array(v) }
+        value: { case: "bytesValue", value: Value.toUint8Array(v) },
       });
     if (v instanceof Date)
       return create(ValueSchema2, {
-        value: { case: "timeValue", value: Value.toTimestamp(v) }
+        value: { case: "timeValue", value: Value.toTimestamp(v) },
       });
     if (v instanceof Int64) {
       return create(ValueSchema2, {
-        value: { case: "int64Value", value: v.value }
+        value: { case: "int64Value", value: v.value },
       });
     }
     if (v instanceof UInt64) {
       return create(ValueSchema2, {
-        value: { case: "uint64Value", value: v.value }
+        value: { case: "uint64Value", value: v.value },
       });
     }
     if (v instanceof Decimal) {
       const decimalProto = create(DecimalSchema, {
         coefficient: Value.bigIntToProtoBigInt(v.coeffecient),
-        exponent: v.exponent
+        exponent: v.exponent,
       });
       return create(ValueSchema2, {
-        value: { case: "decimalValue", value: decimalProto }
+        value: { case: "decimalValue", value: decimalProto },
       });
     }
     switch (typeof v) {
       case "string":
         return create(ValueSchema2, {
-          value: { case: "stringValue", value: v }
+          value: { case: "stringValue", value: v },
         });
       case "boolean":
         return create(ValueSchema2, { value: { case: "boolValue", value: v } });
       case "bigint": {
         return create(ValueSchema2, {
-          value: { case: "bigintValue", value: Value.bigIntToProtoBigInt(v) }
+          value: { case: "bigintValue", value: Value.bigIntToProtoBigInt(v) },
         });
       }
       case "number": {
         return create(ValueSchema2, {
-          value: { case: "float64Value", value: v }
+          value: { case: "float64Value", value: v },
         });
       }
       case "object":
@@ -10312,7 +13339,9 @@ class Value {
     if (Array.isArray(v)) {
       const fields2 = v.map(Value.wrapInternal);
       const list = create(ListSchema, { fields: fields2 });
-      return create(ValueSchema2, { value: { case: "listValue", value: list } });
+      return create(ValueSchema2, {
+        value: { case: "listValue", value: list },
+      });
     }
     if (Value.isPlainObject(v)) {
       const fields2 = {};
@@ -10350,7 +13379,9 @@ class Value {
     if (typeof unwrapped === "object" && unwrapped !== null) {
       Object.assign(obj, unwrapped);
     } else {
-      throw new Error(`Cannot copy properties from primitive value to object instance. Use a schema instead.`);
+      throw new Error(
+        `Cannot copy properties from primitive value to object instance. Use a schema instead.`,
+      );
     }
     return obj;
   }
@@ -10375,7 +13406,7 @@ function unwrap(value) {
       const sign = bigIntValue.sign;
       let result = 0n;
       for (const byte of absVal) {
-        result = result << 8n | BigInt(byte);
+        result = (result << 8n) | BigInt(byte);
       }
       return sign < 0n ? -result : result;
     }
@@ -10406,7 +13437,7 @@ function unwrap(value) {
       const sign = coefficient.sign;
       let result = 0n;
       for (const byte of absVal) {
-        result = result << 8n | BigInt(byte);
+        result = (result << 8n) | BigInt(byte);
       }
       coeffBigInt = sign < 0n ? -result : result;
       return new Decimal(coeffBigInt, exponent);
@@ -10416,12 +13447,15 @@ function unwrap(value) {
   }
 }
 function isValueProto(value) {
-  return value != null && typeof value.$typeName === "string" && value.$typeName === "values.v1.Value";
+  return (
+    value != null &&
+    typeof value.$typeName === "string" &&
+    value.$typeName === "values.v1.Value"
+  );
 }
 async function standardValidate(schema, input) {
   let result = schema["~standard"].validate(input);
-  if (result instanceof Promise)
-    result = await result;
+  if (result instanceof Promise) result = await result;
   if (result.issues) {
     const errorDetails = JSON.stringify(result.issues, null, 2);
     throw new Error(`Config validation failed. Expectations were not matched:
@@ -10444,7 +13478,9 @@ var configHandler = async (request, { configParser, configSchema } = {}) => {
       throw new Error(`Failed to parse configuration: unknown error`);
     }
   }
-  return configSchema ? standardValidate(configSchema, intermediateConfig) : intermediateConfig;
+  return configSchema
+    ? standardValidate(configSchema, intermediateConfig)
+    : intermediateConfig;
 };
 var exports_external = {};
 __export(exports_external, {
@@ -10554,15 +13590,15 @@ __export(exports_external, {
   INVALID: () => INVALID,
   EMPTY_PATH: () => EMPTY_PATH,
   DIRTY: () => DIRTY,
-  BRAND: () => BRAND
+  BRAND: () => BRAND,
 });
 var util;
-(function(util2) {
+(function (util2) {
   util2.assertEqual = (_) => {};
   function assertIs(_arg) {}
   util2.assertIs = assertIs;
   function assertNever(_x) {
-    throw new Error;
+    throw new Error();
   }
   util2.assertNever = assertNever;
   util2.arrayToEnum = (items) => {
@@ -10573,7 +13609,9 @@ var util;
     return obj;
   };
   util2.getValidEnumValues = (obj) => {
-    const validKeys = util2.objectKeys(obj).filter((k) => typeof obj[obj[k]] !== "number");
+    const validKeys = util2
+      .objectKeys(obj)
+      .filter((k) => typeof obj[obj[k]] !== "number");
     const filtered = {};
     for (const k of validKeys) {
       filtered[k] = obj[k];
@@ -10581,29 +13619,39 @@ var util;
     return util2.objectValues(filtered);
   };
   util2.objectValues = (obj) => {
-    return util2.objectKeys(obj).map(function(e) {
+    return util2.objectKeys(obj).map(function (e) {
       return obj[e];
     });
   };
-  util2.objectKeys = typeof Object.keys === "function" ? (obj) => Object.keys(obj) : (object) => {
-    const keys = [];
-    for (const key in object) {
-      if (Object.prototype.hasOwnProperty.call(object, key)) {
-        keys.push(key);
-      }
-    }
-    return keys;
-  };
+  util2.objectKeys =
+    typeof Object.keys === "function"
+      ? (obj) => Object.keys(obj)
+      : (object) => {
+          const keys = [];
+          for (const key in object) {
+            if (Object.prototype.hasOwnProperty.call(object, key)) {
+              keys.push(key);
+            }
+          }
+          return keys;
+        };
   util2.find = (arr, checker) => {
     for (const item of arr) {
-      if (checker(item))
-        return item;
+      if (checker(item)) return item;
     }
     return;
   };
-  util2.isInteger = typeof Number.isInteger === "function" ? (val) => Number.isInteger(val) : (val) => typeof val === "number" && Number.isFinite(val) && Math.floor(val) === val;
+  util2.isInteger =
+    typeof Number.isInteger === "function"
+      ? (val) => Number.isInteger(val)
+      : (val) =>
+          typeof val === "number" &&
+          Number.isFinite(val) &&
+          Math.floor(val) === val;
   function joinValues(array, separator = " | ") {
-    return array.map((val) => typeof val === "string" ? `'${val}'` : val).join(separator);
+    return array
+      .map((val) => (typeof val === "string" ? `'${val}'` : val))
+      .join(separator);
   }
   util2.joinValues = joinValues;
   util2.jsonStringifyReplacer = (_, value2) => {
@@ -10614,11 +13662,11 @@ var util;
   };
 })(util || (util = {}));
 var objectUtil;
-(function(objectUtil2) {
+(function (objectUtil2) {
   objectUtil2.mergeShapes = (first, second) => {
     return {
       ...first,
-      ...second
+      ...second,
     };
   };
 })(objectUtil || (objectUtil = {}));
@@ -10642,7 +13690,7 @@ var ZodParsedType = util.arrayToEnum([
   "void",
   "never",
   "map",
-  "set"
+  "set",
 ]);
 var getParsedType = (data) => {
   const t = typeof data;
@@ -10668,7 +13716,12 @@ var getParsedType = (data) => {
       if (data === null) {
         return ZodParsedType.null;
       }
-      if (data.then && typeof data.then === "function" && data.catch && typeof data.catch === "function") {
+      if (
+        data.then &&
+        typeof data.then === "function" &&
+        data.catch &&
+        typeof data.catch === "function"
+      ) {
         return ZodParsedType.promise;
       }
       if (typeof Map !== "undefined" && data instanceof Map) {
@@ -10701,7 +13754,7 @@ var ZodIssueCode = util.arrayToEnum([
   "too_big",
   "invalid_intersection_types",
   "not_multiple_of",
-  "not_finite"
+  "not_finite",
 ]);
 var quotelessJson = (obj) => {
   const json2 = JSON.stringify(obj, null, 2);
@@ -10731,9 +13784,11 @@ class ZodError extends Error {
     this.issues = issues;
   }
   format(_mapper) {
-    const mapper = _mapper || function(issue) {
-      return issue.message;
-    };
+    const mapper =
+      _mapper ||
+      function (issue) {
+        return issue.message;
+      };
     const fieldErrors = { _errors: [] };
     const processError = (error) => {
       for (const issue of error.issues) {
@@ -10867,8 +13922,7 @@ var errorMap = (issue, _ctx) => {
         message = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
       else if (issue.type === "date")
         message = `Date must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${new Date(Number(issue.minimum))}`;
-      else
-        message = "Invalid input";
+      else message = "Invalid input";
       break;
     case ZodIssueCode.too_big:
       if (issue.type === "array")
@@ -10881,8 +13935,7 @@ var errorMap = (issue, _ctx) => {
         message = `BigInt must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
       else if (issue.type === "date")
         message = `Date must be ${issue.exact ? `exactly` : issue.inclusive ? `smaller than or equal to` : `smaller than`} ${new Date(Number(issue.maximum))}`;
-      else
-        message = "Invalid input";
+      else message = "Invalid input";
       break;
     case ZodIssueCode.custom:
       message = `Invalid input`;
@@ -10912,27 +13965,30 @@ function getErrorMap() {
 }
 var makeIssue = (params) => {
   const { data, path, errorMaps, issueData } = params;
-  const fullPath = [...path, ...issueData.path || []];
+  const fullPath = [...path, ...(issueData.path || [])];
   const fullIssue = {
     ...issueData,
-    path: fullPath
+    path: fullPath,
   };
   if (issueData.message !== undefined) {
     return {
       ...issueData,
       path: fullPath,
-      message: issueData.message
+      message: issueData.message,
     };
   }
   let errorMessage = "";
-  const maps = errorMaps.filter((m) => !!m).slice().reverse();
+  const maps = errorMaps
+    .filter((m) => !!m)
+    .slice()
+    .reverse();
   for (const map of maps) {
     errorMessage = map(fullIssue, { data, defaultError: errorMessage }).message;
   }
   return {
     ...issueData,
     path: fullPath,
-    message: errorMessage
+    message: errorMessage,
   };
 };
 var EMPTY_PATH = [];
@@ -10946,8 +14002,8 @@ function addIssueToContext(ctx, issueData) {
       ctx.common.contextualErrorMap,
       ctx.schemaErrorMap,
       overrideMap,
-      overrideMap === en_default ? undefined : en_default
-    ].filter((x) => !!x)
+      overrideMap === en_default ? undefined : en_default,
+    ].filter((x) => !!x),
   });
   ctx.common.issues.push(issue);
 }
@@ -10957,20 +14013,16 @@ class ParseStatus {
     this.value = "valid";
   }
   dirty() {
-    if (this.value === "valid")
-      this.value = "dirty";
+    if (this.value === "valid") this.value = "dirty";
   }
   abort() {
-    if (this.value !== "aborted")
-      this.value = "aborted";
+    if (this.value !== "aborted") this.value = "aborted";
   }
   static mergeArray(status, results) {
     const arrayValue = [];
     for (const s of results) {
-      if (s.status === "aborted")
-        return INVALID;
-      if (s.status === "dirty")
-        status.dirty();
+      if (s.status === "aborted") return INVALID;
+      if (s.status === "dirty") status.dirty();
       arrayValue.push(s.value);
     }
     return { status: status.value, value: arrayValue };
@@ -10982,7 +14034,7 @@ class ParseStatus {
       const value2 = await pair.value;
       syncPairs.push({
         key,
-        value: value2
+        value: value2,
       });
     }
     return ParseStatus.mergeObjectSync(status, syncPairs);
@@ -10991,15 +14043,14 @@ class ParseStatus {
     const finalObject = {};
     for (const pair of pairs) {
       const { key, value: value2 } = pair;
-      if (key.status === "aborted")
-        return INVALID;
-      if (value2.status === "aborted")
-        return INVALID;
-      if (key.status === "dirty")
-        status.dirty();
-      if (value2.status === "dirty")
-        status.dirty();
-      if (key.value !== "__proto__" && (typeof value2.value !== "undefined" || pair.alwaysSet)) {
+      if (key.status === "aborted") return INVALID;
+      if (value2.status === "aborted") return INVALID;
+      if (key.status === "dirty") status.dirty();
+      if (value2.status === "dirty") status.dirty();
+      if (
+        key.value !== "__proto__" &&
+        (typeof value2.value !== "undefined" || pair.alwaysSet)
+      ) {
         finalObject[key.value] = value2.value;
       }
     }
@@ -11007,7 +14058,7 @@ class ParseStatus {
   }
 }
 var INVALID = Object.freeze({
-  status: "aborted"
+  status: "aborted",
 });
 var DIRTY = (value2) => ({ status: "dirty", value: value2 });
 var OK = (value2) => ({ status: "valid", value: value2 });
@@ -11016,9 +14067,11 @@ var isDirty = (x) => x.status === "dirty";
 var isValid = (x) => x.status === "valid";
 var isAsync = (x) => typeof Promise !== "undefined" && x instanceof Promise;
 var errorUtil;
-(function(errorUtil2) {
-  errorUtil2.errToObj = (message) => typeof message === "string" ? { message } : message || {};
-  errorUtil2.toString = (message) => typeof message === "string" ? message : message?.message;
+(function (errorUtil2) {
+  errorUtil2.errToObj = (message) =>
+    typeof message === "string" ? { message } : message || {};
+  errorUtil2.toString = (message) =>
+    typeof message === "string" ? message : message?.message;
 })(errorUtil || (errorUtil = {}));
 
 class ParseInputLazyPath {
@@ -11050,24 +14103,28 @@ var handleResult = (ctx, result) => {
     return {
       success: false,
       get error() {
-        if (this._error)
-          return this._error;
+        if (this._error) return this._error;
         const error = new ZodError(ctx.common.issues);
         this._error = error;
         return this._error;
-      }
+      },
     };
   }
 };
 function processCreateParams(params) {
-  if (!params)
-    return {};
-  const { errorMap: errorMap2, invalid_type_error, required_error, description } = params;
+  if (!params) return {};
+  const {
+    errorMap: errorMap2,
+    invalid_type_error,
+    required_error,
+    description,
+  } = params;
   if (errorMap2 && (invalid_type_error || required_error)) {
-    throw new Error(`Can't use "invalid_type_error" or "required_error" in conjunction with custom error map.`);
+    throw new Error(
+      `Can't use "invalid_type_error" or "required_error" in conjunction with custom error map.`,
+    );
   }
-  if (errorMap2)
-    return { errorMap: errorMap2, description };
+  if (errorMap2) return { errorMap: errorMap2, description };
   const customMap = (iss, ctx) => {
     const { message } = params;
     if (iss.code === "invalid_enum_value") {
@@ -11076,8 +14133,7 @@ function processCreateParams(params) {
     if (typeof ctx.data === "undefined") {
       return { message: message ?? required_error ?? ctx.defaultError };
     }
-    if (iss.code !== "invalid_type")
-      return { message: ctx.defaultError };
+    if (iss.code !== "invalid_type") return { message: ctx.defaultError };
     return { message: message ?? invalid_type_error ?? ctx.defaultError };
   };
   return { errorMap: customMap, description };
@@ -11091,26 +14147,28 @@ class ZodType {
     return getParsedType(input.data);
   }
   _getOrReturnCtx(input, ctx) {
-    return ctx || {
-      common: input.parent.common,
-      data: input.data,
-      parsedType: getParsedType(input.data),
-      schemaErrorMap: this._def.errorMap,
-      path: input.path,
-      parent: input.parent
-    };
+    return (
+      ctx || {
+        common: input.parent.common,
+        data: input.data,
+        parsedType: getParsedType(input.data),
+        schemaErrorMap: this._def.errorMap,
+        path: input.path,
+        parent: input.parent,
+      }
+    );
   }
   _processInputParams(input) {
     return {
-      status: new ParseStatus,
+      status: new ParseStatus(),
       ctx: {
         common: input.parent.common,
         data: input.data,
         parsedType: getParsedType(input.data),
         schemaErrorMap: this._def.errorMap,
         path: input.path,
-        parent: input.parent
-      }
+        parent: input.parent,
+      },
     };
   }
   _parseSync(input) {
@@ -11126,8 +14184,7 @@ class ZodType {
   }
   parse(data, params) {
     const result = this.safeParse(data, params);
-    if (result.success)
-      return result.data;
+    if (result.success) return result.data;
     throw result.error;
   }
   safeParse(data, params) {
@@ -11135,13 +14192,13 @@ class ZodType {
       common: {
         issues: [],
         async: params?.async ?? false,
-        contextualErrorMap: params?.errorMap
+        contextualErrorMap: params?.errorMap,
       },
       path: params?.path || [],
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data,
-      parsedType: getParsedType(data)
+      parsedType: getParsedType(data),
     };
     const result = this._parseSync({ data, path: ctx.path, parent: ctx });
     return handleResult(ctx, result);
@@ -11150,42 +14207,47 @@ class ZodType {
     const ctx = {
       common: {
         issues: [],
-        async: !!this["~standard"].async
+        async: !!this["~standard"].async,
       },
       path: [],
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data,
-      parsedType: getParsedType(data)
+      parsedType: getParsedType(data),
     };
     if (!this["~standard"].async) {
       try {
         const result = this._parseSync({ data, path: [], parent: ctx });
-        return isValid(result) ? {
-          value: result.value
-        } : {
-          issues: ctx.common.issues
-        };
+        return isValid(result)
+          ? {
+              value: result.value,
+            }
+          : {
+              issues: ctx.common.issues,
+            };
       } catch (err) {
         if (err?.message?.toLowerCase()?.includes("encountered")) {
           this["~standard"].async = true;
         }
         ctx.common = {
           issues: [],
-          async: true
+          async: true,
         };
       }
     }
-    return this._parseAsync({ data, path: [], parent: ctx }).then((result) => isValid(result) ? {
-      value: result.value
-    } : {
-      issues: ctx.common.issues
-    });
+    return this._parseAsync({ data, path: [], parent: ctx }).then((result) =>
+      isValid(result)
+        ? {
+            value: result.value,
+          }
+        : {
+            issues: ctx.common.issues,
+          },
+    );
   }
   async parseAsync(data, params) {
     const result = await this.safeParseAsync(data, params);
-    if (result.success)
-      return result.data;
+    if (result.success) return result.data;
     throw result.error;
   }
   async safeParseAsync(data, params) {
@@ -11193,16 +14255,18 @@ class ZodType {
       common: {
         issues: [],
         contextualErrorMap: params?.errorMap,
-        async: true
+        async: true,
       },
       path: params?.path || [],
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data,
-      parsedType: getParsedType(data)
+      parsedType: getParsedType(data),
     };
     const maybeAsyncResult = this._parse({ data, path: ctx.path, parent: ctx });
-    const result = await (isAsync(maybeAsyncResult) ? maybeAsyncResult : Promise.resolve(maybeAsyncResult));
+    const result = await (isAsync(maybeAsyncResult)
+      ? maybeAsyncResult
+      : Promise.resolve(maybeAsyncResult));
     return handleResult(ctx, result);
   }
   refine(check, message) {
@@ -11217,10 +14281,11 @@ class ZodType {
     };
     return this._refinement((val, ctx) => {
       const result = check(val);
-      const setError = () => ctx.addIssue({
-        code: ZodIssueCode.custom,
-        ...getIssueProperties(val)
-      });
+      const setError = () =>
+        ctx.addIssue({
+          code: ZodIssueCode.custom,
+          ...getIssueProperties(val),
+        });
       if (typeof Promise !== "undefined" && result instanceof Promise) {
         return result.then((data) => {
           if (!data) {
@@ -11242,7 +14307,11 @@ class ZodType {
   refinement(check, refinementData) {
     return this._refinement((val, ctx) => {
       if (!check(val)) {
-        ctx.addIssue(typeof refinementData === "function" ? refinementData(val, ctx) : refinementData);
+        ctx.addIssue(
+          typeof refinementData === "function"
+            ? refinementData(val, ctx)
+            : refinementData,
+        );
         return false;
       } else {
         return true;
@@ -11253,7 +14322,7 @@ class ZodType {
     return new ZodEffects({
       schema: this,
       typeName: ZodFirstPartyTypeKind.ZodEffects,
-      effect: { type: "refinement", refinement }
+      effect: { type: "refinement", refinement },
     });
   }
   superRefine(refinement) {
@@ -11289,7 +14358,7 @@ class ZodType {
     this["~standard"] = {
       version: 1,
       vendor: "zod",
-      validate: (data) => this["~validate"](data)
+      validate: (data) => this["~validate"](data),
     };
   }
   optional() {
@@ -11318,7 +14387,7 @@ class ZodType {
       ...processCreateParams(this._def),
       schema: this,
       typeName: ZodFirstPartyTypeKind.ZodEffects,
-      effect: { type: "transform", transform }
+      effect: { type: "transform", transform },
     });
   }
   default(def) {
@@ -11327,14 +14396,14 @@ class ZodType {
       ...processCreateParams(this._def),
       innerType: this,
       defaultValue: defaultValueFunc,
-      typeName: ZodFirstPartyTypeKind.ZodDefault
+      typeName: ZodFirstPartyTypeKind.ZodDefault,
     });
   }
   brand() {
     return new ZodBranded({
       typeName: ZodFirstPartyTypeKind.ZodBranded,
       type: this,
-      ...processCreateParams(this._def)
+      ...processCreateParams(this._def),
     });
   }
   catch(def) {
@@ -11343,14 +14412,14 @@ class ZodType {
       ...processCreateParams(this._def),
       innerType: this,
       catchValue: catchValueFunc,
-      typeName: ZodFirstPartyTypeKind.ZodCatch
+      typeName: ZodFirstPartyTypeKind.ZodCatch,
     });
   }
   describe(description) {
     const This = this.constructor;
     return new This({
       ...this._def,
-      description
+      description,
     });
   }
   pipe(target) {
@@ -11369,19 +14438,28 @@ class ZodType {
 var cuidRegex = /^c[^\s-]{8,}$/i;
 var cuid2Regex = /^[0-9a-z]+$/;
 var ulidRegex = /^[0-9A-HJKMNP-TV-Z]{26}$/i;
-var uuidRegex = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i;
+var uuidRegex =
+  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i;
 var nanoidRegex = /^[a-z0-9_-]{21}$/i;
 var jwtRegex = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]*$/;
-var durationRegex = /^[-+]?P(?!$)(?:(?:[-+]?\d+Y)|(?:[-+]?\d+[.,]\d+Y$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:(?:[-+]?\d+W)|(?:[-+]?\d+[.,]\d+W$))?(?:(?:[-+]?\d+D)|(?:[-+]?\d+[.,]\d+D$))?(?:T(?=[\d+-])(?:(?:[-+]?\d+H)|(?:[-+]?\d+[.,]\d+H$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:[-+]?\d+(?:[.,]\d+)?S)?)??$/;
-var emailRegex = /^(?!\.)(?!.*\.\.)([A-Z0-9_'+\-\.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i;
+var durationRegex =
+  /^[-+]?P(?!$)(?:(?:[-+]?\d+Y)|(?:[-+]?\d+[.,]\d+Y$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:(?:[-+]?\d+W)|(?:[-+]?\d+[.,]\d+W$))?(?:(?:[-+]?\d+D)|(?:[-+]?\d+[.,]\d+D$))?(?:T(?=[\d+-])(?:(?:[-+]?\d+H)|(?:[-+]?\d+[.,]\d+H$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:[-+]?\d+(?:[.,]\d+)?S)?)??$/;
+var emailRegex =
+  /^(?!\.)(?!.*\.\.)([A-Z0-9_'+\-\.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i;
 var _emojiRegex = `^(\\p{Extended_Pictographic}|\\p{Emoji_Component})+$`;
 var emojiRegex;
-var ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$/;
-var ipv4CidrRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\/(3[0-2]|[12]?[0-9])$/;
-var ipv6Regex = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-var ipv6CidrRegex = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))\/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$/;
-var base64Regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-var base64urlRegex = /^([0-9a-zA-Z-_]{4})*(([0-9a-zA-Z-_]{2}(==)?)|([0-9a-zA-Z-_]{3}(=)?))?$/;
+var ipv4Regex =
+  /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$/;
+var ipv4CidrRegex =
+  /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\/(3[0-2]|[12]?[0-9])$/;
+var ipv6Regex =
+  /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+var ipv6CidrRegex =
+  /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))\/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$/;
+var base64Regex =
+  /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+var base64urlRegex =
+  /^([0-9a-zA-Z-_]{4})*(([0-9a-zA-Z-_]{2}(==)?)|([0-9a-zA-Z-_]{3}(=)?))?$/;
 var dateRegexSource = `((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))`;
 var dateRegex = new RegExp(`^${dateRegexSource}$`);
 function timeRegexSource(args) {
@@ -11401,8 +14479,7 @@ function datetimeRegex(args) {
   let regex = `${dateRegexSource}T${timeRegexSource(args)}`;
   const opts = [];
   opts.push(args.local ? `Z?` : `Z`);
-  if (args.offset)
-    opts.push(`([+-]\\d{2}:?\\d{2})`);
+  if (args.offset) opts.push(`([+-]\\d{2}:?\\d{2})`);
   regex = `${regex}(${opts.join("|")})`;
   return new RegExp(`^${regex}$`);
 }
@@ -11416,22 +14493,19 @@ function isValidIP(ip, version) {
   return false;
 }
 function isValidJWT(jwt, alg) {
-  if (!jwtRegex.test(jwt))
-    return false;
+  if (!jwtRegex.test(jwt)) return false;
   try {
     const [header] = jwt.split(".");
-    if (!header)
-      return false;
-    const base64 = header.replace(/-/g, "+").replace(/_/g, "/").padEnd(header.length + (4 - header.length % 4) % 4, "=");
+    if (!header) return false;
+    const base64 = header
+      .replace(/-/g, "+")
+      .replace(/_/g, "/")
+      .padEnd(header.length + ((4 - (header.length % 4)) % 4), "=");
     const decoded = JSON.parse(atob(base64));
-    if (typeof decoded !== "object" || decoded === null)
-      return false;
-    if ("typ" in decoded && decoded?.typ !== "JWT")
-      return false;
-    if (!decoded.alg)
-      return false;
-    if (alg && decoded.alg !== alg)
-      return false;
+    if (typeof decoded !== "object" || decoded === null) return false;
+    if ("typ" in decoded && decoded?.typ !== "JWT") return false;
+    if (!decoded.alg) return false;
+    if (alg && decoded.alg !== alg) return false;
     return true;
   } catch {
     return false;
@@ -11458,11 +14532,11 @@ class ZodString extends ZodType {
       addIssueToContext(ctx2, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.string,
-        received: ctx2.parsedType
+        received: ctx2.parsedType,
       });
       return INVALID;
     }
-    const status = new ParseStatus;
+    const status = new ParseStatus();
     let ctx = undefined;
     for (const check of this._def.checks) {
       if (check.kind === "min") {
@@ -11474,7 +14548,7 @@ class ZodString extends ZodType {
             type: "string",
             inclusive: true,
             exact: false,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11487,7 +14561,7 @@ class ZodString extends ZodType {
             type: "string",
             inclusive: true,
             exact: false,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11503,7 +14577,7 @@ class ZodString extends ZodType {
               type: "string",
               inclusive: true,
               exact: true,
-              message: check.message
+              message: check.message,
             });
           } else if (tooSmall) {
             addIssueToContext(ctx, {
@@ -11512,7 +14586,7 @@ class ZodString extends ZodType {
               type: "string",
               inclusive: true,
               exact: true,
-              message: check.message
+              message: check.message,
             });
           }
           status.dirty();
@@ -11523,7 +14597,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "email",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11536,7 +14610,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "emoji",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11546,7 +14620,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "uuid",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11556,7 +14630,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "nanoid",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11566,7 +14640,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "cuid",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11576,7 +14650,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "cuid2",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11586,7 +14660,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "ulid",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11598,7 +14672,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "url",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11610,7 +14684,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "regex",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11622,7 +14696,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: { includes: check.value, position: check.position },
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11636,7 +14710,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: { startsWith: check.value },
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11646,7 +14720,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: { endsWith: check.value },
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11657,7 +14731,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: "datetime",
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11668,7 +14742,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: "date",
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11679,7 +14753,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: "time",
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11689,7 +14763,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "duration",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11699,7 +14773,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "ip",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11709,7 +14783,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "jwt",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11719,7 +14793,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "cidr",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11729,7 +14803,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "base64",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11739,7 +14813,7 @@ class ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "base64url",
             code: ZodIssueCode.invalid_string,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -11753,13 +14827,13 @@ class ZodString extends ZodType {
     return this.refinement((data) => regex.test(data), {
       validation,
       code: ZodIssueCode.invalid_string,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message),
     });
   }
   _addCheck(check) {
     return new ZodString({
       ...this._def,
-      checks: [...this._def.checks, check]
+      checks: [...this._def.checks, check],
     });
   }
   email(message) {
@@ -11792,7 +14866,7 @@ class ZodString extends ZodType {
   base64url(message) {
     return this._addCheck({
       kind: "base64url",
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message),
     });
   }
   jwt(options) {
@@ -11811,15 +14885,16 @@ class ZodString extends ZodType {
         precision: null,
         offset: false,
         local: false,
-        message: options
+        message: options,
       });
     }
     return this._addCheck({
       kind: "datetime",
-      precision: typeof options?.precision === "undefined" ? null : options?.precision,
+      precision:
+        typeof options?.precision === "undefined" ? null : options?.precision,
       offset: options?.offset ?? false,
       local: options?.local ?? false,
-      ...errorUtil.errToObj(options?.message)
+      ...errorUtil.errToObj(options?.message),
     });
   }
   date(message) {
@@ -11830,13 +14905,14 @@ class ZodString extends ZodType {
       return this._addCheck({
         kind: "time",
         precision: null,
-        message: options
+        message: options,
       });
     }
     return this._addCheck({
       kind: "time",
-      precision: typeof options?.precision === "undefined" ? null : options?.precision,
-      ...errorUtil.errToObj(options?.message)
+      precision:
+        typeof options?.precision === "undefined" ? null : options?.precision,
+      ...errorUtil.errToObj(options?.message),
     });
   }
   duration(message) {
@@ -11846,7 +14922,7 @@ class ZodString extends ZodType {
     return this._addCheck({
       kind: "regex",
       regex,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message),
     });
   }
   includes(value2, options) {
@@ -11854,42 +14930,42 @@ class ZodString extends ZodType {
       kind: "includes",
       value: value2,
       position: options?.position,
-      ...errorUtil.errToObj(options?.message)
+      ...errorUtil.errToObj(options?.message),
     });
   }
   startsWith(value2, message) {
     return this._addCheck({
       kind: "startsWith",
       value: value2,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message),
     });
   }
   endsWith(value2, message) {
     return this._addCheck({
       kind: "endsWith",
       value: value2,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message),
     });
   }
   min(minLength, message) {
     return this._addCheck({
       kind: "min",
       value: minLength,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message),
     });
   }
   max(maxLength, message) {
     return this._addCheck({
       kind: "max",
       value: maxLength,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message),
     });
   }
   length(len2, message) {
     return this._addCheck({
       kind: "length",
       value: len2,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message),
     });
   }
   nonempty(message) {
@@ -11898,19 +14974,19 @@ class ZodString extends ZodType {
   trim() {
     return new ZodString({
       ...this._def,
-      checks: [...this._def.checks, { kind: "trim" }]
+      checks: [...this._def.checks, { kind: "trim" }],
     });
   }
   toLowerCase() {
     return new ZodString({
       ...this._def,
-      checks: [...this._def.checks, { kind: "toLowerCase" }]
+      checks: [...this._def.checks, { kind: "toLowerCase" }],
     });
   }
   toUpperCase() {
     return new ZodString({
       ...this._def,
-      checks: [...this._def.checks, { kind: "toUpperCase" }]
+      checks: [...this._def.checks, { kind: "toUpperCase" }],
     });
   }
   get isDatetime() {
@@ -11965,8 +15041,7 @@ class ZodString extends ZodType {
     let min = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "min") {
-        if (min === null || ch.value > min)
-          min = ch.value;
+        if (min === null || ch.value > min) min = ch.value;
       }
     }
     return min;
@@ -11975,8 +15050,7 @@ class ZodString extends ZodType {
     let max = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "max") {
-        if (max === null || ch.value < max)
-          max = ch.value;
+        if (max === null || ch.value < max) max = ch.value;
       }
     }
     return max;
@@ -11987,7 +15061,7 @@ ZodString.create = (params) => {
     checks: [],
     typeName: ZodFirstPartyTypeKind.ZodString,
     coerce: params?.coerce ?? false,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 function floatSafeRemainder(val, step) {
@@ -11996,7 +15070,7 @@ function floatSafeRemainder(val, step) {
   const decCount = valDecCount > stepDecCount ? valDecCount : stepDecCount;
   const valInt = Number.parseInt(val.toFixed(decCount).replace(".", ""));
   const stepInt = Number.parseInt(step.toFixed(decCount).replace(".", ""));
-  return valInt % stepInt / 10 ** decCount;
+  return (valInt % stepInt) / 10 ** decCount;
 }
 
 class ZodNumber extends ZodType {
@@ -12016,12 +15090,12 @@ class ZodNumber extends ZodType {
       addIssueToContext(ctx2, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.number,
-        received: ctx2.parsedType
+        received: ctx2.parsedType,
       });
       return INVALID;
     }
     let ctx = undefined;
-    const status = new ParseStatus;
+    const status = new ParseStatus();
     for (const check of this._def.checks) {
       if (check.kind === "int") {
         if (!util.isInteger(input.data)) {
@@ -12030,12 +15104,14 @@ class ZodNumber extends ZodType {
             code: ZodIssueCode.invalid_type,
             expected: "integer",
             received: "float",
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
       } else if (check.kind === "min") {
-        const tooSmall = check.inclusive ? input.data < check.value : input.data <= check.value;
+        const tooSmall = check.inclusive
+          ? input.data < check.value
+          : input.data <= check.value;
         if (tooSmall) {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
@@ -12044,12 +15120,14 @@ class ZodNumber extends ZodType {
             type: "number",
             inclusive: check.inclusive,
             exact: false,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
       } else if (check.kind === "max") {
-        const tooBig = check.inclusive ? input.data > check.value : input.data >= check.value;
+        const tooBig = check.inclusive
+          ? input.data > check.value
+          : input.data >= check.value;
         if (tooBig) {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
@@ -12058,7 +15136,7 @@ class ZodNumber extends ZodType {
             type: "number",
             inclusive: check.inclusive,
             exact: false,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -12068,7 +15146,7 @@ class ZodNumber extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.not_multiple_of,
             multipleOf: check.value,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -12077,7 +15155,7 @@ class ZodNumber extends ZodType {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
             code: ZodIssueCode.not_finite,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -12108,21 +15186,21 @@ class ZodNumber extends ZodType {
           kind,
           value: value2,
           inclusive,
-          message: errorUtil.toString(message)
-        }
-      ]
+          message: errorUtil.toString(message),
+        },
+      ],
     });
   }
   _addCheck(check) {
     return new ZodNumber({
       ...this._def,
-      checks: [...this._def.checks, check]
+      checks: [...this._def.checks, check],
     });
   }
   int(message) {
     return this._addCheck({
       kind: "int",
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   positive(message) {
@@ -12130,7 +15208,7 @@ class ZodNumber extends ZodType {
       kind: "min",
       value: 0,
       inclusive: false,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   negative(message) {
@@ -12138,7 +15216,7 @@ class ZodNumber extends ZodType {
       kind: "max",
       value: 0,
       inclusive: false,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   nonpositive(message) {
@@ -12146,7 +15224,7 @@ class ZodNumber extends ZodType {
       kind: "max",
       value: 0,
       inclusive: true,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   nonnegative(message) {
@@ -12154,20 +15232,20 @@ class ZodNumber extends ZodType {
       kind: "min",
       value: 0,
       inclusive: true,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   multipleOf(value2, message) {
     return this._addCheck({
       kind: "multipleOf",
       value: value2,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   finite(message) {
     return this._addCheck({
       kind: "finite",
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   safe(message) {
@@ -12175,20 +15253,19 @@ class ZodNumber extends ZodType {
       kind: "min",
       inclusive: true,
       value: Number.MIN_SAFE_INTEGER,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     })._addCheck({
       kind: "max",
       inclusive: true,
       value: Number.MAX_SAFE_INTEGER,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   get minValue() {
     let min = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "min") {
-        if (min === null || ch.value > min)
-          min = ch.value;
+        if (min === null || ch.value > min) min = ch.value;
       }
     }
     return min;
@@ -12197,27 +15274,32 @@ class ZodNumber extends ZodType {
     let max = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "max") {
-        if (max === null || ch.value < max)
-          max = ch.value;
+        if (max === null || ch.value < max) max = ch.value;
       }
     }
     return max;
   }
   get isInt() {
-    return !!this._def.checks.find((ch) => ch.kind === "int" || ch.kind === "multipleOf" && util.isInteger(ch.value));
+    return !!this._def.checks.find(
+      (ch) =>
+        ch.kind === "int" ||
+        (ch.kind === "multipleOf" && util.isInteger(ch.value)),
+    );
   }
   get isFinite() {
     let max = null;
     let min = null;
     for (const ch of this._def.checks) {
-      if (ch.kind === "finite" || ch.kind === "int" || ch.kind === "multipleOf") {
+      if (
+        ch.kind === "finite" ||
+        ch.kind === "int" ||
+        ch.kind === "multipleOf"
+      ) {
         return true;
       } else if (ch.kind === "min") {
-        if (min === null || ch.value > min)
-          min = ch.value;
+        if (min === null || ch.value > min) min = ch.value;
       } else if (ch.kind === "max") {
-        if (max === null || ch.value < max)
-          max = ch.value;
+        if (max === null || ch.value < max) max = ch.value;
       }
     }
     return Number.isFinite(min) && Number.isFinite(max);
@@ -12228,7 +15310,7 @@ ZodNumber.create = (params) => {
     checks: [],
     typeName: ZodFirstPartyTypeKind.ZodNumber,
     coerce: params?.coerce || false,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12251,10 +15333,12 @@ class ZodBigInt extends ZodType {
       return this._getInvalidInput(input);
     }
     let ctx = undefined;
-    const status = new ParseStatus;
+    const status = new ParseStatus();
     for (const check of this._def.checks) {
       if (check.kind === "min") {
-        const tooSmall = check.inclusive ? input.data < check.value : input.data <= check.value;
+        const tooSmall = check.inclusive
+          ? input.data < check.value
+          : input.data <= check.value;
         if (tooSmall) {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
@@ -12262,12 +15346,14 @@ class ZodBigInt extends ZodType {
             type: "bigint",
             minimum: check.value,
             inclusive: check.inclusive,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
       } else if (check.kind === "max") {
-        const tooBig = check.inclusive ? input.data > check.value : input.data >= check.value;
+        const tooBig = check.inclusive
+          ? input.data > check.value
+          : input.data >= check.value;
         if (tooBig) {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
@@ -12275,7 +15361,7 @@ class ZodBigInt extends ZodType {
             type: "bigint",
             maximum: check.value,
             inclusive: check.inclusive,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -12285,7 +15371,7 @@ class ZodBigInt extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.not_multiple_of,
             multipleOf: check.value,
-            message: check.message
+            message: check.message,
           });
           status.dirty();
         }
@@ -12300,7 +15386,7 @@ class ZodBigInt extends ZodType {
     addIssueToContext(ctx, {
       code: ZodIssueCode.invalid_type,
       expected: ZodParsedType.bigint,
-      received: ctx.parsedType
+      received: ctx.parsedType,
     });
     return INVALID;
   }
@@ -12325,15 +15411,15 @@ class ZodBigInt extends ZodType {
           kind,
           value: value2,
           inclusive,
-          message: errorUtil.toString(message)
-        }
-      ]
+          message: errorUtil.toString(message),
+        },
+      ],
     });
   }
   _addCheck(check) {
     return new ZodBigInt({
       ...this._def,
-      checks: [...this._def.checks, check]
+      checks: [...this._def.checks, check],
     });
   }
   positive(message) {
@@ -12341,7 +15427,7 @@ class ZodBigInt extends ZodType {
       kind: "min",
       value: BigInt(0),
       inclusive: false,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   negative(message) {
@@ -12349,7 +15435,7 @@ class ZodBigInt extends ZodType {
       kind: "max",
       value: BigInt(0),
       inclusive: false,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   nonpositive(message) {
@@ -12357,7 +15443,7 @@ class ZodBigInt extends ZodType {
       kind: "max",
       value: BigInt(0),
       inclusive: true,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   nonnegative(message) {
@@ -12365,22 +15451,21 @@ class ZodBigInt extends ZodType {
       kind: "min",
       value: BigInt(0),
       inclusive: true,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   multipleOf(value2, message) {
     return this._addCheck({
       kind: "multipleOf",
       value: value2,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   get minValue() {
     let min = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "min") {
-        if (min === null || ch.value > min)
-          min = ch.value;
+        if (min === null || ch.value > min) min = ch.value;
       }
     }
     return min;
@@ -12389,8 +15474,7 @@ class ZodBigInt extends ZodType {
     let max = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "max") {
-        if (max === null || ch.value < max)
-          max = ch.value;
+        if (max === null || ch.value < max) max = ch.value;
       }
     }
     return max;
@@ -12401,7 +15485,7 @@ ZodBigInt.create = (params) => {
     checks: [],
     typeName: ZodFirstPartyTypeKind.ZodBigInt,
     coerce: params?.coerce ?? false,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12416,7 +15500,7 @@ class ZodBoolean extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.boolean,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -12427,7 +15511,7 @@ ZodBoolean.create = (params) => {
   return new ZodBoolean({
     typeName: ZodFirstPartyTypeKind.ZodBoolean,
     coerce: params?.coerce || false,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12442,18 +15526,18 @@ class ZodDate extends ZodType {
       addIssueToContext(ctx2, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.date,
-        received: ctx2.parsedType
+        received: ctx2.parsedType,
       });
       return INVALID;
     }
     if (Number.isNaN(input.data.getTime())) {
       const ctx2 = this._getOrReturnCtx(input);
       addIssueToContext(ctx2, {
-        code: ZodIssueCode.invalid_date
+        code: ZodIssueCode.invalid_date,
       });
       return INVALID;
     }
-    const status = new ParseStatus;
+    const status = new ParseStatus();
     let ctx = undefined;
     for (const check of this._def.checks) {
       if (check.kind === "min") {
@@ -12465,7 +15549,7 @@ class ZodDate extends ZodType {
             inclusive: true,
             exact: false,
             minimum: check.value,
-            type: "date"
+            type: "date",
           });
           status.dirty();
         }
@@ -12478,7 +15562,7 @@ class ZodDate extends ZodType {
             inclusive: true,
             exact: false,
             maximum: check.value,
-            type: "date"
+            type: "date",
           });
           status.dirty();
         }
@@ -12488,35 +15572,34 @@ class ZodDate extends ZodType {
     }
     return {
       status: status.value,
-      value: new Date(input.data.getTime())
+      value: new Date(input.data.getTime()),
     };
   }
   _addCheck(check) {
     return new ZodDate({
       ...this._def,
-      checks: [...this._def.checks, check]
+      checks: [...this._def.checks, check],
     });
   }
   min(minDate, message) {
     return this._addCheck({
       kind: "min",
       value: minDate.getTime(),
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   max(maxDate, message) {
     return this._addCheck({
       kind: "max",
       value: maxDate.getTime(),
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message),
     });
   }
   get minDate() {
     let min = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "min") {
-        if (min === null || ch.value > min)
-          min = ch.value;
+        if (min === null || ch.value > min) min = ch.value;
       }
     }
     return min != null ? new Date(min) : null;
@@ -12525,8 +15608,7 @@ class ZodDate extends ZodType {
     let max = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "max") {
-        if (max === null || ch.value < max)
-          max = ch.value;
+        if (max === null || ch.value < max) max = ch.value;
       }
     }
     return max != null ? new Date(max) : null;
@@ -12537,7 +15619,7 @@ ZodDate.create = (params) => {
     checks: [],
     coerce: params?.coerce || false,
     typeName: ZodFirstPartyTypeKind.ZodDate,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12549,7 +15631,7 @@ class ZodSymbol extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.symbol,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -12559,7 +15641,7 @@ class ZodSymbol extends ZodType {
 ZodSymbol.create = (params) => {
   return new ZodSymbol({
     typeName: ZodFirstPartyTypeKind.ZodSymbol,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12571,7 +15653,7 @@ class ZodUndefined extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.undefined,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -12581,7 +15663,7 @@ class ZodUndefined extends ZodType {
 ZodUndefined.create = (params) => {
   return new ZodUndefined({
     typeName: ZodFirstPartyTypeKind.ZodUndefined,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12593,7 +15675,7 @@ class ZodNull extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.null,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -12603,7 +15685,7 @@ class ZodNull extends ZodType {
 ZodNull.create = (params) => {
   return new ZodNull({
     typeName: ZodFirstPartyTypeKind.ZodNull,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12619,7 +15701,7 @@ class ZodAny extends ZodType {
 ZodAny.create = (params) => {
   return new ZodAny({
     typeName: ZodFirstPartyTypeKind.ZodAny,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12635,7 +15717,7 @@ class ZodUnknown extends ZodType {
 ZodUnknown.create = (params) => {
   return new ZodUnknown({
     typeName: ZodFirstPartyTypeKind.ZodUnknown,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12645,7 +15727,7 @@ class ZodNever extends ZodType {
     addIssueToContext(ctx, {
       code: ZodIssueCode.invalid_type,
       expected: ZodParsedType.never,
-      received: ctx.parsedType
+      received: ctx.parsedType,
     });
     return INVALID;
   }
@@ -12653,7 +15735,7 @@ class ZodNever extends ZodType {
 ZodNever.create = (params) => {
   return new ZodNever({
     typeName: ZodFirstPartyTypeKind.ZodNever,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12665,7 +15747,7 @@ class ZodVoid extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.void,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -12675,7 +15757,7 @@ class ZodVoid extends ZodType {
 ZodVoid.create = (params) => {
   return new ZodVoid({
     typeName: ZodFirstPartyTypeKind.ZodVoid,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -12687,7 +15769,7 @@ class ZodArray extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.array,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -12702,7 +15784,7 @@ class ZodArray extends ZodType {
           type: "array",
           inclusive: true,
           exact: true,
-          message: def.exactLength.message
+          message: def.exactLength.message,
         });
         status.dirty();
       }
@@ -12715,7 +15797,7 @@ class ZodArray extends ZodType {
           type: "array",
           inclusive: true,
           exact: false,
-          message: def.minLength.message
+          message: def.minLength.message,
         });
         status.dirty();
       }
@@ -12728,20 +15810,26 @@ class ZodArray extends ZodType {
           type: "array",
           inclusive: true,
           exact: false,
-          message: def.maxLength.message
+          message: def.maxLength.message,
         });
         status.dirty();
       }
     }
     if (ctx.common.async) {
-      return Promise.all([...ctx.data].map((item, i2) => {
-        return def.type._parseAsync(new ParseInputLazyPath(ctx, item, ctx.path, i2));
-      })).then((result2) => {
+      return Promise.all(
+        [...ctx.data].map((item, i2) => {
+          return def.type._parseAsync(
+            new ParseInputLazyPath(ctx, item, ctx.path, i2),
+          );
+        }),
+      ).then((result2) => {
         return ParseStatus.mergeArray(status, result2);
       });
     }
     const result = [...ctx.data].map((item, i2) => {
-      return def.type._parseSync(new ParseInputLazyPath(ctx, item, ctx.path, i2));
+      return def.type._parseSync(
+        new ParseInputLazyPath(ctx, item, ctx.path, i2),
+      );
     });
     return ParseStatus.mergeArray(status, result);
   }
@@ -12751,19 +15839,19 @@ class ZodArray extends ZodType {
   min(minLength, message) {
     return new ZodArray({
       ...this._def,
-      minLength: { value: minLength, message: errorUtil.toString(message) }
+      minLength: { value: minLength, message: errorUtil.toString(message) },
     });
   }
   max(maxLength, message) {
     return new ZodArray({
       ...this._def,
-      maxLength: { value: maxLength, message: errorUtil.toString(message) }
+      maxLength: { value: maxLength, message: errorUtil.toString(message) },
     });
   }
   length(len2, message) {
     return new ZodArray({
       ...this._def,
-      exactLength: { value: len2, message: errorUtil.toString(message) }
+      exactLength: { value: len2, message: errorUtil.toString(message) },
     });
   }
   nonempty(message) {
@@ -12777,7 +15865,7 @@ ZodArray.create = (schema, params) => {
     maxLength: null,
     exactLength: null,
     typeName: ZodFirstPartyTypeKind.ZodArray,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 function deepPartialify(schema) {
@@ -12789,12 +15877,12 @@ function deepPartialify(schema) {
     }
     return new ZodObject({
       ...schema._def,
-      shape: () => newShape
+      shape: () => newShape,
     });
   } else if (schema instanceof ZodArray) {
     return new ZodArray({
       ...schema._def,
-      type: deepPartialify(schema.element)
+      type: deepPartialify(schema.element),
     });
   } else if (schema instanceof ZodOptional) {
     return ZodOptional.create(deepPartialify(schema.unwrap()));
@@ -12815,8 +15903,7 @@ class ZodObject extends ZodType {
     this.augment = this.extend;
   }
   _getCached() {
-    if (this._cached !== null)
-      return this._cached;
+    if (this._cached !== null) return this._cached;
     const shape = this._def.shape();
     const keys = util.objectKeys(shape);
     this._cached = { shape, keys };
@@ -12829,14 +15916,19 @@ class ZodObject extends ZodType {
       addIssueToContext(ctx2, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.object,
-        received: ctx2.parsedType
+        received: ctx2.parsedType,
       });
       return INVALID;
     }
     const { status, ctx } = this._processInputParams(input);
     const { shape, keys: shapeKeys } = this._getCached();
     const extraKeys = [];
-    if (!(this._def.catchall instanceof ZodNever && this._def.unknownKeys === "strip")) {
+    if (
+      !(
+        this._def.catchall instanceof ZodNever &&
+        this._def.unknownKeys === "strip"
+      )
+    ) {
       for (const key in ctx.data) {
         if (!shapeKeys.includes(key)) {
           extraKeys.push(key);
@@ -12849,8 +15941,10 @@ class ZodObject extends ZodType {
       const value2 = ctx.data[key];
       pairs.push({
         key: { status: "valid", value: key },
-        value: keyValidator._parse(new ParseInputLazyPath(ctx, value2, ctx.path, key)),
-        alwaysSet: key in ctx.data
+        value: keyValidator._parse(
+          new ParseInputLazyPath(ctx, value2, ctx.path, key),
+        ),
+        alwaysSet: key in ctx.data,
       });
     }
     if (this._def.catchall instanceof ZodNever) {
@@ -12859,18 +15953,19 @@ class ZodObject extends ZodType {
         for (const key of extraKeys) {
           pairs.push({
             key: { status: "valid", value: key },
-            value: { status: "valid", value: ctx.data[key] }
+            value: { status: "valid", value: ctx.data[key] },
           });
         }
       } else if (unknownKeys === "strict") {
         if (extraKeys.length > 0) {
           addIssueToContext(ctx, {
             code: ZodIssueCode.unrecognized_keys,
-            keys: extraKeys
+            keys: extraKeys,
           });
           status.dirty();
         }
-      } else if (unknownKeys === "strip") {} else {
+      } else if (unknownKeys === "strip") {
+      } else {
         throw new Error(`Internal ZodObject error: invalid unknownKeys value.`);
       }
     } else {
@@ -12879,27 +15974,31 @@ class ZodObject extends ZodType {
         const value2 = ctx.data[key];
         pairs.push({
           key: { status: "valid", value: key },
-          value: catchall._parse(new ParseInputLazyPath(ctx, value2, ctx.path, key)),
-          alwaysSet: key in ctx.data
+          value: catchall._parse(
+            new ParseInputLazyPath(ctx, value2, ctx.path, key),
+          ),
+          alwaysSet: key in ctx.data,
         });
       }
     }
     if (ctx.common.async) {
-      return Promise.resolve().then(async () => {
-        const syncPairs = [];
-        for (const pair of pairs) {
-          const key = await pair.key;
-          const value2 = await pair.value;
-          syncPairs.push({
-            key,
-            value: value2,
-            alwaysSet: pair.alwaysSet
-          });
-        }
-        return syncPairs;
-      }).then((syncPairs) => {
-        return ParseStatus.mergeObjectSync(status, syncPairs);
-      });
+      return Promise.resolve()
+        .then(async () => {
+          const syncPairs = [];
+          for (const pair of pairs) {
+            const key = await pair.key;
+            const value2 = await pair.value;
+            syncPairs.push({
+              key,
+              value: value2,
+              alwaysSet: pair.alwaysSet,
+            });
+          }
+          return syncPairs;
+        })
+        .then((syncPairs) => {
+          return ParseStatus.mergeObjectSync(status, syncPairs);
+        });
     } else {
       return ParseStatus.mergeObjectSync(status, pairs);
     }
@@ -12912,30 +16011,33 @@ class ZodObject extends ZodType {
     return new ZodObject({
       ...this._def,
       unknownKeys: "strict",
-      ...message !== undefined ? {
-        errorMap: (issue, ctx) => {
-          const defaultError = this._def.errorMap?.(issue, ctx).message ?? ctx.defaultError;
-          if (issue.code === "unrecognized_keys")
-            return {
-              message: errorUtil.errToObj(message).message ?? defaultError
-            };
-          return {
-            message: defaultError
-          };
-        }
-      } : {}
+      ...(message !== undefined
+        ? {
+            errorMap: (issue, ctx) => {
+              const defaultError =
+                this._def.errorMap?.(issue, ctx).message ?? ctx.defaultError;
+              if (issue.code === "unrecognized_keys")
+                return {
+                  message: errorUtil.errToObj(message).message ?? defaultError,
+                };
+              return {
+                message: defaultError,
+              };
+            },
+          }
+        : {}),
     });
   }
   strip() {
     return new ZodObject({
       ...this._def,
-      unknownKeys: "strip"
+      unknownKeys: "strip",
     });
   }
   passthrough() {
     return new ZodObject({
       ...this._def,
-      unknownKeys: "passthrough"
+      unknownKeys: "passthrough",
     });
   }
   extend(augmentation) {
@@ -12943,8 +16045,8 @@ class ZodObject extends ZodType {
       ...this._def,
       shape: () => ({
         ...this._def.shape(),
-        ...augmentation
-      })
+        ...augmentation,
+      }),
     });
   }
   merge(merging) {
@@ -12953,9 +16055,9 @@ class ZodObject extends ZodType {
       catchall: merging._def.catchall,
       shape: () => ({
         ...this._def.shape(),
-        ...merging._def.shape()
+        ...merging._def.shape(),
       }),
-      typeName: ZodFirstPartyTypeKind.ZodObject
+      typeName: ZodFirstPartyTypeKind.ZodObject,
     });
     return merged;
   }
@@ -12965,7 +16067,7 @@ class ZodObject extends ZodType {
   catchall(index) {
     return new ZodObject({
       ...this._def,
-      catchall: index
+      catchall: index,
     });
   }
   pick(mask) {
@@ -12977,7 +16079,7 @@ class ZodObject extends ZodType {
     }
     return new ZodObject({
       ...this._def,
-      shape: () => shape
+      shape: () => shape,
     });
   }
   omit(mask) {
@@ -12989,7 +16091,7 @@ class ZodObject extends ZodType {
     }
     return new ZodObject({
       ...this._def,
-      shape: () => shape
+      shape: () => shape,
     });
   }
   deepPartial() {
@@ -13007,7 +16109,7 @@ class ZodObject extends ZodType {
     }
     return new ZodObject({
       ...this._def,
-      shape: () => newShape
+      shape: () => newShape,
     });
   }
   required(mask) {
@@ -13026,7 +16128,7 @@ class ZodObject extends ZodType {
     }
     return new ZodObject({
       ...this._def,
-      shape: () => newShape
+      shape: () => newShape,
     });
   }
   keyof() {
@@ -13039,7 +16141,7 @@ ZodObject.create = (shape, params) => {
     unknownKeys: "strip",
     catchall: ZodNever.create(),
     typeName: ZodFirstPartyTypeKind.ZodObject,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 ZodObject.strictCreate = (shape, params) => {
@@ -13048,7 +16150,7 @@ ZodObject.strictCreate = (shape, params) => {
     unknownKeys: "strict",
     catchall: ZodNever.create(),
     typeName: ZodFirstPartyTypeKind.ZodObject,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 ZodObject.lazycreate = (shape, params) => {
@@ -13057,7 +16159,7 @@ ZodObject.lazycreate = (shape, params) => {
     unknownKeys: "strip",
     catchall: ZodNever.create(),
     typeName: ZodFirstPartyTypeKind.ZodObject,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -13077,32 +16179,36 @@ class ZodUnion extends ZodType {
           return result.result;
         }
       }
-      const unionErrors = results.map((result) => new ZodError(result.ctx.common.issues));
+      const unionErrors = results.map(
+        (result) => new ZodError(result.ctx.common.issues),
+      );
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_union,
-        unionErrors
+        unionErrors,
       });
       return INVALID;
     }
     if (ctx.common.async) {
-      return Promise.all(options.map(async (option) => {
-        const childCtx = {
-          ...ctx,
-          common: {
-            ...ctx.common,
-            issues: []
-          },
-          parent: null
-        };
-        return {
-          result: await option._parseAsync({
-            data: ctx.data,
-            path: ctx.path,
-            parent: childCtx
-          }),
-          ctx: childCtx
-        };
-      })).then(handleResults);
+      return Promise.all(
+        options.map(async (option) => {
+          const childCtx = {
+            ...ctx,
+            common: {
+              ...ctx.common,
+              issues: [],
+            },
+            parent: null,
+          };
+          return {
+            result: await option._parseAsync({
+              data: ctx.data,
+              path: ctx.path,
+              parent: childCtx,
+            }),
+            ctx: childCtx,
+          };
+        }),
+      ).then(handleResults);
     } else {
       let dirty = undefined;
       const issues = [];
@@ -13111,14 +16217,14 @@ class ZodUnion extends ZodType {
           ...ctx,
           common: {
             ...ctx.common,
-            issues: []
+            issues: [],
           },
-          parent: null
+          parent: null,
         };
         const result = option._parseSync({
           data: ctx.data,
           path: ctx.path,
-          parent: childCtx
+          parent: childCtx,
         });
         if (result.status === "valid") {
           return result;
@@ -13136,7 +16242,7 @@ class ZodUnion extends ZodType {
       const unionErrors = issues.map((issues2) => new ZodError(issues2));
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_union,
-        unionErrors
+        unionErrors,
       });
       return INVALID;
     }
@@ -13149,7 +16255,7 @@ ZodUnion.create = (types3, params) => {
   return new ZodUnion({
     options: types3,
     typeName: ZodFirstPartyTypeKind.ZodUnion,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 var getDiscriminator = (type) => {
@@ -13191,7 +16297,7 @@ class ZodDiscriminatedUnion extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.object,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -13202,7 +16308,7 @@ class ZodDiscriminatedUnion extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_union_discriminator,
         options: Array.from(this.optionsMap.keys()),
-        path: [discriminator]
+        path: [discriminator],
       });
       return INVALID;
     }
@@ -13210,13 +16316,13 @@ class ZodDiscriminatedUnion extends ZodType {
       return option._parseAsync({
         data: ctx.data,
         path: ctx.path,
-        parent: ctx
+        parent: ctx,
       });
     } else {
       return option._parseSync({
         data: ctx.data,
         path: ctx.path,
-        parent: ctx
+        parent: ctx,
       });
     }
   }
@@ -13230,15 +16336,19 @@ class ZodDiscriminatedUnion extends ZodType {
     return this._def.optionsMap;
   }
   static create(discriminator, options, params) {
-    const optionsMap = new Map;
+    const optionsMap = new Map();
     for (const type of options) {
       const discriminatorValues = getDiscriminator(type.shape[discriminator]);
       if (!discriminatorValues.length) {
-        throw new Error(`A discriminator value for key \`${discriminator}\` could not be extracted from all schema options`);
+        throw new Error(
+          `A discriminator value for key \`${discriminator}\` could not be extracted from all schema options`,
+        );
       }
       for (const value2 of discriminatorValues) {
         if (optionsMap.has(value2)) {
-          throw new Error(`Discriminator property ${String(discriminator)} has duplicate value ${String(value2)}`);
+          throw new Error(
+            `Discriminator property ${String(discriminator)} has duplicate value ${String(value2)}`,
+          );
         }
         optionsMap.set(value2, type);
       }
@@ -13248,7 +16358,7 @@ class ZodDiscriminatedUnion extends ZodType {
       discriminator,
       options,
       optionsMap,
-      ...processCreateParams(params)
+      ...processCreateParams(params),
     });
   }
 }
@@ -13259,7 +16369,9 @@ function mergeValues(a, b) {
     return { valid: true, data: a };
   } else if (aType === ZodParsedType.object && bType === ZodParsedType.object) {
     const bKeys = util.objectKeys(b);
-    const sharedKeys = util.objectKeys(a).filter((key) => bKeys.indexOf(key) !== -1);
+    const sharedKeys = util
+      .objectKeys(a)
+      .filter((key) => bKeys.indexOf(key) !== -1);
     const newObj = { ...a, ...b };
     for (const key of sharedKeys) {
       const sharedValue = mergeValues(a[key], b[key]);
@@ -13274,7 +16386,7 @@ function mergeValues(a, b) {
       return { valid: false };
     }
     const newArray = [];
-    for (let index = 0;index < a.length; index++) {
+    for (let index = 0; index < a.length; index++) {
       const itemA = a[index];
       const itemB = b[index];
       const sharedValue = mergeValues(itemA, itemB);
@@ -13284,7 +16396,11 @@ function mergeValues(a, b) {
       newArray.push(sharedValue.data);
     }
     return { valid: true, data: newArray };
-  } else if (aType === ZodParsedType.date && bType === ZodParsedType.date && +a === +b) {
+  } else if (
+    aType === ZodParsedType.date &&
+    bType === ZodParsedType.date &&
+    +a === +b
+  ) {
     return { valid: true, data: a };
   } else {
     return { valid: false };
@@ -13301,7 +16417,7 @@ class ZodIntersection extends ZodType {
       const merged = mergeValues(parsedLeft.value, parsedRight.value);
       if (!merged.valid) {
         addIssueToContext(ctx, {
-          code: ZodIssueCode.invalid_intersection_types
+          code: ZodIssueCode.invalid_intersection_types,
         });
         return INVALID;
       }
@@ -13315,24 +16431,27 @@ class ZodIntersection extends ZodType {
         this._def.left._parseAsync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx
+          parent: ctx,
         }),
         this._def.right._parseAsync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx
-        })
+          parent: ctx,
+        }),
       ]).then(([left, right]) => handleParsed(left, right));
     } else {
-      return handleParsed(this._def.left._parseSync({
-        data: ctx.data,
-        path: ctx.path,
-        parent: ctx
-      }), this._def.right._parseSync({
-        data: ctx.data,
-        path: ctx.path,
-        parent: ctx
-      }));
+      return handleParsed(
+        this._def.left._parseSync({
+          data: ctx.data,
+          path: ctx.path,
+          parent: ctx,
+        }),
+        this._def.right._parseSync({
+          data: ctx.data,
+          path: ctx.path,
+          parent: ctx,
+        }),
+      );
     }
   }
 }
@@ -13341,7 +16460,7 @@ ZodIntersection.create = (left, right, params) => {
     left,
     right,
     typeName: ZodFirstPartyTypeKind.ZodIntersection,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -13352,7 +16471,7 @@ class ZodTuple extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.array,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -13362,7 +16481,7 @@ class ZodTuple extends ZodType {
         minimum: this._def.items.length,
         inclusive: true,
         exact: false,
-        type: "array"
+        type: "array",
       });
       return INVALID;
     }
@@ -13373,16 +16492,19 @@ class ZodTuple extends ZodType {
         maximum: this._def.items.length,
         inclusive: true,
         exact: false,
-        type: "array"
+        type: "array",
       });
       status.dirty();
     }
-    const items = [...ctx.data].map((item, itemIndex) => {
-      const schema = this._def.items[itemIndex] || this._def.rest;
-      if (!schema)
-        return null;
-      return schema._parse(new ParseInputLazyPath(ctx, item, ctx.path, itemIndex));
-    }).filter((x) => !!x);
+    const items = [...ctx.data]
+      .map((item, itemIndex) => {
+        const schema = this._def.items[itemIndex] || this._def.rest;
+        if (!schema) return null;
+        return schema._parse(
+          new ParseInputLazyPath(ctx, item, ctx.path, itemIndex),
+        );
+      })
+      .filter((x) => !!x);
     if (ctx.common.async) {
       return Promise.all(items).then((results) => {
         return ParseStatus.mergeArray(status, results);
@@ -13397,7 +16519,7 @@ class ZodTuple extends ZodType {
   rest(rest) {
     return new ZodTuple({
       ...this._def,
-      rest
+      rest,
     });
   }
 }
@@ -13409,7 +16531,7 @@ ZodTuple.create = (schemas, params) => {
     items: schemas,
     typeName: ZodFirstPartyTypeKind.ZodTuple,
     rest: null,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -13426,7 +16548,7 @@ class ZodRecord extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.object,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -13436,8 +16558,10 @@ class ZodRecord extends ZodType {
     for (const key in ctx.data) {
       pairs.push({
         key: keyType._parse(new ParseInputLazyPath(ctx, key, ctx.path, key)),
-        value: valueType._parse(new ParseInputLazyPath(ctx, ctx.data[key], ctx.path, key)),
-        alwaysSet: key in ctx.data
+        value: valueType._parse(
+          new ParseInputLazyPath(ctx, ctx.data[key], ctx.path, key),
+        ),
+        alwaysSet: key in ctx.data,
       });
     }
     if (ctx.common.async) {
@@ -13455,14 +16579,14 @@ class ZodRecord extends ZodType {
         keyType: first,
         valueType: second,
         typeName: ZodFirstPartyTypeKind.ZodRecord,
-        ...processCreateParams(third)
+        ...processCreateParams(third),
       });
     }
     return new ZodRecord({
       keyType: ZodString.create(),
       valueType: first,
       typeName: ZodFirstPartyTypeKind.ZodRecord,
-      ...processCreateParams(second)
+      ...processCreateParams(second),
     });
   }
 }
@@ -13480,7 +16604,7 @@ class ZodMap extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.map,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -13488,12 +16612,16 @@ class ZodMap extends ZodType {
     const valueType = this._def.valueType;
     const pairs = [...ctx.data.entries()].map(([key, value2], index) => {
       return {
-        key: keyType._parse(new ParseInputLazyPath(ctx, key, ctx.path, [index, "key"])),
-        value: valueType._parse(new ParseInputLazyPath(ctx, value2, ctx.path, [index, "value"]))
+        key: keyType._parse(
+          new ParseInputLazyPath(ctx, key, ctx.path, [index, "key"]),
+        ),
+        value: valueType._parse(
+          new ParseInputLazyPath(ctx, value2, ctx.path, [index, "value"]),
+        ),
       };
     });
     if (ctx.common.async) {
-      const finalMap = new Map;
+      const finalMap = new Map();
       return Promise.resolve().then(async () => {
         for (const pair of pairs) {
           const key = await pair.key;
@@ -13509,7 +16637,7 @@ class ZodMap extends ZodType {
         return { status: status.value, value: finalMap };
       });
     } else {
-      const finalMap = new Map;
+      const finalMap = new Map();
       for (const pair of pairs) {
         const key = pair.key;
         const value2 = pair.value;
@@ -13530,7 +16658,7 @@ ZodMap.create = (keyType, valueType, params) => {
     valueType,
     keyType,
     typeName: ZodFirstPartyTypeKind.ZodMap,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -13541,7 +16669,7 @@ class ZodSet extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.set,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -13554,7 +16682,7 @@ class ZodSet extends ZodType {
           type: "set",
           inclusive: true,
           exact: false,
-          message: def.minSize.message
+          message: def.minSize.message,
         });
         status.dirty();
       }
@@ -13567,24 +16695,24 @@ class ZodSet extends ZodType {
           type: "set",
           inclusive: true,
           exact: false,
-          message: def.maxSize.message
+          message: def.maxSize.message,
         });
         status.dirty();
       }
     }
     const valueType = this._def.valueType;
     function finalizeSet(elements2) {
-      const parsedSet = new Set;
+      const parsedSet = new Set();
       for (const element of elements2) {
-        if (element.status === "aborted")
-          return INVALID;
-        if (element.status === "dirty")
-          status.dirty();
+        if (element.status === "aborted") return INVALID;
+        if (element.status === "dirty") status.dirty();
         parsedSet.add(element.value);
       }
       return { status: status.value, value: parsedSet };
     }
-    const elements = [...ctx.data.values()].map((item, i2) => valueType._parse(new ParseInputLazyPath(ctx, item, ctx.path, i2)));
+    const elements = [...ctx.data.values()].map((item, i2) =>
+      valueType._parse(new ParseInputLazyPath(ctx, item, ctx.path, i2)),
+    );
     if (ctx.common.async) {
       return Promise.all(elements).then((elements2) => finalizeSet(elements2));
     } else {
@@ -13594,13 +16722,13 @@ class ZodSet extends ZodType {
   min(minSize, message) {
     return new ZodSet({
       ...this._def,
-      minSize: { value: minSize, message: errorUtil.toString(message) }
+      minSize: { value: minSize, message: errorUtil.toString(message) },
     });
   }
   max(maxSize, message) {
     return new ZodSet({
       ...this._def,
-      maxSize: { value: maxSize, message: errorUtil.toString(message) }
+      maxSize: { value: maxSize, message: errorUtil.toString(message) },
     });
   }
   size(size, message) {
@@ -13616,7 +16744,7 @@ ZodSet.create = (valueType, params) => {
     minSize: null,
     maxSize: null,
     typeName: ZodFirstPartyTypeKind.ZodSet,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -13631,7 +16759,7 @@ class ZodFunction extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.function,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -13639,44 +16767,58 @@ class ZodFunction extends ZodType {
       return makeIssue({
         data: args,
         path: ctx.path,
-        errorMaps: [ctx.common.contextualErrorMap, ctx.schemaErrorMap, getErrorMap(), en_default].filter((x) => !!x),
+        errorMaps: [
+          ctx.common.contextualErrorMap,
+          ctx.schemaErrorMap,
+          getErrorMap(),
+          en_default,
+        ].filter((x) => !!x),
         issueData: {
           code: ZodIssueCode.invalid_arguments,
-          argumentsError: error
-        }
+          argumentsError: error,
+        },
       });
     }
     function makeReturnsIssue(returns, error) {
       return makeIssue({
         data: returns,
         path: ctx.path,
-        errorMaps: [ctx.common.contextualErrorMap, ctx.schemaErrorMap, getErrorMap(), en_default].filter((x) => !!x),
+        errorMaps: [
+          ctx.common.contextualErrorMap,
+          ctx.schemaErrorMap,
+          getErrorMap(),
+          en_default,
+        ].filter((x) => !!x),
         issueData: {
           code: ZodIssueCode.invalid_return_type,
-          returnTypeError: error
-        }
+          returnTypeError: error,
+        },
       });
     }
     const params = { errorMap: ctx.common.contextualErrorMap };
     const fn = ctx.data;
     if (this._def.returns instanceof ZodPromise) {
       const me = this;
-      return OK(async function(...args) {
+      return OK(async function (...args) {
         const error = new ZodError([]);
-        const parsedArgs = await me._def.args.parseAsync(args, params).catch((e) => {
-          error.addIssue(makeArgsIssue(args, e));
-          throw error;
-        });
+        const parsedArgs = await me._def.args
+          .parseAsync(args, params)
+          .catch((e) => {
+            error.addIssue(makeArgsIssue(args, e));
+            throw error;
+          });
         const result = await Reflect.apply(fn, this, parsedArgs);
-        const parsedReturns = await me._def.returns._def.type.parseAsync(result, params).catch((e) => {
-          error.addIssue(makeReturnsIssue(result, e));
-          throw error;
-        });
+        const parsedReturns = await me._def.returns._def.type
+          .parseAsync(result, params)
+          .catch((e) => {
+            error.addIssue(makeReturnsIssue(result, e));
+            throw error;
+          });
         return parsedReturns;
       });
     } else {
       const me = this;
-      return OK(function(...args) {
+      return OK(function (...args) {
         const parsedArgs = me._def.args.safeParse(args, params);
         if (!parsedArgs.success) {
           throw new ZodError([makeArgsIssue(args, parsedArgs.error)]);
@@ -13699,13 +16841,13 @@ class ZodFunction extends ZodType {
   args(...items) {
     return new ZodFunction({
       ...this._def,
-      args: ZodTuple.create(items).rest(ZodUnknown.create())
+      args: ZodTuple.create(items).rest(ZodUnknown.create()),
     });
   }
   returns(returnType) {
     return new ZodFunction({
       ...this._def,
-      returns: returnType
+      returns: returnType,
     });
   }
   implement(func) {
@@ -13721,7 +16863,7 @@ class ZodFunction extends ZodType {
       args: args ? args : ZodTuple.create([]).rest(ZodUnknown.create()),
       returns: returns || ZodUnknown.create(),
       typeName: ZodFirstPartyTypeKind.ZodFunction,
-      ...processCreateParams(params)
+      ...processCreateParams(params),
     });
   }
 }
@@ -13740,7 +16882,7 @@ ZodLazy.create = (getter, params) => {
   return new ZodLazy({
     getter,
     typeName: ZodFirstPartyTypeKind.ZodLazy,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -13751,7 +16893,7 @@ class ZodLiteral extends ZodType {
       addIssueToContext(ctx, {
         received: ctx.data,
         code: ZodIssueCode.invalid_literal,
-        expected: this._def.value
+        expected: this._def.value,
       });
       return INVALID;
     }
@@ -13765,14 +16907,14 @@ ZodLiteral.create = (value2, params) => {
   return new ZodLiteral({
     value: value2,
     typeName: ZodFirstPartyTypeKind.ZodLiteral,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 function createZodEnum(values, params) {
   return new ZodEnum({
     values,
     typeName: ZodFirstPartyTypeKind.ZodEnum,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 }
 
@@ -13784,7 +16926,7 @@ class ZodEnum extends ZodType {
       addIssueToContext(ctx, {
         expected: util.joinValues(expectedValues),
         received: ctx.parsedType,
-        code: ZodIssueCode.invalid_type
+        code: ZodIssueCode.invalid_type,
       });
       return INVALID;
     }
@@ -13797,7 +16939,7 @@ class ZodEnum extends ZodType {
       addIssueToContext(ctx, {
         received: ctx.data,
         code: ZodIssueCode.invalid_enum_value,
-        options: expectedValues
+        options: expectedValues,
       });
       return INVALID;
     }
@@ -13830,14 +16972,17 @@ class ZodEnum extends ZodType {
   extract(values, newDef = this._def) {
     return ZodEnum.create(values, {
       ...this._def,
-      ...newDef
+      ...newDef,
     });
   }
   exclude(values, newDef = this._def) {
-    return ZodEnum.create(this.options.filter((opt) => !values.includes(opt)), {
-      ...this._def,
-      ...newDef
-    });
+    return ZodEnum.create(
+      this.options.filter((opt) => !values.includes(opt)),
+      {
+        ...this._def,
+        ...newDef,
+      },
+    );
   }
 }
 ZodEnum.create = createZodEnum;
@@ -13846,12 +16991,15 @@ class ZodNativeEnum extends ZodType {
   _parse(input) {
     const nativeEnumValues = util.getValidEnumValues(this._def.values);
     const ctx = this._getOrReturnCtx(input);
-    if (ctx.parsedType !== ZodParsedType.string && ctx.parsedType !== ZodParsedType.number) {
+    if (
+      ctx.parsedType !== ZodParsedType.string &&
+      ctx.parsedType !== ZodParsedType.number
+    ) {
       const expectedValues = util.objectValues(nativeEnumValues);
       addIssueToContext(ctx, {
         expected: util.joinValues(expectedValues),
         received: ctx.parsedType,
-        code: ZodIssueCode.invalid_type
+        code: ZodIssueCode.invalid_type,
       });
       return INVALID;
     }
@@ -13863,7 +17011,7 @@ class ZodNativeEnum extends ZodType {
       addIssueToContext(ctx, {
         received: ctx.data,
         code: ZodIssueCode.invalid_enum_value,
-        options: expectedValues
+        options: expectedValues,
       });
       return INVALID;
     }
@@ -13877,7 +17025,7 @@ ZodNativeEnum.create = (values, params) => {
   return new ZodNativeEnum({
     values,
     typeName: ZodFirstPartyTypeKind.ZodNativeEnum,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -13887,28 +17035,36 @@ class ZodPromise extends ZodType {
   }
   _parse(input) {
     const { ctx } = this._processInputParams(input);
-    if (ctx.parsedType !== ZodParsedType.promise && ctx.common.async === false) {
+    if (
+      ctx.parsedType !== ZodParsedType.promise &&
+      ctx.common.async === false
+    ) {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.promise,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
-    const promisified = ctx.parsedType === ZodParsedType.promise ? ctx.data : Promise.resolve(ctx.data);
-    return OK(promisified.then((data) => {
-      return this._def.type.parseAsync(data, {
-        path: ctx.path,
-        errorMap: ctx.common.contextualErrorMap
-      });
-    }));
+    const promisified =
+      ctx.parsedType === ZodParsedType.promise
+        ? ctx.data
+        : Promise.resolve(ctx.data);
+    return OK(
+      promisified.then((data) => {
+        return this._def.type.parseAsync(data, {
+          path: ctx.path,
+          errorMap: ctx.common.contextualErrorMap,
+        });
+      }),
+    );
   }
 }
 ZodPromise.create = (schema, params) => {
   return new ZodPromise({
     type: schema,
     typeName: ZodFirstPartyTypeKind.ZodPromise,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -13917,7 +17073,9 @@ class ZodEffects extends ZodType {
     return this._def.schema;
   }
   sourceType() {
-    return this._def.schema._def.typeName === ZodFirstPartyTypeKind.ZodEffects ? this._def.schema.sourceType() : this._def.schema;
+    return this._def.schema._def.typeName === ZodFirstPartyTypeKind.ZodEffects
+      ? this._def.schema.sourceType()
+      : this._def.schema;
   }
   _parse(input) {
     const { status, ctx } = this._processInputParams(input);
@@ -13933,42 +17091,34 @@ class ZodEffects extends ZodType {
       },
       get path() {
         return ctx.path;
-      }
+      },
     };
     checkCtx.addIssue = checkCtx.addIssue.bind(checkCtx);
     if (effect.type === "preprocess") {
       const processed = effect.transform(ctx.data, checkCtx);
       if (ctx.common.async) {
         return Promise.resolve(processed).then(async (processed2) => {
-          if (status.value === "aborted")
-            return INVALID;
+          if (status.value === "aborted") return INVALID;
           const result = await this._def.schema._parseAsync({
             data: processed2,
             path: ctx.path,
-            parent: ctx
+            parent: ctx,
           });
-          if (result.status === "aborted")
-            return INVALID;
-          if (result.status === "dirty")
-            return DIRTY(result.value);
-          if (status.value === "dirty")
-            return DIRTY(result.value);
+          if (result.status === "aborted") return INVALID;
+          if (result.status === "dirty") return DIRTY(result.value);
+          if (status.value === "dirty") return DIRTY(result.value);
           return result;
         });
       } else {
-        if (status.value === "aborted")
-          return INVALID;
+        if (status.value === "aborted") return INVALID;
         const result = this._def.schema._parseSync({
           data: processed,
           path: ctx.path,
-          parent: ctx
+          parent: ctx,
         });
-        if (result.status === "aborted")
-          return INVALID;
-        if (result.status === "dirty")
-          return DIRTY(result.value);
-        if (status.value === "dirty")
-          return DIRTY(result.value);
+        if (result.status === "aborted") return INVALID;
+        if (result.status === "dirty") return DIRTY(result.value);
+        if (status.value === "dirty") return DIRTY(result.value);
         return result;
       }
     }
@@ -13979,7 +17129,9 @@ class ZodEffects extends ZodType {
           return Promise.resolve(result);
         }
         if (result instanceof Promise) {
-          throw new Error("Async refinement encountered during synchronous parse operation. Use .parseAsync instead.");
+          throw new Error(
+            "Async refinement encountered during synchronous parse operation. Use .parseAsync instead.",
+          );
         }
         return acc;
       };
@@ -13987,24 +17139,22 @@ class ZodEffects extends ZodType {
         const inner = this._def.schema._parseSync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx
+          parent: ctx,
         });
-        if (inner.status === "aborted")
-          return INVALID;
-        if (inner.status === "dirty")
-          status.dirty();
+        if (inner.status === "aborted") return INVALID;
+        if (inner.status === "dirty") status.dirty();
         executeRefinement(inner.value);
         return { status: status.value, value: inner.value };
       } else {
-        return this._def.schema._parseAsync({ data: ctx.data, path: ctx.path, parent: ctx }).then((inner) => {
-          if (inner.status === "aborted")
-            return INVALID;
-          if (inner.status === "dirty")
-            status.dirty();
-          return executeRefinement(inner.value).then(() => {
-            return { status: status.value, value: inner.value };
+        return this._def.schema
+          ._parseAsync({ data: ctx.data, path: ctx.path, parent: ctx })
+          .then((inner) => {
+            if (inner.status === "aborted") return INVALID;
+            if (inner.status === "dirty") status.dirty();
+            return executeRefinement(inner.value).then(() => {
+              return { status: status.value, value: inner.value };
+            });
           });
-        });
       }
     }
     if (effect.type === "transform") {
@@ -14012,24 +17162,28 @@ class ZodEffects extends ZodType {
         const base = this._def.schema._parseSync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx
+          parent: ctx,
         });
-        if (!isValid(base))
-          return INVALID;
+        if (!isValid(base)) return INVALID;
         const result = effect.transform(base.value, checkCtx);
         if (result instanceof Promise) {
-          throw new Error(`Asynchronous transform encountered during synchronous parse operation. Use .parseAsync instead.`);
+          throw new Error(
+            `Asynchronous transform encountered during synchronous parse operation. Use .parseAsync instead.`,
+          );
         }
         return { status: status.value, value: result };
       } else {
-        return this._def.schema._parseAsync({ data: ctx.data, path: ctx.path, parent: ctx }).then((base) => {
-          if (!isValid(base))
-            return INVALID;
-          return Promise.resolve(effect.transform(base.value, checkCtx)).then((result) => ({
-            status: status.value,
-            value: result
-          }));
-        });
+        return this._def.schema
+          ._parseAsync({ data: ctx.data, path: ctx.path, parent: ctx })
+          .then((base) => {
+            if (!isValid(base)) return INVALID;
+            return Promise.resolve(effect.transform(base.value, checkCtx)).then(
+              (result) => ({
+                status: status.value,
+                value: result,
+              }),
+            );
+          });
       }
     }
     util.assertNever(effect);
@@ -14040,7 +17194,7 @@ ZodEffects.create = (schema, effect, params) => {
     schema,
     typeName: ZodFirstPartyTypeKind.ZodEffects,
     effect,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 ZodEffects.createWithPreprocess = (preprocess, schema, params) => {
@@ -14048,7 +17202,7 @@ ZodEffects.createWithPreprocess = (preprocess, schema, params) => {
     schema,
     effect: { type: "preprocess", transform: preprocess },
     typeName: ZodFirstPartyTypeKind.ZodEffects,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -14068,7 +17222,7 @@ ZodOptional.create = (type, params) => {
   return new ZodOptional({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodOptional,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -14088,7 +17242,7 @@ ZodNullable.create = (type, params) => {
   return new ZodNullable({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodNullable,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 
@@ -14102,7 +17256,7 @@ class ZodDefault extends ZodType {
     return this._def.innerType._parse({
       data,
       path: ctx.path,
-      parent: ctx
+      parent: ctx,
     });
   }
   removeDefault() {
@@ -14113,8 +17267,11 @@ ZodDefault.create = (type, params) => {
   return new ZodDefault({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodDefault,
-    defaultValue: typeof params.default === "function" ? params.default : () => params.default,
-    ...processCreateParams(params)
+    defaultValue:
+      typeof params.default === "function"
+        ? params.default
+        : () => params.default,
+    ...processCreateParams(params),
   });
 };
 
@@ -14125,37 +17282,43 @@ class ZodCatch extends ZodType {
       ...ctx,
       common: {
         ...ctx.common,
-        issues: []
-      }
+        issues: [],
+      },
     };
     const result = this._def.innerType._parse({
       data: newCtx.data,
       path: newCtx.path,
       parent: {
-        ...newCtx
-      }
+        ...newCtx,
+      },
     });
     if (isAsync(result)) {
       return result.then((result2) => {
         return {
           status: "valid",
-          value: result2.status === "valid" ? result2.value : this._def.catchValue({
-            get error() {
-              return new ZodError(newCtx.common.issues);
-            },
-            input: newCtx.data
-          })
+          value:
+            result2.status === "valid"
+              ? result2.value
+              : this._def.catchValue({
+                  get error() {
+                    return new ZodError(newCtx.common.issues);
+                  },
+                  input: newCtx.data,
+                }),
         };
       });
     } else {
       return {
         status: "valid",
-        value: result.status === "valid" ? result.value : this._def.catchValue({
-          get error() {
-            return new ZodError(newCtx.common.issues);
-          },
-          input: newCtx.data
-        })
+        value:
+          result.status === "valid"
+            ? result.value
+            : this._def.catchValue({
+                get error() {
+                  return new ZodError(newCtx.common.issues);
+                },
+                input: newCtx.data,
+              }),
       };
     }
   }
@@ -14167,8 +17330,9 @@ ZodCatch.create = (type, params) => {
   return new ZodCatch({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodCatch,
-    catchValue: typeof params.catch === "function" ? params.catch : () => params.catch,
-    ...processCreateParams(params)
+    catchValue:
+      typeof params.catch === "function" ? params.catch : () => params.catch,
+    ...processCreateParams(params),
   });
 };
 
@@ -14180,7 +17344,7 @@ class ZodNaN extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.nan,
-        received: ctx.parsedType
+        received: ctx.parsedType,
       });
       return INVALID;
     }
@@ -14190,7 +17354,7 @@ class ZodNaN extends ZodType {
 ZodNaN.create = (params) => {
   return new ZodNaN({
     typeName: ZodFirstPartyTypeKind.ZodNaN,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 var BRAND = Symbol("zod_brand");
@@ -14202,7 +17366,7 @@ class ZodBranded extends ZodType {
     return this._def.type._parse({
       data,
       path: ctx.path,
-      parent: ctx
+      parent: ctx,
     });
   }
   unwrap() {
@@ -14218,10 +17382,9 @@ class ZodPipeline extends ZodType {
         const inResult = await this._def.in._parseAsync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx
+          parent: ctx,
         });
-        if (inResult.status === "aborted")
-          return INVALID;
+        if (inResult.status === "aborted") return INVALID;
         if (inResult.status === "dirty") {
           status.dirty();
           return DIRTY(inResult.value);
@@ -14229,7 +17392,7 @@ class ZodPipeline extends ZodType {
           return this._def.out._parseAsync({
             data: inResult.value,
             path: ctx.path,
-            parent: ctx
+            parent: ctx,
           });
         }
       };
@@ -14238,21 +17401,20 @@ class ZodPipeline extends ZodType {
       const inResult = this._def.in._parseSync({
         data: ctx.data,
         path: ctx.path,
-        parent: ctx
+        parent: ctx,
       });
-      if (inResult.status === "aborted")
-        return INVALID;
+      if (inResult.status === "aborted") return INVALID;
       if (inResult.status === "dirty") {
         status.dirty();
         return {
           status: "dirty",
-          value: inResult.value
+          value: inResult.value,
         };
       } else {
         return this._def.out._parseSync({
           data: inResult.value,
           path: ctx.path,
-          parent: ctx
+          parent: ctx,
         });
       }
     }
@@ -14261,7 +17423,7 @@ class ZodPipeline extends ZodType {
     return new ZodPipeline({
       in: a,
       out: b,
-      typeName: ZodFirstPartyTypeKind.ZodPipeline
+      typeName: ZodFirstPartyTypeKind.ZodPipeline,
     });
   }
 }
@@ -14275,7 +17437,9 @@ class ZodReadonly extends ZodType {
       }
       return data;
     };
-    return isAsync(result) ? result.then((data) => freeze(data)) : freeze(result);
+    return isAsync(result)
+      ? result.then((data) => freeze(data))
+      : freeze(result);
   }
   unwrap() {
     return this._def.innerType;
@@ -14285,11 +17449,16 @@ ZodReadonly.create = (type, params) => {
   return new ZodReadonly({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodReadonly,
-    ...processCreateParams(params)
+    ...processCreateParams(params),
   });
 };
 function cleanParams(params, data) {
-  const p = typeof params === "function" ? params(data) : typeof params === "string" ? { message: params } : params;
+  const p =
+    typeof params === "function"
+      ? params(data)
+      : typeof params === "string"
+        ? { message: params }
+        : params;
   const p2 = typeof p === "string" ? { message: p } : p;
   return p2;
 }
@@ -14316,10 +17485,10 @@ function custom(check, _params = {}, fatal) {
   return ZodAny.create();
 }
 var late = {
-  object: ZodObject.lazycreate
+  object: ZodObject.lazycreate,
 };
 var ZodFirstPartyTypeKind;
-(function(ZodFirstPartyTypeKind2) {
+(function (ZodFirstPartyTypeKind2) {
   ZodFirstPartyTypeKind2["ZodString"] = "ZodString";
   ZodFirstPartyTypeKind2["ZodNumber"] = "ZodNumber";
   ZodFirstPartyTypeKind2["ZodNaN"] = "ZodNaN";
@@ -14357,9 +17526,12 @@ var ZodFirstPartyTypeKind;
   ZodFirstPartyTypeKind2["ZodPipeline"] = "ZodPipeline";
   ZodFirstPartyTypeKind2["ZodReadonly"] = "ZodReadonly";
 })(ZodFirstPartyTypeKind || (ZodFirstPartyTypeKind = {}));
-var instanceOfType = (cls, params = {
-  message: `Input not instance of ${cls.name}`
-}) => custom((data) => data instanceof cls, params);
+var instanceOfType = (
+  cls,
+  params = {
+    message: `Input not instance of ${cls.name}`,
+  },
+) => custom((data) => data instanceof cls, params);
 var stringType = ZodString.create;
 var numberType = ZodNumber.create;
 var nanType = ZodNaN.create;
@@ -14400,44 +17572,120 @@ var oboolean = () => booleanType().optional();
 var coerce = {
   string: (arg) => ZodString.create({ ...arg, coerce: true }),
   number: (arg) => ZodNumber.create({ ...arg, coerce: true }),
-  boolean: (arg) => ZodBoolean.create({
-    ...arg,
-    coerce: true
-  }),
+  boolean: (arg) =>
+    ZodBoolean.create({
+      ...arg,
+      coerce: true,
+    }),
   bigint: (arg) => ZodBigInt.create({ ...arg, coerce: true }),
-  date: (arg) => ZodDate.create({ ...arg, coerce: true })
+  date: (arg) => ZodDate.create({ ...arg, coerce: true }),
 };
 var NEVER = INVALID;
 var globalHostBindingsSchema = exports_external.object({
-  switchModes: exports_external.function().args(exports_external.nativeEnum(Mode)).returns(exports_external.void()),
-  log: exports_external.function().args(exports_external.string()).returns(exports_external.void()),
-  sendResponse: exports_external.function().args(exports_external.union([exports_external.instanceof(Uint8Array), exports_external.custom()])).returns(exports_external.number()),
-  versionV2: exports_external.function().args().returns(exports_external.void()),
-  callCapability: exports_external.function().args(exports_external.union([exports_external.instanceof(Uint8Array), exports_external.custom()])).returns(exports_external.number()),
-  awaitCapabilities: exports_external.function().args(exports_external.union([exports_external.instanceof(Uint8Array), exports_external.custom()]), exports_external.number()).returns(exports_external.union([exports_external.instanceof(Uint8Array), exports_external.custom()])),
-  getSecrets: exports_external.function().args(exports_external.union([exports_external.instanceof(Uint8Array), exports_external.custom()]), exports_external.number()).returns(exports_external.any()),
-  awaitSecrets: exports_external.function().args(exports_external.union([exports_external.instanceof(Uint8Array), exports_external.custom()]), exports_external.number()).returns(exports_external.union([exports_external.instanceof(Uint8Array), exports_external.custom()])),
-  getWasiArgs: exports_external.function().args().returns(exports_external.string()),
-  now: exports_external.function().args().returns(exports_external.number())
+  switchModes: exports_external
+    .function()
+    .args(exports_external.nativeEnum(Mode))
+    .returns(exports_external.void()),
+  log: exports_external
+    .function()
+    .args(exports_external.string())
+    .returns(exports_external.void()),
+  sendResponse: exports_external
+    .function()
+    .args(
+      exports_external.union([
+        exports_external.instanceof(Uint8Array),
+        exports_external.custom(),
+      ]),
+    )
+    .returns(exports_external.number()),
+  versionV2: exports_external
+    .function()
+    .args()
+    .returns(exports_external.void()),
+  callCapability: exports_external
+    .function()
+    .args(
+      exports_external.union([
+        exports_external.instanceof(Uint8Array),
+        exports_external.custom(),
+      ]),
+    )
+    .returns(exports_external.number()),
+  awaitCapabilities: exports_external
+    .function()
+    .args(
+      exports_external.union([
+        exports_external.instanceof(Uint8Array),
+        exports_external.custom(),
+      ]),
+      exports_external.number(),
+    )
+    .returns(
+      exports_external.union([
+        exports_external.instanceof(Uint8Array),
+        exports_external.custom(),
+      ]),
+    ),
+  getSecrets: exports_external
+    .function()
+    .args(
+      exports_external.union([
+        exports_external.instanceof(Uint8Array),
+        exports_external.custom(),
+      ]),
+      exports_external.number(),
+    )
+    .returns(exports_external.any()),
+  awaitSecrets: exports_external
+    .function()
+    .args(
+      exports_external.union([
+        exports_external.instanceof(Uint8Array),
+        exports_external.custom(),
+      ]),
+      exports_external.number(),
+    )
+    .returns(
+      exports_external.union([
+        exports_external.instanceof(Uint8Array),
+        exports_external.custom(),
+      ]),
+    ),
+  getWasiArgs: exports_external
+    .function()
+    .args()
+    .returns(exports_external.string()),
+  now: exports_external.function().args().returns(exports_external.number()),
 });
 var validateGlobalHostBindings = () => {
   const globalFunctions = globalThis;
   try {
     return globalHostBindingsSchema.parse(globalFunctions);
   } catch (error) {
-    const missingFunctions = Object.keys(globalHostBindingsSchema.shape).filter((key) => !(key in globalFunctions));
-    throw new Error(`Missing required global host functions: ${missingFunctions.join(", ")}. ` + `The CRE WASM runtime must provide these functions on globalThis. ` + `This usually means the workflow is being executed outside the CRE WASM environment, ` + `or the host runtime version is incompatible with this SDK version.`);
+    const missingFunctions = Object.keys(globalHostBindingsSchema.shape).filter(
+      (key) => !(key in globalFunctions),
+    );
+    throw new Error(
+      `Missing required global host functions: ${missingFunctions.join(", ")}. ` +
+        `The CRE WASM runtime must provide these functions on globalThis. ` +
+        `This usually means the workflow is being executed outside the CRE WASM environment, ` +
+        `or the host runtime version is incompatible with this SDK version.`,
+    );
   }
 };
 var _hostBindings = null;
-var hostBindings = new Proxy({}, {
-  get(target, prop) {
-    if (!_hostBindings) {
-      _hostBindings = validateGlobalHostBindings();
-    }
-    return _hostBindings[prop];
-  }
-});
+var hostBindings = new Proxy(
+  {},
+  {
+    get(target, prop) {
+      if (!_hostBindings) {
+        _hostBindings = validateGlobalHostBindings();
+      }
+      return _hostBindings[prop];
+    },
+  },
+);
 
 class ConsensusCapability {
   static CAPABILITY_ID = "consensus@1.0.0-alpha";
@@ -14456,13 +17704,13 @@ class ConsensusCapability {
       method: "Simple",
       payload,
       inputSchema: SimpleConsensusInputsSchema,
-      outputSchema: ValueSchema2
+      outputSchema: ValueSchema2,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return result;
-      }
+      },
     };
   }
   report(runtime, input) {
@@ -14478,13 +17726,13 @@ class ConsensusCapability {
       method: "Report",
       payload,
       inputSchema: ReportRequestSchema,
-      outputSchema: ReportResponseSchema
+      outputSchema: ReportResponseSchema,
     });
     return {
       result: () => {
         const result = capabilityResponse.result();
         return new Report(result);
-      }
+      },
     };
   }
 }
@@ -14523,7 +17771,9 @@ class SecretsError extends Error {
   secretRequest;
   error;
   constructor(secretRequest, error) {
-    super(`secret retrieval failed for ${secretRequest.id || "unknown"} (namespace: ${secretRequest.namespace || "default"}): ${error}. Verify the secret name is correct and that the secret has been configured for this workflow`);
+    super(
+      `secret retrieval failed for ${secretRequest.id || "unknown"} (namespace: ${secretRequest.namespace || "default"}): ${error}. Verify the secret name is correct and that the secret has been configured for this workflow`,
+    );
     this.secretRequest = secretRequest;
     this.error = error;
     this.name = "SecretsError";
@@ -14549,7 +17799,7 @@ class BaseRuntimeImpl {
       return {
         result: () => {
           throw this.modeError;
-        }
+        },
       };
     }
     const callbackId = this.allocateCallbackId();
@@ -14558,21 +17808,30 @@ class BaseRuntimeImpl {
       id: capabilityId,
       method,
       payload: anyPayload,
-      callbackId
+      callbackId,
     });
     if (!this.helpers.call(req)) {
       return {
         result: () => {
-          throw new CapabilityError(`Capability '${capabilityId}' not found: the host rejected the call to method '${method}'. Verify the capability ID is correct and the capability is available in this CRE environment`, {
-            callbackId,
-            method,
-            capabilityId
-          });
-        }
+          throw new CapabilityError(
+            `Capability '${capabilityId}' not found: the host rejected the call to method '${method}'. Verify the capability ID is correct and the capability is available in this CRE environment`,
+            {
+              callbackId,
+              method,
+              capabilityId,
+            },
+          );
+        },
       };
     }
     return {
-      result: () => this.awaitAndUnwrapCapabilityResponse(callbackId, capabilityId, method, outputSchema)
+      result: () =>
+        this.awaitAndUnwrapCapabilityResponse(
+          callbackId,
+          capabilityId,
+          method,
+          outputSchema,
+        ),
     };
   }
   allocateCallbackId() {
@@ -14584,18 +17843,29 @@ class BaseRuntimeImpl {
     }
     return callbackId;
   }
-  awaitAndUnwrapCapabilityResponse(callbackId, capabilityId, method, outputSchema) {
+  awaitAndUnwrapCapabilityResponse(
+    callbackId,
+    capabilityId,
+    method,
+    outputSchema,
+  ) {
     const awaitRequest = create(AwaitCapabilitiesRequestSchema, {
-      ids: [callbackId]
+      ids: [callbackId],
     });
-    const awaitResponse = this.helpers.await(awaitRequest, this.maxResponseSize);
+    const awaitResponse = this.helpers.await(
+      awaitRequest,
+      this.maxResponseSize,
+    );
     const capabilityResponse = awaitResponse.responses[callbackId];
     if (!capabilityResponse) {
-      throw new CapabilityError(`No response found for capability '${capabilityId}' method '${method}' (callback ID ${callbackId}): the host returned a response map that does not contain an entry for this call`, {
-        capabilityId,
-        method,
-        callbackId
-      });
+      throw new CapabilityError(
+        `No response found for capability '${capabilityId}' method '${method}' (callback ID ${callbackId}): the host returned a response map that does not contain an entry for this call`,
+        {
+          capabilityId,
+          method,
+          callbackId,
+        },
+      );
     }
     const response = capabilityResponse.response;
     switch (response.case) {
@@ -14603,25 +17873,34 @@ class BaseRuntimeImpl {
         try {
           return anyUnpack(response.value, outputSchema);
         } catch {
-          throw new CapabilityError(`Failed to deserialize response payload for capability '${capabilityId}' method '${method}': the response could not be unpacked into the expected output schema`, {
-            capabilityId,
-            method,
-            callbackId
-          });
+          throw new CapabilityError(
+            `Failed to deserialize response payload for capability '${capabilityId}' method '${method}': the response could not be unpacked into the expected output schema`,
+            {
+              capabilityId,
+              method,
+              callbackId,
+            },
+          );
         }
       }
       case "error":
-        throw new CapabilityError(`Capability '${capabilityId}' method '${method}' returned an error: ${response.value}`, {
-          capabilityId,
-          method,
-          callbackId
-        });
+        throw new CapabilityError(
+          `Capability '${capabilityId}' method '${method}' returned an error: ${response.value}`,
+          {
+            capabilityId,
+            method,
+            callbackId,
+          },
+        );
       default:
-        throw new CapabilityError(`Unexpected response type '${response.case}' for capability '${capabilityId}' method '${method}': expected 'payload' or 'error'`, {
-          capabilityId,
-          method,
-          callbackId
-        });
+        throw new CapabilityError(
+          `Unexpected response type '${response.case}' for capability '${capabilityId}' method '${method}': expected 'payload' or 'error'`,
+          {
+            capabilityId,
+            method,
+            callbackId,
+          },
+        );
     }
   }
   getNextCallId() {
@@ -14651,12 +17930,21 @@ class RuntimeImpl extends BaseRuntimeImpl {
   }
   runInNodeMode(fn, consensusAggregation, unwrapOptions) {
     return (...args) => {
-      this.modeError = new DonModeError;
-      const nodeRuntime = new NodeRuntimeImpl(this.config, this.nextNodeCallId, this.helpers, this.maxResponseSize);
+      this.modeError = new DonModeError();
+      const nodeRuntime = new NodeRuntimeImpl(
+        this.config,
+        this.nextNodeCallId,
+        this.helpers,
+        this.maxResponseSize,
+      );
       const consensusInput = this.prepareConsensusInput(consensusAggregation);
       try {
         const observation = fn(nodeRuntime, ...args);
-        this.captureObservation(consensusInput, observation, consensusAggregation.descriptor);
+        this.captureObservation(
+          consensusInput,
+          observation,
+          consensusAggregation.descriptor,
+        );
       } catch (e) {
         this.captureError(consensusInput, e);
       } finally {
@@ -14667,10 +17955,12 @@ class RuntimeImpl extends BaseRuntimeImpl {
   }
   prepareConsensusInput(consensusAggregation) {
     const consensusInput = create(SimpleConsensusInputsSchema, {
-      descriptors: consensusAggregation.descriptor
+      descriptors: consensusAggregation.descriptor,
     });
     if (consensusAggregation.defaultValue) {
-      const defaultValue = Value.from(consensusAggregation.defaultValue).proto();
+      const defaultValue = Value.from(
+        consensusAggregation.defaultValue,
+      ).proto();
       clearIgnoredFields(defaultValue, consensusAggregation.descriptor);
       consensusInput.default = defaultValue;
     }
@@ -14681,30 +17971,32 @@ class RuntimeImpl extends BaseRuntimeImpl {
     clearIgnoredFields(observationValue, descriptor);
     consensusInput.observation = {
       case: "value",
-      value: observationValue
+      value: observationValue,
     };
   }
   captureError(consensusInput, e) {
     consensusInput.observation = {
       case: "error",
-      value: e instanceof Error && e.message || String(e)
+      value: (e instanceof Error && e.message) || String(e),
     };
   }
   restoreDonMode(nodeRuntime) {
     this.modeError = undefined;
     this.nextNodeCallId = nodeRuntime.nextCallId;
-    nodeRuntime.modeError = new NodeModeError;
+    nodeRuntime.modeError = new NodeModeError();
     this.helpers.switchModes(Mode.DON);
   }
   runConsensusAndWrap(consensusInput, unwrapOptions) {
-    const consensus = new ConsensusCapability;
+    const consensus = new ConsensusCapability();
     const call = consensus.simple(this, consensusInput);
     return {
       result: () => {
         const result = call.result();
         const wrappedValue = Value.wrap(result);
-        return unwrapOptions ? wrappedValue.unwrapToType(unwrapOptions) : wrappedValue.unwrap();
-      }
+        return unwrapOptions
+          ? wrappedValue.unwrapToType(unwrapOptions)
+          : wrappedValue.unwrap();
+      },
     };
   }
   getSecret(request) {
@@ -14712,30 +18004,38 @@ class RuntimeImpl extends BaseRuntimeImpl {
       return {
         result: () => {
           throw this.modeError;
-        }
+        },
       };
     }
-    const secretRequest = request.$typeName ? request : create(SecretRequestSchema, request);
+    const secretRequest = request.$typeName
+      ? request
+      : create(SecretRequestSchema, request);
     const id = this.nextCallId;
     this.nextCallId++;
     const secretsReq = create(GetSecretsRequestSchema, {
       callbackId: id,
-      requests: [secretRequest]
+      requests: [secretRequest],
     });
     if (!this.helpers.getSecrets(secretsReq, this.maxResponseSize)) {
       return {
         result: () => {
-          throw new SecretsError(secretRequest, "host is not making the secrets request");
-        }
+          throw new SecretsError(
+            secretRequest,
+            "host is not making the secrets request",
+          );
+        },
       };
     }
     return {
-      result: () => this.awaitAndUnwrapSecret(id, secretRequest)
+      result: () => this.awaitAndUnwrapSecret(id, secretRequest),
     };
   }
   awaitAndUnwrapSecret(id, secretRequest) {
     const awaitRequest = create(AwaitSecretsRequestSchema, { ids: [id] });
-    const awaitResponse = this.helpers.awaitSecrets(awaitRequest, this.maxResponseSize);
+    const awaitResponse = this.helpers.awaitSecrets(
+      awaitRequest,
+      this.maxResponseSize,
+    );
     const secretsResponse = awaitResponse.responses[id];
     if (!secretsResponse) {
       throw new SecretsError(secretRequest, "no response");
@@ -14751,14 +18051,17 @@ class RuntimeImpl extends BaseRuntimeImpl {
       case "error":
         throw new SecretsError(secretRequest, response.value.error);
       default:
-        throw new SecretsError(secretRequest, "cannot unmarshal returned value from host");
+        throw new SecretsError(
+          secretRequest,
+          "cannot unmarshal returned value from host",
+        );
     }
   }
   report(input) {
-    const consensus = new ConsensusCapability;
+    const consensus = new ConsensusCapability();
     const call = consensus.report(this, input);
     return {
-      result: () => call.result()
+      result: () => call.result(),
     };
   }
 }
@@ -14766,7 +18069,10 @@ function clearIgnoredFields(value2, descriptor) {
   if (!descriptor || !value2) {
     return;
   }
-  const fieldsMap = descriptor.descriptor?.case === "fieldsMap" ? descriptor.descriptor.value : undefined;
+  const fieldsMap =
+    descriptor.descriptor?.case === "fieldsMap"
+      ? descriptor.descriptor.value
+      : undefined;
   if (!fieldsMap) {
     return;
   }
@@ -14781,7 +18087,10 @@ function clearIgnoredFields(value2, descriptor) {
         delete mapValue.fields[key];
         continue;
       }
-      const nestedFieldsMap = nestedDescriptor.descriptor?.case === "fieldsMap" ? nestedDescriptor.descriptor.value : undefined;
+      const nestedFieldsMap =
+        nestedDescriptor.descriptor?.case === "fieldsMap"
+          ? nestedDescriptor.descriptor.value
+          : undefined;
       if (nestedFieldsMap && val.value?.case === "mapValue") {
         clearIgnoredFields(val, nestedDescriptor);
       }
@@ -14791,12 +18100,19 @@ function clearIgnoredFields(value2, descriptor) {
 
 class Runtime extends RuntimeImpl {
   constructor(config, nextCallId, maxResponseSize) {
-    super(config, nextCallId, WasmRuntimeHelpers.getInstance(), maxResponseSize);
+    super(
+      config,
+      nextCallId,
+      WasmRuntimeHelpers.getInstance(),
+      maxResponseSize,
+    );
   }
 }
 function toI32ResponseSize(maxResponseSize) {
   if (maxResponseSize > 2147483647n || maxResponseSize < -2147483648n) {
-    throw new Error(`maxResponseSize ${maxResponseSize} exceeds i32 range. Expected a value between -2147483648 and 2147483647`);
+    throw new Error(
+      `maxResponseSize ${maxResponseSize} exceeds i32 range. Expected a value between -2147483648 and 2147483647`,
+    );
   }
   return Math.trunc(Number(maxResponseSize));
 }
@@ -14809,27 +18125,45 @@ class WasmRuntimeHelpers {
   }
   static getInstance() {
     if (!WasmRuntimeHelpers.instance) {
-      WasmRuntimeHelpers.instance = new WasmRuntimeHelpers;
+      WasmRuntimeHelpers.instance = new WasmRuntimeHelpers();
     }
     return WasmRuntimeHelpers.instance;
   }
   call(request) {
-    return hostBindings.callCapability(toBinary(CapabilityRequestSchema, request)) >= 0;
+    return (
+      hostBindings.callCapability(toBinary(CapabilityRequestSchema, request)) >=
+      0
+    );
   }
   await(request, maxResponseSize) {
     const responseSize = toI32ResponseSize(maxResponseSize);
-    const response = hostBindings.awaitCapabilities(toBinary(AwaitCapabilitiesRequestSchema, request), responseSize);
-    const responseBytes = Array.isArray(response) ? new Uint8Array(response) : response;
+    const response = hostBindings.awaitCapabilities(
+      toBinary(AwaitCapabilitiesRequestSchema, request),
+      responseSize,
+    );
+    const responseBytes = Array.isArray(response)
+      ? new Uint8Array(response)
+      : response;
     return fromBinary(AwaitCapabilitiesResponseSchema, responseBytes);
   }
   getSecrets(request, maxResponseSize) {
     const responseSize = toI32ResponseSize(maxResponseSize);
-    return hostBindings.getSecrets(toBinary(GetSecretsRequestSchema, request), responseSize) >= 0;
+    return (
+      hostBindings.getSecrets(
+        toBinary(GetSecretsRequestSchema, request),
+        responseSize,
+      ) >= 0
+    );
   }
   awaitSecrets(request, maxResponseSize) {
     const responseSize = toI32ResponseSize(maxResponseSize);
-    const response = hostBindings.awaitSecrets(toBinary(AwaitSecretsRequestSchema, request), responseSize);
-    const responseBytes = Array.isArray(response) ? new Uint8Array(response) : response;
+    const response = hostBindings.awaitSecrets(
+      toBinary(AwaitSecretsRequestSchema, request),
+      responseSize,
+    );
+    const responseBytes = Array.isArray(response)
+      ? new Uint8Array(response)
+      : response;
     return fromBinary(AwaitSecretsResponseSchema, responseBytes);
   }
   switchModes(mode) {
@@ -14859,10 +18193,14 @@ class Runner {
     try {
       args = JSON.parse(argsString);
     } catch (e) {
-      throw new Error("Invalid request: could not parse WASI arguments as JSON. Ensure the WASM runtime is passing valid arguments to the workflow");
+      throw new Error(
+        "Invalid request: could not parse WASI arguments as JSON. Ensure the WASM runtime is passing valid arguments to the workflow",
+      );
     }
     if (args.length !== 2) {
-      throw new Error(`Invalid request: expected exactly 2 WASI arguments (script name and base64-encoded request payload), but received ${args.length}`);
+      throw new Error(
+        `Invalid request: expected exactly 2 WASI arguments (script name and base64-encoded request payload), but received ${args.length}`,
+      );
     }
     const base64Request = args[1];
     const bytes = Buffer.from(base64Request, "base64");
@@ -14873,7 +18211,7 @@ class Runner {
     let result;
     try {
       const workflow = await initFn(this.config, {
-        getSecret: runtime.getSecret.bind(runtime)
+        getSecret: runtime.getSecret.bind(runtime),
       });
       switch (this.request.request.case) {
         case "subscribe":
@@ -14883,12 +18221,14 @@ class Runner {
           result = this.handleExecutionPhase(this.request, workflow, runtime);
           break;
         default:
-          throw new Error(`Unknown request type '${this.request.request.case}': expected 'subscribe' or 'trigger'. This may indicate a version mismatch between the SDK and the CRE runtime`);
+          throw new Error(
+            `Unknown request type '${this.request.request.case}': expected 'subscribe' or 'trigger'. This may indicate a version mismatch between the SDK and the CRE runtime`,
+          );
       }
     } catch (e) {
       const err = e instanceof Error ? e.message : String(e);
       result = create(ExecutionResultSchema, {
-        result: { case: "error", value: err }
+        result: { case: "error", value: err },
       });
     }
     const awaitedResult = await result;
@@ -14896,12 +18236,16 @@ class Runner {
   }
   async handleExecutionPhase(req, workflow, runtime) {
     if (req.request.case !== "trigger") {
-      throw new Error(`cannot handle non-trigger request as a trigger: received request type '${req.request.case}' in handleExecutionPhase. This is an internal SDK error`);
+      throw new Error(
+        `cannot handle non-trigger request as a trigger: received request type '${req.request.case}' in handleExecutionPhase. This is an internal SDK error`,
+      );
     }
     const triggerMsg = req.request.value;
     const id = BigInt(triggerMsg.id);
     if (id > BigInt(Number.MAX_SAFE_INTEGER)) {
-      throw new Error(`Trigger ID ${id} exceeds JavaScript safe integer range (Number.MAX_SAFE_INTEGER = ${Number.MAX_SAFE_INTEGER}). This trigger ID cannot be safely represented as a number`);
+      throw new Error(
+        `Trigger ID ${id} exceeds JavaScript safe integer range (Number.MAX_SAFE_INTEGER = ${Number.MAX_SAFE_INTEGER}). This trigger ID cannot be safely represented as a number`,
+      );
     }
     const index = Number(triggerMsg.id);
     if (Number.isFinite(index) && index >= 0 && index < workflow.length) {
@@ -14911,8 +18255,8 @@ class Runner {
         return create(ExecutionResultSchema, {
           result: {
             case: "error",
-            value: `trigger payload is missing for handler at index ${index} (trigger ID ${triggerMsg.id}). The trigger event must include a payload`
-          }
+            value: `trigger payload is missing for handler at index ${index} (trigger ID ${triggerMsg.id}). The trigger event must include a payload`,
+          },
         });
       }
       const payloadAny = triggerMsg.payload;
@@ -14922,20 +18266,20 @@ class Runner {
         const result = await entry.fn(runtime, adapted);
         const wrapped = Value.wrap(result);
         return create(ExecutionResultSchema, {
-          result: { case: "value", value: wrapped.proto() }
+          result: { case: "value", value: wrapped.proto() },
         });
       } catch (e) {
         const err = e instanceof Error ? e.message : String(e);
         return create(ExecutionResultSchema, {
-          result: { case: "error", value: err }
+          result: { case: "error", value: err },
         });
       }
     }
     return create(ExecutionResultSchema, {
       result: {
         case: "error",
-        value: `trigger not found: no workflow handler registered at index ${index} (trigger ID ${triggerMsg.id}). The workflow has ${workflow.length} handler(s) registered. Verify the trigger subscription matches a registered handler`
-      }
+        value: `trigger not found: no workflow handler registered at index ${index} (trigger ID ${triggerMsg.id}). The workflow has ${workflow.length} handler(s) registered. Verify the trigger subscription matches a registered handler`,
+      },
     });
   }
   handleSubscribePhase(req, workflow) {
@@ -14943,20 +18287,20 @@ class Runner {
       return create(ExecutionResultSchema, {
         result: {
           case: "error",
-          value: `subscribe request expected but received '${req.request.case}' in handleSubscribePhase. This is an internal SDK error`
-        }
+          value: `subscribe request expected but received '${req.request.case}' in handleSubscribePhase. This is an internal SDK error`,
+        },
       });
     }
     const subscriptions = workflow.map((entry) => ({
       id: entry.trigger.capabilityId(),
       method: entry.trigger.method(),
-      payload: entry.trigger.configAsAny()
+      payload: entry.trigger.configAsAny(),
     }));
     const subscriptionRequest = create(TriggerSubscriptionRequestSchema, {
-      subscriptions
+      subscriptions,
     });
     return create(ExecutionResultSchema, {
-      result: { case: "triggerSubscriptions", value: subscriptionRequest }
+      result: { case: "triggerSubscriptions", value: subscriptionRequest },
     });
   }
 }
@@ -14973,15 +18317,20 @@ var prepareErrorResponse = (error) => {
     return null;
   }
   const result = create(ExecutionResultSchema, {
-    result: { case: "error", value: errorMessage }
+    result: { case: "error", value: errorMessage },
   });
   return toBinary(ExecutionResultSchema, result);
 };
 var sendErrorResponse = (error) => {
   const payload = prepareErrorResponse(error);
   if (payload === null) {
-    console.error("Failed to serialize error response: the error could not be converted to a string. Original error:", error);
-    const fallback = prepareErrorResponse("Unknown error: the original error could not be serialized");
+    console.error(
+      "Failed to serialize error response: the error could not be converted to a string. Original error:",
+      error,
+    );
+    const fallback = prepareErrorResponse(
+      "Unknown error: the original error could not be serialized",
+    );
     if (fallback !== null) {
       hostBindings.sendResponse(fallback);
     }
@@ -14990,8 +18339,7 @@ var sendErrorResponse = (error) => {
   hostBindings.sendResponse(payload);
 };
 function concat(values) {
-  if (typeof values[0] === "string")
-    return concatHex(values);
+  if (typeof values[0] === "string") return concatHex(values);
   return concatBytes(values);
 }
 function concatBytes(values) {
@@ -15011,14 +18359,19 @@ function concatHex(values) {
   return `0x${values.reduce((acc, x) => acc + x.replace("0x", ""), "")}`;
 }
 function formatAbiItem(abiItem, { includeName = false } = {}) {
-  if (abiItem.type !== "function" && abiItem.type !== "event" && abiItem.type !== "error")
+  if (
+    abiItem.type !== "function" &&
+    abiItem.type !== "event" &&
+    abiItem.type !== "error"
+  )
     throw new InvalidDefinitionTypeError(abiItem.type);
   return `${abiItem.name}(${formatAbiParams(abiItem.inputs, { includeName })})`;
 }
 function formatAbiParams(params, { includeName = false } = {}) {
-  if (!params)
-    return "";
-  return params.map((param) => formatAbiParam(param, { includeName })).join(includeName ? ", " : ",");
+  if (!params) return "";
+  return params
+    .map((param) => formatAbiParam(param, { includeName }))
+    .join(includeName ? ", " : ",");
 }
 function formatAbiParam(param, { includeName }) {
   if (param.type.startsWith("tuple")) {
@@ -15027,10 +18380,8 @@ function formatAbiParam(param, { includeName }) {
   return param.type + (includeName && param.name ? ` ${param.name}` : "");
 }
 function isHex(value2, { strict = true } = {}) {
-  if (!value2)
-    return false;
-  if (typeof value2 !== "string")
-    return false;
+  if (!value2) return false;
+  if (typeof value2 !== "string") return false;
   return strict ? /^0x[0-9a-fA-F]*$/.test(value2) : value2.startsWith("0x");
 }
 function size(value2) {
@@ -15040,17 +18391,18 @@ function size(value2) {
 }
 var version = "2.47.6";
 var errorConfig = {
-  getDocsUrl: ({ docsBaseUrl, docsPath = "", docsSlug }) => docsPath ? `${docsBaseUrl ?? "https://viem.sh"}${docsPath}${docsSlug ? `#${docsSlug}` : ""}` : undefined,
-  version: `viem@${version}`
+  getDocsUrl: ({ docsBaseUrl, docsPath = "", docsSlug }) =>
+    docsPath
+      ? `${docsBaseUrl ?? "https://viem.sh"}${docsPath}${docsSlug ? `#${docsSlug}` : ""}`
+      : undefined,
+  version: `viem@${version}`,
 };
 
 class BaseError extends Error {
   constructor(shortMessage, args = {}) {
     const details = (() => {
-      if (args.cause instanceof BaseError)
-        return args.cause.details;
-      if (args.cause?.message)
-        return args.cause.message;
+      if (args.cause instanceof BaseError) return args.cause.details;
+      if (args.cause?.message) return args.cause.message;
       return args.details;
     })();
     const docsPath = (() => {
@@ -15062,10 +18414,10 @@ class BaseError extends Error {
     const message = [
       shortMessage || "An error occurred.",
       "",
-      ...args.metaMessages ? [...args.metaMessages, ""] : [],
-      ...docsUrl ? [`Docs: ${docsUrl}`] : [],
-      ...details ? [`Details: ${details}`] : [],
-      ...errorConfig.version ? [`Version: ${errorConfig.version}`] : []
+      ...(args.metaMessages ? [...args.metaMessages, ""] : []),
+      ...(docsUrl ? [`Docs: ${docsUrl}`] : []),
+      ...(details ? [`Details: ${details}`] : []),
+      ...(errorConfig.version ? [`Version: ${errorConfig.version}`] : []),
     ].join(`
 `);
     super(message, args.cause ? { cause: args.cause } : undefined);
@@ -15073,37 +18425,37 @@ class BaseError extends Error {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "docsPath", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "metaMessages", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "shortMessage", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "version", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "name", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: "BaseError"
+      value: "BaseError",
     });
     this.details = details;
     this.docsPath = docsPath;
@@ -15117,51 +18469,67 @@ class BaseError extends Error {
   }
 }
 function walk(err, fn) {
-  if (fn?.(err))
-    return err;
-  if (err && typeof err === "object" && "cause" in err && err.cause !== undefined)
+  if (fn?.(err)) return err;
+  if (
+    err &&
+    typeof err === "object" &&
+    "cause" in err &&
+    err.cause !== undefined
+  )
     return walk(err.cause, fn);
   return fn ? null : err;
 }
 
 class AbiEncodingArrayLengthMismatchError extends BaseError {
   constructor({ expectedLength, givenLength, type }) {
-    super([
-      `ABI encoding array length mismatch for type ${type}.`,
-      `Expected length: ${expectedLength}`,
-      `Given length: ${givenLength}`
-    ].join(`
-`), { name: "AbiEncodingArrayLengthMismatchError" });
+    super(
+      [
+        `ABI encoding array length mismatch for type ${type}.`,
+        `Expected length: ${expectedLength}`,
+        `Given length: ${givenLength}`,
+      ].join(`
+`),
+      { name: "AbiEncodingArrayLengthMismatchError" },
+    );
   }
 }
 
 class AbiEncodingBytesSizeMismatchError extends BaseError {
   constructor({ expectedSize, value: value2 }) {
-    super(`Size of bytes "${value2}" (bytes${size(value2)}) does not match expected size (bytes${expectedSize}).`, { name: "AbiEncodingBytesSizeMismatchError" });
+    super(
+      `Size of bytes "${value2}" (bytes${size(value2)}) does not match expected size (bytes${expectedSize}).`,
+      { name: "AbiEncodingBytesSizeMismatchError" },
+    );
   }
 }
 
 class AbiEncodingLengthMismatchError extends BaseError {
   constructor({ expectedLength, givenLength }) {
-    super([
-      "ABI encoding params/values length mismatch.",
-      `Expected length (params): ${expectedLength}`,
-      `Given length (values): ${givenLength}`
-    ].join(`
-`), { name: "AbiEncodingLengthMismatchError" });
+    super(
+      [
+        "ABI encoding params/values length mismatch.",
+        `Expected length (params): ${expectedLength}`,
+        `Given length (values): ${givenLength}`,
+      ].join(`
+`),
+      { name: "AbiEncodingLengthMismatchError" },
+    );
   }
 }
 
 class AbiFunctionNotFoundError extends BaseError {
   constructor(functionName, { docsPath } = {}) {
-    super([
-      `Function ${functionName ? `"${functionName}" ` : ""}not found on ABI.`,
-      "Make sure you are using the correct ABI and that the function exists on it."
-    ].join(`
-`), {
-      docsPath,
-      name: "AbiFunctionNotFoundError"
-    });
+    super(
+      [
+        `Function ${functionName ? `"${functionName}" ` : ""}not found on ABI.`,
+        "Make sure you are using the correct ABI and that the function exists on it.",
+      ].join(`
+`),
+      {
+        docsPath,
+        name: "AbiFunctionNotFoundError",
+      },
+    );
   }
 }
 
@@ -15173,39 +18541,48 @@ class AbiItemAmbiguityError extends BaseError {
         `\`${y.type}\` in \`${formatAbiItem(y.abiItem)}\``,
         "",
         "These types encode differently and cannot be distinguished at runtime.",
-        "Remove one of the ambiguous items in the ABI."
+        "Remove one of the ambiguous items in the ABI.",
       ],
-      name: "AbiItemAmbiguityError"
+      name: "AbiItemAmbiguityError",
     });
   }
 }
 
 class InvalidAbiEncodingTypeError extends BaseError {
   constructor(type, { docsPath }) {
-    super([
-      `Type "${type}" is not a valid encoding type.`,
-      "Please provide a valid ABI type."
-    ].join(`
-`), { docsPath, name: "InvalidAbiEncodingType" });
+    super(
+      [
+        `Type "${type}" is not a valid encoding type.`,
+        "Please provide a valid ABI type.",
+      ].join(`
+`),
+      { docsPath, name: "InvalidAbiEncodingType" },
+    );
   }
 }
 
 class InvalidArrayError extends BaseError {
   constructor(value2) {
-    super([`Value "${value2}" is not a valid array.`].join(`
-`), {
-      name: "InvalidArrayError"
-    });
+    super(
+      [`Value "${value2}" is not a valid array.`].join(`
+`),
+      {
+        name: "InvalidArrayError",
+      },
+    );
   }
 }
 
 class InvalidDefinitionTypeError extends BaseError {
   constructor(type) {
-    super([
-      `"${type}" is not a valid definition type.`,
-      'Valid types: "function", "event", "error"'
-    ].join(`
-`), { name: "InvalidDefinitionTypeError" });
+    super(
+      [
+        `"${type}" is not a valid definition type.`,
+        'Valid types: "function", "event", "error"',
+      ].join(`
+`),
+      { name: "InvalidDefinitionTypeError" },
+    );
   }
 }
 
@@ -15214,22 +18591,28 @@ class InvalidAddressError extends BaseError {
     super(`Address "${address}" is invalid.`, {
       metaMessages: [
         "- Address must be a hex value of 20 bytes (40 hex characters).",
-        "- Address must match its checksum counterpart."
+        "- Address must match its checksum counterpart.",
       ],
-      name: "InvalidAddressError"
+      name: "InvalidAddressError",
     });
   }
 }
 
 class IntegerOutOfRangeError extends BaseError {
   constructor({ max, min, signed, size: size2, value: value2 }) {
-    super(`Number "${value2}" is not in safe ${size2 ? `${size2 * 8}-bit ${signed ? "signed" : "unsigned"} ` : ""}integer range ${max ? `(${min} to ${max})` : `(above ${min})`}`, { name: "IntegerOutOfRangeError" });
+    super(
+      `Number "${value2}" is not in safe ${size2 ? `${size2 * 8}-bit ${signed ? "signed" : "unsigned"} ` : ""}integer range ${max ? `(${min} to ${max})` : `(above ${min})`}`,
+      { name: "IntegerOutOfRangeError" },
+    );
   }
 }
 
 class SizeOverflowError extends BaseError {
   constructor({ givenSize, maxSize }) {
-    super(`Size cannot exceed ${maxSize} bytes. Given size: ${givenSize} bytes.`, { name: "SizeOverflowError" });
+    super(
+      `Size cannot exceed ${maxSize} bytes. Given size: ${givenSize} bytes.`,
+      { name: "SizeOverflowError" },
+    );
   }
 }
 
@@ -15240,7 +18623,7 @@ class LruMap extends Map {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     this.maxSize = size2;
   }
@@ -15253,13 +18636,11 @@ class LruMap extends Map {
     return value2;
   }
   set(key, value2) {
-    if (super.has(key))
-      super.delete(key);
+    if (super.has(key)) super.delete(key);
     super.set(key, value2);
     if (this.maxSize && this.size > this.maxSize) {
       const firstKey = super.keys().next().value;
-      if (firstKey !== undefined)
-        super.delete(firstKey);
+      if (firstKey !== undefined) super.delete(firstKey);
     }
     return this;
   }
@@ -15267,13 +18648,19 @@ class LruMap extends Map {
 
 class SliceOffsetOutOfBoundsError extends BaseError {
   constructor({ offset, position, size: size2 }) {
-    super(`Slice ${position === "start" ? "starting" : "ending"} at offset "${offset}" is out-of-bounds (size: ${size2}).`, { name: "SliceOffsetOutOfBoundsError" });
+    super(
+      `Slice ${position === "start" ? "starting" : "ending"} at offset "${offset}" is out-of-bounds (size: ${size2}).`,
+      { name: "SliceOffsetOutOfBoundsError" },
+    );
   }
 }
 
 class SizeExceedsPaddingSizeError extends BaseError {
   constructor({ size: size2, targetSize, type }) {
-    super(`${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()} size (${size2}) exceeds padding size (${targetSize}).`, { name: "SizeExceedsPaddingSizeError" });
+    super(
+      `${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()} size (${size2}) exceeds padding size (${targetSize}).`,
+      { name: "SizeExceedsPaddingSizeError" },
+    );
   }
 }
 function pad(hexOrBytes, { dir, size: size2 = 32 } = {}) {
@@ -15282,30 +18669,29 @@ function pad(hexOrBytes, { dir, size: size2 = 32 } = {}) {
   return padBytes(hexOrBytes, { dir, size: size2 });
 }
 function padHex(hex_, { dir, size: size2 = 32 } = {}) {
-  if (size2 === null)
-    return hex_;
+  if (size2 === null) return hex_;
   const hex = hex_.replace("0x", "");
   if (hex.length > size2 * 2)
     throw new SizeExceedsPaddingSizeError({
       size: Math.ceil(hex.length / 2),
       targetSize: size2,
-      type: "hex"
+      type: "hex",
     });
   return `0x${hex[dir === "right" ? "padEnd" : "padStart"](size2 * 2, "0")}`;
 }
 function padBytes(bytes, { dir, size: size2 = 32 } = {}) {
-  if (size2 === null)
-    return bytes;
+  if (size2 === null) return bytes;
   if (bytes.length > size2)
     throw new SizeExceedsPaddingSizeError({
       size: bytes.length,
       targetSize: size2,
-      type: "bytes"
+      type: "bytes",
     });
   const paddedBytes = new Uint8Array(size2);
-  for (let i2 = 0;i2 < size2; i2++) {
+  for (let i2 = 0; i2 < size2; i2++) {
     const padEnd = dir === "right";
-    paddedBytes[padEnd ? i2 : size2 - i2 - 1] = bytes[padEnd ? i2 : bytes.length - i2 - 1];
+    paddedBytes[padEnd ? i2 : size2 - i2 - 1] =
+      bytes[padEnd ? i2 : bytes.length - i2 - 1];
   }
   return paddedBytes;
 }
@@ -15313,18 +18699,19 @@ function assertSize2(hexOrBytes, { size: size2 }) {
   if (size(hexOrBytes) > size2)
     throw new SizeOverflowError({
       givenSize: size(hexOrBytes),
-      maxSize: size2
+      maxSize: size2,
     });
 }
-var hexes = /* @__PURE__ */ Array.from({ length: 256 }, (_v, i2) => i2.toString(16).padStart(2, "0"));
+var hexes = /* @__PURE__ */ Array.from({ length: 256 }, (_v, i2) =>
+  i2.toString(16).padStart(2, "0"),
+);
 function toHex(value2, opts = {}) {
   if (typeof value2 === "number" || typeof value2 === "bigint")
     return numberToHex(value2, opts);
   if (typeof value2 === "string") {
     return stringToHex(value2, opts);
   }
-  if (typeof value2 === "boolean")
-    return boolToHex(value2, opts);
+  if (typeof value2 === "boolean") return boolToHex(value2, opts);
   return bytesToHex(value2, opts);
 }
 function boolToHex(value2, opts = {}) {
@@ -15337,7 +18724,7 @@ function boolToHex(value2, opts = {}) {
 }
 function bytesToHex(value2, opts = {}) {
   let string = "";
-  for (let i2 = 0;i2 < value2.length; i2++) {
+  for (let i2 = 0; i2 < value2.length; i2++) {
     string += hexes[value2[i2]];
   }
   const hex = `0x${string}`;
@@ -15352,42 +18739,37 @@ function numberToHex(value_, opts = {}) {
   const value2 = BigInt(value_);
   let maxValue;
   if (size2) {
-    if (signed)
-      maxValue = (1n << BigInt(size2) * 8n - 1n) - 1n;
-    else
-      maxValue = 2n ** (BigInt(size2) * 8n) - 1n;
+    if (signed) maxValue = (1n << (BigInt(size2) * 8n - 1n)) - 1n;
+    else maxValue = 2n ** (BigInt(size2) * 8n) - 1n;
   } else if (typeof value_ === "number") {
     maxValue = BigInt(Number.MAX_SAFE_INTEGER);
   }
   const minValue = typeof maxValue === "bigint" && signed ? -maxValue - 1n : 0;
-  if (maxValue && value2 > maxValue || value2 < minValue) {
+  if ((maxValue && value2 > maxValue) || value2 < minValue) {
     const suffix = typeof value_ === "bigint" ? "n" : "";
     throw new IntegerOutOfRangeError({
       max: maxValue ? `${maxValue}${suffix}` : undefined,
       min: `${minValue}${suffix}`,
       signed,
       size: size2,
-      value: `${value_}${suffix}`
+      value: `${value_}${suffix}`,
     });
   }
   const hex = `0x${(signed && value2 < 0 ? (1n << BigInt(size2 * 8)) + BigInt(value2) : value2).toString(16)}`;
-  if (size2)
-    return pad(hex, { size: size2 });
+  if (size2) return pad(hex, { size: size2 });
   return hex;
 }
-var encoder = /* @__PURE__ */ new TextEncoder;
+var encoder = /* @__PURE__ */ new TextEncoder();
 function stringToHex(value_, opts = {}) {
   const value2 = encoder.encode(value_);
   return bytesToHex(value2, opts);
 }
-var encoder2 = /* @__PURE__ */ new TextEncoder;
+var encoder2 = /* @__PURE__ */ new TextEncoder();
 function toBytes(value2, opts = {}) {
   if (typeof value2 === "number" || typeof value2 === "bigint")
     return numberToBytes(value2, opts);
-  if (typeof value2 === "boolean")
-    return boolToBytes(value2, opts);
-  if (isHex(value2))
-    return hexToBytes2(value2, opts);
+  if (typeof value2 === "boolean") return boolToBytes(value2, opts);
+  if (isHex(value2)) return hexToBytes2(value2, opts);
   return stringToBytes(value2, opts);
 }
 function boolToBytes(value2, opts = {}) {
@@ -15405,7 +18787,7 @@ var charCodeMap = {
   A: 65,
   F: 70,
   a: 97,
-  f: 102
+  f: 102,
 };
 function charCodeToBase16(char) {
   if (char >= charCodeMap.zero && char <= charCodeMap.nine)
@@ -15423,15 +18805,16 @@ function hexToBytes2(hex_, opts = {}) {
     hex = pad(hex, { dir: "right", size: opts.size });
   }
   let hexString = hex.slice(2);
-  if (hexString.length % 2)
-    hexString = `0${hexString}`;
+  if (hexString.length % 2) hexString = `0${hexString}`;
   const length = hexString.length / 2;
   const bytes = new Uint8Array(length);
-  for (let index = 0, j = 0;index < length; index++) {
+  for (let index = 0, j = 0; index < length; index++) {
     const nibbleLeft = charCodeToBase16(hexString.charCodeAt(j++));
     const nibbleRight = charCodeToBase16(hexString.charCodeAt(j++));
     if (nibbleLeft === undefined || nibbleRight === undefined) {
-      throw new BaseError(`Invalid byte sequence ("${hexString[j - 2]}${hexString[j - 1]}" in "${hexString}").`);
+      throw new BaseError(
+        `Invalid byte sequence ("${hexString[j - 2]}${hexString[j - 1]}" in "${hexString}").`,
+      );
     }
     bytes[index] = nibbleLeft * 16 + nibbleRight;
   }
@@ -15453,40 +18836,46 @@ var U32_MASK64 = /* @__PURE__ */ BigInt(2 ** 32 - 1);
 var _32n = /* @__PURE__ */ BigInt(32);
 function fromBig(n, le = false) {
   if (le)
-    return { h: Number(n & U32_MASK64), l: Number(n >> _32n & U32_MASK64) };
-  return { h: Number(n >> _32n & U32_MASK64) | 0, l: Number(n & U32_MASK64) | 0 };
+    return { h: Number(n & U32_MASK64), l: Number((n >> _32n) & U32_MASK64) };
+  return {
+    h: Number((n >> _32n) & U32_MASK64) | 0,
+    l: Number(n & U32_MASK64) | 0,
+  };
 }
 function split(lst, le = false) {
   const len2 = lst.length;
   let Ah = new Uint32Array(len2);
   let Al = new Uint32Array(len2);
-  for (let i2 = 0;i2 < len2; i2++) {
+  for (let i2 = 0; i2 < len2; i2++) {
     const { h, l } = fromBig(lst[i2], le);
     [Ah[i2], Al[i2]] = [h, l];
   }
   return [Ah, Al];
 }
-var rotlSH = (h, l, s) => h << s | l >>> 32 - s;
-var rotlSL = (h, l, s) => l << s | h >>> 32 - s;
-var rotlBH = (h, l, s) => l << s - 32 | h >>> 64 - s;
-var rotlBL = (h, l, s) => h << s - 32 | l >>> 64 - s;
+var rotlSH = (h, l, s) => (h << s) | (l >>> (32 - s));
+var rotlSL = (h, l, s) => (l << s) | (h >>> (32 - s));
+var rotlBH = (h, l, s) => (l << (s - 32)) | (h >>> (64 - s));
+var rotlBL = (h, l, s) => (h << (s - 32)) | (l >>> (64 - s));
 /*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 function isBytes(a) {
-  return a instanceof Uint8Array || ArrayBuffer.isView(a) && a.constructor.name === "Uint8Array";
+  return (
+    a instanceof Uint8Array ||
+    (ArrayBuffer.isView(a) && a.constructor.name === "Uint8Array")
+  );
 }
 function anumber(n) {
   if (!Number.isSafeInteger(n) || n < 0)
     throw new Error("positive integer expected, got " + n);
 }
 function abytes(b, ...lengths) {
-  if (!isBytes(b))
-    throw new Error("Uint8Array expected");
+  if (!isBytes(b)) throw new Error("Uint8Array expected");
   if (lengths.length > 0 && !lengths.includes(b.length))
-    throw new Error("Uint8Array expected of length " + lengths + ", got length=" + b.length);
+    throw new Error(
+      "Uint8Array expected of length " + lengths + ", got length=" + b.length,
+    );
 }
 function aexists(instance, checkFinished = true) {
-  if (instance.destroyed)
-    throw new Error("Hash instance has been destroyed");
+  if (instance.destroyed) throw new Error("Hash instance has been destroyed");
   if (checkFinished && instance.finished)
     throw new Error("Hash#digest() has already been called");
 }
@@ -15494,42 +18883,51 @@ function aoutput(out, instance) {
   abytes(out);
   const min = instance.outputLen;
   if (out.length < min) {
-    throw new Error("digestInto() expects output buffer of length at least " + min);
+    throw new Error(
+      "digestInto() expects output buffer of length at least " + min,
+    );
   }
 }
 function u32(arr) {
-  return new Uint32Array(arr.buffer, arr.byteOffset, Math.floor(arr.byteLength / 4));
+  return new Uint32Array(
+    arr.buffer,
+    arr.byteOffset,
+    Math.floor(arr.byteLength / 4),
+  );
 }
 function clean(...arrays) {
-  for (let i2 = 0;i2 < arrays.length; i2++) {
+  for (let i2 = 0; i2 < arrays.length; i2++) {
     arrays[i2].fill(0);
   }
 }
-var isLE = /* @__PURE__ */ (() => new Uint8Array(new Uint32Array([287454020]).buffer)[0] === 68)();
+var isLE = /* @__PURE__ */ (() =>
+  new Uint8Array(new Uint32Array([287454020]).buffer)[0] === 68)();
 function byteSwap(word) {
-  return word << 24 & 4278190080 | word << 8 & 16711680 | word >>> 8 & 65280 | word >>> 24 & 255;
+  return (
+    ((word << 24) & 4278190080) |
+    ((word << 8) & 16711680) |
+    ((word >>> 8) & 65280) |
+    ((word >>> 24) & 255)
+  );
 }
 function byteSwap32(arr) {
-  for (let i2 = 0;i2 < arr.length; i2++) {
+  for (let i2 = 0; i2 < arr.length; i2++) {
     arr[i2] = byteSwap(arr[i2]);
   }
   return arr;
 }
 var swap32IfBE = isLE ? (u) => u : byteSwap32;
 function utf8ToBytes2(str) {
-  if (typeof str !== "string")
-    throw new Error("string expected");
+  if (typeof str !== "string") throw new Error("string expected");
   return new Uint8Array(new TextEncoder().encode(str));
 }
 function toBytes2(data) {
-  if (typeof data === "string")
-    data = utf8ToBytes2(data);
+  if (typeof data === "string") data = utf8ToBytes2(data);
   abytes(data);
   return data;
 }
 
-class Hash {
-}
+class Hash {}
 function createHasher(hashCons) {
   const hashC = (msg) => hashCons().update(toBytes2(msg)).digest();
   const tmp = hashCons();
@@ -15547,43 +18945,42 @@ var _0x71n = BigInt(113);
 var SHA3_PI = [];
 var SHA3_ROTL = [];
 var _SHA3_IOTA = [];
-for (let round = 0, R = _1n, x = 1, y = 0;round < 24; round++) {
+for (let round = 0, R = _1n, x = 1, y = 0; round < 24; round++) {
   [x, y] = [y, (2 * x + 3 * y) % 5];
   SHA3_PI.push(2 * (5 * y + x));
-  SHA3_ROTL.push((round + 1) * (round + 2) / 2 % 64);
+  SHA3_ROTL.push((((round + 1) * (round + 2)) / 2) % 64);
   let t = _0n;
-  for (let j = 0;j < 7; j++) {
-    R = (R << _1n ^ (R >> _7n) * _0x71n) % _256n;
-    if (R & _2n)
-      t ^= _1n << (_1n << /* @__PURE__ */ BigInt(j)) - _1n;
+  for (let j = 0; j < 7; j++) {
+    R = ((R << _1n) ^ ((R >> _7n) * _0x71n)) % _256n;
+    if (R & _2n) t ^= _1n << ((_1n << /* @__PURE__ */ BigInt(j)) - _1n);
   }
   _SHA3_IOTA.push(t);
 }
 var IOTAS = split(_SHA3_IOTA, true);
 var SHA3_IOTA_H = IOTAS[0];
 var SHA3_IOTA_L = IOTAS[1];
-var rotlH = (h, l, s) => s > 32 ? rotlBH(h, l, s) : rotlSH(h, l, s);
-var rotlL = (h, l, s) => s > 32 ? rotlBL(h, l, s) : rotlSL(h, l, s);
+var rotlH = (h, l, s) => (s > 32 ? rotlBH(h, l, s) : rotlSH(h, l, s));
+var rotlL = (h, l, s) => (s > 32 ? rotlBL(h, l, s) : rotlSL(h, l, s));
 function keccakP(s, rounds = 24) {
   const B = new Uint32Array(5 * 2);
-  for (let round = 24 - rounds;round < 24; round++) {
-    for (let x = 0;x < 10; x++)
+  for (let round = 24 - rounds; round < 24; round++) {
+    for (let x = 0; x < 10; x++)
       B[x] = s[x] ^ s[x + 10] ^ s[x + 20] ^ s[x + 30] ^ s[x + 40];
-    for (let x = 0;x < 10; x += 2) {
+    for (let x = 0; x < 10; x += 2) {
       const idx1 = (x + 8) % 10;
       const idx0 = (x + 2) % 10;
       const B0 = B[idx0];
       const B1 = B[idx0 + 1];
       const Th = rotlH(B0, B1, 1) ^ B[idx1];
       const Tl = rotlL(B0, B1, 1) ^ B[idx1 + 1];
-      for (let y = 0;y < 50; y += 10) {
+      for (let y = 0; y < 50; y += 10) {
         s[x + y] ^= Th;
         s[x + y + 1] ^= Tl;
       }
     }
     let curH = s[2];
     let curL = s[3];
-    for (let t = 0;t < 24; t++) {
+    for (let t = 0; t < 24; t++) {
       const shift = SHA3_ROTL[t];
       const Th = rotlH(curH, curL, shift);
       const Tl = rotlL(curH, curL, shift);
@@ -15593,10 +18990,9 @@ function keccakP(s, rounds = 24) {
       s[PI] = Th;
       s[PI + 1] = Tl;
     }
-    for (let y = 0;y < 50; y += 10) {
-      for (let x = 0;x < 10; x++)
-        B[x] = s[y + x];
-      for (let x = 0;x < 10; x++)
+    for (let y = 0; y < 50; y += 10) {
+      for (let x = 0; x < 10; x++) B[x] = s[y + x];
+      for (let x = 0; x < 10; x++)
         s[y + x] ^= ~B[(x + 2) % 10] & B[(x + 4) % 10];
     }
     s[0] ^= SHA3_IOTA_H[round];
@@ -15640,23 +19036,19 @@ class Keccak extends Hash {
     abytes(data);
     const { blockLen, state } = this;
     const len2 = data.length;
-    for (let pos = 0;pos < len2; ) {
+    for (let pos = 0; pos < len2; ) {
       const take = Math.min(blockLen - this.pos, len2 - pos);
-      for (let i2 = 0;i2 < take; i2++)
-        state[this.pos++] ^= data[pos++];
-      if (this.pos === blockLen)
-        this.keccak();
+      for (let i2 = 0; i2 < take; i2++) state[this.pos++] ^= data[pos++];
+      if (this.pos === blockLen) this.keccak();
     }
     return this;
   }
   finish() {
-    if (this.finished)
-      return;
+    if (this.finished) return;
     this.finished = true;
     const { state, suffix, pos, blockLen } = this;
     state[pos] ^= suffix;
-    if ((suffix & 128) !== 0 && pos === blockLen - 1)
-      this.keccak();
+    if ((suffix & 128) !== 0 && pos === blockLen - 1) this.keccak();
     state[blockLen - 1] ^= 128;
     this.keccak();
   }
@@ -15666,9 +19058,8 @@ class Keccak extends Hash {
     this.finish();
     const bufferOut = this.state;
     const { blockLen } = this;
-    for (let pos = 0, len2 = out.length;pos < len2; ) {
-      if (this.posOut >= blockLen)
-        this.keccak();
+    for (let pos = 0, len2 = out.length; pos < len2; ) {
+      if (this.posOut >= blockLen) this.keccak();
       const take = Math.min(blockLen - this.posOut, len2 - pos);
       out.set(bufferOut.subarray(this.posOut, this.posOut + take), pos);
       this.posOut += take;
@@ -15687,8 +19078,7 @@ class Keccak extends Hash {
   }
   digestInto(out) {
     aoutput(out, this);
-    if (this.finished)
-      throw new Error("digest() was already called");
+    if (this.finished) throw new Error("digest() was already called");
     this.writeInto(out);
     this.destroy();
     return out;
@@ -15715,23 +19105,29 @@ class Keccak extends Hash {
     return to;
   }
 }
-var gen = (suffix, blockLen, outputLen) => createHasher(() => new Keccak(blockLen, suffix, outputLen));
+var gen = (suffix, blockLen, outputLen) =>
+  createHasher(() => new Keccak(blockLen, suffix, outputLen));
 var keccak_256 = /* @__PURE__ */ (() => gen(1, 136, 256 / 8))();
 function keccak256(value2, to_) {
   const to = to_ || "hex";
-  const bytes = keccak_256(isHex(value2, { strict: false }) ? toBytes(value2) : value2);
-  if (to === "bytes")
-    return bytes;
+  const bytes = keccak_256(
+    isHex(value2, { strict: false }) ? toBytes(value2) : value2,
+  );
+  if (to === "bytes") return bytes;
   return toHex(bytes);
 }
 var checksumAddressCache = /* @__PURE__ */ new LruMap(8192);
 function checksumAddress(address_, chainId) {
   if (checksumAddressCache.has(`${address_}.${chainId}`))
     return checksumAddressCache.get(`${address_}.${chainId}`);
-  const hexAddress = chainId ? `${chainId}${address_.toLowerCase()}` : address_.substring(2).toLowerCase();
+  const hexAddress = chainId
+    ? `${chainId}${address_.toLowerCase()}`
+    : address_.substring(2).toLowerCase();
   const hash = keccak256(stringToBytes(hexAddress), "bytes");
-  const address = (chainId ? hexAddress.substring(`${chainId}0x`.length) : hexAddress).split("");
-  for (let i2 = 0;i2 < 40; i2 += 2) {
+  const address = (
+    chainId ? hexAddress.substring(`${chainId}0x`.length) : hexAddress
+  ).split("");
+  for (let i2 = 0; i2 < 40; i2 += 2) {
     if (hash[i2 >> 1] >> 4 >= 8 && address[i2]) {
       address[i2] = address[i2].toUpperCase();
     }
@@ -15748,15 +19144,11 @@ var isAddressCache = /* @__PURE__ */ new LruMap(8192);
 function isAddress(address, options) {
   const { strict = true } = options ?? {};
   const cacheKey = `${address}.${strict}`;
-  if (isAddressCache.has(cacheKey))
-    return isAddressCache.get(cacheKey);
+  if (isAddressCache.has(cacheKey)) return isAddressCache.get(cacheKey);
   const result = (() => {
-    if (!addressRegex.test(address))
-      return false;
-    if (address.toLowerCase() === address)
-      return true;
-    if (strict)
-      return checksumAddress(address) === address;
+    if (!addressRegex.test(address)) return false;
+    if (address.toLowerCase() === address) return true;
+    if (strict) return checksumAddress(address) === address;
     return true;
   })();
   isAddressCache.set(cacheKey, result);
@@ -15765,10 +19157,10 @@ function isAddress(address, options) {
 function slice(value2, start, end, { strict } = {}) {
   if (isHex(value2, { strict: false }))
     return sliceHex(value2, start, end, {
-      strict
+      strict,
     });
   return sliceBytes(value2, start, end, {
-    strict
+    strict,
   });
 }
 function assertStartOffset(value2, start) {
@@ -15776,51 +19168,53 @@ function assertStartOffset(value2, start) {
     throw new SliceOffsetOutOfBoundsError({
       offset: start,
       position: "start",
-      size: size(value2)
+      size: size(value2),
     });
 }
 function assertEndOffset(value2, start, end) {
-  if (typeof start === "number" && typeof end === "number" && size(value2) !== end - start) {
+  if (
+    typeof start === "number" &&
+    typeof end === "number" &&
+    size(value2) !== end - start
+  ) {
     throw new SliceOffsetOutOfBoundsError({
       offset: end,
       position: "end",
-      size: size(value2)
+      size: size(value2),
     });
   }
 }
 function sliceBytes(value_, start, end, { strict } = {}) {
   assertStartOffset(value_, start);
   const value2 = value_.slice(start, end);
-  if (strict)
-    assertEndOffset(value2, start, end);
+  if (strict) assertEndOffset(value2, start, end);
   return value2;
 }
 function sliceHex(value_, start, end, { strict } = {}) {
   assertStartOffset(value_, start);
   const value2 = `0x${value_.replace("0x", "").slice((start ?? 0) * 2, (end ?? value_.length) * 2)}`;
-  if (strict)
-    assertEndOffset(value2, start, end);
+  if (strict) assertEndOffset(value2, start, end);
   return value2;
 }
-var integerRegex = /^(u?int)(8|16|24|32|40|48|56|64|72|80|88|96|104|112|120|128|136|144|152|160|168|176|184|192|200|208|216|224|232|240|248|256)?$/;
+var integerRegex =
+  /^(u?int)(8|16|24|32|40|48|56|64|72|80|88|96|104|112|120|128|136|144|152|160|168|176|184|192|200|208|216|224|232|240|248|256)?$/;
 function encodeAbiParameters(params, values) {
   if (params.length !== values.length)
     throw new AbiEncodingLengthMismatchError({
       expectedLength: params.length,
-      givenLength: values.length
+      givenLength: values.length,
     });
   const preparedParams = prepareParams({
     params,
-    values
+    values,
   });
   const data = encodeParams(preparedParams);
-  if (data.length === 0)
-    return "0x";
+  if (data.length === 0) return "0x";
   return data;
 }
 function prepareParams({ params, values }) {
   const preparedParams = [];
-  for (let i2 = 0;i2 < params.length; i2++) {
+  for (let i2 = 0; i2 < params.length; i2++) {
     preparedParams.push(prepareParam({ param: params[i2], value: values[i2] }));
   }
   return preparedParams;
@@ -15833,7 +19227,7 @@ function prepareParam({ param, value: value2 }) {
   }
   if (param.type === "tuple") {
     return encodeTuple(value2, {
-      param
+      param,
     });
   }
   if (param.type === "address") {
@@ -15847,7 +19241,7 @@ function prepareParam({ param, value: value2 }) {
     const [, , size2 = "256"] = integerRegex.exec(param.type) ?? [];
     return encodeNumber(value2, {
       signed,
-      size: Number(size2)
+      size: Number(size2),
     });
   }
   if (param.type.startsWith("bytes")) {
@@ -15857,22 +19251,20 @@ function prepareParam({ param, value: value2 }) {
     return encodeString(value2);
   }
   throw new InvalidAbiEncodingTypeError(param.type, {
-    docsPath: "/docs/contract/encodeAbiParameters"
+    docsPath: "/docs/contract/encodeAbiParameters",
   });
 }
 function encodeParams(preparedParams) {
   let staticSize = 0;
-  for (let i2 = 0;i2 < preparedParams.length; i2++) {
+  for (let i2 = 0; i2 < preparedParams.length; i2++) {
     const { dynamic, encoded } = preparedParams[i2];
-    if (dynamic)
-      staticSize += 32;
-    else
-      staticSize += size(encoded);
+    if (dynamic) staticSize += 32;
+    else staticSize += size(encoded);
   }
   const staticParams = [];
   const dynamicParams = [];
   let dynamicSize = 0;
-  for (let i2 = 0;i2 < preparedParams.length; i2++) {
+  for (let i2 = 0; i2 < preparedParams.length; i2++) {
     const { dynamic, encoded } = preparedParams[i2];
     if (dynamic) {
       staticParams.push(numberToHex(staticSize + dynamicSize, { size: 32 }));
@@ -15885,26 +19277,23 @@ function encodeParams(preparedParams) {
   return concat([...staticParams, ...dynamicParams]);
 }
 function encodeAddress(value2) {
-  if (!isAddress(value2))
-    throw new InvalidAddressError({ address: value2 });
+  if (!isAddress(value2)) throw new InvalidAddressError({ address: value2 });
   return { dynamic: false, encoded: padHex(value2.toLowerCase()) };
 }
 function encodeArray(value2, { length, param }) {
   const dynamic = length === null;
-  if (!Array.isArray(value2))
-    throw new InvalidArrayError(value2);
+  if (!Array.isArray(value2)) throw new InvalidArrayError(value2);
   if (!dynamic && value2.length !== length)
     throw new AbiEncodingArrayLengthMismatchError({
       expectedLength: length,
       givenLength: value2.length,
-      type: `${param.type}[${length}]`
+      type: `${param.type}[${length}]`,
     });
   let dynamicChild = false;
   const preparedParams = [];
-  for (let i2 = 0;i2 < value2.length; i2++) {
+  for (let i2 = 0; i2 < value2.length; i2++) {
     const preparedParam = prepareParam({ param, value: value2[i2] });
-    if (preparedParam.dynamic)
-      dynamicChild = true;
+    if (preparedParam.dynamic) dynamicChild = true;
     preparedParams.push(preparedParam);
   }
   if (dynamic || dynamicChild) {
@@ -15913,15 +19302,14 @@ function encodeArray(value2, { length, param }) {
       const length2 = numberToHex(preparedParams.length, { size: 32 });
       return {
         dynamic: true,
-        encoded: preparedParams.length > 0 ? concat([length2, data]) : length2
+        encoded: preparedParams.length > 0 ? concat([length2, data]) : length2,
       };
     }
-    if (dynamicChild)
-      return { dynamic: true, encoded: data };
+    if (dynamicChild) return { dynamic: true, encoded: data };
   }
   return {
     dynamic: false,
-    encoded: concat(preparedParams.map(({ encoded }) => encoded))
+    encoded: concat(preparedParams.map(({ encoded }) => encoded)),
   };
 }
 function encodeBytes(value2, { param }) {
@@ -15932,23 +19320,25 @@ function encodeBytes(value2, { param }) {
     if (bytesSize % 32 !== 0)
       value_ = padHex(value_, {
         dir: "right",
-        size: Math.ceil((value2.length - 2) / 2 / 32) * 32
+        size: Math.ceil((value2.length - 2) / 2 / 32) * 32,
       });
     return {
       dynamic: true,
-      encoded: concat([padHex(numberToHex(bytesSize, { size: 32 })), value_])
+      encoded: concat([padHex(numberToHex(bytesSize, { size: 32 })), value_]),
     };
   }
   if (bytesSize !== Number.parseInt(paramSize, 10))
     throw new AbiEncodingBytesSizeMismatchError({
       expectedSize: Number.parseInt(paramSize, 10),
-      value: value2
+      value: value2,
     });
   return { dynamic: false, encoded: padHex(value2, { dir: "right" }) };
 }
 function encodeBool(value2) {
   if (typeof value2 !== "boolean")
-    throw new BaseError(`Invalid boolean value: "${value2}" (type: ${typeof value2}). Expected: \`true\` or \`false\`.`);
+    throw new BaseError(
+      `Invalid boolean value: "${value2}" (type: ${typeof value2}). Expected: \`true\` or \`false\`.`,
+    );
   return { dynamic: false, encoded: padHex(boolToHex(value2)) };
 }
 function encodeNumber(value2, { signed, size: size2 = 256 }) {
@@ -15961,56 +19351,61 @@ function encodeNumber(value2, { signed, size: size2 = 256 }) {
         min: min.toString(),
         signed,
         size: size2 / 8,
-        value: value2.toString()
+        value: value2.toString(),
       });
   }
   return {
     dynamic: false,
     encoded: numberToHex(value2, {
       size: 32,
-      signed
-    })
+      signed,
+    }),
   };
 }
 function encodeString(value2) {
   const hexValue = stringToHex(value2);
   const partsLength = Math.ceil(size(hexValue) / 32);
   const parts = [];
-  for (let i2 = 0;i2 < partsLength; i2++) {
-    parts.push(padHex(slice(hexValue, i2 * 32, (i2 + 1) * 32), {
-      dir: "right"
-    }));
+  for (let i2 = 0; i2 < partsLength; i2++) {
+    parts.push(
+      padHex(slice(hexValue, i2 * 32, (i2 + 1) * 32), {
+        dir: "right",
+      }),
+    );
   }
   return {
     dynamic: true,
     encoded: concat([
       padHex(numberToHex(size(hexValue), { size: 32 })),
-      ...parts
-    ])
+      ...parts,
+    ]),
   };
 }
 function encodeTuple(value2, { param }) {
   let dynamic = false;
   const preparedParams = [];
-  for (let i2 = 0;i2 < param.components.length; i2++) {
+  for (let i2 = 0; i2 < param.components.length; i2++) {
     const param_ = param.components[i2];
     const index = Array.isArray(value2) ? i2 : param_.name;
     const preparedParam = prepareParam({
       param: param_,
-      value: value2[index]
+      value: value2[index],
     });
     preparedParams.push(preparedParam);
-    if (preparedParam.dynamic)
-      dynamic = true;
+    if (preparedParam.dynamic) dynamic = true;
   }
   return {
     dynamic,
-    encoded: dynamic ? encodeParams(preparedParams) : concat(preparedParams.map(({ encoded }) => encoded))
+    encoded: dynamic
+      ? encodeParams(preparedParams)
+      : concat(preparedParams.map(({ encoded }) => encoded)),
   };
 }
 function getArrayComponents(type) {
   const matches = type.match(/^(.*)\[(\d+)?\]$/);
-  return matches ? [matches[2] ? Number(matches[2]) : null, matches[1]] : undefined;
+  return matches
+    ? [matches[2] ? Number(matches[2]) : null, matches[1]]
+    : undefined;
 }
 var hash = (value2) => keccak256(toBytes(value2));
 function hashSignature(sig) {
@@ -16026,33 +19421,30 @@ function formatAbiParameter(abiParameter) {
   if (tupleRegex.test(abiParameter.type) && "components" in abiParameter) {
     type = "(";
     const length = abiParameter.components.length;
-    for (let i2 = 0;i2 < length; i2++) {
+    for (let i2 = 0; i2 < length; i2++) {
       const component = abiParameter.components[i2];
       type += formatAbiParameter(component);
-      if (i2 < length - 1)
-        type += ", ";
+      if (i2 < length - 1) type += ", ";
     }
     const result = execTyped(tupleRegex, abiParameter.type);
     type += `)${result?.array || ""}`;
     return formatAbiParameter({
       ...abiParameter,
-      type
+      type,
     });
   }
   if ("indexed" in abiParameter && abiParameter.indexed)
     type = `${type} indexed`;
-  if (abiParameter.name)
-    return `${type} ${abiParameter.name}`;
+  if (abiParameter.name) return `${type} ${abiParameter.name}`;
   return type;
 }
 function formatAbiParameters(abiParameters) {
   let params = "";
   const length = abiParameters.length;
-  for (let i2 = 0;i2 < length; i2++) {
+  for (let i2 = 0; i2 < length; i2++) {
     const abiParameter = abiParameters[i2];
     params += formatAbiParameter(abiParameter);
-    if (i2 !== length - 1)
-      params += ", ";
+    if (i2 !== length - 1) params += ", ";
   }
   return params;
 }
@@ -16075,16 +19467,12 @@ function normalizeSignature(signature) {
   let level = 0;
   let result = "";
   let valid = false;
-  for (let i2 = 0;i2 < signature.length; i2++) {
+  for (let i2 = 0; i2 < signature.length; i2++) {
     const char = signature[i2];
-    if (["(", ")", ","].includes(char))
-      active = true;
-    if (char === "(")
-      level++;
-    if (char === ")")
-      level--;
-    if (!active)
-      continue;
+    if (["(", ")", ","].includes(char)) active = true;
+    if (char === "(") level++;
+    if (char === ")") level--;
+    if (!active) continue;
     if (level === 0) {
       if (char === " " && ["event", "function", ""].includes(result))
         result = "";
@@ -16107,14 +19495,12 @@ function normalizeSignature(signature) {
     result += char;
     current += char;
   }
-  if (!valid)
-    throw new BaseError("Unable to normalize signature.");
+  if (!valid) throw new BaseError("Unable to normalize signature.");
   return result;
 }
 var toSignature = (def) => {
   const def_ = (() => {
-    if (typeof def === "string")
-      return def;
+    if (typeof def === "string") return def;
     return formatAbiItem2(def);
   })();
   return normalizeSignature(def_);
@@ -16131,54 +19517,55 @@ function getAbiItem(parameters) {
     if (isSelector) {
       if (abiItem.type === "function")
         return toFunctionSelector(abiItem) === name;
-      if (abiItem.type === "event")
-        return toEventSelector(abiItem) === name;
+      if (abiItem.type === "event") return toEventSelector(abiItem) === name;
       return false;
     }
     return "name" in abiItem && abiItem.name === name;
   });
-  if (abiItems.length === 0)
-    return;
-  if (abiItems.length === 1)
-    return abiItems[0];
+  if (abiItems.length === 0) return;
+  if (abiItems.length === 1) return abiItems[0];
   let matchedAbiItem;
   for (const abiItem of abiItems) {
-    if (!("inputs" in abiItem))
-      continue;
+    if (!("inputs" in abiItem)) continue;
     if (!args || args.length === 0) {
-      if (!abiItem.inputs || abiItem.inputs.length === 0)
-        return abiItem;
+      if (!abiItem.inputs || abiItem.inputs.length === 0) return abiItem;
       continue;
     }
-    if (!abiItem.inputs)
-      continue;
-    if (abiItem.inputs.length === 0)
-      continue;
-    if (abiItem.inputs.length !== args.length)
-      continue;
+    if (!abiItem.inputs) continue;
+    if (abiItem.inputs.length === 0) continue;
+    if (abiItem.inputs.length !== args.length) continue;
     const matched = args.every((arg, index) => {
       const abiParameter = "inputs" in abiItem && abiItem.inputs[index];
-      if (!abiParameter)
-        return false;
+      if (!abiParameter) return false;
       return isArgOfType(arg, abiParameter);
     });
     if (matched) {
-      if (matchedAbiItem && "inputs" in matchedAbiItem && matchedAbiItem.inputs) {
-        const ambiguousTypes = getAmbiguousTypes(abiItem.inputs, matchedAbiItem.inputs, args);
+      if (
+        matchedAbiItem &&
+        "inputs" in matchedAbiItem &&
+        matchedAbiItem.inputs
+      ) {
+        const ambiguousTypes = getAmbiguousTypes(
+          abiItem.inputs,
+          matchedAbiItem.inputs,
+          args,
+        );
         if (ambiguousTypes)
-          throw new AbiItemAmbiguityError({
-            abiItem,
-            type: ambiguousTypes[0]
-          }, {
-            abiItem: matchedAbiItem,
-            type: ambiguousTypes[1]
-          });
+          throw new AbiItemAmbiguityError(
+            {
+              abiItem,
+              type: ambiguousTypes[0],
+            },
+            {
+              abiItem: matchedAbiItem,
+              type: ambiguousTypes[1],
+            },
+          );
       }
       matchedAbiItem = abiItem;
     }
   }
-  if (matchedAbiItem)
-    return matchedAbiItem;
+  if (matchedAbiItem) return matchedAbiItem;
   return abiItems[0];
 }
 function isArgOfType(arg, abiParameter) {
@@ -16195,18 +19582,32 @@ function isArgOfType(arg, abiParameter) {
       return argType === "string";
     default: {
       if (abiParameterType === "tuple" && "components" in abiParameter)
-        return Object.values(abiParameter.components).every((component, index) => {
-          return argType === "object" && isArgOfType(Object.values(arg)[index], component);
-        });
-      if (/^u?int(8|16|24|32|40|48|56|64|72|80|88|96|104|112|120|128|136|144|152|160|168|176|184|192|200|208|216|224|232|240|248|256)?$/.test(abiParameterType))
+        return Object.values(abiParameter.components).every(
+          (component, index) => {
+            return (
+              argType === "object" &&
+              isArgOfType(Object.values(arg)[index], component)
+            );
+          },
+        );
+      if (
+        /^u?int(8|16|24|32|40|48|56|64|72|80|88|96|104|112|120|128|136|144|152|160|168|176|184|192|200|208|216|224|232|240|248|256)?$/.test(
+          abiParameterType,
+        )
+      )
         return argType === "number" || argType === "bigint";
       if (/^bytes([1-9]|1[0-9]|2[0-9]|3[0-2])?$/.test(abiParameterType))
         return argType === "string" || arg instanceof Uint8Array;
       if (/[a-z]+[1-9]{0,3}(\[[0-9]{0,}\])+$/.test(abiParameterType)) {
-        return Array.isArray(arg) && arg.every((x) => isArgOfType(x, {
-          ...abiParameter,
-          type: abiParameterType.replace(/(\[[0-9]{0,}\])$/, "")
-        }));
+        return (
+          Array.isArray(arg) &&
+          arg.every((x) =>
+            isArgOfType(x, {
+              ...abiParameter,
+              type: abiParameterType.replace(/(\[[0-9]{0,}\])$/, ""),
+            }),
+          )
+        );
       }
       return false;
     }
@@ -16216,20 +19617,27 @@ function getAmbiguousTypes(sourceParameters, targetParameters, args) {
   for (const parameterIndex in sourceParameters) {
     const sourceParameter = sourceParameters[parameterIndex];
     const targetParameter = targetParameters[parameterIndex];
-    if (sourceParameter.type === "tuple" && targetParameter.type === "tuple" && "components" in sourceParameter && "components" in targetParameter)
-      return getAmbiguousTypes(sourceParameter.components, targetParameter.components, args[parameterIndex]);
+    if (
+      sourceParameter.type === "tuple" &&
+      targetParameter.type === "tuple" &&
+      "components" in sourceParameter &&
+      "components" in targetParameter
+    )
+      return getAmbiguousTypes(
+        sourceParameter.components,
+        targetParameter.components,
+        args[parameterIndex],
+      );
     const types4 = [sourceParameter.type, targetParameter.type];
     const ambiguous = (() => {
-      if (types4.includes("address") && types4.includes("bytes20"))
-        return true;
+      if (types4.includes("address") && types4.includes("bytes20")) return true;
       if (types4.includes("address") && types4.includes("string"))
         return isAddress(args[parameterIndex], { strict: false });
       if (types4.includes("address") && types4.includes("bytes"))
         return isAddress(args[parameterIndex], { strict: false });
       return false;
     })();
-    if (ambiguous)
-      return types4;
+    if (ambiguous) return types4;
   }
   return;
 }
@@ -16241,29 +19649,34 @@ function prepareEncodeFunctionData(parameters) {
     const item = getAbiItem({
       abi,
       args,
-      name: functionName
+      name: functionName,
     });
-    if (!item)
-      throw new AbiFunctionNotFoundError(functionName, { docsPath });
+    if (!item) throw new AbiFunctionNotFoundError(functionName, { docsPath });
     abiItem = item;
   }
   if (abiItem.type !== "function")
     throw new AbiFunctionNotFoundError(undefined, { docsPath });
   return {
     abi: [abiItem],
-    functionName: toFunctionSelector(formatAbiItem(abiItem))
+    functionName: toFunctionSelector(formatAbiItem(abiItem)),
   };
 }
 function encodeFunctionData(parameters) {
   const { args } = parameters;
   const { abi, functionName } = (() => {
-    if (parameters.abi.length === 1 && parameters.functionName?.startsWith("0x"))
+    if (
+      parameters.abi.length === 1 &&
+      parameters.functionName?.startsWith("0x")
+    )
       return parameters;
     return prepareEncodeFunctionData(parameters);
   })();
   const abiItem = abi[0];
   const signature = functionName;
-  const data = "inputs" in abiItem && abiItem.inputs ? encodeAbiParameters(abiItem.inputs, args ?? []) : undefined;
+  const data =
+    "inputs" in abiItem && abiItem.inputs
+      ? encodeAbiParameters(abiItem.inputs, args ?? [])
+      : undefined;
   return concatHex([signature, data ?? "0x"]);
 }
 function irisStatusUrl(irisApiBase, srcDomain, burnTxHash) {
@@ -16280,7 +19693,7 @@ function parseAttestationData(data) {
   return {
     message: msg.message,
     attestation: msg.attestation,
-    destinationDomain: Number(msg.decodedMessage.destinationDomain)
+    destinationDomain: Number(msg.decodedMessage.destinationDomain),
   };
 }
 function defineChain2(chain) {
@@ -16288,17 +19701,18 @@ function defineChain2(chain) {
     formatters: undefined,
     fees: undefined,
     serializers: undefined,
-    ...chain
+    ...chain,
   };
   function extend(base) {
     return (fnOrExtended) => {
-      const properties = typeof fnOrExtended === "function" ? fnOrExtended(base) : fnOrExtended;
+      const properties =
+        typeof fnOrExtended === "function" ? fnOrExtended(base) : fnOrExtended;
       const combined = { ...base, ...properties };
       return Object.assign(combined, { extend: extend(combined) });
     };
   }
   return Object.assign(chainInstance, {
-    extend: extend(chainInstance)
+    extend: extend(chainInstance),
   });
 }
 var arbitrum = /* @__PURE__ */ defineChain2({
@@ -16308,22 +19722,22 @@ var arbitrum = /* @__PURE__ */ defineChain2({
   blockTime: 250,
   rpcUrls: {
     default: {
-      http: ["https://arb1.arbitrum.io/rpc"]
-    }
+      http: ["https://arb1.arbitrum.io/rpc"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Arbiscan",
       url: "https://arbiscan.io",
-      apiUrl: "https://api.arbiscan.io/api"
-    }
+      apiUrl: "https://api.arbiscan.io/api",
+    },
   },
   contracts: {
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 7654707
-    }
-  }
+      blockCreated: 7654707,
+    },
+  },
 });
 var arbitrumSepolia = /* @__PURE__ */ defineChain2({
   id: 421614,
@@ -16332,27 +19746,27 @@ var arbitrumSepolia = /* @__PURE__ */ defineChain2({
   nativeCurrency: {
     name: "Arbitrum Sepolia Ether",
     symbol: "ETH",
-    decimals: 18
+    decimals: 18,
   },
   rpcUrls: {
     default: {
-      http: ["https://sepolia-rollup.arbitrum.io/rpc"]
-    }
+      http: ["https://sepolia-rollup.arbitrum.io/rpc"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Arbiscan",
       url: "https://sepolia.arbiscan.io",
-      apiUrl: "https://api-sepolia.arbiscan.io/api"
-    }
+      apiUrl: "https://api-sepolia.arbiscan.io/api",
+    },
   },
   contracts: {
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 81930
-    }
+      blockCreated: 81930,
+    },
   },
-  testnet: true
+  testnet: true,
 });
 var avalanche = /* @__PURE__ */ defineChain2({
   id: 43114,
@@ -16361,24 +19775,24 @@ var avalanche = /* @__PURE__ */ defineChain2({
   nativeCurrency: {
     decimals: 18,
     name: "Avalanche",
-    symbol: "AVAX"
+    symbol: "AVAX",
   },
   rpcUrls: {
-    default: { http: ["https://api.avax.network/ext/bc/C/rpc"] }
+    default: { http: ["https://api.avax.network/ext/bc/C/rpc"] },
   },
   blockExplorers: {
     default: {
       name: "SnowTrace",
       url: "https://snowtrace.io",
-      apiUrl: "https://api.snowtrace.io"
-    }
+      apiUrl: "https://api.snowtrace.io",
+    },
   },
   contracts: {
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 11907934
-    }
-  }
+      blockCreated: 11907934,
+    },
+  },
 });
 var avalancheFuji = /* @__PURE__ */ defineChain2({
   id: 43113,
@@ -16386,51 +19800,52 @@ var avalancheFuji = /* @__PURE__ */ defineChain2({
   nativeCurrency: {
     decimals: 18,
     name: "Avalanche Fuji",
-    symbol: "AVAX"
+    symbol: "AVAX",
   },
   rpcUrls: {
-    default: { http: ["https://api.avax-test.network/ext/bc/C/rpc"] }
+    default: { http: ["https://api.avax-test.network/ext/bc/C/rpc"] },
   },
   blockExplorers: {
     default: {
       name: "SnowTrace",
       url: "https://testnet.snowtrace.io",
-      apiUrl: "https://api-testnet.snowtrace.io"
-    }
+      apiUrl: "https://api-testnet.snowtrace.io",
+    },
   },
   contracts: {
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 7096959
-    }
+      blockCreated: 7096959,
+    },
   },
-  testnet: true
+  testnet: true,
 });
 var contracts = {
   gasPriceOracle: { address: "0x420000000000000000000000000000000000000F" },
   l1Block: { address: "0x4200000000000000000000000000000000000015" },
   l2CrossDomainMessenger: {
-    address: "0x4200000000000000000000000000000000000007"
+    address: "0x4200000000000000000000000000000000000007",
   },
   l2Erc721Bridge: { address: "0x4200000000000000000000000000000000000014" },
   l2StandardBridge: { address: "0x4200000000000000000000000000000000000010" },
   l2ToL1MessagePasser: {
-    address: "0x4200000000000000000000000000000000000016"
-  }
+    address: "0x4200000000000000000000000000000000000016",
+  },
 };
 var version2 = "2.47.6";
 var errorConfig2 = {
-  getDocsUrl: ({ docsBaseUrl, docsPath: docsPath2 = "", docsSlug }) => docsPath2 ? `${docsBaseUrl ?? "https://viem.sh"}${docsPath2}${docsSlug ? `#${docsSlug}` : ""}` : undefined,
-  version: `viem@${version2}`
+  getDocsUrl: ({ docsBaseUrl, docsPath: docsPath2 = "", docsSlug }) =>
+    docsPath2
+      ? `${docsBaseUrl ?? "https://viem.sh"}${docsPath2}${docsSlug ? `#${docsSlug}` : ""}`
+      : undefined,
+  version: `viem@${version2}`,
 };
 
 class BaseError4 extends Error {
   constructor(shortMessage, args = {}) {
     const details = (() => {
-      if (args.cause instanceof BaseError4)
-        return args.cause.details;
-      if (args.cause?.message)
-        return args.cause.message;
+      if (args.cause instanceof BaseError4) return args.cause.details;
+      if (args.cause?.message) return args.cause.message;
       return args.details;
     })();
     const docsPath2 = (() => {
@@ -16442,10 +19857,10 @@ class BaseError4 extends Error {
     const message = [
       shortMessage || "An error occurred.",
       "",
-      ...args.metaMessages ? [...args.metaMessages, ""] : [],
-      ...docsUrl ? [`Docs: ${docsUrl}`] : [],
-      ...details ? [`Details: ${details}`] : [],
-      ...errorConfig2.version ? [`Version: ${errorConfig2.version}`] : []
+      ...(args.metaMessages ? [...args.metaMessages, ""] : []),
+      ...(docsUrl ? [`Docs: ${docsUrl}`] : []),
+      ...(details ? [`Details: ${details}`] : []),
+      ...(errorConfig2.version ? [`Version: ${errorConfig2.version}`] : []),
     ].join(`
 `);
     super(message, args.cause ? { cause: args.cause } : undefined);
@@ -16453,37 +19868,37 @@ class BaseError4 extends Error {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "docsPath", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "metaMessages", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "shortMessage", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "version", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     Object.defineProperty(this, "name", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: "BaseError"
+      value: "BaseError",
     });
     this.details = details;
     this.docsPath = docsPath2;
@@ -16497,29 +19912,37 @@ class BaseError4 extends Error {
   }
 }
 function walk2(err, fn) {
-  if (fn?.(err))
-    return err;
-  if (err && typeof err === "object" && "cause" in err && err.cause !== undefined)
+  if (fn?.(err)) return err;
+  if (
+    err &&
+    typeof err === "object" &&
+    "cause" in err &&
+    err.cause !== undefined
+  )
     return walk2(err.cause, fn);
   return fn ? null : err;
 }
 
 class IntegerOutOfRangeError3 extends BaseError4 {
   constructor({ max, min, signed, size: size3, value: value2 }) {
-    super(`Number "${value2}" is not in safe ${size3 ? `${size3 * 8}-bit ${signed ? "signed" : "unsigned"} ` : ""}integer range ${max ? `(${min} to ${max})` : `(above ${min})`}`, { name: "IntegerOutOfRangeError" });
+    super(
+      `Number "${value2}" is not in safe ${size3 ? `${size3 * 8}-bit ${signed ? "signed" : "unsigned"} ` : ""}integer range ${max ? `(${min} to ${max})` : `(above ${min})`}`,
+      { name: "IntegerOutOfRangeError" },
+    );
   }
 }
 
 class SizeOverflowError3 extends BaseError4 {
   constructor({ givenSize, maxSize }) {
-    super(`Size cannot exceed ${maxSize} bytes. Given size: ${givenSize} bytes.`, { name: "SizeOverflowError" });
+    super(
+      `Size cannot exceed ${maxSize} bytes. Given size: ${givenSize} bytes.`,
+      { name: "SizeOverflowError" },
+    );
   }
 }
 function isHex3(value2, { strict = true } = {}) {
-  if (!value2)
-    return false;
-  if (typeof value2 !== "string")
-    return false;
+  if (!value2) return false;
+  if (typeof value2 !== "string") return false;
   return strict ? /^0x[0-9a-fA-F]*$/.test(value2) : value2.startsWith("0x");
 }
 function size3(value2) {
@@ -16528,18 +19951,20 @@ function size3(value2) {
   return value2.length;
 }
 function trim2(hexOrBytes, { dir = "left" } = {}) {
-  let data = typeof hexOrBytes === "string" ? hexOrBytes.replace("0x", "") : hexOrBytes;
+  let data =
+    typeof hexOrBytes === "string" ? hexOrBytes.replace("0x", "") : hexOrBytes;
   let sliceLength = 0;
-  for (let i2 = 0;i2 < data.length - 1; i2++) {
+  for (let i2 = 0; i2 < data.length - 1; i2++) {
     if (data[dir === "left" ? i2 : data.length - i2 - 1].toString() === "0")
       sliceLength++;
-    else
-      break;
+    else break;
   }
-  data = dir === "left" ? data.slice(sliceLength) : data.slice(0, data.length - sliceLength);
+  data =
+    dir === "left"
+      ? data.slice(sliceLength)
+      : data.slice(0, data.length - sliceLength);
   if (typeof hexOrBytes === "string") {
-    if (data.length === 1 && dir === "right")
-      data = `${data}0`;
+    if (data.length === 1 && dir === "right") data = `${data}0`;
     return `0x${data.length % 2 === 1 ? `0${data}` : data}`;
   }
   return data;
@@ -16547,13 +19972,19 @@ function trim2(hexOrBytes, { dir = "left" } = {}) {
 
 class SliceOffsetOutOfBoundsError3 extends BaseError4 {
   constructor({ offset, position, size: size4 }) {
-    super(`Slice ${position === "start" ? "starting" : "ending"} at offset "${offset}" is out-of-bounds (size: ${size4}).`, { name: "SliceOffsetOutOfBoundsError" });
+    super(
+      `Slice ${position === "start" ? "starting" : "ending"} at offset "${offset}" is out-of-bounds (size: ${size4}).`,
+      { name: "SliceOffsetOutOfBoundsError" },
+    );
   }
 }
 
 class SizeExceedsPaddingSizeError3 extends BaseError4 {
   constructor({ size: size4, targetSize, type }) {
-    super(`${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()} size (${size4}) exceeds padding size (${targetSize}).`, { name: "SizeExceedsPaddingSizeError" });
+    super(
+      `${type.charAt(0).toUpperCase()}${type.slice(1).toLowerCase()} size (${size4}) exceeds padding size (${targetSize}).`,
+      { name: "SizeExceedsPaddingSizeError" },
+    );
   }
 }
 function pad3(hexOrBytes, { dir, size: size4 = 32 } = {}) {
@@ -16562,42 +19993,42 @@ function pad3(hexOrBytes, { dir, size: size4 = 32 } = {}) {
   return padBytes3(hexOrBytes, { dir, size: size4 });
 }
 function padHex3(hex_, { dir, size: size4 = 32 } = {}) {
-  if (size4 === null)
-    return hex_;
+  if (size4 === null) return hex_;
   const hex = hex_.replace("0x", "");
   if (hex.length > size4 * 2)
     throw new SizeExceedsPaddingSizeError3({
       size: Math.ceil(hex.length / 2),
       targetSize: size4,
-      type: "hex"
+      type: "hex",
     });
   return `0x${hex[dir === "right" ? "padEnd" : "padStart"](size4 * 2, "0")}`;
 }
 function padBytes3(bytes, { dir, size: size4 = 32 } = {}) {
-  if (size4 === null)
-    return bytes;
+  if (size4 === null) return bytes;
   if (bytes.length > size4)
     throw new SizeExceedsPaddingSizeError3({
       size: bytes.length,
       targetSize: size4,
-      type: "bytes"
+      type: "bytes",
     });
   const paddedBytes = new Uint8Array(size4);
-  for (let i2 = 0;i2 < size4; i2++) {
+  for (let i2 = 0; i2 < size4; i2++) {
     const padEnd = dir === "right";
-    paddedBytes[padEnd ? i2 : size4 - i2 - 1] = bytes[padEnd ? i2 : bytes.length - i2 - 1];
+    paddedBytes[padEnd ? i2 : size4 - i2 - 1] =
+      bytes[padEnd ? i2 : bytes.length - i2 - 1];
   }
   return paddedBytes;
 }
-var hexes2 = /* @__PURE__ */ Array.from({ length: 256 }, (_v, i2) => i2.toString(16).padStart(2, "0"));
+var hexes2 = /* @__PURE__ */ Array.from({ length: 256 }, (_v, i2) =>
+  i2.toString(16).padStart(2, "0"),
+);
 function toHex2(value2, opts = {}) {
   if (typeof value2 === "number" || typeof value2 === "bigint")
     return numberToHex2(value2, opts);
   if (typeof value2 === "string") {
     return stringToHex2(value2, opts);
   }
-  if (typeof value2 === "boolean")
-    return boolToHex2(value2, opts);
+  if (typeof value2 === "boolean") return boolToHex2(value2, opts);
   return bytesToHex2(value2, opts);
 }
 function boolToHex2(value2, opts = {}) {
@@ -16610,7 +20041,7 @@ function boolToHex2(value2, opts = {}) {
 }
 function bytesToHex2(value2, opts = {}) {
   let string = "";
-  for (let i2 = 0;i2 < value2.length; i2++) {
+  for (let i2 = 0; i2 < value2.length; i2++) {
     string += hexes2[value2[i2]];
   }
   const hex = `0x${string}`;
@@ -16625,42 +20056,37 @@ function numberToHex2(value_, opts = {}) {
   const value2 = BigInt(value_);
   let maxValue;
   if (size4) {
-    if (signed)
-      maxValue = (1n << BigInt(size4) * 8n - 1n) - 1n;
-    else
-      maxValue = 2n ** (BigInt(size4) * 8n) - 1n;
+    if (signed) maxValue = (1n << (BigInt(size4) * 8n - 1n)) - 1n;
+    else maxValue = 2n ** (BigInt(size4) * 8n) - 1n;
   } else if (typeof value_ === "number") {
     maxValue = BigInt(Number.MAX_SAFE_INTEGER);
   }
   const minValue = typeof maxValue === "bigint" && signed ? -maxValue - 1n : 0;
-  if (maxValue && value2 > maxValue || value2 < minValue) {
+  if ((maxValue && value2 > maxValue) || value2 < minValue) {
     const suffix = typeof value_ === "bigint" ? "n" : "";
     throw new IntegerOutOfRangeError3({
       max: maxValue ? `${maxValue}${suffix}` : undefined,
       min: `${minValue}${suffix}`,
       signed,
       size: size4,
-      value: `${value_}${suffix}`
+      value: `${value_}${suffix}`,
     });
   }
   const hex = `0x${(signed && value2 < 0 ? (1n << BigInt(size4 * 8)) + BigInt(value2) : value2).toString(16)}`;
-  if (size4)
-    return pad3(hex, { size: size4 });
+  if (size4) return pad3(hex, { size: size4 });
   return hex;
 }
-var encoder3 = /* @__PURE__ */ new TextEncoder;
+var encoder3 = /* @__PURE__ */ new TextEncoder();
 function stringToHex2(value_, opts = {}) {
   const value2 = encoder3.encode(value_);
   return bytesToHex2(value2, opts);
 }
-var encoder4 = /* @__PURE__ */ new TextEncoder;
+var encoder4 = /* @__PURE__ */ new TextEncoder();
 function toBytes4(value2, opts = {}) {
   if (typeof value2 === "number" || typeof value2 === "bigint")
     return numberToBytes3(value2, opts);
-  if (typeof value2 === "boolean")
-    return boolToBytes3(value2, opts);
-  if (isHex3(value2))
-    return hexToBytes4(value2, opts);
+  if (typeof value2 === "boolean") return boolToBytes3(value2, opts);
+  if (isHex3(value2)) return hexToBytes4(value2, opts);
   return stringToBytes3(value2, opts);
 }
 function boolToBytes3(value2, opts = {}) {
@@ -16678,7 +20104,7 @@ var charCodeMap2 = {
   A: 65,
   F: 70,
   a: 97,
-  f: 102
+  f: 102,
 };
 function charCodeToBase162(char) {
   if (char >= charCodeMap2.zero && char <= charCodeMap2.nine)
@@ -16696,15 +20122,16 @@ function hexToBytes4(hex_, opts = {}) {
     hex = pad3(hex, { dir: "right", size: opts.size });
   }
   let hexString = hex.slice(2);
-  if (hexString.length % 2)
-    hexString = `0${hexString}`;
+  if (hexString.length % 2) hexString = `0${hexString}`;
   const length = hexString.length / 2;
   const bytes = new Uint8Array(length);
-  for (let index = 0, j = 0;index < length; index++) {
+  for (let index = 0, j = 0; index < length; index++) {
     const nibbleLeft = charCodeToBase162(hexString.charCodeAt(j++));
     const nibbleRight = charCodeToBase162(hexString.charCodeAt(j++));
     if (nibbleLeft === undefined || nibbleRight === undefined) {
-      throw new BaseError4(`Invalid byte sequence ("${hexString[j - 2]}${hexString[j - 1]}" in "${hexString}").`);
+      throw new BaseError4(
+        `Invalid byte sequence ("${hexString[j - 2]}${hexString[j - 1]}" in "${hexString}").`,
+      );
     }
     bytes[index] = nibbleLeft * 16 + nibbleRight;
   }
@@ -16726,20 +20153,17 @@ function assertSize3(hexOrBytes, { size: size4 }) {
   if (size3(hexOrBytes) > size4)
     throw new SizeOverflowError3({
       givenSize: size3(hexOrBytes),
-      maxSize: size4
+      maxSize: size4,
     });
 }
 function hexToBigInt2(hex, opts = {}) {
   const { signed } = opts;
-  if (opts.size)
-    assertSize3(hex, { size: opts.size });
+  if (opts.size) assertSize3(hex, { size: opts.size });
   const value2 = BigInt(hex);
-  if (!signed)
-    return value2;
+  if (!signed) return value2;
   const size4 = (hex.length - 2) / 2;
-  const max = (1n << BigInt(size4) * 8n - 1n) - 1n;
-  if (value2 <= max)
-    return value2;
+  const max = (1n << (BigInt(size4) * 8n - 1n)) - 1n;
+  if (value2 <= max) return value2;
   return value2 - BigInt(`0x${"f".padStart(size4 * 2, "f")}`) - 1n;
 }
 function hexToNumber2(hex, opts = {}) {
@@ -16751,7 +20175,7 @@ function hexToNumber2(hex, opts = {}) {
       min: `${Number.MIN_SAFE_INTEGER}`,
       signed: opts.signed,
       size: opts.size,
-      value: `${value2}n`
+      value: `${value2}n`,
     });
   return number;
 }
@@ -16768,10 +20192,10 @@ function defineFormatter(type, format) {
         }
         return {
           ...formatted,
-          ...overrides(args, action)
+          ...overrides(args, action),
         };
       },
-      type
+      type,
     };
   };
 }
@@ -16780,39 +20204,49 @@ var transactionType2 = {
   "0x1": "eip2930",
   "0x2": "eip1559",
   "0x3": "eip4844",
-  "0x4": "eip7702"
+  "0x4": "eip7702",
 };
 function formatTransaction2(transaction, _) {
   const transaction_ = {
     ...transaction,
     blockHash: transaction.blockHash ? transaction.blockHash : null,
-    blockNumber: transaction.blockNumber ? BigInt(transaction.blockNumber) : null,
-    chainId: transaction.chainId ? hexToNumber2(transaction.chainId) : undefined,
+    blockNumber: transaction.blockNumber
+      ? BigInt(transaction.blockNumber)
+      : null,
+    chainId: transaction.chainId
+      ? hexToNumber2(transaction.chainId)
+      : undefined,
     gas: transaction.gas ? BigInt(transaction.gas) : undefined,
     gasPrice: transaction.gasPrice ? BigInt(transaction.gasPrice) : undefined,
-    maxFeePerBlobGas: transaction.maxFeePerBlobGas ? BigInt(transaction.maxFeePerBlobGas) : undefined,
-    maxFeePerGas: transaction.maxFeePerGas ? BigInt(transaction.maxFeePerGas) : undefined,
-    maxPriorityFeePerGas: transaction.maxPriorityFeePerGas ? BigInt(transaction.maxPriorityFeePerGas) : undefined,
+    maxFeePerBlobGas: transaction.maxFeePerBlobGas
+      ? BigInt(transaction.maxFeePerBlobGas)
+      : undefined,
+    maxFeePerGas: transaction.maxFeePerGas
+      ? BigInt(transaction.maxFeePerGas)
+      : undefined,
+    maxPriorityFeePerGas: transaction.maxPriorityFeePerGas
+      ? BigInt(transaction.maxPriorityFeePerGas)
+      : undefined,
     nonce: transaction.nonce ? hexToNumber2(transaction.nonce) : undefined,
     to: transaction.to ? transaction.to : null,
-    transactionIndex: transaction.transactionIndex ? Number(transaction.transactionIndex) : null,
+    transactionIndex: transaction.transactionIndex
+      ? Number(transaction.transactionIndex)
+      : null,
     type: transaction.type ? transactionType2[transaction.type] : undefined,
     typeHex: transaction.type ? transaction.type : undefined,
     value: transaction.value ? BigInt(transaction.value) : undefined,
-    v: transaction.v ? BigInt(transaction.v) : undefined
+    v: transaction.v ? BigInt(transaction.v) : undefined,
   };
   if (transaction.authorizationList)
-    transaction_.authorizationList = formatAuthorizationList(transaction.authorizationList);
+    transaction_.authorizationList = formatAuthorizationList(
+      transaction.authorizationList,
+    );
   transaction_.yParity = (() => {
-    if (transaction.yParity)
-      return Number(transaction.yParity);
+    if (transaction.yParity) return Number(transaction.yParity);
     if (typeof transaction_.v === "bigint") {
-      if (transaction_.v === 0n || transaction_.v === 27n)
-        return 0;
-      if (transaction_.v === 1n || transaction_.v === 28n)
-        return 1;
-      if (transaction_.v >= 35n)
-        return transaction_.v % 2n === 0n ? 1 : 0;
+      if (transaction_.v === 0n || transaction_.v === 27n) return 0;
+      if (transaction_.v === 1n || transaction_.v === 28n) return 1;
+      if (transaction_.v >= 35n) return transaction_.v % 2n === 0n ? 1 : 0;
     }
     return;
   })();
@@ -16828,11 +20262,13 @@ function formatTransaction2(transaction, _) {
     delete transaction_.maxFeePerGas;
     delete transaction_.maxPriorityFeePerGas;
   }
-  if (transaction_.type === "eip1559")
-    delete transaction_.maxFeePerBlobGas;
+  if (transaction_.type === "eip1559") delete transaction_.maxFeePerBlobGas;
   return transaction_;
 }
-var defineTransaction2 = /* @__PURE__ */ defineFormatter("transaction", formatTransaction2);
+var defineTransaction2 = /* @__PURE__ */ defineFormatter(
+  "transaction",
+  formatTransaction2,
+);
 function formatAuthorizationList(authorizationList) {
   return authorizationList.map((authorization) => ({
     address: authorization.address,
@@ -16840,13 +20276,12 @@ function formatAuthorizationList(authorizationList) {
     nonce: Number(authorization.nonce),
     r: authorization.r,
     s: authorization.s,
-    yParity: Number(authorization.yParity)
+    yParity: Number(authorization.yParity),
   }));
 }
 function formatBlock2(block, _) {
   const transactions = (block.transactions ?? []).map((transaction) => {
-    if (typeof transaction === "string")
-      return transaction;
+    if (typeof transaction === "string") return transaction;
     return formatTransaction2(transaction);
   });
   return {
@@ -16854,7 +20289,9 @@ function formatBlock2(block, _) {
     baseFeePerGas: block.baseFeePerGas ? BigInt(block.baseFeePerGas) : null,
     blobGasUsed: block.blobGasUsed ? BigInt(block.blobGasUsed) : undefined,
     difficulty: block.difficulty ? BigInt(block.difficulty) : undefined,
-    excessBlobGas: block.excessBlobGas ? BigInt(block.excessBlobGas) : undefined,
+    excessBlobGas: block.excessBlobGas
+      ? BigInt(block.excessBlobGas)
+      : undefined,
     gasLimit: block.gasLimit ? BigInt(block.gasLimit) : undefined,
     gasUsed: block.gasUsed ? BigInt(block.gasUsed) : undefined,
     hash: block.hash ? block.hash : null,
@@ -16864,7 +20301,9 @@ function formatBlock2(block, _) {
     size: block.size ? BigInt(block.size) : undefined,
     timestamp: block.timestamp ? BigInt(block.timestamp) : undefined,
     transactions,
-    totalDifficulty: block.totalDifficulty ? BigInt(block.totalDifficulty) : null
+    totalDifficulty: block.totalDifficulty
+      ? BigInt(block.totalDifficulty)
+      : null,
   };
 }
 var defineBlock2 = /* @__PURE__ */ defineFormatter("block", formatBlock2);
@@ -16873,30 +20312,54 @@ function formatLog2(log, { args, eventName } = {}) {
     ...log,
     blockHash: log.blockHash ? log.blockHash : null,
     blockNumber: log.blockNumber ? BigInt(log.blockNumber) : null,
-    blockTimestamp: log.blockTimestamp ? BigInt(log.blockTimestamp) : log.blockTimestamp === null ? null : undefined,
+    blockTimestamp: log.blockTimestamp
+      ? BigInt(log.blockTimestamp)
+      : log.blockTimestamp === null
+        ? null
+        : undefined,
     logIndex: log.logIndex ? Number(log.logIndex) : null,
     transactionHash: log.transactionHash ? log.transactionHash : null,
-    transactionIndex: log.transactionIndex ? Number(log.transactionIndex) : null,
-    ...eventName ? { args, eventName } : {}
+    transactionIndex: log.transactionIndex
+      ? Number(log.transactionIndex)
+      : null,
+    ...(eventName ? { args, eventName } : {}),
   };
 }
 var receiptStatuses = {
   "0x0": "reverted",
-  "0x1": "success"
+  "0x1": "success",
 };
 function formatTransactionReceipt2(transactionReceipt, _) {
   const receipt = {
     ...transactionReceipt,
-    blockNumber: transactionReceipt.blockNumber ? BigInt(transactionReceipt.blockNumber) : null,
-    contractAddress: transactionReceipt.contractAddress ? transactionReceipt.contractAddress : null,
-    cumulativeGasUsed: transactionReceipt.cumulativeGasUsed ? BigInt(transactionReceipt.cumulativeGasUsed) : null,
-    effectiveGasPrice: transactionReceipt.effectiveGasPrice ? BigInt(transactionReceipt.effectiveGasPrice) : null,
-    gasUsed: transactionReceipt.gasUsed ? BigInt(transactionReceipt.gasUsed) : null,
-    logs: transactionReceipt.logs ? transactionReceipt.logs.map((log) => formatLog2(log)) : null,
+    blockNumber: transactionReceipt.blockNumber
+      ? BigInt(transactionReceipt.blockNumber)
+      : null,
+    contractAddress: transactionReceipt.contractAddress
+      ? transactionReceipt.contractAddress
+      : null,
+    cumulativeGasUsed: transactionReceipt.cumulativeGasUsed
+      ? BigInt(transactionReceipt.cumulativeGasUsed)
+      : null,
+    effectiveGasPrice: transactionReceipt.effectiveGasPrice
+      ? BigInt(transactionReceipt.effectiveGasPrice)
+      : null,
+    gasUsed: transactionReceipt.gasUsed
+      ? BigInt(transactionReceipt.gasUsed)
+      : null,
+    logs: transactionReceipt.logs
+      ? transactionReceipt.logs.map((log) => formatLog2(log))
+      : null,
     to: transactionReceipt.to ? transactionReceipt.to : null,
-    transactionIndex: transactionReceipt.transactionIndex ? hexToNumber2(transactionReceipt.transactionIndex) : null,
-    status: transactionReceipt.status ? receiptStatuses[transactionReceipt.status] : null,
-    type: transactionReceipt.type ? transactionType2[transactionReceipt.type] || transactionReceipt.type : null
+    transactionIndex: transactionReceipt.transactionIndex
+      ? hexToNumber2(transactionReceipt.transactionIndex)
+      : null,
+    status: transactionReceipt.status
+      ? receiptStatuses[transactionReceipt.status]
+      : null,
+    type: transactionReceipt.type
+      ? transactionType2[transactionReceipt.type] || transactionReceipt.type
+      : null,
   };
   if (transactionReceipt.blobGasPrice)
     receipt.blobGasPrice = BigInt(transactionReceipt.blobGasPrice);
@@ -16904,17 +20367,21 @@ function formatTransactionReceipt2(transactionReceipt, _) {
     receipt.blobGasUsed = BigInt(transactionReceipt.blobGasUsed);
   return receipt;
 }
-var defineTransactionReceipt2 = /* @__PURE__ */ defineFormatter("transactionReceipt", formatTransactionReceipt2);
+var defineTransactionReceipt2 = /* @__PURE__ */ defineFormatter(
+  "transactionReceipt",
+  formatTransactionReceipt2,
+);
 var formatters = {
   block: /* @__PURE__ */ defineBlock2({
     format(args) {
       const transactions = args.transactions?.map((transaction) => {
-        if (typeof transaction === "string")
-          return transaction;
+        if (typeof transaction === "string") return transaction;
         const formatted = formatTransaction2(transaction);
         if (formatted.typeHex === "0x7e") {
           formatted.isSystemTx = transaction.isSystemTx;
-          formatted.mint = transaction.mint ? hexToBigInt2(transaction.mint) : undefined;
+          formatted.mint = transaction.mint
+            ? hexToBigInt2(transaction.mint)
+            : undefined;
           formatted.sourceHash = transaction.sourceHash;
           formatted.type = "deposit";
         }
@@ -16922,9 +20389,9 @@ var formatters = {
       });
       return {
         transactions,
-        stateRoot: args.stateRoot
+        stateRoot: args.stateRoot,
       };
-    }
+    },
   }),
   transaction: /* @__PURE__ */ defineTransaction2({
     format(args) {
@@ -16936,7 +20403,7 @@ var formatters = {
         transaction.type = "deposit";
       }
       return transaction;
-    }
+    },
   }),
   transactionReceipt: /* @__PURE__ */ defineTransactionReceipt2({
     format(args) {
@@ -16944,10 +20411,10 @@ var formatters = {
         l1GasPrice: args.l1GasPrice ? hexToBigInt2(args.l1GasPrice) : null,
         l1GasUsed: args.l1GasUsed ? hexToBigInt2(args.l1GasUsed) : null,
         l1Fee: args.l1Fee ? hexToBigInt2(args.l1Fee) : null,
-        l1FeeScalar: args.l1FeeScalar ? Number(args.l1FeeScalar) : null
+        l1FeeScalar: args.l1FeeScalar ? Number(args.l1FeeScalar) : null,
       };
-    }
-  })
+    },
+  }),
 };
 
 class InvalidAddressError3 extends BaseError4 {
@@ -16955,9 +20422,9 @@ class InvalidAddressError3 extends BaseError4 {
     super(`Address "${address}" is invalid.`, {
       metaMessages: [
         "- Address must be a hex value of 20 bytes (40 hex characters).",
-        "- Address must match its checksum counterpart."
+        "- Address must match its checksum counterpart.",
       ],
-      name: "InvalidAddressError"
+      name: "InvalidAddressError",
     });
   }
 }
@@ -16969,7 +20436,7 @@ class LruMap2 extends Map {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: undefined
+      value: undefined,
     });
     this.maxSize = size4;
   }
@@ -16982,13 +20449,11 @@ class LruMap2 extends Map {
     return value2;
   }
   set(key, value2) {
-    if (super.has(key))
-      super.delete(key);
+    if (super.has(key)) super.delete(key);
     super.set(key, value2);
     if (this.maxSize && this.size > this.maxSize) {
       const firstKey = super.keys().next().value;
-      if (firstKey !== undefined)
-        super.delete(firstKey);
+      if (firstKey !== undefined) super.delete(firstKey);
     }
     return this;
   }
@@ -16997,40 +20462,49 @@ var U32_MASK642 = /* @__PURE__ */ BigInt(2 ** 32 - 1);
 var _32n2 = /* @__PURE__ */ BigInt(32);
 function fromBig2(n, le = false) {
   if (le)
-    return { h: Number(n & U32_MASK642), l: Number(n >> _32n2 & U32_MASK642) };
-  return { h: Number(n >> _32n2 & U32_MASK642) | 0, l: Number(n & U32_MASK642) | 0 };
+    return {
+      h: Number(n & U32_MASK642),
+      l: Number((n >> _32n2) & U32_MASK642),
+    };
+  return {
+    h: Number((n >> _32n2) & U32_MASK642) | 0,
+    l: Number(n & U32_MASK642) | 0,
+  };
 }
 function split2(lst, le = false) {
   const len2 = lst.length;
   let Ah = new Uint32Array(len2);
   let Al = new Uint32Array(len2);
-  for (let i2 = 0;i2 < len2; i2++) {
+  for (let i2 = 0; i2 < len2; i2++) {
     const { h, l } = fromBig2(lst[i2], le);
     [Ah[i2], Al[i2]] = [h, l];
   }
   return [Ah, Al];
 }
-var rotlSH2 = (h, l, s) => h << s | l >>> 32 - s;
-var rotlSL2 = (h, l, s) => l << s | h >>> 32 - s;
-var rotlBH2 = (h, l, s) => l << s - 32 | h >>> 64 - s;
-var rotlBL2 = (h, l, s) => h << s - 32 | l >>> 64 - s;
+var rotlSH2 = (h, l, s) => (h << s) | (l >>> (32 - s));
+var rotlSL2 = (h, l, s) => (l << s) | (h >>> (32 - s));
+var rotlBH2 = (h, l, s) => (l << (s - 32)) | (h >>> (64 - s));
+var rotlBL2 = (h, l, s) => (h << (s - 32)) | (l >>> (64 - s));
 /*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 function isBytes3(a) {
-  return a instanceof Uint8Array || ArrayBuffer.isView(a) && a.constructor.name === "Uint8Array";
+  return (
+    a instanceof Uint8Array ||
+    (ArrayBuffer.isView(a) && a.constructor.name === "Uint8Array")
+  );
 }
 function anumber2(n) {
   if (!Number.isSafeInteger(n) || n < 0)
     throw new Error("positive integer expected, got " + n);
 }
 function abytes2(b, ...lengths) {
-  if (!isBytes3(b))
-    throw new Error("Uint8Array expected");
+  if (!isBytes3(b)) throw new Error("Uint8Array expected");
   if (lengths.length > 0 && !lengths.includes(b.length))
-    throw new Error("Uint8Array expected of length " + lengths + ", got length=" + b.length);
+    throw new Error(
+      "Uint8Array expected of length " + lengths + ", got length=" + b.length,
+    );
 }
 function aexists2(instance, checkFinished = true) {
-  if (instance.destroyed)
-    throw new Error("Hash instance has been destroyed");
+  if (instance.destroyed) throw new Error("Hash instance has been destroyed");
   if (checkFinished && instance.finished)
     throw new Error("Hash#digest() has already been called");
 }
@@ -17038,14 +20512,20 @@ function aoutput2(out, instance) {
   abytes2(out);
   const min = instance.outputLen;
   if (out.length < min) {
-    throw new Error("digestInto() expects output buffer of length at least " + min);
+    throw new Error(
+      "digestInto() expects output buffer of length at least " + min,
+    );
   }
 }
 function u322(arr) {
-  return new Uint32Array(arr.buffer, arr.byteOffset, Math.floor(arr.byteLength / 4));
+  return new Uint32Array(
+    arr.buffer,
+    arr.byteOffset,
+    Math.floor(arr.byteLength / 4),
+  );
 }
 function clean2(...arrays) {
-  for (let i2 = 0;i2 < arrays.length; i2++) {
+  for (let i2 = 0; i2 < arrays.length; i2++) {
     arrays[i2].fill(0);
   }
 }
@@ -17053,33 +20533,36 @@ function createView(arr) {
   return new DataView(arr.buffer, arr.byteOffset, arr.byteLength);
 }
 function rotr(word, shift) {
-  return word << 32 - shift | word >>> shift;
+  return (word << (32 - shift)) | (word >>> shift);
 }
-var isLE2 = /* @__PURE__ */ (() => new Uint8Array(new Uint32Array([287454020]).buffer)[0] === 68)();
+var isLE2 = /* @__PURE__ */ (() =>
+  new Uint8Array(new Uint32Array([287454020]).buffer)[0] === 68)();
 function byteSwap2(word) {
-  return word << 24 & 4278190080 | word << 8 & 16711680 | word >>> 8 & 65280 | word >>> 24 & 255;
+  return (
+    ((word << 24) & 4278190080) |
+    ((word << 8) & 16711680) |
+    ((word >>> 8) & 65280) |
+    ((word >>> 24) & 255)
+  );
 }
 function byteSwap322(arr) {
-  for (let i2 = 0;i2 < arr.length; i2++) {
+  for (let i2 = 0; i2 < arr.length; i2++) {
     arr[i2] = byteSwap2(arr[i2]);
   }
   return arr;
 }
 var swap32IfBE2 = isLE2 ? (u) => u : byteSwap322;
 function utf8ToBytes3(str) {
-  if (typeof str !== "string")
-    throw new Error("string expected");
+  if (typeof str !== "string") throw new Error("string expected");
   return new Uint8Array(new TextEncoder().encode(str));
 }
 function toBytes5(data) {
-  if (typeof data === "string")
-    data = utf8ToBytes3(data);
+  if (typeof data === "string") data = utf8ToBytes3(data);
   abytes2(data);
   return data;
 }
 
-class Hash2 {
-}
+class Hash2 {}
 function createHasher2(hashCons) {
   const hashC = (msg) => hashCons().update(toBytes5(msg)).digest();
   const tmp = hashCons();
@@ -17097,43 +20580,42 @@ var _0x71n2 = BigInt(113);
 var SHA3_PI2 = [];
 var SHA3_ROTL2 = [];
 var _SHA3_IOTA2 = [];
-for (let round = 0, R = _1n2, x = 1, y = 0;round < 24; round++) {
+for (let round = 0, R = _1n2, x = 1, y = 0; round < 24; round++) {
   [x, y] = [y, (2 * x + 3 * y) % 5];
   SHA3_PI2.push(2 * (5 * y + x));
-  SHA3_ROTL2.push((round + 1) * (round + 2) / 2 % 64);
+  SHA3_ROTL2.push((((round + 1) * (round + 2)) / 2) % 64);
   let t = _0n2;
-  for (let j = 0;j < 7; j++) {
-    R = (R << _1n2 ^ (R >> _7n2) * _0x71n2) % _256n2;
-    if (R & _2n2)
-      t ^= _1n2 << (_1n2 << /* @__PURE__ */ BigInt(j)) - _1n2;
+  for (let j = 0; j < 7; j++) {
+    R = ((R << _1n2) ^ ((R >> _7n2) * _0x71n2)) % _256n2;
+    if (R & _2n2) t ^= _1n2 << ((_1n2 << /* @__PURE__ */ BigInt(j)) - _1n2);
   }
   _SHA3_IOTA2.push(t);
 }
 var IOTAS2 = split2(_SHA3_IOTA2, true);
 var SHA3_IOTA_H2 = IOTAS2[0];
 var SHA3_IOTA_L2 = IOTAS2[1];
-var rotlH2 = (h, l, s) => s > 32 ? rotlBH2(h, l, s) : rotlSH2(h, l, s);
-var rotlL2 = (h, l, s) => s > 32 ? rotlBL2(h, l, s) : rotlSL2(h, l, s);
+var rotlH2 = (h, l, s) => (s > 32 ? rotlBH2(h, l, s) : rotlSH2(h, l, s));
+var rotlL2 = (h, l, s) => (s > 32 ? rotlBL2(h, l, s) : rotlSL2(h, l, s));
 function keccakP2(s, rounds = 24) {
   const B = new Uint32Array(5 * 2);
-  for (let round = 24 - rounds;round < 24; round++) {
-    for (let x = 0;x < 10; x++)
+  for (let round = 24 - rounds; round < 24; round++) {
+    for (let x = 0; x < 10; x++)
       B[x] = s[x] ^ s[x + 10] ^ s[x + 20] ^ s[x + 30] ^ s[x + 40];
-    for (let x = 0;x < 10; x += 2) {
+    for (let x = 0; x < 10; x += 2) {
       const idx1 = (x + 8) % 10;
       const idx0 = (x + 2) % 10;
       const B0 = B[idx0];
       const B1 = B[idx0 + 1];
       const Th = rotlH2(B0, B1, 1) ^ B[idx1];
       const Tl = rotlL2(B0, B1, 1) ^ B[idx1 + 1];
-      for (let y = 0;y < 50; y += 10) {
+      for (let y = 0; y < 50; y += 10) {
         s[x + y] ^= Th;
         s[x + y + 1] ^= Tl;
       }
     }
     let curH = s[2];
     let curL = s[3];
-    for (let t = 0;t < 24; t++) {
+    for (let t = 0; t < 24; t++) {
       const shift = SHA3_ROTL2[t];
       const Th = rotlH2(curH, curL, shift);
       const Tl = rotlL2(curH, curL, shift);
@@ -17143,10 +20625,9 @@ function keccakP2(s, rounds = 24) {
       s[PI] = Th;
       s[PI + 1] = Tl;
     }
-    for (let y = 0;y < 50; y += 10) {
-      for (let x = 0;x < 10; x++)
-        B[x] = s[y + x];
-      for (let x = 0;x < 10; x++)
+    for (let y = 0; y < 50; y += 10) {
+      for (let x = 0; x < 10; x++) B[x] = s[y + x];
+      for (let x = 0; x < 10; x++)
         s[y + x] ^= ~B[(x + 2) % 10] & B[(x + 4) % 10];
     }
     s[0] ^= SHA3_IOTA_H2[round];
@@ -17190,23 +20671,19 @@ class Keccak2 extends Hash2 {
     abytes2(data);
     const { blockLen, state } = this;
     const len2 = data.length;
-    for (let pos = 0;pos < len2; ) {
+    for (let pos = 0; pos < len2; ) {
       const take = Math.min(blockLen - this.pos, len2 - pos);
-      for (let i2 = 0;i2 < take; i2++)
-        state[this.pos++] ^= data[pos++];
-      if (this.pos === blockLen)
-        this.keccak();
+      for (let i2 = 0; i2 < take; i2++) state[this.pos++] ^= data[pos++];
+      if (this.pos === blockLen) this.keccak();
     }
     return this;
   }
   finish() {
-    if (this.finished)
-      return;
+    if (this.finished) return;
     this.finished = true;
     const { state, suffix, pos, blockLen } = this;
     state[pos] ^= suffix;
-    if ((suffix & 128) !== 0 && pos === blockLen - 1)
-      this.keccak();
+    if ((suffix & 128) !== 0 && pos === blockLen - 1) this.keccak();
     state[blockLen - 1] ^= 128;
     this.keccak();
   }
@@ -17216,9 +20693,8 @@ class Keccak2 extends Hash2 {
     this.finish();
     const bufferOut = this.state;
     const { blockLen } = this;
-    for (let pos = 0, len2 = out.length;pos < len2; ) {
-      if (this.posOut >= blockLen)
-        this.keccak();
+    for (let pos = 0, len2 = out.length; pos < len2; ) {
+      if (this.posOut >= blockLen) this.keccak();
       const take = Math.min(blockLen - this.posOut, len2 - pos);
       out.set(bufferOut.subarray(this.posOut, this.posOut + take), pos);
       this.posOut += take;
@@ -17237,8 +20713,7 @@ class Keccak2 extends Hash2 {
   }
   digestInto(out) {
     aoutput2(out, this);
-    if (this.finished)
-      throw new Error("digest() was already called");
+    if (this.finished) throw new Error("digest() was already called");
     this.writeInto(out);
     this.destroy();
     return out;
@@ -17265,23 +20740,29 @@ class Keccak2 extends Hash2 {
     return to;
   }
 }
-var gen2 = (suffix, blockLen, outputLen) => createHasher2(() => new Keccak2(blockLen, suffix, outputLen));
+var gen2 = (suffix, blockLen, outputLen) =>
+  createHasher2(() => new Keccak2(blockLen, suffix, outputLen));
 var keccak_2562 = /* @__PURE__ */ (() => gen2(1, 136, 256 / 8))();
 function keccak2563(value2, to_) {
   const to = to_ || "hex";
-  const bytes = keccak_2562(isHex3(value2, { strict: false }) ? toBytes4(value2) : value2);
-  if (to === "bytes")
-    return bytes;
+  const bytes = keccak_2562(
+    isHex3(value2, { strict: false }) ? toBytes4(value2) : value2,
+  );
+  if (to === "bytes") return bytes;
   return toHex2(bytes);
 }
 var checksumAddressCache2 = /* @__PURE__ */ new LruMap2(8192);
 function checksumAddress3(address_, chainId) {
   if (checksumAddressCache2.has(`${address_}.${chainId}`))
     return checksumAddressCache2.get(`${address_}.${chainId}`);
-  const hexAddress = chainId ? `${chainId}${address_.toLowerCase()}` : address_.substring(2).toLowerCase();
+  const hexAddress = chainId
+    ? `${chainId}${address_.toLowerCase()}`
+    : address_.substring(2).toLowerCase();
   const hash2 = keccak2563(stringToBytes3(hexAddress), "bytes");
-  const address = (chainId ? hexAddress.substring(`${chainId}0x`.length) : hexAddress).split("");
-  for (let i2 = 0;i2 < 40; i2 += 2) {
+  const address = (
+    chainId ? hexAddress.substring(`${chainId}0x`.length) : hexAddress
+  ).split("");
+  for (let i2 = 0; i2 < 40; i2 += 2) {
     if (hash2[i2 >> 1] >> 4 >= 8 && address[i2]) {
       address[i2] = address[i2].toUpperCase();
     }
@@ -17298,15 +20779,11 @@ var isAddressCache2 = /* @__PURE__ */ new LruMap2(8192);
 function isAddress3(address, options) {
   const { strict = true } = options ?? {};
   const cacheKey = `${address}.${strict}`;
-  if (isAddressCache2.has(cacheKey))
-    return isAddressCache2.get(cacheKey);
+  if (isAddressCache2.has(cacheKey)) return isAddressCache2.get(cacheKey);
   const result = (() => {
-    if (!addressRegex2.test(address))
-      return false;
-    if (address.toLowerCase() === address)
-      return true;
-    if (strict)
-      return checksumAddress3(address) === address;
+    if (!addressRegex2.test(address)) return false;
+    if (address.toLowerCase() === address) return true;
+    if (strict) return checksumAddress3(address) === address;
     return true;
   })();
   isAddressCache2.set(cacheKey, result);
@@ -17319,46 +20796,51 @@ function concatHex3(values) {
 class NegativeOffsetError extends BaseError4 {
   constructor({ offset }) {
     super(`Offset \`${offset}\` cannot be negative.`, {
-      name: "NegativeOffsetError"
+      name: "NegativeOffsetError",
     });
   }
 }
 
 class PositionOutOfBoundsError extends BaseError4 {
   constructor({ length, position }) {
-    super(`Position \`${position}\` is out of bounds (\`0 < position < ${length}\`).`, { name: "PositionOutOfBoundsError" });
+    super(
+      `Position \`${position}\` is out of bounds (\`0 < position < ${length}\`).`,
+      { name: "PositionOutOfBoundsError" },
+    );
   }
 }
 
 class RecursiveReadLimitExceededError extends BaseError4 {
   constructor({ count, limit }) {
-    super(`Recursive read limit of \`${limit}\` exceeded (recursive read count: \`${count}\`).`, { name: "RecursiveReadLimitExceededError" });
+    super(
+      `Recursive read limit of \`${limit}\` exceeded (recursive read count: \`${count}\`).`,
+      { name: "RecursiveReadLimitExceededError" },
+    );
   }
 }
 var staticCursor = {
-  bytes: new Uint8Array,
+  bytes: new Uint8Array(),
   dataView: new DataView(new ArrayBuffer(0)),
   position: 0,
-  positionReadCount: new Map,
+  positionReadCount: new Map(),
   recursiveReadCount: 0,
   recursiveReadLimit: Number.POSITIVE_INFINITY,
   assertReadLimit() {
     if (this.recursiveReadCount >= this.recursiveReadLimit)
       throw new RecursiveReadLimitExceededError({
         count: this.recursiveReadCount + 1,
-        limit: this.recursiveReadLimit
+        limit: this.recursiveReadLimit,
       });
   },
   assertPosition(position) {
     if (position < 0 || position > this.bytes.length - 1)
       throw new PositionOutOfBoundsError({
         length: this.bytes.length,
-        position
+        position,
       });
   },
   decrementPosition(offset) {
-    if (offset < 0)
-      throw new NegativeOffsetError({ offset });
+    if (offset < 0) throw new NegativeOffsetError({ offset });
     const position = this.position - offset;
     this.assertPosition(position);
     this.position = position;
@@ -17367,8 +20849,7 @@ var staticCursor = {
     return this.positionReadCount.get(position || this.position) || 0;
   },
   incrementPosition(offset) {
-    if (offset < 0)
-      throw new NegativeOffsetError({ offset });
+    if (offset < 0) throw new NegativeOffsetError({ offset });
     const position = this.position + offset;
     this.assertPosition(position);
     this.position = position;
@@ -17396,7 +20877,10 @@ var staticCursor = {
   inspectUint24(position_) {
     const position = position_ ?? this.position;
     this.assertPosition(position + 2);
-    return (this.dataView.getUint16(position) << 8) + this.dataView.getUint8(position + 2);
+    return (
+      (this.dataView.getUint16(position) << 8) +
+      this.dataView.getUint8(position + 2)
+    );
   },
   inspectUint32(position_) {
     const position = position_ ?? this.position;
@@ -17483,22 +20967,24 @@ var staticCursor = {
     const oldPosition = this.position;
     this.assertPosition(position);
     this.position = position;
-    return () => this.position = oldPosition;
+    return () => (this.position = oldPosition);
   },
   _touch() {
-    if (this.recursiveReadLimit === Number.POSITIVE_INFINITY)
-      return;
+    if (this.recursiveReadLimit === Number.POSITIVE_INFINITY) return;
     const count = this.getReadCount();
     this.positionReadCount.set(this.position, count + 1);
-    if (count > 0)
-      this.recursiveReadCount++;
-  }
+    if (count > 0) this.recursiveReadCount++;
+  },
 };
 function createCursor(bytes, { recursiveReadLimit = 8192 } = {}) {
   const cursor = Object.create(staticCursor);
   cursor.bytes = bytes;
-  cursor.dataView = new DataView(bytes.buffer ?? bytes, bytes.byteOffset, bytes.byteLength);
-  cursor.positionReadCount = new Map;
+  cursor.dataView = new DataView(
+    bytes.buffer ?? bytes,
+    bytes.byteOffset,
+    bytes.byteLength,
+  );
+  cursor.positionReadCount = new Map();
   cursor.recursiveReadLimit = recursiveReadLimit;
   return cursor;
 }
@@ -17506,8 +20992,7 @@ function toRlp2(bytes, to = "hex") {
   const encodable = getEncodable(bytes);
   const cursor = createCursor(new Uint8Array(encodable.length));
   encodable.encode(cursor);
-  if (to === "hex")
-    return bytesToHex2(cursor.bytes);
+  if (to === "hex") return bytesToHex2(cursor.bytes);
   return cursor.bytes;
 }
 function getEncodable(bytes) {
@@ -17519,8 +21004,7 @@ function getEncodableList(list) {
   const bodyLength = list.reduce((acc, x) => acc + x.length, 0);
   const sizeOfBodyLength = getSizeOfLength(bodyLength);
   const length = (() => {
-    if (bodyLength <= 55)
-      return 1 + bodyLength;
+    if (bodyLength <= 55) return 1 + bodyLength;
     return 1 + sizeOfBodyLength + bodyLength;
   })();
   return {
@@ -17530,29 +21014,24 @@ function getEncodableList(list) {
         cursor.pushByte(192 + bodyLength);
       } else {
         cursor.pushByte(192 + 55 + sizeOfBodyLength);
-        if (sizeOfBodyLength === 1)
-          cursor.pushUint8(bodyLength);
-        else if (sizeOfBodyLength === 2)
-          cursor.pushUint16(bodyLength);
-        else if (sizeOfBodyLength === 3)
-          cursor.pushUint24(bodyLength);
-        else
-          cursor.pushUint32(bodyLength);
+        if (sizeOfBodyLength === 1) cursor.pushUint8(bodyLength);
+        else if (sizeOfBodyLength === 2) cursor.pushUint16(bodyLength);
+        else if (sizeOfBodyLength === 3) cursor.pushUint24(bodyLength);
+        else cursor.pushUint32(bodyLength);
       }
       for (const { encode } of list) {
         encode(cursor);
       }
-    }
+    },
   };
 }
 function getEncodableBytes(bytesOrHex) {
-  const bytes = typeof bytesOrHex === "string" ? hexToBytes4(bytesOrHex) : bytesOrHex;
+  const bytes =
+    typeof bytesOrHex === "string" ? hexToBytes4(bytesOrHex) : bytesOrHex;
   const sizeOfBytesLength = getSizeOfLength(bytes.length);
   const length = (() => {
-    if (bytes.length === 1 && bytes[0] < 128)
-      return 1;
-    if (bytes.length <= 55)
-      return 1 + bytes.length;
+    if (bytes.length === 1 && bytes[0] < 128) return 1;
+    if (bytes.length <= 55) return 1 + bytes.length;
     return 1 + sizeOfBytesLength + bytes.length;
   })();
   return {
@@ -17565,72 +21044,62 @@ function getEncodableBytes(bytesOrHex) {
         cursor.pushBytes(bytes);
       } else {
         cursor.pushByte(128 + 55 + sizeOfBytesLength);
-        if (sizeOfBytesLength === 1)
-          cursor.pushUint8(bytes.length);
-        else if (sizeOfBytesLength === 2)
-          cursor.pushUint16(bytes.length);
-        else if (sizeOfBytesLength === 3)
-          cursor.pushUint24(bytes.length);
-        else
-          cursor.pushUint32(bytes.length);
+        if (sizeOfBytesLength === 1) cursor.pushUint8(bytes.length);
+        else if (sizeOfBytesLength === 2) cursor.pushUint16(bytes.length);
+        else if (sizeOfBytesLength === 3) cursor.pushUint24(bytes.length);
+        else cursor.pushUint32(bytes.length);
         cursor.pushBytes(bytes);
       }
-    }
+    },
   };
 }
 function getSizeOfLength(length) {
-  if (length < 2 ** 8)
-    return 1;
-  if (length < 2 ** 16)
-    return 2;
-  if (length < 2 ** 24)
-    return 3;
-  if (length < 2 ** 32)
-    return 4;
+  if (length < 2 ** 8) return 1;
+  if (length < 2 ** 16) return 2;
+  if (length < 2 ** 24) return 3;
+  if (length < 2 ** 32) return 4;
   throw new BaseError4("Length is too large.");
 }
-var etherUnits2 = {
-  gwei: 9,
-  wei: 18
-};
 var gweiUnits2 = {
   ether: -9,
-  wei: 9
+  wei: 9,
 };
 function formatUnits2(value2, decimals) {
   let display = value2.toString();
   const negative = display.startsWith("-");
-  if (negative)
-    display = display.slice(1);
+  if (negative) display = display.slice(1);
   display = display.padStart(decimals, "0");
   let [integer, fraction] = [
     display.slice(0, display.length - decimals),
-    display.slice(display.length - decimals)
+    display.slice(display.length - decimals),
   ];
   fraction = fraction.replace(/(0+)$/, "");
   return `${negative ? "-" : ""}${integer || "0"}${fraction ? `.${fraction}` : ""}`;
-}
-function formatEther2(wei, unit = "wei") {
-  return formatUnits2(wei, etherUnits2[unit]);
 }
 function formatGwei2(wei, unit = "wei") {
   return formatUnits2(wei, gweiUnits2[unit]);
 }
 function prettyPrint(args) {
-  const entries = Object.entries(args).map(([key, value2]) => {
-    if (value2 === undefined || value2 === false)
-      return null;
-    return [key, value2];
-  }).filter(Boolean);
-  const maxLength = entries.reduce((acc, [key]) => Math.max(acc, key.length), 0);
-  return entries.map(([key, value2]) => `  ${`${key}:`.padEnd(maxLength + 1)}  ${value2}`).join(`
+  const entries = Object.entries(args)
+    .map(([key, value2]) => {
+      if (value2 === undefined || value2 === false) return null;
+      return [key, value2];
+    })
+    .filter(Boolean);
+  const maxLength = entries.reduce(
+    (acc, [key]) => Math.max(acc, key.length),
+    0,
+  );
+  return entries.map(
+    ([key, value2]) => `  ${`${key}:`.padEnd(maxLength + 1)}  ${value2}`,
+  ).join(`
 `);
 }
 
 class InvalidLegacyVError2 extends BaseError4 {
   constructor({ v }) {
     super(`Invalid \`v\` value "${v}". Expected 27 or 28.`, {
-      name: "InvalidLegacyVError"
+      name: "InvalidLegacyVError",
     });
   }
 }
@@ -17650,21 +21119,23 @@ class InvalidSerializableTransactionError2 extends BaseError4 {
         "- an EIP-2930 Transaction with `gasPrice` & `accessList`, or",
         "- an EIP-4844 Transaction with `blobs`, `blobVersionedHashes`, `sidecars`, or",
         "- an EIP-7702 Transaction with `authorizationList`, or",
-        "- a Legacy Transaction with `gasPrice`"
+        "- a Legacy Transaction with `gasPrice`",
       ],
-      name: "InvalidSerializableTransactionError"
+      name: "InvalidSerializableTransactionError",
     });
   }
 }
 
 class InvalidStorageKeySizeError2 extends BaseError4 {
   constructor({ storageKey }) {
-    super(`Size for storage key "${storageKey}" is invalid. Expected 32 bytes. Got ${Math.floor((storageKey.length - 2) / 2)} bytes.`, { name: "InvalidStorageKeySizeError" });
+    super(
+      `Size for storage key "${storageKey}" is invalid. Expected 32 bytes. Got ${Math.floor((storageKey.length - 2) / 2)} bytes.`,
+      { name: "InvalidStorageKeySizeError" },
+    );
   }
 }
 function serializeAuthorizationList(authorizationList) {
-  if (!authorizationList || authorizationList.length === 0)
-    return [];
+  if (!authorizationList || authorizationList.length === 0) return [];
   const serializedAuthorizationList = [];
   for (const authorization of authorizationList) {
     const { chainId, nonce, ...signature } = authorization;
@@ -17673,15 +21144,20 @@ function serializeAuthorizationList(authorizationList) {
       chainId ? toHex2(chainId) : "0x",
       contractAddress,
       nonce ? toHex2(nonce) : "0x",
-      ...toYParitySignatureArray({}, signature)
+      ...toYParitySignatureArray({}, signature),
     ]);
   }
   return serializedAuthorizationList;
 }
 function blobsToCommitments2(parameters) {
   const { kzg } = parameters;
-  const to = parameters.to ?? (typeof parameters.blobs[0] === "string" ? "hex" : "bytes");
-  const blobs = typeof parameters.blobs[0] === "string" ? parameters.blobs.map((x) => hexToBytes4(x)) : parameters.blobs;
+  const to =
+    parameters.to ??
+    (typeof parameters.blobs[0] === "string" ? "hex" : "bytes");
+  const blobs =
+    typeof parameters.blobs[0] === "string"
+      ? parameters.blobs.map((x) => hexToBytes4(x))
+      : parameters.blobs;
   const commitments = [];
   for (const blob of blobs)
     commitments.push(Uint8Array.from(kzg.blobToKzgCommitment(blob)));
@@ -17689,11 +21165,19 @@ function blobsToCommitments2(parameters) {
 }
 function blobsToProofs2(parameters) {
   const { kzg } = parameters;
-  const to = parameters.to ?? (typeof parameters.blobs[0] === "string" ? "hex" : "bytes");
-  const blobs = typeof parameters.blobs[0] === "string" ? parameters.blobs.map((x) => hexToBytes4(x)) : parameters.blobs;
-  const commitments = typeof parameters.commitments[0] === "string" ? parameters.commitments.map((x) => hexToBytes4(x)) : parameters.commitments;
+  const to =
+    parameters.to ??
+    (typeof parameters.blobs[0] === "string" ? "hex" : "bytes");
+  const blobs =
+    typeof parameters.blobs[0] === "string"
+      ? parameters.blobs.map((x) => hexToBytes4(x))
+      : parameters.blobs;
+  const commitments =
+    typeof parameters.commitments[0] === "string"
+      ? parameters.commitments.map((x) => hexToBytes4(x))
+      : parameters.commitments;
   const proofs = [];
-  for (let i2 = 0;i2 < blobs.length; i2++) {
+  for (let i2 = 0; i2 < blobs.length; i2++) {
     const blob = blobs[i2];
     const commitment = commitments[i2];
     proofs.push(Uint8Array.from(kzg.computeBlobKzgProof(blob, commitment)));
@@ -17705,7 +21189,7 @@ function setBigUint64(view, byteOffset, value2, isLE3) {
     return view.setBigUint64(byteOffset, value2, isLE3);
   const _32n3 = BigInt(32);
   const _u32_max = BigInt(4294967295);
-  const wh = Number(value2 >> _32n3 & _u32_max);
+  const wh = Number((value2 >> _32n3) & _u32_max);
   const wl = Number(value2 & _u32_max);
   const h = isLE3 ? 4 : 0;
   const l = isLE3 ? 0 : 4;
@@ -17713,10 +21197,10 @@ function setBigUint64(view, byteOffset, value2, isLE3) {
   view.setUint32(byteOffset + l, wl, isLE3);
 }
 function Chi(a, b, c) {
-  return a & b ^ ~a & c;
+  return (a & b) ^ (~a & c);
 }
 function Maj(a, b, c) {
-  return a & b ^ a & c ^ b & c;
+  return (a & b) ^ (a & c) ^ (b & c);
 }
 
 class HashMD extends Hash2 {
@@ -17739,11 +21223,11 @@ class HashMD extends Hash2 {
     abytes2(data);
     const { view, buffer, blockLen } = this;
     const len2 = data.length;
-    for (let pos = 0;pos < len2; ) {
+    for (let pos = 0; pos < len2; ) {
       const take = Math.min(blockLen - this.pos, len2 - pos);
       if (take === blockLen) {
         const dataView = createView(data);
-        for (;blockLen <= len2 - pos; pos += blockLen)
+        for (; blockLen <= len2 - pos; pos += blockLen)
           this.process(dataView, pos);
         continue;
       }
@@ -17771,8 +21255,7 @@ class HashMD extends Hash2 {
       this.process(view, 0);
       pos = 0;
     }
-    for (let i2 = pos;i2 < blockLen; i2++)
-      buffer[i2] = 0;
+    for (let i2 = pos; i2 < blockLen; i2++) buffer[i2] = 0;
     setBigUint64(view, blockLen - 8, BigInt(this.length * 8), isLE3);
     this.process(view, 0);
     const oview = createView(out);
@@ -17783,7 +21266,7 @@ class HashMD extends Hash2 {
     const state = this.get();
     if (outLen > state.length)
       throw new Error("_sha2: outputLen bigger than state");
-    for (let i2 = 0;i2 < outLen; i2++)
+    for (let i2 = 0; i2 < outLen; i2++)
       oview.setUint32(4 * i2, state[i2], isLE3);
   }
   digest() {
@@ -17794,15 +21277,14 @@ class HashMD extends Hash2 {
     return res;
   }
   _cloneInto(to) {
-    to || (to = new this.constructor);
+    to || (to = new this.constructor());
     to.set(...this.get());
     const { blockLen, buffer, length, finished, destroyed, pos } = this;
     to.destroyed = destroyed;
     to.finished = finished;
     to.length = length;
     to.pos = pos;
-    if (length % blockLen)
-      to.buffer.set(buffer);
+    if (length % blockLen) to.buffer.set(buffer);
     return to;
   }
   clone() {
@@ -17810,80 +21292,21 @@ class HashMD extends Hash2 {
   }
 }
 var SHA256_IV = /* @__PURE__ */ Uint32Array.from([
-  1779033703,
-  3144134277,
-  1013904242,
-  2773480762,
-  1359893119,
-  2600822924,
-  528734635,
-  1541459225
+  1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924,
+  528734635, 1541459225,
 ]);
 var SHA256_K = /* @__PURE__ */ Uint32Array.from([
-  1116352408,
-  1899447441,
-  3049323471,
-  3921009573,
-  961987163,
-  1508970993,
-  2453635748,
-  2870763221,
-  3624381080,
-  310598401,
-  607225278,
-  1426881987,
-  1925078388,
-  2162078206,
-  2614888103,
-  3248222580,
-  3835390401,
-  4022224774,
-  264347078,
-  604807628,
-  770255983,
-  1249150122,
-  1555081692,
-  1996064986,
-  2554220882,
-  2821834349,
-  2952996808,
-  3210313671,
-  3336571891,
-  3584528711,
-  113926993,
-  338241895,
-  666307205,
-  773529912,
-  1294757372,
-  1396182291,
-  1695183700,
-  1986661051,
-  2177026350,
-  2456956037,
-  2730485921,
-  2820302411,
-  3259730800,
-  3345764771,
-  3516065817,
-  3600352804,
-  4094571909,
-  275423344,
-  430227734,
-  506948616,
-  659060556,
-  883997877,
-  958139571,
-  1322822218,
-  1537002063,
-  1747873779,
-  1955562222,
-  2024104815,
-  2227730452,
-  2361852424,
-  2428436474,
-  2756734187,
-  3204031479,
-  3329325298
+  1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993,
+  2453635748, 2870763221, 3624381080, 310598401, 607225278, 1426881987,
+  1925078388, 2162078206, 2614888103, 3248222580, 3835390401, 4022224774,
+  264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986,
+  2554220882, 2821834349, 2952996808, 3210313671, 3336571891, 3584528711,
+  113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291,
+  1695183700, 1986661051, 2177026350, 2456956037, 2730485921, 2820302411,
+  3259730800, 3345764771, 3516065817, 3600352804, 4094571909, 275423344,
+  430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063,
+  1747873779, 1955562222, 2024104815, 2227730452, 2361852424, 2428436474,
+  2756734187, 3204031479, 3329325298,
 ]);
 var SHA256_W = /* @__PURE__ */ new Uint32Array(64);
 
@@ -17914,38 +21337,38 @@ class SHA256 extends HashMD {
     this.H = H | 0;
   }
   process(view, offset) {
-    for (let i2 = 0;i2 < 16; i2++, offset += 4)
+    for (let i2 = 0; i2 < 16; i2++, offset += 4)
       SHA256_W[i2] = view.getUint32(offset, false);
-    for (let i2 = 16;i2 < 64; i2++) {
+    for (let i2 = 16; i2 < 64; i2++) {
       const W15 = SHA256_W[i2 - 15];
       const W2 = SHA256_W[i2 - 2];
-      const s0 = rotr(W15, 7) ^ rotr(W15, 18) ^ W15 >>> 3;
-      const s1 = rotr(W2, 17) ^ rotr(W2, 19) ^ W2 >>> 10;
-      SHA256_W[i2] = s1 + SHA256_W[i2 - 7] + s0 + SHA256_W[i2 - 16] | 0;
+      const s0 = rotr(W15, 7) ^ rotr(W15, 18) ^ (W15 >>> 3);
+      const s1 = rotr(W2, 17) ^ rotr(W2, 19) ^ (W2 >>> 10);
+      SHA256_W[i2] = (s1 + SHA256_W[i2 - 7] + s0 + SHA256_W[i2 - 16]) | 0;
     }
     let { A, B, C, D, E: E2, F, G, H } = this;
-    for (let i2 = 0;i2 < 64; i2++) {
+    for (let i2 = 0; i2 < 64; i2++) {
       const sigma1 = rotr(E2, 6) ^ rotr(E2, 11) ^ rotr(E2, 25);
-      const T1 = H + sigma1 + Chi(E2, F, G) + SHA256_K[i2] + SHA256_W[i2] | 0;
+      const T1 = (H + sigma1 + Chi(E2, F, G) + SHA256_K[i2] + SHA256_W[i2]) | 0;
       const sigma0 = rotr(A, 2) ^ rotr(A, 13) ^ rotr(A, 22);
-      const T2 = sigma0 + Maj(A, B, C) | 0;
+      const T2 = (sigma0 + Maj(A, B, C)) | 0;
       H = G;
       G = F;
       F = E2;
-      E2 = D + T1 | 0;
+      E2 = (D + T1) | 0;
       D = C;
       C = B;
       B = A;
-      A = T1 + T2 | 0;
+      A = (T1 + T2) | 0;
     }
-    A = A + this.A | 0;
-    B = B + this.B | 0;
-    C = C + this.C | 0;
-    D = D + this.D | 0;
-    E2 = E2 + this.E | 0;
-    F = F + this.F | 0;
-    G = G + this.G | 0;
-    H = H + this.H | 0;
+    A = (A + this.A) | 0;
+    B = (B + this.B) | 0;
+    C = (C + this.C) | 0;
+    D = (D + this.D) | 0;
+    E2 = (E2 + this.E) | 0;
+    F = (F + this.F) | 0;
+    G = (G + this.G) | 0;
+    H = (H + this.H) | 0;
     this.set(A, B, C, D, E2, F, G, H);
   }
   roundClean() {
@@ -17956,32 +21379,37 @@ class SHA256 extends HashMD {
     clean2(this.buffer);
   }
 }
-var sha2562 = /* @__PURE__ */ createHasher2(() => new SHA256);
+var sha2562 = /* @__PURE__ */ createHasher2(() => new SHA256());
 var sha2563 = sha2562;
 function sha2564(value2, to_) {
   const to = to_ || "hex";
-  const bytes = sha2563(isHex3(value2, { strict: false }) ? toBytes4(value2) : value2);
-  if (to === "bytes")
-    return bytes;
+  const bytes = sha2563(
+    isHex3(value2, { strict: false }) ? toBytes4(value2) : value2,
+  );
+  if (to === "bytes") return bytes;
   return toHex2(bytes);
 }
 function commitmentToVersionedHash2(parameters) {
   const { commitment, version: version3 = 1 } = parameters;
-  const to = parameters.to ?? (typeof commitment === "string" ? "hex" : "bytes");
+  const to =
+    parameters.to ?? (typeof commitment === "string" ? "hex" : "bytes");
   const versionedHash = sha2564(commitment, "bytes");
   versionedHash.set([version3], 0);
   return to === "bytes" ? versionedHash : bytesToHex2(versionedHash);
 }
 function commitmentsToVersionedHashes2(parameters) {
   const { commitments, version: version3 } = parameters;
-  const to = parameters.to ?? (typeof commitments[0] === "string" ? "hex" : "bytes");
+  const to =
+    parameters.to ?? (typeof commitments[0] === "string" ? "hex" : "bytes");
   const hashes = [];
   for (const commitment of commitments) {
-    hashes.push(commitmentToVersionedHash2({
-      commitment,
-      to,
-      version: version3
-    }));
+    hashes.push(
+      commitmentToVersionedHash2({
+        commitment,
+        to,
+        version: version3,
+      }),
+    );
   }
   return hashes;
 }
@@ -17989,14 +21417,17 @@ var blobsPerTransaction = 6;
 var bytesPerFieldElement = 32;
 var fieldElementsPerBlob = 4096;
 var bytesPerBlob = bytesPerFieldElement * fieldElementsPerBlob;
-var maxBytesPerTransaction = bytesPerBlob * blobsPerTransaction - 1 - 1 * fieldElementsPerBlob * blobsPerTransaction;
+var maxBytesPerTransaction =
+  bytesPerBlob * blobsPerTransaction -
+  1 -
+  1 * fieldElementsPerBlob * blobsPerTransaction;
 var versionedHashVersionKzg = 1;
 
 class BlobSizeTooLargeError extends BaseError4 {
   constructor({ maxSize, size: size4 }) {
     super("Blob size is too large.", {
       metaMessages: [`Max: ${maxSize} bytes`, `Given: ${size4} bytes`],
-      name: "BlobSizeTooLargeError"
+      name: "BlobSizeTooLargeError",
     });
   }
 }
@@ -18011,7 +21442,7 @@ class InvalidVersionedHashSizeError extends BaseError4 {
   constructor({ hash: hash2, size: size4 }) {
     super(`Versioned hash "${hash2}" size is invalid.`, {
       metaMessages: ["Expected: 32", `Received: ${size4}`],
-      name: "InvalidVersionedHashSizeError"
+      name: "InvalidVersionedHashSizeError",
     });
   }
 }
@@ -18021,22 +21452,25 @@ class InvalidVersionedHashVersionError extends BaseError4 {
     super(`Versioned hash "${hash2}" version is invalid.`, {
       metaMessages: [
         `Expected: ${versionedHashVersionKzg}`,
-        `Received: ${version3}`
+        `Received: ${version3}`,
       ],
-      name: "InvalidVersionedHashVersionError"
+      name: "InvalidVersionedHashVersionError",
     });
   }
 }
 function toBlobs2(parameters) {
-  const to = parameters.to ?? (typeof parameters.data === "string" ? "hex" : "bytes");
-  const data = typeof parameters.data === "string" ? hexToBytes4(parameters.data) : parameters.data;
+  const to =
+    parameters.to ?? (typeof parameters.data === "string" ? "hex" : "bytes");
+  const data =
+    typeof parameters.data === "string"
+      ? hexToBytes4(parameters.data)
+      : parameters.data;
   const size_ = size3(data);
-  if (!size_)
-    throw new EmptyBlobError;
+  if (!size_) throw new EmptyBlobError();
   if (size_ > maxBytesPerTransaction)
     throw new BlobSizeTooLargeError({
       maxSize: maxBytesPerTransaction,
-      size: size_
+      size: size_,
     });
   const blobs = [];
   let active = true;
@@ -18058,19 +21492,23 @@ function toBlobs2(parameters) {
     }
     blobs.push(blob);
   }
-  return to === "bytes" ? blobs.map((x) => x.bytes) : blobs.map((x) => bytesToHex2(x.bytes));
+  return to === "bytes"
+    ? blobs.map((x) => x.bytes)
+    : blobs.map((x) => bytesToHex2(x.bytes));
 }
 function toBlobSidecars2(parameters) {
   const { data, kzg, to } = parameters;
   const blobs = parameters.blobs ?? toBlobs2({ data, to });
-  const commitments = parameters.commitments ?? blobsToCommitments2({ blobs, kzg, to });
-  const proofs = parameters.proofs ?? blobsToProofs2({ blobs, commitments, kzg, to });
+  const commitments =
+    parameters.commitments ?? blobsToCommitments2({ blobs, kzg, to });
+  const proofs =
+    parameters.proofs ?? blobsToProofs2({ blobs, commitments, kzg, to });
   const sidecars = [];
-  for (let i2 = 0;i2 < blobs.length; i2++)
+  for (let i2 = 0; i2 < blobs.length; i2++)
     sidecars.push({
       blob: blobs[i2],
       commitment: commitments[i2],
-      proof: proofs[i2]
+      proof: proofs[i2],
     });
   return sidecars;
 }
@@ -18173,165 +21611,200 @@ var maxUint2562 = 2n ** 256n - 1n;
 
 class InvalidChainIdError2 extends BaseError4 {
   constructor({ chainId }) {
-    super(typeof chainId === "number" ? `Chain ID "${chainId}" is invalid.` : "Chain ID is invalid.", { name: "InvalidChainIdError" });
+    super(
+      typeof chainId === "number"
+        ? `Chain ID "${chainId}" is invalid.`
+        : "Chain ID is invalid.",
+      { name: "InvalidChainIdError" },
+    );
   }
 }
 
 class ExecutionRevertedError2 extends BaseError4 {
   constructor({ cause, message } = {}) {
-    const reason = message?.replace("execution reverted: ", "")?.replace("execution reverted", "");
-    super(`Execution reverted ${reason ? `with reason: ${reason}` : "for an unknown reason"}.`, {
-      cause,
-      name: "ExecutionRevertedError"
-    });
+    const reason = message
+      ?.replace("execution reverted: ", "")
+      ?.replace("execution reverted", "");
+    super(
+      `Execution reverted ${reason ? `with reason: ${reason}` : "for an unknown reason"}.`,
+      {
+        cause,
+        name: "ExecutionRevertedError",
+      },
+    );
   }
 }
 Object.defineProperty(ExecutionRevertedError2, "code", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: 3
+  value: 3,
 });
 Object.defineProperty(ExecutionRevertedError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /execution reverted|gas required exceeds allowance/
+  value: /execution reverted|gas required exceeds allowance/,
 });
 
 class FeeCapTooHighError2 extends BaseError4 {
   constructor({ cause, maxFeePerGas } = {}) {
-    super(`The fee cap (\`maxFeePerGas\`${maxFeePerGas ? ` = ${formatGwei2(maxFeePerGas)} gwei` : ""}) cannot be higher than the maximum allowed value (2^256-1).`, {
-      cause,
-      name: "FeeCapTooHighError"
-    });
+    super(
+      `The fee cap (\`maxFeePerGas\`${maxFeePerGas ? ` = ${formatGwei2(maxFeePerGas)} gwei` : ""}) cannot be higher than the maximum allowed value (2^256-1).`,
+      {
+        cause,
+        name: "FeeCapTooHighError",
+      },
+    );
   }
 }
 Object.defineProperty(FeeCapTooHighError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /max fee per gas higher than 2\^256-1|fee cap higher than 2\^256-1/
+  value: /max fee per gas higher than 2\^256-1|fee cap higher than 2\^256-1/,
 });
 
 class FeeCapTooLowError2 extends BaseError4 {
   constructor({ cause, maxFeePerGas } = {}) {
-    super(`The fee cap (\`maxFeePerGas\`${maxFeePerGas ? ` = ${formatGwei2(maxFeePerGas)}` : ""} gwei) cannot be lower than the block base fee.`, {
-      cause,
-      name: "FeeCapTooLowError"
-    });
+    super(
+      `The fee cap (\`maxFeePerGas\`${maxFeePerGas ? ` = ${formatGwei2(maxFeePerGas)}` : ""} gwei) cannot be lower than the block base fee.`,
+      {
+        cause,
+        name: "FeeCapTooLowError",
+      },
+    );
   }
 }
 Object.defineProperty(FeeCapTooLowError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /max fee per gas less than block base fee|fee cap less than block base fee|transaction is outdated/
+  value:
+    /max fee per gas less than block base fee|fee cap less than block base fee|transaction is outdated/,
 });
 
 class NonceTooHighError2 extends BaseError4 {
   constructor({ cause, nonce } = {}) {
-    super(`Nonce provided for the transaction ${nonce ? `(${nonce}) ` : ""}is higher than the next one expected.`, { cause, name: "NonceTooHighError" });
+    super(
+      `Nonce provided for the transaction ${nonce ? `(${nonce}) ` : ""}is higher than the next one expected.`,
+      { cause, name: "NonceTooHighError" },
+    );
   }
 }
 Object.defineProperty(NonceTooHighError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /nonce too high/
+  value: /nonce too high/,
 });
 
 class NonceTooLowError2 extends BaseError4 {
   constructor({ cause, nonce } = {}) {
-    super([
-      `Nonce provided for the transaction ${nonce ? `(${nonce}) ` : ""}is lower than the current nonce of the account.`,
-      "Try increasing the nonce or find the latest nonce with `getTransactionCount`."
-    ].join(`
-`), { cause, name: "NonceTooLowError" });
+    super(
+      [
+        `Nonce provided for the transaction ${nonce ? `(${nonce}) ` : ""}is lower than the current nonce of the account.`,
+        "Try increasing the nonce or find the latest nonce with `getTransactionCount`.",
+      ].join(`
+`),
+      { cause, name: "NonceTooLowError" },
+    );
   }
 }
 Object.defineProperty(NonceTooLowError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /nonce too low|transaction already imported|already known/
+  value: /nonce too low|transaction already imported|already known/,
 });
 
 class NonceMaxValueError2 extends BaseError4 {
   constructor({ cause, nonce } = {}) {
-    super(`Nonce provided for the transaction ${nonce ? `(${nonce}) ` : ""}exceeds the maximum allowed nonce.`, { cause, name: "NonceMaxValueError" });
+    super(
+      `Nonce provided for the transaction ${nonce ? `(${nonce}) ` : ""}exceeds the maximum allowed nonce.`,
+      { cause, name: "NonceMaxValueError" },
+    );
   }
 }
 Object.defineProperty(NonceMaxValueError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /nonce has max value/
+  value: /nonce has max value/,
 });
 
 class InsufficientFundsError2 extends BaseError4 {
   constructor({ cause } = {}) {
-    super([
-      "The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account."
-    ].join(`
-`), {
-      cause,
-      metaMessages: [
-        "This error could arise when the account does not have enough funds to:",
-        " - pay for the total gas fee,",
-        " - pay for the value to send.",
-        " ",
-        "The cost of the transaction is calculated as `gas * gas fee + value`, where:",
-        " - `gas` is the amount of gas needed for transaction to execute,",
-        " - `gas fee` is the gas fee,",
-        " - `value` is the amount of ether to send to the recipient."
-      ],
-      name: "InsufficientFundsError"
-    });
+    super(
+      [
+        "The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account.",
+      ].join(`
+`),
+      {
+        cause,
+        metaMessages: [
+          "This error could arise when the account does not have enough funds to:",
+          " - pay for the total gas fee,",
+          " - pay for the value to send.",
+          " ",
+          "The cost of the transaction is calculated as `gas * gas fee + value`, where:",
+          " - `gas` is the amount of gas needed for transaction to execute,",
+          " - `gas fee` is the gas fee,",
+          " - `value` is the amount of ether to send to the recipient.",
+        ],
+        name: "InsufficientFundsError",
+      },
+    );
   }
 }
 Object.defineProperty(InsufficientFundsError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /insufficient funds|exceeds transaction sender account balance/
+  value: /insufficient funds|exceeds transaction sender account balance/,
 });
 
 class IntrinsicGasTooHighError2 extends BaseError4 {
   constructor({ cause, gas } = {}) {
-    super(`The amount of gas ${gas ? `(${gas}) ` : ""}provided for the transaction exceeds the limit allowed for the block.`, {
-      cause,
-      name: "IntrinsicGasTooHighError"
-    });
+    super(
+      `The amount of gas ${gas ? `(${gas}) ` : ""}provided for the transaction exceeds the limit allowed for the block.`,
+      {
+        cause,
+        name: "IntrinsicGasTooHighError",
+      },
+    );
   }
 }
 Object.defineProperty(IntrinsicGasTooHighError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /intrinsic gas too high|gas limit reached/
+  value: /intrinsic gas too high|gas limit reached/,
 });
 
 class IntrinsicGasTooLowError2 extends BaseError4 {
   constructor({ cause, gas } = {}) {
-    super(`The amount of gas ${gas ? `(${gas}) ` : ""}provided for the transaction is too low.`, {
-      cause,
-      name: "IntrinsicGasTooLowError"
-    });
+    super(
+      `The amount of gas ${gas ? `(${gas}) ` : ""}provided for the transaction is too low.`,
+      {
+        cause,
+        name: "IntrinsicGasTooLowError",
+      },
+    );
   }
 }
 Object.defineProperty(IntrinsicGasTooLowError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /intrinsic gas too low/
+  value: /intrinsic gas too low/,
 });
 
 class TransactionTypeNotSupportedError2 extends BaseError4 {
   constructor({ cause }) {
     super("The transaction type is not supported for this chain.", {
       cause,
-      name: "TransactionTypeNotSupportedError"
+      name: "TransactionTypeNotSupportedError",
     });
   }
 }
@@ -18339,42 +21812,37 @@ Object.defineProperty(TransactionTypeNotSupportedError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /transaction type not valid/
+  value: /transaction type not valid/,
 });
 
 class TipAboveFeeCapError2 extends BaseError4 {
   constructor({ cause, maxPriorityFeePerGas, maxFeePerGas } = {}) {
-    super([
-      `The provided tip (\`maxPriorityFeePerGas\`${maxPriorityFeePerGas ? ` = ${formatGwei2(maxPriorityFeePerGas)} gwei` : ""}) cannot be higher than the fee cap (\`maxFeePerGas\`${maxFeePerGas ? ` = ${formatGwei2(maxFeePerGas)} gwei` : ""}).`
-    ].join(`
-`), {
-      cause,
-      name: "TipAboveFeeCapError"
-    });
+    super(
+      [
+        `The provided tip (\`maxPriorityFeePerGas\`${maxPriorityFeePerGas ? ` = ${formatGwei2(maxPriorityFeePerGas)} gwei` : ""}) cannot be higher than the fee cap (\`maxFeePerGas\`${maxFeePerGas ? ` = ${formatGwei2(maxFeePerGas)} gwei` : ""}).`,
+      ].join(`
+`),
+      {
+        cause,
+        name: "TipAboveFeeCapError",
+      },
+    );
   }
 }
 Object.defineProperty(TipAboveFeeCapError2, "nodeMessage", {
   enumerable: true,
   configurable: true,
   writable: true,
-  value: /max priority fee per gas higher than max fee per gas|tip higher than fee cap/
+  value:
+    /max priority fee per gas higher than max fee per gas|tip higher than fee cap/,
 });
-
-class UnknownNodeError2 extends BaseError4 {
-  constructor({ cause }) {
-    super(`An error occurred while executing: ${cause?.shortMessage}`, {
-      cause,
-      name: "UnknownNodeError"
-    });
-  }
-}
 function slice3(value2, start, end, { strict } = {}) {
   if (isHex3(value2, { strict: false }))
     return sliceHex3(value2, start, end, {
-      strict
+      strict,
     });
   return sliceBytes3(value2, start, end, {
-    strict
+    strict,
   });
 }
 function assertStartOffset2(value2, start) {
@@ -18382,30 +21850,32 @@ function assertStartOffset2(value2, start) {
     throw new SliceOffsetOutOfBoundsError3({
       offset: start,
       position: "start",
-      size: size3(value2)
+      size: size3(value2),
     });
 }
 function assertEndOffset2(value2, start, end) {
-  if (typeof start === "number" && typeof end === "number" && size3(value2) !== end - start) {
+  if (
+    typeof start === "number" &&
+    typeof end === "number" &&
+    size3(value2) !== end - start
+  ) {
     throw new SliceOffsetOutOfBoundsError3({
       offset: end,
       position: "end",
-      size: size3(value2)
+      size: size3(value2),
     });
   }
 }
 function sliceBytes3(value_, start, end, { strict } = {}) {
   assertStartOffset2(value_, start);
   const value2 = value_.slice(start, end);
-  if (strict)
-    assertEndOffset2(value2, start, end);
+  if (strict) assertEndOffset2(value2, start, end);
   return value2;
 }
 function sliceHex3(value_, start, end, { strict } = {}) {
   assertStartOffset2(value_, start);
   const value2 = `0x${value_.replace("0x", "").slice((start ?? 0) * 2, (end ?? value_.length) * 2)}`;
-  if (strict)
-    assertEndOffset2(value2, start, end);
+  if (strict) assertEndOffset2(value2, start, end);
   return value2;
 }
 function assertTransactionEIP7702(transaction) {
@@ -18414,10 +21884,8 @@ function assertTransactionEIP7702(transaction) {
     for (const authorization of authorizationList) {
       const { chainId } = authorization;
       const address = authorization.address;
-      if (!isAddress3(address))
-        throw new InvalidAddressError3({ address });
-      if (chainId < 0)
-        throw new InvalidChainIdError2({ chainId });
+      if (!isAddress3(address)) throw new InvalidAddressError3({ address });
+      if (chainId < 0) throw new InvalidChainIdError2({ chainId });
     }
   }
   assertTransactionEIP15592(transaction);
@@ -18425,8 +21893,7 @@ function assertTransactionEIP7702(transaction) {
 function assertTransactionEIP4844(transaction) {
   const { blobVersionedHashes } = transaction;
   if (blobVersionedHashes) {
-    if (blobVersionedHashes.length === 0)
-      throw new EmptyBlobError;
+    if (blobVersionedHashes.length === 0) throw new EmptyBlobError();
     for (const hash2 of blobVersionedHashes) {
       const size_ = size3(hash2);
       const version3 = hexToNumber2(slice3(hash2, 0, 1));
@@ -18435,7 +21902,7 @@ function assertTransactionEIP4844(transaction) {
       if (version3 !== versionedHashVersionKzg)
         throw new InvalidVersionedHashVersionError({
           hash: hash2,
-          version: version3
+          version: version3,
         });
     }
   }
@@ -18443,61 +21910,70 @@ function assertTransactionEIP4844(transaction) {
 }
 function assertTransactionEIP15592(transaction) {
   const { chainId, maxPriorityFeePerGas, maxFeePerGas, to } = transaction;
-  if (chainId <= 0)
-    throw new InvalidChainIdError2({ chainId });
-  if (to && !isAddress3(to))
-    throw new InvalidAddressError3({ address: to });
+  if (chainId <= 0) throw new InvalidChainIdError2({ chainId });
+  if (to && !isAddress3(to)) throw new InvalidAddressError3({ address: to });
   if (maxFeePerGas && maxFeePerGas > maxUint2562)
     throw new FeeCapTooHighError2({ maxFeePerGas });
-  if (maxPriorityFeePerGas && maxFeePerGas && maxPriorityFeePerGas > maxFeePerGas)
+  if (
+    maxPriorityFeePerGas &&
+    maxFeePerGas &&
+    maxPriorityFeePerGas > maxFeePerGas
+  )
     throw new TipAboveFeeCapError2({ maxFeePerGas, maxPriorityFeePerGas });
 }
 function assertTransactionEIP29302(transaction) {
-  const { chainId, maxPriorityFeePerGas, gasPrice, maxFeePerGas, to } = transaction;
-  if (chainId <= 0)
-    throw new InvalidChainIdError2({ chainId });
-  if (to && !isAddress3(to))
-    throw new InvalidAddressError3({ address: to });
+  const { chainId, maxPriorityFeePerGas, gasPrice, maxFeePerGas, to } =
+    transaction;
+  if (chainId <= 0) throw new InvalidChainIdError2({ chainId });
+  if (to && !isAddress3(to)) throw new InvalidAddressError3({ address: to });
   if (maxPriorityFeePerGas || maxFeePerGas)
-    throw new BaseError4("`maxFeePerGas`/`maxPriorityFeePerGas` is not a valid EIP-2930 Transaction attribute.");
+    throw new BaseError4(
+      "`maxFeePerGas`/`maxPriorityFeePerGas` is not a valid EIP-2930 Transaction attribute.",
+    );
   if (gasPrice && gasPrice > maxUint2562)
     throw new FeeCapTooHighError2({ maxFeePerGas: gasPrice });
 }
 function assertTransactionLegacy2(transaction) {
-  const { chainId, maxPriorityFeePerGas, gasPrice, maxFeePerGas, to } = transaction;
-  if (to && !isAddress3(to))
-    throw new InvalidAddressError3({ address: to });
+  const { chainId, maxPriorityFeePerGas, gasPrice, maxFeePerGas, to } =
+    transaction;
+  if (to && !isAddress3(to)) throw new InvalidAddressError3({ address: to });
   if (typeof chainId !== "undefined" && chainId <= 0)
     throw new InvalidChainIdError2({ chainId });
   if (maxPriorityFeePerGas || maxFeePerGas)
-    throw new BaseError4("`maxFeePerGas`/`maxPriorityFeePerGas` is not a valid Legacy Transaction attribute.");
+    throw new BaseError4(
+      "`maxFeePerGas`/`maxPriorityFeePerGas` is not a valid Legacy Transaction attribute.",
+    );
   if (gasPrice && gasPrice > maxUint2562)
     throw new FeeCapTooHighError2({ maxFeePerGas: gasPrice });
 }
 function getTransactionType2(transaction) {
-  if (transaction.type)
-    return transaction.type;
-  if (typeof transaction.authorizationList !== "undefined")
-    return "eip7702";
-  if (typeof transaction.blobs !== "undefined" || typeof transaction.blobVersionedHashes !== "undefined" || typeof transaction.maxFeePerBlobGas !== "undefined" || typeof transaction.sidecars !== "undefined")
+  if (transaction.type) return transaction.type;
+  if (typeof transaction.authorizationList !== "undefined") return "eip7702";
+  if (
+    typeof transaction.blobs !== "undefined" ||
+    typeof transaction.blobVersionedHashes !== "undefined" ||
+    typeof transaction.maxFeePerBlobGas !== "undefined" ||
+    typeof transaction.sidecars !== "undefined"
+  )
     return "eip4844";
-  if (typeof transaction.maxFeePerGas !== "undefined" || typeof transaction.maxPriorityFeePerGas !== "undefined") {
+  if (
+    typeof transaction.maxFeePerGas !== "undefined" ||
+    typeof transaction.maxPriorityFeePerGas !== "undefined"
+  ) {
     return "eip1559";
   }
   if (typeof transaction.gasPrice !== "undefined") {
-    if (typeof transaction.accessList !== "undefined")
-      return "eip2930";
+    if (typeof transaction.accessList !== "undefined") return "eip2930";
     return "legacy";
   }
   throw new InvalidSerializableTransactionError2({ transaction });
 }
 function serializeAccessList2(accessList) {
-  if (!accessList || accessList.length === 0)
-    return [];
+  if (!accessList || accessList.length === 0) return [];
   const serializedAccessList = [];
-  for (let i2 = 0;i2 < accessList.length; i2++) {
+  for (let i2 = 0; i2 < accessList.length; i2++) {
     const { address, storageKeys } = accessList[i2];
-    for (let j = 0;j < storageKeys.length; j++) {
+    for (let j = 0; j < storageKeys.length; j++) {
       if (storageKeys[j].length - 2 !== 64) {
         throw new InvalidStorageKeySizeError2({ storageKey: storageKeys[j] });
       }
@@ -18522,10 +21998,22 @@ function serializeTransaction2(transaction, signature) {
   return serializeTransactionLegacy(transaction, signature);
 }
 function serializeTransactionEIP7702(transaction, signature) {
-  const { authorizationList, chainId, gas, nonce, to, value: value2, maxFeePerGas, maxPriorityFeePerGas, accessList, data } = transaction;
+  const {
+    authorizationList,
+    chainId,
+    gas,
+    nonce,
+    to,
+    value: value2,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    accessList,
+    data,
+  } = transaction;
   assertTransactionEIP7702(transaction);
   const serializedAccessList = serializeAccessList2(accessList);
-  const serializedAuthorizationList = serializeAuthorizationList(authorizationList);
+  const serializedAuthorizationList =
+    serializeAuthorizationList(authorizationList);
   return concatHex3([
     "0x04",
     toRlp2([
@@ -18539,29 +22027,55 @@ function serializeTransactionEIP7702(transaction, signature) {
       data ?? "0x",
       serializedAccessList,
       serializedAuthorizationList,
-      ...toYParitySignatureArray(transaction, signature)
-    ])
+      ...toYParitySignatureArray(transaction, signature),
+    ]),
   ]);
 }
 function serializeTransactionEIP4844(transaction, signature) {
-  const { chainId, gas, nonce, to, value: value2, maxFeePerBlobGas, maxFeePerGas, maxPriorityFeePerGas, accessList, data } = transaction;
+  const {
+    chainId,
+    gas,
+    nonce,
+    to,
+    value: value2,
+    maxFeePerBlobGas,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    accessList,
+    data,
+  } = transaction;
   assertTransactionEIP4844(transaction);
   let blobVersionedHashes = transaction.blobVersionedHashes;
   let sidecars = transaction.sidecars;
-  if (transaction.blobs && (typeof blobVersionedHashes === "undefined" || typeof sidecars === "undefined")) {
-    const blobs2 = typeof transaction.blobs[0] === "string" ? transaction.blobs : transaction.blobs.map((x) => bytesToHex2(x));
+  if (
+    transaction.blobs &&
+    (typeof blobVersionedHashes === "undefined" ||
+      typeof sidecars === "undefined")
+  ) {
+    const blobs2 =
+      typeof transaction.blobs[0] === "string"
+        ? transaction.blobs
+        : transaction.blobs.map((x) => bytesToHex2(x));
     const kzg = transaction.kzg;
     const commitments2 = blobsToCommitments2({
       blobs: blobs2,
-      kzg
+      kzg,
     });
     if (typeof blobVersionedHashes === "undefined")
       blobVersionedHashes = commitmentsToVersionedHashes2({
-        commitments: commitments2
+        commitments: commitments2,
       });
     if (typeof sidecars === "undefined") {
-      const proofs2 = blobsToProofs2({ blobs: blobs2, commitments: commitments2, kzg });
-      sidecars = toBlobSidecars2({ blobs: blobs2, commitments: commitments2, proofs: proofs2 });
+      const proofs2 = blobsToProofs2({
+        blobs: blobs2,
+        commitments: commitments2,
+        kzg,
+      });
+      sidecars = toBlobSidecars2({
+        blobs: blobs2,
+        commitments: commitments2,
+        proofs: proofs2,
+      });
     }
   }
   const serializedAccessList = serializeAccessList2(accessList);
@@ -18577,13 +22091,13 @@ function serializeTransactionEIP4844(transaction, signature) {
     serializedAccessList,
     maxFeePerBlobGas ? numberToHex2(maxFeePerBlobGas) : "0x",
     blobVersionedHashes ?? [],
-    ...toYParitySignatureArray(transaction, signature)
+    ...toYParitySignatureArray(transaction, signature),
   ];
   const blobs = [];
   const commitments = [];
   const proofs = [];
   if (sidecars)
-    for (let i2 = 0;i2 < sidecars.length; i2++) {
+    for (let i2 = 0; i2 < sidecars.length; i2++) {
       const { blob, commitment, proof } = sidecars[i2];
       blobs.push(blob);
       commitments.push(commitment);
@@ -18591,11 +22105,23 @@ function serializeTransactionEIP4844(transaction, signature) {
     }
   return concatHex3([
     "0x03",
-    sidecars ? toRlp2([serializedTransaction, blobs, commitments, proofs]) : toRlp2(serializedTransaction)
+    sidecars
+      ? toRlp2([serializedTransaction, blobs, commitments, proofs])
+      : toRlp2(serializedTransaction),
   ]);
 }
 function serializeTransactionEIP1559(transaction, signature) {
-  const { chainId, gas, nonce, to, value: value2, maxFeePerGas, maxPriorityFeePerGas, accessList, data } = transaction;
+  const {
+    chainId,
+    gas,
+    nonce,
+    to,
+    value: value2,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    accessList,
+    data,
+  } = transaction;
   assertTransactionEIP15592(transaction);
   const serializedAccessList = serializeAccessList2(accessList);
   const serializedTransaction = [
@@ -18608,15 +22134,21 @@ function serializeTransactionEIP1559(transaction, signature) {
     value2 ? numberToHex2(value2) : "0x",
     data ?? "0x",
     serializedAccessList,
-    ...toYParitySignatureArray(transaction, signature)
+    ...toYParitySignatureArray(transaction, signature),
   ];
-  return concatHex3([
-    "0x02",
-    toRlp2(serializedTransaction)
-  ]);
+  return concatHex3(["0x02", toRlp2(serializedTransaction)]);
 }
 function serializeTransactionEIP2930(transaction, signature) {
-  const { chainId, gas, data, nonce, to, value: value2, accessList, gasPrice } = transaction;
+  const {
+    chainId,
+    gas,
+    data,
+    nonce,
+    to,
+    value: value2,
+    accessList,
+    gasPrice,
+  } = transaction;
   assertTransactionEIP29302(transaction);
   const serializedAccessList = serializeAccessList2(accessList);
   const serializedTransaction = [
@@ -18628,15 +22160,20 @@ function serializeTransactionEIP2930(transaction, signature) {
     value2 ? numberToHex2(value2) : "0x",
     data ?? "0x",
     serializedAccessList,
-    ...toYParitySignatureArray(transaction, signature)
+    ...toYParitySignatureArray(transaction, signature),
   ];
-  return concatHex3([
-    "0x01",
-    toRlp2(serializedTransaction)
-  ]);
+  return concatHex3(["0x01", toRlp2(serializedTransaction)]);
 }
 function serializeTransactionLegacy(transaction, signature) {
-  const { chainId = 0, gas, data, nonce, to, value: value2, gasPrice } = transaction;
+  const {
+    chainId = 0,
+    gas,
+    data,
+    nonce,
+    to,
+    value: value2,
+    gasPrice,
+  } = transaction;
   assertTransactionLegacy2(transaction);
   let serializedTransaction = [
     nonce ? numberToHex2(nonce) : "0x",
@@ -18644,14 +22181,13 @@ function serializeTransactionLegacy(transaction, signature) {
     gas ? numberToHex2(gas) : "0x",
     to ?? "0x",
     value2 ? numberToHex2(value2) : "0x",
-    data ?? "0x"
+    data ?? "0x",
   ];
   if (signature) {
     const v = (() => {
       if (signature.v >= 35n) {
         const inferredChainId = (signature.v - 35n) / 2n;
-        if (inferredChainId > 0)
-          return signature.v;
+        if (inferredChainId > 0) return signature.v;
         return 27n + (signature.v === 35n ? 0n : 1n);
       }
       if (chainId > 0)
@@ -18667,14 +22203,14 @@ function serializeTransactionLegacy(transaction, signature) {
       ...serializedTransaction,
       numberToHex2(v),
       r === "0x00" ? "0x" : r,
-      s === "0x00" ? "0x" : s
+      s === "0x00" ? "0x" : s,
     ];
   } else if (chainId > 0) {
     serializedTransaction = [
       ...serializedTransaction,
       numberToHex2(chainId),
       "0x",
-      "0x"
+      "0x",
     ];
   }
   return toRlp2(serializedTransaction);
@@ -18682,36 +22218,38 @@ function serializeTransactionLegacy(transaction, signature) {
 function toYParitySignatureArray(transaction, signature_) {
   const signature = signature_ ?? transaction;
   const { v, yParity } = signature;
-  if (typeof signature.r === "undefined")
-    return [];
-  if (typeof signature.s === "undefined")
-    return [];
-  if (typeof v === "undefined" && typeof yParity === "undefined")
-    return [];
+  if (typeof signature.r === "undefined") return [];
+  if (typeof signature.s === "undefined") return [];
+  if (typeof v === "undefined" && typeof yParity === "undefined") return [];
   const r = trim2(signature.r);
   const s = trim2(signature.s);
   const yParity_ = (() => {
-    if (typeof yParity === "number")
-      return yParity ? numberToHex2(1) : "0x";
-    if (v === 0n)
-      return "0x";
-    if (v === 1n)
-      return numberToHex2(1);
+    if (typeof yParity === "number") return yParity ? numberToHex2(1) : "0x";
+    if (v === 0n) return "0x";
+    if (v === 1n) return numberToHex2(1);
     return v === 27n ? "0x" : numberToHex2(1);
   })();
   return [yParity_, r === "0x00" ? "0x" : r, s === "0x00" ? "0x" : s];
 }
 function serializeTransaction3(transaction, signature) {
-  if (isDeposit(transaction))
-    return serializeTransactionDeposit(transaction);
+  if (isDeposit(transaction)) return serializeTransactionDeposit(transaction);
   return serializeTransaction2(transaction, signature);
 }
 var serializers = {
-  transaction: serializeTransaction3
+  transaction: serializeTransaction3,
 };
 function serializeTransactionDeposit(transaction) {
   assertTransactionDeposit(transaction);
-  const { sourceHash, data, from: from2, gas, isSystemTx, mint, to, value: value2 } = transaction;
+  const {
+    sourceHash,
+    data,
+    from: from2,
+    gas,
+    isSystemTx,
+    mint,
+    to,
+    value: value2,
+  } = transaction;
   const serializedTransaction = [
     sourceHash,
     from2,
@@ -18720,32 +22258,26 @@ function serializeTransactionDeposit(transaction) {
     value2 ? toHex2(value2) : "0x",
     gas ? toHex2(gas) : "0x",
     isSystemTx ? "0x1" : "0x",
-    data ?? "0x"
+    data ?? "0x",
   ];
-  return concatHex3([
-    "0x7e",
-    toRlp2(serializedTransaction)
-  ]);
+  return concatHex3(["0x7e", toRlp2(serializedTransaction)]);
 }
 function isDeposit(transaction) {
-  if (transaction.type === "deposit")
-    return true;
-  if (typeof transaction.sourceHash !== "undefined")
-    return true;
+  if (transaction.type === "deposit") return true;
+  if (typeof transaction.sourceHash !== "undefined") return true;
   return false;
 }
 function assertTransactionDeposit(transaction) {
   const { from: from2, to } = transaction;
   if (from2 && !isAddress3(from2))
     throw new InvalidAddressError3({ address: from2 });
-  if (to && !isAddress3(to))
-    throw new InvalidAddressError3({ address: to });
+  if (to && !isAddress3(to)) throw new InvalidAddressError3({ address: to });
 }
 var chainConfig = {
   blockTime: 2000,
   contracts,
   formatters,
-  serializers
+  serializers,
 };
 var sourceId = 1;
 var base = /* @__PURE__ */ defineChain2({
@@ -18755,55 +22287,55 @@ var base = /* @__PURE__ */ defineChain2({
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {
     default: {
-      http: ["https://mainnet.base.org"]
-    }
+      http: ["https://mainnet.base.org"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Basescan",
       url: "https://basescan.org",
-      apiUrl: "https://api.basescan.org/api"
-    }
+      apiUrl: "https://api.basescan.org/api",
+    },
   },
   contracts: {
     ...chainConfig.contracts,
     disputeGameFactory: {
       [sourceId]: {
-        address: "0x43edB88C4B80fDD2AdFF2412A7BebF9dF42cB40e"
-      }
+        address: "0x43edB88C4B80fDD2AdFF2412A7BebF9dF42cB40e",
+      },
     },
     l2OutputOracle: {
       [sourceId]: {
-        address: "0x56315b90c40730925ec5485cf004d835058518A0"
-      }
+        address: "0x56315b90c40730925ec5485cf004d835058518A0",
+      },
     },
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 5022
+      blockCreated: 5022,
     },
     portal: {
       [sourceId]: {
         address: "0x49048044D57e1C92A77f79988d21Fa8fAF74E97e",
-        blockCreated: 17482143
-      }
+        blockCreated: 17482143,
+      },
     },
     l1StandardBridge: {
       [sourceId]: {
         address: "0x3154Cf16ccdb4C6d922629664174b904d80F2C35",
-        blockCreated: 17482143
-      }
-    }
+        blockCreated: 17482143,
+      },
+    },
   },
-  sourceId
+  sourceId,
 });
 var basePreconf = /* @__PURE__ */ defineChain2({
   ...base,
   experimental_preconfirmationTime: 200,
   rpcUrls: {
     default: {
-      http: ["https://mainnet-preconf.base.org"]
-    }
-  }
+      http: ["https://mainnet-preconf.base.org"],
+    },
+  },
 });
 var sourceId2 = 11155111;
 var baseSepolia = /* @__PURE__ */ defineChain2({
@@ -18814,447 +22346,56 @@ var baseSepolia = /* @__PURE__ */ defineChain2({
   nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {
     default: {
-      http: ["https://sepolia.base.org"]
-    }
+      http: ["https://sepolia.base.org"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Basescan",
       url: "https://sepolia.basescan.org",
-      apiUrl: "https://api-sepolia.basescan.org/api"
-    }
+      apiUrl: "https://api-sepolia.basescan.org/api",
+    },
   },
   contracts: {
     ...chainConfig.contracts,
     disputeGameFactory: {
       [sourceId2]: {
-        address: "0xd6E6dBf4F7EA0ac412fD8b65ED297e64BB7a06E1"
-      }
+        address: "0xd6E6dBf4F7EA0ac412fD8b65ED297e64BB7a06E1",
+      },
     },
     l2OutputOracle: {
       [sourceId2]: {
-        address: "0x84457ca9D0163FbC4bbfe4Dfbb20ba46e48DF254"
-      }
+        address: "0x84457ca9D0163FbC4bbfe4Dfbb20ba46e48DF254",
+      },
     },
     portal: {
       [sourceId2]: {
         address: "0x49f53e41452c74589e85ca1677426ba426459e85",
-        blockCreated: 4446677
-      }
+        blockCreated: 4446677,
+      },
     },
     l1StandardBridge: {
       [sourceId2]: {
         address: "0xfd0Bf71F60660E2f608ed56e1659C450eB113120",
-        blockCreated: 4446677
-      }
+        blockCreated: 4446677,
+      },
     },
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 1059647
-    }
+      blockCreated: 1059647,
+    },
   },
   testnet: true,
-  sourceId: sourceId2
+  sourceId: sourceId2,
 });
 var baseSepoliaPreconf = /* @__PURE__ */ defineChain2({
   ...baseSepolia,
   experimental_preconfirmationTime: 200,
   rpcUrls: {
     default: {
-      http: ["https://sepolia-preconf.base.org"]
-    }
-  }
-});
-var sourceId3 = 1;
-var codex = /* @__PURE__ */ defineChain2({
-  ...chainConfig,
-  id: 81224,
-  name: "Codex",
-  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-  rpcUrls: {
-    default: {
-      http: ["https://rpc.codex.xyz"]
-    }
-  },
-  blockExplorers: {
-    default: {
-      name: "Codex Explorer",
-      url: "https://explorer.codex.xyz",
-      apiUrl: "https://explorer.codex.xyz/api"
-    }
-  },
-  contracts: {
-    ...chainConfig.contracts,
-    disputeGameFactory: {
-      [sourceId3]: {
-        address: "0x6A3855dc26e2beA8Ac73f82Cda79f3808B6C6F6C"
-      }
+      http: ["https://sepolia-preconf.base.org"],
     },
-    portal: {
-      [sourceId3]: {
-        address: "0x52759C07A759c81BAab28AE1BE5A19e6450959bD"
-      }
-    },
-    l1StandardBridge: {
-      [sourceId3]: {
-        address: "0xa6b1A05a592719B0C8a70c69eac114C48410aDE4"
-      }
-    },
-    multicall3: {
-      address: "0xca11bde05977b3631167028862be2a173976ca11"
-    }
   },
-  sourceId: sourceId3
-});
-function parseAccount(account) {
-  if (typeof account === "string")
-    return { address: account, type: "json-rpc" };
-  return account;
-}
-
-class AccountNotFoundError extends BaseError4 {
-  constructor({ docsPath: docsPath2 } = {}) {
-    super([
-      "Could not find an Account to execute with this Action.",
-      "Please provide an Account with the `account` argument on the Action, or by supplying an `account` to the Client."
-    ].join(`
-`), {
-      docsPath: docsPath2,
-      docsSlug: "account",
-      name: "AccountNotFoundError"
-    });
-  }
-}
-function prettyStateMapping(stateMapping) {
-  return stateMapping.reduce((pretty, { slot, value: value2 }) => {
-    return `${pretty}        ${slot}: ${value2}
-`;
-  }, "");
-}
-function prettyStateOverride(stateOverride) {
-  return stateOverride.reduce((pretty, { address, ...state }) => {
-    let val = `${pretty}    ${address}:
-`;
-    if (state.nonce)
-      val += `      nonce: ${state.nonce}
-`;
-    if (state.balance)
-      val += `      balance: ${state.balance}
-`;
-    if (state.code)
-      val += `      code: ${state.code}
-`;
-    if (state.state) {
-      val += `      state:
-`;
-      val += prettyStateMapping(state.state);
-    }
-    if (state.stateDiff) {
-      val += `      stateDiff:
-`;
-      val += prettyStateMapping(state.stateDiff);
-    }
-    return val;
-  }, `  State Override:
-`).slice(0, -1);
-}
-
-class CallExecutionError2 extends BaseError4 {
-  constructor(cause, { account: account_, docsPath: docsPath2, chain, data, gas, gasPrice, maxFeePerGas, maxPriorityFeePerGas, nonce, to, value: value2, stateOverride }) {
-    const account = account_ ? parseAccount(account_) : undefined;
-    let prettyArgs = prettyPrint({
-      from: account?.address,
-      to,
-      value: typeof value2 !== "undefined" && `${formatEther2(value2)} ${chain?.nativeCurrency?.symbol || "ETH"}`,
-      data,
-      gas,
-      gasPrice: typeof gasPrice !== "undefined" && `${formatGwei2(gasPrice)} gwei`,
-      maxFeePerGas: typeof maxFeePerGas !== "undefined" && `${formatGwei2(maxFeePerGas)} gwei`,
-      maxPriorityFeePerGas: typeof maxPriorityFeePerGas !== "undefined" && `${formatGwei2(maxPriorityFeePerGas)} gwei`,
-      nonce
-    });
-    if (stateOverride) {
-      prettyArgs += `
-${prettyStateOverride(stateOverride)}`;
-    }
-    super(cause.shortMessage, {
-      cause,
-      docsPath: docsPath2,
-      metaMessages: [
-        ...cause.metaMessages ? [...cause.metaMessages, " "] : [],
-        "Raw Call Arguments:",
-        prettyArgs
-      ].filter(Boolean),
-      name: "CallExecutionError"
-    });
-    Object.defineProperty(this, "cause", {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value: undefined
-    });
-    this.cause = cause;
-  }
-}
-function getNodeError(err, args) {
-  const message = (err.details || "").toLowerCase();
-  const executionRevertedError = err instanceof BaseError4 ? err.walk((e) => e?.code === ExecutionRevertedError2.code) : err;
-  if (executionRevertedError instanceof BaseError4)
-    return new ExecutionRevertedError2({
-      cause: err,
-      message: executionRevertedError.details
-    });
-  if (ExecutionRevertedError2.nodeMessage.test(message))
-    return new ExecutionRevertedError2({
-      cause: err,
-      message: err.details
-    });
-  if (FeeCapTooHighError2.nodeMessage.test(message))
-    return new FeeCapTooHighError2({
-      cause: err,
-      maxFeePerGas: args?.maxFeePerGas
-    });
-  if (FeeCapTooLowError2.nodeMessage.test(message))
-    return new FeeCapTooLowError2({
-      cause: err,
-      maxFeePerGas: args?.maxFeePerGas
-    });
-  if (NonceTooHighError2.nodeMessage.test(message))
-    return new NonceTooHighError2({ cause: err, nonce: args?.nonce });
-  if (NonceTooLowError2.nodeMessage.test(message))
-    return new NonceTooLowError2({ cause: err, nonce: args?.nonce });
-  if (NonceMaxValueError2.nodeMessage.test(message))
-    return new NonceMaxValueError2({ cause: err, nonce: args?.nonce });
-  if (InsufficientFundsError2.nodeMessage.test(message))
-    return new InsufficientFundsError2({ cause: err });
-  if (IntrinsicGasTooHighError2.nodeMessage.test(message))
-    return new IntrinsicGasTooHighError2({ cause: err, gas: args?.gas });
-  if (IntrinsicGasTooLowError2.nodeMessage.test(message))
-    return new IntrinsicGasTooLowError2({ cause: err, gas: args?.gas });
-  if (TransactionTypeNotSupportedError2.nodeMessage.test(message))
-    return new TransactionTypeNotSupportedError2({ cause: err });
-  if (TipAboveFeeCapError2.nodeMessage.test(message))
-    return new TipAboveFeeCapError2({
-      cause: err,
-      maxFeePerGas: args?.maxFeePerGas,
-      maxPriorityFeePerGas: args?.maxPriorityFeePerGas
-    });
-  return new UnknownNodeError2({
-    cause: err
-  });
-}
-function getCallError(err, { docsPath: docsPath2, ...args }) {
-  const cause = (() => {
-    const cause2 = getNodeError(err, args);
-    if (cause2 instanceof UnknownNodeError2)
-      return err;
-    return cause2;
-  })();
-  return new CallExecutionError2(cause, {
-    docsPath: docsPath2,
-    ...args
-  });
-}
-function extract(value_, { format }) {
-  if (!format)
-    return {};
-  const value2 = {};
-  function extract_(formatted2) {
-    const keys = Object.keys(formatted2);
-    for (const key of keys) {
-      if (key in value_)
-        value2[key] = value_[key];
-      if (formatted2[key] && typeof formatted2[key] === "object" && !Array.isArray(formatted2[key]))
-        extract_(formatted2[key]);
-    }
-  }
-  const formatted = format(value_ || {});
-  extract_(formatted);
-  return value2;
-}
-var rpcTransactionType2 = {
-  legacy: "0x0",
-  eip2930: "0x1",
-  eip1559: "0x2",
-  eip4844: "0x3",
-  eip7702: "0x4"
-};
-function formatTransactionRequest2(request, _) {
-  const rpcRequest = {};
-  if (typeof request.authorizationList !== "undefined")
-    rpcRequest.authorizationList = formatAuthorizationList2(request.authorizationList);
-  if (typeof request.accessList !== "undefined")
-    rpcRequest.accessList = request.accessList;
-  if (typeof request.blobVersionedHashes !== "undefined")
-    rpcRequest.blobVersionedHashes = request.blobVersionedHashes;
-  if (typeof request.blobs !== "undefined") {
-    if (typeof request.blobs[0] !== "string")
-      rpcRequest.blobs = request.blobs.map((x) => bytesToHex2(x));
-    else
-      rpcRequest.blobs = request.blobs;
-  }
-  if (typeof request.data !== "undefined")
-    rpcRequest.data = request.data;
-  if (request.account)
-    rpcRequest.from = request.account.address;
-  if (typeof request.from !== "undefined")
-    rpcRequest.from = request.from;
-  if (typeof request.gas !== "undefined")
-    rpcRequest.gas = numberToHex2(request.gas);
-  if (typeof request.gasPrice !== "undefined")
-    rpcRequest.gasPrice = numberToHex2(request.gasPrice);
-  if (typeof request.maxFeePerBlobGas !== "undefined")
-    rpcRequest.maxFeePerBlobGas = numberToHex2(request.maxFeePerBlobGas);
-  if (typeof request.maxFeePerGas !== "undefined")
-    rpcRequest.maxFeePerGas = numberToHex2(request.maxFeePerGas);
-  if (typeof request.maxPriorityFeePerGas !== "undefined")
-    rpcRequest.maxPriorityFeePerGas = numberToHex2(request.maxPriorityFeePerGas);
-  if (typeof request.nonce !== "undefined")
-    rpcRequest.nonce = numberToHex2(request.nonce);
-  if (typeof request.to !== "undefined")
-    rpcRequest.to = request.to;
-  if (typeof request.type !== "undefined")
-    rpcRequest.type = rpcTransactionType2[request.type];
-  if (typeof request.value !== "undefined")
-    rpcRequest.value = numberToHex2(request.value);
-  return rpcRequest;
-}
-function formatAuthorizationList2(authorizationList) {
-  return authorizationList.map((authorization) => ({
-    address: authorization.address,
-    r: authorization.r ? numberToHex2(BigInt(authorization.r)) : authorization.r,
-    s: authorization.s ? numberToHex2(BigInt(authorization.s)) : authorization.s,
-    chainId: numberToHex2(authorization.chainId),
-    nonce: numberToHex2(authorization.nonce),
-    ...typeof authorization.yParity !== "undefined" ? { yParity: numberToHex2(authorization.yParity) } : {},
-    ...typeof authorization.v !== "undefined" && typeof authorization.yParity === "undefined" ? { v: numberToHex2(authorization.v) } : {}
-  }));
-}
-function assertRequest2(args) {
-  const { account: account_, maxFeePerGas, maxPriorityFeePerGas, to } = args;
-  const account = account_ ? parseAccount(account_) : undefined;
-  if (account && !isAddress3(account.address))
-    throw new InvalidAddressError3({ address: account.address });
-  if (to && !isAddress3(to))
-    throw new InvalidAddressError3({ address: to });
-  if (maxFeePerGas && maxFeePerGas > maxUint2562)
-    throw new FeeCapTooHighError2({ maxFeePerGas });
-  if (maxPriorityFeePerGas && maxFeePerGas && maxPriorityFeePerGas > maxFeePerGas)
-    throw new TipAboveFeeCapError2({ maxFeePerGas, maxPriorityFeePerGas });
-}
-async function estimateGas(client, args) {
-  const { account: account_ = client.account } = args;
-  if (!account_)
-    throw new AccountNotFoundError;
-  const account = parseAccount(account_);
-  try {
-    const { accessList, blockNumber, blockTag, data, gas, gasPrice, maxFeePerGas, maxPriorityFeePerGas, nonce, to, value: value2, ...rest } = args;
-    const blockNumberHex = typeof blockNumber === "bigint" ? numberToHex2(blockNumber) : undefined;
-    const block = blockNumberHex || blockTag;
-    assertRequest2(args);
-    const chainFormat = client.chain?.formatters?.transactionRequest?.format;
-    const format = chainFormat || formatTransactionRequest2;
-    const request = format({
-      ...extract(rest, { format: chainFormat }),
-      account,
-      accessList,
-      data,
-      gas,
-      gasPrice,
-      maxFeePerGas,
-      maxPriorityFeePerGas,
-      nonce,
-      to,
-      value: value2
-    }, "estimateGas");
-    const { baseFeePerGas, gasLimit, priorityFeePerGas } = await client.request({
-      method: "linea_estimateGas",
-      params: block ? [request, block] : [request]
-    });
-    return {
-      baseFeePerGas: BigInt(baseFeePerGas),
-      gasLimit: BigInt(gasLimit),
-      priorityFeePerGas: BigInt(priorityFeePerGas)
-    };
-  } catch (err) {
-    throw getCallError(err, {
-      ...args,
-      account,
-      chain: client.chain
-    });
-  }
-}
-var chainConfig2 = {
-  fees: {
-    estimateFeesPerGas,
-    async maxPriorityFeePerGas({ block, client, request }) {
-      const response = await estimateFeesPerGas({
-        block,
-        client,
-        multiply: (x) => x,
-        request,
-        type: "eip1559"
-      });
-      if (!response?.maxPriorityFeePerGas)
-        return null;
-      return response.maxPriorityFeePerGas;
-    }
-  }
-};
-async function estimateFeesPerGas({ client, multiply, request, type }) {
-  try {
-    const response = await estimateGas(client, {
-      ...request,
-      account: request?.account
-    });
-    const { priorityFeePerGas: maxPriorityFeePerGas } = response;
-    const baseFeePerGas = multiply(BigInt(response.baseFeePerGas));
-    const maxFeePerGas = baseFeePerGas + maxPriorityFeePerGas;
-    if (type === "legacy")
-      return { gasPrice: maxFeePerGas };
-    return {
-      maxFeePerGas,
-      maxPriorityFeePerGas
-    };
-  } catch {
-    return null;
-  }
-}
-var linea = /* @__PURE__ */ defineChain2({
-  ...chainConfig2,
-  id: 59144,
-  name: "Linea Mainnet",
-  blockTime: 2000,
-  nativeCurrency: { name: "Linea Ether", symbol: "ETH", decimals: 18 },
-  rpcUrls: {
-    default: {
-      http: ["https://rpc.linea.build"],
-      webSocket: ["wss://rpc.linea.build"]
-    }
-  },
-  blockExplorers: {
-    default: {
-      name: "Etherscan",
-      url: "https://lineascan.build",
-      apiUrl: "https://api.lineascan.build/api"
-    }
-  },
-  contracts: {
-    multicall3: {
-      address: "0xcA11bde05977b3631167028862bE2a173976CA11",
-      blockCreated: 42
-    },
-    ensRegistry: {
-      address: "0x50130b669B28C339991d8676FA73CF122a121267",
-      blockCreated: 6682888
-    },
-    ensUniversalResolver: {
-      address: "0x4D41762915F83c76EcaF6776d9b08076aA32b492",
-      blockCreated: 22222151
-    }
-  },
-  ensTlds: [".linea.eth"],
-  testnet: false
 });
 var mainnet = /* @__PURE__ */ defineChain2({
   id: 1,
@@ -19263,28 +22404,28 @@ var mainnet = /* @__PURE__ */ defineChain2({
   blockTime: 12000,
   rpcUrls: {
     default: {
-      http: ["https://eth.merkle.io"]
-    }
+      http: ["https://eth.merkle.io"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Etherscan",
       url: "https://etherscan.io",
-      apiUrl: "https://api.etherscan.io/api"
-    }
+      apiUrl: "https://api.etherscan.io/api",
+    },
   },
   contracts: {
     ensUniversalResolver: {
       address: "0xeeeeeeee14d718c2b47d9923deab1335e144eeee",
-      blockCreated: 23085558
+      blockCreated: 23085558,
     },
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 14353601
-    }
-  }
+      blockCreated: 14353601,
+    },
+  },
 });
-var sourceId4 = 1;
+var sourceId3 = 1;
 var optimism = /* @__PURE__ */ defineChain2({
   ...chainConfig,
   id: 10,
@@ -19292,46 +22433,46 @@ var optimism = /* @__PURE__ */ defineChain2({
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {
     default: {
-      http: ["https://mainnet.optimism.io"]
-    }
+      http: ["https://mainnet.optimism.io"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Optimism Explorer",
       url: "https://optimistic.etherscan.io",
-      apiUrl: "https://api-optimistic.etherscan.io/api"
-    }
+      apiUrl: "https://api-optimistic.etherscan.io/api",
+    },
   },
   contracts: {
     ...chainConfig.contracts,
     disputeGameFactory: {
-      [sourceId4]: {
-        address: "0xe5965Ab5962eDc7477C8520243A95517CD252fA9"
-      }
+      [sourceId3]: {
+        address: "0xe5965Ab5962eDc7477C8520243A95517CD252fA9",
+      },
     },
     l2OutputOracle: {
-      [sourceId4]: {
-        address: "0xdfe97868233d1aa22e815a266982f2cf17685a27"
-      }
+      [sourceId3]: {
+        address: "0xdfe97868233d1aa22e815a266982f2cf17685a27",
+      },
     },
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 4286263
+      blockCreated: 4286263,
     },
     portal: {
-      [sourceId4]: {
-        address: "0xbEb5Fc579115071764c7423A4f12eDde41f106Ed"
-      }
+      [sourceId3]: {
+        address: "0xbEb5Fc579115071764c7423A4f12eDde41f106Ed",
+      },
     },
     l1StandardBridge: {
-      [sourceId4]: {
-        address: "0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1"
-      }
-    }
+      [sourceId3]: {
+        address: "0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1",
+      },
+    },
   },
-  sourceId: sourceId4
+  sourceId: sourceId3,
 });
-var sourceId5 = 11155111;
+var sourceId4 = 11155111;
 var optimismSepolia = /* @__PURE__ */ defineChain2({
   ...chainConfig,
   id: 11155420,
@@ -19339,45 +22480,45 @@ var optimismSepolia = /* @__PURE__ */ defineChain2({
   nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {
     default: {
-      http: ["https://sepolia.optimism.io"]
-    }
+      http: ["https://sepolia.optimism.io"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Blockscout",
       url: "https://optimism-sepolia.blockscout.com",
-      apiUrl: "https://optimism-sepolia.blockscout.com/api"
-    }
+      apiUrl: "https://optimism-sepolia.blockscout.com/api",
+    },
   },
   contracts: {
     ...chainConfig.contracts,
     disputeGameFactory: {
-      [sourceId5]: {
-        address: "0x05F9613aDB30026FFd634f38e5C4dFd30a197Fa1"
-      }
+      [sourceId4]: {
+        address: "0x05F9613aDB30026FFd634f38e5C4dFd30a197Fa1",
+      },
     },
     l2OutputOracle: {
-      [sourceId5]: {
-        address: "0x90E9c4f8a994a250F6aEfd61CAFb4F2e895D458F"
-      }
+      [sourceId4]: {
+        address: "0x90E9c4f8a994a250F6aEfd61CAFb4F2e895D458F",
+      },
     },
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 1620204
+      blockCreated: 1620204,
     },
     portal: {
-      [sourceId5]: {
-        address: "0x16Fc5058F25648194471939df75CF27A2fdC48BC"
-      }
+      [sourceId4]: {
+        address: "0x16Fc5058F25648194471939df75CF27A2fdC48BC",
+      },
     },
     l1StandardBridge: {
-      [sourceId5]: {
-        address: "0xFBb0621E0B23b5478B630BD55a5f21f67730B0F1"
-      }
-    }
+      [sourceId4]: {
+        address: "0xFBb0621E0B23b5478B630BD55a5f21f67730B0F1",
+      },
+    },
   },
   testnet: true,
-  sourceId: sourceId5
+  sourceId: sourceId4,
 });
 var polygon = /* @__PURE__ */ defineChain2({
   id: 137,
@@ -19386,22 +22527,22 @@ var polygon = /* @__PURE__ */ defineChain2({
   nativeCurrency: { name: "POL", symbol: "POL", decimals: 18 },
   rpcUrls: {
     default: {
-      http: ["https://polygon.drpc.org"]
-    }
+      http: ["https://polygon.drpc.org"],
+    },
   },
   blockExplorers: {
     default: {
       name: "PolygonScan",
       url: "https://polygonscan.com",
-      apiUrl: "https://api.etherscan.io/v2/api"
-    }
+      apiUrl: "https://api.etherscan.io/v2/api",
+    },
   },
   contracts: {
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 25770160
-    }
-  }
+      blockCreated: 25770160,
+    },
+  },
 });
 var polygonAmoy = /* @__PURE__ */ defineChain2({
   id: 80002,
@@ -19409,23 +22550,23 @@ var polygonAmoy = /* @__PURE__ */ defineChain2({
   nativeCurrency: { name: "POL", symbol: "POL", decimals: 18 },
   rpcUrls: {
     default: {
-      http: ["https://rpc-amoy.polygon.technology"]
-    }
+      http: ["https://rpc-amoy.polygon.technology"],
+    },
   },
   blockExplorers: {
     default: {
       name: "PolygonScan",
       url: "https://amoy.polygonscan.com",
-      apiUrl: "https://api.etherscan.io/v2/api"
-    }
+      apiUrl: "https://api.etherscan.io/v2/api",
+    },
   },
   contracts: {
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 3127388
-    }
+      blockCreated: 3127388,
+    },
   },
-  testnet: true
+  testnet: true,
 });
 var sepolia = /* @__PURE__ */ defineChain2({
   id: 11155111,
@@ -19433,55 +22574,29 @@ var sepolia = /* @__PURE__ */ defineChain2({
   nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {
     default: {
-      http: ["https://11155111.rpc.thirdweb.com"]
-    }
+      http: ["https://11155111.rpc.thirdweb.com"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Etherscan",
       url: "https://sepolia.etherscan.io",
-      apiUrl: "https://api-sepolia.etherscan.io/api"
-    }
+      apiUrl: "https://api-sepolia.etherscan.io/api",
+    },
   },
   contracts: {
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 751532
+      blockCreated: 751532,
     },
     ensUniversalResolver: {
       address: "0xeeeeeeee14d718c2b47d9923deab1335e144eeee",
-      blockCreated: 8928790
-    }
+      blockCreated: 8928790,
+    },
   },
-  testnet: true
+  testnet: true,
 });
-var sonic = /* @__PURE__ */ defineChain2({
-  id: 146,
-  name: "Sonic",
-  blockTime: 630,
-  nativeCurrency: {
-    decimals: 18,
-    name: "Sonic",
-    symbol: "S"
-  },
-  rpcUrls: {
-    default: { http: ["https://rpc.soniclabs.com"] }
-  },
-  blockExplorers: {
-    default: {
-      name: "Sonic Explorer",
-      url: "https://sonicscan.org"
-    }
-  },
-  contracts: {
-    multicall3: {
-      address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 60
-    }
-  },
-  testnet: false
-});
-var sourceId6 = 1;
+var sourceId5 = 1;
 var unichain = /* @__PURE__ */ defineChain2({
   ...chainConfig,
   id: 130,
@@ -19490,41 +22605,41 @@ var unichain = /* @__PURE__ */ defineChain2({
   blockTime: 1000,
   rpcUrls: {
     default: {
-      http: ["https://mainnet.unichain.org/"]
-    }
+      http: ["https://mainnet.unichain.org/"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Uniscan",
       url: "https://uniscan.xyz",
-      apiUrl: "https://api.uniscan.xyz/api"
-    }
+      apiUrl: "https://api.uniscan.xyz/api",
+    },
   },
   contracts: {
     ...chainConfig.contracts,
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 0
+      blockCreated: 0,
     },
     disputeGameFactory: {
-      [sourceId6]: {
-        address: "0x2F12d621a16e2d3285929C9996f478508951dFe4"
-      }
+      [sourceId5]: {
+        address: "0x2F12d621a16e2d3285929C9996f478508951dFe4",
+      },
     },
     portal: {
-      [sourceId6]: {
-        address: "0x0bd48f6B86a26D3a217d0Fa6FfE2B491B956A7a2"
-      }
+      [sourceId5]: {
+        address: "0x0bd48f6B86a26D3a217d0Fa6FfE2B491B956A7a2",
+      },
     },
     l1StandardBridge: {
-      [sourceId6]: {
-        address: "0x81014F44b0a345033bB2b3B21C7a1A308B35fEeA"
-      }
-    }
+      [sourceId5]: {
+        address: "0x81014F44b0a345033bB2b3B21C7a1A308B35fEeA",
+      },
+    },
   },
-  sourceId: sourceId6
+  sourceId: sourceId5,
 });
-var sourceId7 = 11155111;
+var sourceId6 = 11155111;
 var unichainSepolia = /* @__PURE__ */ defineChain2({
   ...chainConfig,
   id: 1301,
@@ -19532,47 +22647,47 @@ var unichainSepolia = /* @__PURE__ */ defineChain2({
   nativeCurrency: {
     name: "Ether",
     symbol: "ETH",
-    decimals: 18
+    decimals: 18,
   },
   blockTime: 1000,
   rpcUrls: {
     default: {
-      http: ["https://sepolia.unichain.org"]
-    }
+      http: ["https://sepolia.unichain.org"],
+    },
   },
   blockExplorers: {
     default: {
       name: "Uniscan",
       url: "https://sepolia.uniscan.xyz",
-      apiUrl: "https://api-sepolia.uniscan.xyz/api"
-    }
+      apiUrl: "https://api-sepolia.uniscan.xyz/api",
+    },
   },
   contracts: {
     ...chainConfig.contracts,
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 0
+      blockCreated: 0,
     },
     portal: {
-      [sourceId7]: {
-        address: "0x0d83dab629f0e0F9d36c0Cbc89B69a489f0751bD"
-      }
+      [sourceId6]: {
+        address: "0x0d83dab629f0e0F9d36c0Cbc89B69a489f0751bD",
+      },
     },
     l1StandardBridge: {
-      [sourceId7]: {
-        address: "0xea58fcA6849d79EAd1f26608855c2D6407d54Ce2"
-      }
+      [sourceId6]: {
+        address: "0xea58fcA6849d79EAd1f26608855c2D6407d54Ce2",
+      },
     },
     disputeGameFactory: {
-      [sourceId7]: {
-        address: "0xeff73e5aa3B9AEC32c659Aa3E00444d20a84394b"
-      }
-    }
+      [sourceId6]: {
+        address: "0xeff73e5aa3B9AEC32c659Aa3E00444d20a84394b",
+      },
+    },
   },
   testnet: true,
-  sourceId: sourceId7
+  sourceId: sourceId6,
 });
-var sourceId8 = 1;
+var sourceId7 = 1;
 var worldchain = /* @__PURE__ */ defineChain2({
   ...chainConfig,
   id: 480,
@@ -19580,50 +22695,52 @@ var worldchain = /* @__PURE__ */ defineChain2({
   network: "worldchain",
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {
-    default: { http: ["https://worldchain-mainnet.g.alchemy.com/public"] }
+    default: { http: ["https://worldchain-mainnet.g.alchemy.com/public"] },
   },
   blockExplorers: {
     default: {
       name: "Worldscan",
       url: "https://worldscan.org",
-      apiUrl: "https://api.worldscan.org/api"
+      apiUrl: "https://api.worldscan.org/api",
     },
     blockscout: {
       name: "Blockscout",
       url: "https://worldchain-mainnet.explorer.alchemy.com",
-      apiUrl: "https://worldchain-mainnet.explorer.alchemy.com/api"
-    }
+      apiUrl: "https://worldchain-mainnet.explorer.alchemy.com/api",
+    },
   },
   contracts: {
     ...chainConfig.contracts,
     multicall3: {
       address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 0
+      blockCreated: 0,
     },
     disputeGameFactory: {
-      [sourceId8]: {
-        address: "0x069c4c579671f8c120b1327a73217D01Ea2EC5ea"
-      }
+      [sourceId7]: {
+        address: "0x069c4c579671f8c120b1327a73217D01Ea2EC5ea",
+      },
     },
     l2OutputOracle: {
-      [sourceId8]: {
-        address: "0x19A6d1E9034596196295CF148509796978343c5D"
-      }
+      [sourceId7]: {
+        address: "0x19A6d1E9034596196295CF148509796978343c5D",
+      },
     },
     portal: {
-      [sourceId8]: {
-        address: "0xd5ec14a83B7d95BE1E2Ac12523e2dEE12Cbeea6C"
-      }
+      [sourceId7]: {
+        address: "0xd5ec14a83B7d95BE1E2Ac12523e2dEE12Cbeea6C",
+      },
     },
     l1StandardBridge: {
-      [sourceId8]: {
-        address: "0x470458C91978D2d929704489Ad730DC3E3001113"
-      }
-    }
+      [sourceId7]: {
+        address: "0x470458C91978D2d929704489Ad730DC3E3001113",
+      },
+    },
   },
   testnet: false,
-  sourceId: sourceId8
+  sourceId: sourceId7,
 });
+var DEPOSIT_FOR_BURN_TOPIC =
+  "0x0c8c1cbdc5190613ebd485511d4e2812cfa45eecb79d845893331fedad5130a5";
 var TESTNET_TOKEN_MESSENGER = "0x8FE6B999Dc680CcFDD5Bf7EB0974218be2542DAA";
 var TESTNET_MESSAGE_TRANSMITTER = "0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275";
 var MAINNET_TOKEN_MESSENGER = "0x28b5a0e9C621a5BadaA536219b3a228C8168cf5d";
@@ -19633,160 +22750,153 @@ var TESTNET_CHAINS = {
     name: "Ethereum Sepolia",
     domain: 0,
     chain: sepolia,
+    creChainSelector: "ethereum-testnet-sepolia",
     usdc: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
     tokenMessenger: TESTNET_TOKEN_MESSENGER,
-    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER,
   },
   avalancheFuji: {
     name: "Avalanche Fuji",
     domain: 1,
     chain: avalancheFuji,
+    creChainSelector: "avalanche-testnet-fuji",
     usdc: "0x5425890298aed601595a70AB815c96711a31Bc65",
     tokenMessenger: TESTNET_TOKEN_MESSENGER,
-    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER,
   },
   opSepolia: {
     name: "OP Sepolia",
     domain: 2,
     chain: optimismSepolia,
+    creChainSelector: "ethereum-testnet-sepolia-optimism-1",
     usdc: "0x5fd84259d66Cd46123540766Be93DFE6D43130D7",
     tokenMessenger: TESTNET_TOKEN_MESSENGER,
-    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER,
   },
   arbitrumSepolia: {
     name: "Arbitrum Sepolia",
     domain: 3,
     chain: arbitrumSepolia,
+    creChainSelector: "ethereum-testnet-sepolia-arbitrum-1",
     usdc: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
     tokenMessenger: TESTNET_TOKEN_MESSENGER,
-    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER,
   },
   baseSepolia: {
     name: "Base Sepolia",
     domain: 6,
     chain: baseSepolia,
+    creChainSelector: "ethereum-testnet-sepolia-base-1",
     usdc: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
     tokenMessenger: TESTNET_TOKEN_MESSENGER,
-    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER,
   },
   polygonAmoy: {
     name: "Polygon PoS Amoy",
     domain: 7,
     chain: polygonAmoy,
+    creChainSelector: "polygon-testnet-amoy",
     usdc: "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582",
     tokenMessenger: TESTNET_TOKEN_MESSENGER,
-    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER,
   },
   unichainSepolia: {
     name: "Unichain Sepolia",
     domain: 10,
     chain: unichainSepolia,
+    creChainSelector: "ethereum-testnet-sepolia-unichain-1",
     usdc: "0x31d0220469e10c4E71834a79b1f276d740d3768F",
     tokenMessenger: TESTNET_TOKEN_MESSENGER,
-    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER
-  }
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER,
+  },
 };
 var MAINNET_CHAINS = {
   ethereum: {
     name: "Ethereum",
     domain: 0,
     chain: mainnet,
+    creChainSelector: "ethereum-mainnet",
     usdc: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER,
   },
   avalanche: {
     name: "Avalanche",
     domain: 1,
     chain: avalanche,
+    creChainSelector: "avalanche-mainnet",
     usdc: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
     tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER,
   },
   optimism: {
     name: "OP Mainnet",
     domain: 2,
     chain: optimism,
+    creChainSelector: "ethereum-mainnet-optimism-1",
     usdc: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
     tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER,
   },
   arbitrum: {
     name: "Arbitrum",
     domain: 3,
     chain: arbitrum,
+    creChainSelector: "ethereum-mainnet-arbitrum-1",
     usdc: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
     tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER,
   },
   base: {
     name: "Base",
     domain: 6,
     chain: base,
+    creChainSelector: "ethereum-mainnet-base-1",
     usdc: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER,
   },
   polygon: {
     name: "Polygon PoS",
     domain: 7,
     chain: polygon,
+    creChainSelector: "polygon-mainnet",
     usdc: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
     tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER,
   },
   unichain: {
     name: "Unichain",
     domain: 10,
     chain: unichain,
+    creChainSelector: "ethereum-testnet-sepolia-unichain-1",
     usdc: "0x078D782b760474a361dDA0AF3839290b0EF57AD6",
     tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
-  },
-  linea: {
-    name: "Linea",
-    domain: 11,
-    chain: linea,
-    usdc: "0x176211869cA2b568f2A7D4EE941E073a821EE1ff",
-    tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
-  },
-  codex: {
-    name: "Codex",
-    domain: 12,
-    chain: codex,
-    usdc: "0xd996633a415985DBd7D6D12f4A4343E31f5037cf",
-    tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
-  },
-  sonic: {
-    name: "Sonic",
-    domain: 13,
-    chain: sonic,
-    usdc: "0x29219dd400f2Bf60E5a23d13be72b486d4038894",
-    tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER,
   },
   worldchain: {
     name: "World Chain",
     domain: 14,
     chain: worldchain,
+    creChainSelector: "ethereum-mainnet-worldchain-1",
     usdc: "0x79A02482A880bCe3F13E09da970dC34dB4cD24D1",
     tokenMessenger: MAINNET_TOKEN_MESSENGER,
-    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER
-  }
+    messageTransmitter: MAINNET_MESSAGE_TRANSMITTER,
+  },
 };
+var IRIS_API_BASE = {
+  testnet: "https://iris-api-sandbox.circle.com",
+  mainnet: "https://iris-api.circle.com",
+};
+function getIrisApiBase(network282) {
+  return IRIS_API_BASE[network282];
+}
 function getChains(network282) {
   return network282 === "mainnet" ? MAINNET_CHAINS : TESTNET_CHAINS;
 }
 function getChainByDomain(network282, domain) {
   return Object.values(getChains(network282)).find((c) => c.domain === domain);
 }
-var BASE_CHAIN_SELECTOR = ClientCapability.SUPPORTED_CHAIN_SELECTORS["ethereum-mainnet-base-1"];
-var TOKEN_MESSENGER_V2 = "0x28b5a0e9c621a5badaa536219b3a228c8168cf5d";
-var DEPOSIT_FOR_BURN_TOPIC = "0x0c8c1cbdc5190613ebd485511d4e2812cfa45eecb79d845893331fedad5130a5";
-var IRIS_API_BASE = "https://iris-api.circle.com";
-var SRC_DOMAIN = 6;
 var MINT_AND_SUBMIT_BID_ABI = [
   {
     type: "function",
@@ -19794,14 +22904,21 @@ var MINT_AND_SUBMIT_BID_ABI = [
     stateMutability: "nonpayable",
     inputs: [
       { name: "message", type: "bytes" },
-      { name: "attestation", type: "bytes" }
+      { name: "attestation", type: "bytes" },
     ],
-    outputs: []
-  }
+    outputs: [],
+  },
 ];
+function getSrcChain(config) {
+  const chain = getChainByDomain("mainnet", config.srcDomain);
+  if (!chain) throw new Error(`Unknown source domain: ${config.srcDomain}`);
+  return chain;
+}
 function fetchAttestation(nodeRuntime, txHash) {
-  const http2 = new ClientCapability2;
-  const url = irisStatusUrl(IRIS_API_BASE, SRC_DOMAIN, txHash);
+  const srcChain = getSrcChain(nodeRuntime.config);
+  const irisApiBase = getIrisApiBase("mainnet");
+  const http2 = new ClientCapability2();
+  const url = irisStatusUrl(irisApiBase, srcChain.domain, txHash);
   const response = http2.sendRequest(nodeRuntime, { url, method: "GET" });
   const irisData = json(response.result());
   return parseAttestationData(irisData);
@@ -19810,34 +22927,52 @@ var onDepositForBurn = (runtime2, log) => {
   const txHash = bytesToHex(log.txHash);
   runtime2.log(`DepositForBurn detected in tx ${txHash}`);
   const callerOffset = 4 * 32;
-  const destinationCaller = bytesToHex(log.data.slice(callerOffset, callerOffset + 32));
+  const destinationCaller = bytesToHex(
+    log.data.slice(callerOffset, callerOffset + 32),
+  );
   const expected = runtime2.config.cctpAuctionCaller.toLowerCase();
   if (destinationCaller !== expected) {
-    runtime2.log(`Skipping: destinationCaller ${destinationCaller} !== ${expected}`);
+    runtime2.log(
+      `Skipping: destinationCaller ${destinationCaller} !== ${expected}`,
+    );
     return "";
   }
-  const getAttestation = runtime2.runInNodeMode(fetchAttestation, consensusIdenticalAggregation());
-  const { message, attestation, destinationDomain } = getAttestation(txHash).result();
+  const getAttestation = runtime2.runInNodeMode(
+    fetchAttestation,
+    consensusIdenticalAggregation(),
+  );
+  const { message, attestation, destinationDomain } =
+    getAttestation(txHash).result();
   const destChain = getChainByDomain("mainnet", destinationDomain);
   if (!destChain) {
     runtime2.log(`Unknown destination domain: ${destinationDomain}`);
     return "";
   }
-  runtime2.log(`Attestation ready for tx ${txHash}, minting on ${destChain.name} (domain ${destinationDomain})`);
+  runtime2.log(
+    `Attestation ready for tx ${txHash}, minting on ${destChain.name} (domain ${destinationDomain})`,
+  );
   const calldata = encodeFunctionData({
     abi: MINT_AND_SUBMIT_BID_ABI,
     functionName: "mintAndSubmitBid",
-    args: [message, attestation]
+    args: [message, attestation],
   });
   return calldata;
 };
 var initWorkflow = (config) => {
-  const evmClient = new ClientCapability(BASE_CHAIN_SELECTOR);
+  const srcChain = getSrcChain(config);
+  const evmClient = new ClientCapability(
+    ClientCapability.SUPPORTED_CHAIN_SELECTORS[srcChain.creChainSelector],
+  );
   return [
-    handler(evmClient.logTrigger(logTriggerConfig({
-      addresses: [TOKEN_MESSENGER_V2],
-      topics: [[DEPOSIT_FOR_BURN_TOPIC]]
-    })), onDepositForBurn)
+    handler(
+      evmClient.logTrigger(
+        logTriggerConfig({
+          addresses: [srcChain.tokenMessenger],
+          topics: [[DEPOSIT_FOR_BURN_TOPIC]],
+        }),
+      ),
+      onDepositForBurn,
+    ),
   ];
 };
 async function main() {
@@ -19845,8 +22980,4 @@ async function main() {
   await runner.run(initWorkflow);
 }
 main().catch(sendErrorResponse);
-export {
-  onDepositForBurn,
-  main,
-  initWorkflow
-};
+export { onDepositForBurn, main, initWorkflow };

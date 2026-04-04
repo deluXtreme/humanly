@@ -17,16 +17,13 @@ import {
   type AttestationData,
   type IrisMessageResponse,
 } from "../../app/packages/circle/src/iris-types";
-import { getChainByDomain } from "../../app/packages/circle/src/data";
-
-const BASE_CHAIN_SELECTOR =
-  EVMClient.SUPPORTED_CHAIN_SELECTORS["ethereum-mainnet-base-1"];
-const TOKEN_MESSENGER_V2 = "0x28b5a0e9c621a5badaa536219b3a228c8168cf5d";
-const DEPOSIT_FOR_BURN_TOPIC =
-  "0x0c8c1cbdc5190613ebd485511d4e2812cfa45eecb79d845893331fedad5130a5";
-
-const IRIS_API_BASE = "https://iris-api.circle.com";
-const SRC_DOMAIN = 6; // Base
+import {
+  DEPOSIT_FOR_BURN_TOPIC,
+  getChainByDomain,
+  getIrisApiBase,
+  type ChainConfig,
+  type Network,
+} from "../../app/packages/circle/src/data";
 
 const MINT_AND_SUBMIT_BID_ABI = [
   {
@@ -42,22 +39,35 @@ const MINT_AND_SUBMIT_BID_ABI = [
 ] as const;
 
 export type Config = {
+  network: Network;
+  srcDomain: number;
   cctpAuctionCaller: string; // bytes32 hex of the destinationCaller to match
   cctpAuctionContract: string; // address of the auction contract on destination chain
 };
+
+function getSrcChain(config: Config): ChainConfig {
+  const chain = getChainByDomain(config.network, config.srcDomain);
+  if (!chain) throw new Error(`Unknown source domain: ${config.srcDomain}`);
+  return chain;
+}
 
 function fetchAttestation(
   nodeRuntime: NodeRuntime<Config>,
   txHash: string,
 ): AttestationData {
+  const srcChain = getSrcChain(nodeRuntime.config);
+  const irisApiBase = getIrisApiBase(nodeRuntime.config.network);
   const http = new HTTPClient();
-  const url = irisStatusUrl(IRIS_API_BASE, SRC_DOMAIN, txHash as Hex);
+  const url = irisStatusUrl(irisApiBase, srcChain.domain, txHash as Hex);
   const response = http.sendRequest(nodeRuntime, { url, method: "GET" });
   const irisData = json(response.result()) as IrisMessageResponse;
   return parseAttestationData(irisData);
 }
 
-export const onDepositForBurn = (runtime: Runtime<Config>, log: EVMLog): string => {
+export const onDepositForBurn = (
+  runtime: Runtime<Config>,
+  log: EVMLog,
+): string => {
   const txHash = bytesToHex(log.txHash);
   runtime.log(`DepositForBurn detected in tx ${txHash}`);
 
@@ -71,7 +81,9 @@ export const onDepositForBurn = (runtime: Runtime<Config>, log: EVMLog): string 
   //   [5]   maxFee
   //   [6..] hookData (offset + length encoded)
   const callerOffset = 4 * 32;
-  const destinationCaller = bytesToHex(log.data.slice(callerOffset, callerOffset + 32));
+  const destinationCaller = bytesToHex(
+    log.data.slice(callerOffset, callerOffset + 32),
+  );
 
   const expected = runtime.config.cctpAuctionCaller.toLowerCase();
   if (destinationCaller !== expected) {
@@ -86,9 +98,10 @@ export const onDepositForBurn = (runtime: Runtime<Config>, log: EVMLog): string 
     fetchAttestation,
     consensusIdenticalAggregation<AttestationData>(),
   );
-  const { message, attestation, destinationDomain } = getAttestation(txHash).result();
+  const { message, attestation, destinationDomain } =
+    getAttestation(txHash).result();
 
-  const destChain = getChainByDomain("mainnet", destinationDomain);
+  const destChain = getChainByDomain(runtime.config.network, destinationDomain);
   if (!destChain) {
     runtime.log(`Unknown destination domain: ${destinationDomain}`);
     return "";
@@ -111,13 +124,18 @@ export const onDepositForBurn = (runtime: Runtime<Config>, log: EVMLog): string 
 };
 
 export const initWorkflow = (config: Config) => {
-  const evmClient = new EVMClient(BASE_CHAIN_SELECTOR);
+  const srcChain = getSrcChain(config);
+  const evmClient = new EVMClient(
+    EVMClient.SUPPORTED_CHAIN_SELECTORS[
+      srcChain.creChainSelector as keyof typeof EVMClient.SUPPORTED_CHAIN_SELECTORS
+    ],
+  );
 
   return [
     handler(
       evmClient.logTrigger(
         logTriggerConfig({
-          addresses: [TOKEN_MESSENGER_V2],
+          addresses: [srcChain.tokenMessenger],
           topics: [[DEPOSIT_FOR_BURN_TOPIC]],
         }),
       ),
