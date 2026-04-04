@@ -15,7 +15,9 @@ Contracts are split into two separate Forge projects under `contracts/`:
 
 ```bash
 cd contracts/cctp
-forge script script/Deploy.sol --rpc-url <rpc_alias> --private-key <DEPLOYER_KEY> --broadcast --verify
+API_KEY_ETHERSCAN="" forge script script/Deploy.sol \
+  --rpc-url <rpc_alias> --private-key <DEPLOYER_KEY> --broadcast \
+  --verify --verifier blockscout --verifier-url <BLOCKSCOUT_API_URL>
 ```
 
 ### Step 2: Deploy CCTPAuctionWrapper
@@ -24,14 +26,27 @@ Update `cre/script/Deploy.sol` with the deployed `CCTPAuction` address, then:
 
 ```bash
 cd contracts/cre
-forge script script/Deploy.sol --rpc-url <rpc_alias> --private-key <DEPLOYER_KEY> --broadcast --verify
+API_KEY_ETHERSCAN="" forge script script/Deploy.sol \
+  --rpc-url <rpc_alias> --private-key <DEPLOYER_KEY> --broadcast \
+  --verify --verifier blockscout --verifier-url <BLOCKSCOUT_API_URL>
+```
+
+### Verifying an Existing Deployment
+
+If a contract was deployed without `--verify`, you can verify it after the fact:
+
+```bash
+forge verify-contract <CONTRACT_ADDRESS> src/<Contract>.sol:<Contract> \
+  --rpc-url <rpc_alias> \
+  --constructor-args $(cast abi-encode "constructor(...)" <args...>) \
+  --verifier blockscout --verifier-url <EXPLORER_API_URL>
 ```
 
 ### Supported Networks
 
-| Network            | Chain ID | RPC Alias          |
-| ------------------ | -------- | ------------------ |
-| Base Mainnet       | 8453     | `base`             |
-| Unichain Mainnet   | 130      | `unichain`         |
-| Base Sepolia       | 84532    | `base_sepolia`     |
-| Unichain Sepolia   | 1301     | `unichain_sepolia` |
+| Network            | Chain ID | RPC Alias          | Blockscout API URL                              |
+| ------------------ | -------- | ------------------ | ------------------------------------------------ |
+| Base Mainnet       | 8453     | `base`             | `https://base.blockscout.com/api/`               |
+| Unichain Mainnet   | 130      | `unichain`         | `https://unichain.blockscout.com/api/`           |
+| Base Sepolia       | 84532    | `base_sepolia`     | `https://base-sepolia.blockscout.com/api/`       |
+| Unichain Sepolia   | 1301     | `unichain_sepolia` | `https://unichain-sepolia.blockscout.com/api/`   |

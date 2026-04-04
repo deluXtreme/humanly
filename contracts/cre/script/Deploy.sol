@@ -39,7 +39,7 @@ contract Deploy is Script {
         // Forwarder: https://docs.chain.link/cre/guides/workflow/using-evm-client/forwarder-directory-ts
         _deploymentParams[1301] = DeploymentParams({
             forwarder: 0x98B8335d29Aca40840Ed8426dA1A0aAa8677d8D1,
-            cctpAuction: address(0) // TODO: fill in after deploying CCTPAuction
+            cctpAuction: 0xe10288AD9581c5954f2947e6B0FF136B5a942bbf
         });
     }
 
