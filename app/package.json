@@ -7,9 +7,14 @@
   ],
   "scripts": {
     "arc": "bun run --filter circle arc",
-    "fmt": "bun run --filter 'circle' fmt"
+    "fmt": "bun run --filter 'circle' fmt",
+    "cloudflare:build": "bun run --filter cloudflare build:assets",
+    "cloudflare:dev": "bun run --filter cloudflare dev",
+    "cloudflare:deploy": "bun run --filter cloudflare deploy"
   },
   "devDependencies": {
-    "@types/bun": "^1.3.11"
+    "@types/bun": "^1.3.11",
+    "@types/node": "^25.5.2",
+    "bun-types": "^1.3.11"
   }
 }

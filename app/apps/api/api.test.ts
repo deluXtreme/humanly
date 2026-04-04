@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import type { WorldFetchImplementation } from "world";
 
 import {
   createApiRouter,
@@ -47,8 +48,8 @@ describe("api app", () => {
     const response = await handleWorldRpContextRequest(request, {
       config,
       signRequestImplementation: () => ({
-        sig: "0xeeee",
-        nonce: "0xffff",
+        sig: "0xeeee" as const,
+        nonce: "0xffff" as const,
         createdAt: 1_775_186_400,
         expiresAt: 1_775_186_700,
       }),
@@ -94,7 +95,7 @@ describe("api app", () => {
 
     const response = await handleWorldVerifyRequest(request, {
       config,
-      fetchImplementation: async () =>
+      fetchImplementation: (async () =>
         new Response(
           JSON.stringify({
             success: true,
@@ -106,7 +107,7 @@ describe("api app", () => {
               "content-type": "application/json",
             },
           },
-        ),
+        )) as WorldFetchImplementation,
     });
 
     expect(response.status).toBe(200);
@@ -128,8 +129,8 @@ describe("api app", () => {
     const fetchHandler = createApiRouter({
       config,
       signRequestImplementation: () => ({
-        sig: "0x1234",
-        nonce: "0x5678",
+        sig: "0x1234" as const,
+        nonce: "0x5678" as const,
         createdAt: 1_775_186_400,
         expiresAt: 1_775_186_700,
       }),
@@ -148,6 +149,7 @@ describe("api app", () => {
     );
 
     expect(response.status).toBe(200);
-    expect((await response.json()).rp_context.signature).toBe("0x1234");
+    const json = (await response.json()) as { rp_context: { signature: string } };
+    expect(json.rp_context.signature).toBe("0x1234");
   });
 });

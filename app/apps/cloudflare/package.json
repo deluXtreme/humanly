@@ -1,0 +1,27 @@
+{
+  "name": "cloudflare",
+  "module": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "build:assets": "bun build.ts",
+    "check": "bun --eval \"await import('./src/index.ts'); await import('./build.ts')\"",
+    "dev": "wrangler dev --port 8788 --ip 127.0.0.1",
+    "test": "bun test",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "api": "workspace:*",
+    "web": "workspace:*",
+    "world": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "wrangler": "^4.80.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

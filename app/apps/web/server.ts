@@ -1,7 +1,13 @@
 import { createWebConfig } from "./config.ts";
-import type { WebConfig } from "./types.ts";
+import type { WebConfig, WebEnv } from "./types.ts";
+import {
+  createDefaultHumanlyFullRangeLaunchInput,
+  HUMANLY_ALLOWED_POOL_LP_FEES,
+  HUMANLY_ALLOWED_POOL_TICK_SPACINGS,
+  HUMANLY_SUPPORTED_LAUNCH_NETWORKS,
+} from "uniswap";
 
-const STYLES = `
+export const STYLES = `
 :root {
   color-scheme: light;
   --bg: #f6f2e8;
@@ -106,6 +112,54 @@ h1 {
   font: inherit;
 }
 
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink);
+  font: inherit;
+}
+
+.field textarea {
+  min-height: 108px;
+  resize: vertical;
+}
+
+.fieldset {
+  margin: 0 0 18px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.field-grid .field {
+  margin-bottom: 0;
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(10, 124, 102, 0.12);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
 button {
   appearance: none;
   border: 0;
@@ -194,8 +248,35 @@ pre {
   text-transform: uppercase;
 }
 
+.subtle {
+  margin: 0 0 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.stack {
+  display: grid;
+  gap: 20px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wallet-summary,
+.validation-summary {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 @media (max-width: 820px) {
   .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -210,81 +291,243 @@ function escapeHtml(value: string): string {
     .replaceAll("'", "&#39;");
 }
 
-function renderIndexHtml(config: Pick<WebConfig, "apiBaseUrl" | "worldAction">): string {
+export function renderIndexHtml(): string {
+  const defaults = createDefaultHumanlyFullRangeLaunchInput();
+  const networkOptions = Object.entries(HUMANLY_SUPPORTED_LAUNCH_NETWORKS)
+    .map(
+      ([networkKey, network]) =>
+        `<option value="${escapeHtml(networkKey)}"${
+          networkKey === defaults.network ? " selected" : ""
+        }>${escapeHtml(network.name)}</option>`,
+    )
+    .join("");
+  const lpFeeOptions = HUMANLY_ALLOWED_POOL_LP_FEES.map(
+    (fee) =>
+      `<option value="${fee}"${
+        fee === defaults.liquidity.poolLpFee ? " selected" : ""
+      }>${fee}</option>`,
+  ).join("");
+  const tickSpacingOptions = HUMANLY_ALLOWED_POOL_TICK_SPACINGS.map(
+    (spacing) =>
+      `<option value="${spacing}"${
+        spacing === defaults.liquidity.poolTickSpacing ? " selected" : ""
+      }>${spacing}</option>`,
+  ).join("");
+
   return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Humanly World ID</title>
+    <title>Humanly Launch Studio</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <main>
       <section class="hero">
-        <p class="eyebrow">Humanly / World ID</p>
-        <h1>Verify a human before creating an auction.</h1>
+        <p class="eyebrow">Humanly / Launch Studio</p>
+        <h1>Create a human-gated Uniswap launch.</h1>
         <p class="lede">
-          This local demo requests an RP context from your Bun API, launches the
-          World IDKit flow for <code>${escapeHtml(config.worldAction)}</code>,
-          and sends the proof back to your backend for verification.
+          This local development flow connects a wallet, configures a constrained
+          Uniswap Liquidity Launcher auction, collects a World ID proof, and
+          prepares the future Humanly contract payload.
         </p>
       </section>
 
       <section class="grid">
-        <article class="card">
-          <h2>Start Verification</h2>
-          <div class="field">
-            <label for="signal">Signal (optional)</label>
-            <input
-              id="signal"
-              data-signal-input
-              placeholder="Wallet address or app-specific user id"
-            />
-          </div>
-          <button type="button" data-verify-button>Verify with World ID</button>
-          <div class="status" data-status data-kind="idle">
-            Waiting to start.
-          </div>
-          <section class="connector-panel" data-connector-panel hidden>
-            <p>Scan this QR code with the World App on your phone.</p>
-            <img
-              class="connector-qr"
-              data-connector-qr
-              alt="World ID connector QR code"
-            />
-          </section>
-          <a
-            class="connector"
-            data-connector
-            hidden
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open connector URL
-          </a>
-        </article>
+        <section class="stack">
+          <article class="card">
+            <h2><span class="step">1</span>Connect Wallet</h2>
+            <p class="subtle">
+              The connected wallet becomes the creator signal for World ID and
+              the future auction owner in the Humanly contract flow.
+            </p>
+            <div class="actions">
+              <button type="button" data-connect-button>Connect wallet</button>
+            </div>
+            <p class="wallet-summary" data-wallet-summary>No wallet connected.</p>
+          </article>
+
+          <article class="card">
+            <h2><span class="step">2</span>Configure Launch</h2>
+            <p class="subtle">
+              This UI intentionally exposes a narrower surface than raw
+              Uniswap launcher contracts: <code>UERC20</code> +
+              <code>FullRangeLBPStrategy</code> + USDC + generated CCA
+              schedules.
+            </p>
+
+            <section class="fieldset">
+              <div class="field">
+                <label for="network">Network</label>
+                <select id="network" data-network-input data-launch-input>
+                  ${networkOptions}
+                </select>
+              </div>
+            </section>
+
+            <section class="fieldset">
+              <h3>Token</h3>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="token-name">Name</label>
+                  <input id="token-name" data-token-name-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="token-symbol">Symbol</label>
+                  <input id="token-symbol" data-token-symbol-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="token-supply">Initial Supply</label>
+                  <input id="token-supply" data-token-supply-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="token-website">Website</label>
+                  <input id="token-website" data-token-website-input data-launch-input />
+                </div>
+                <div class="field" style="grid-column: 1 / -1;">
+                  <label for="token-description">Description</label>
+                  <textarea id="token-description" data-token-description-input data-launch-input></textarea>
+                </div>
+                <div class="field" style="grid-column: 1 / -1;">
+                  <label for="token-image">Image URL</label>
+                  <input id="token-image" data-token-image-input data-launch-input />
+                </div>
+              </div>
+            </section>
+
+            <section class="fieldset">
+              <h3>Auction</h3>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="start-delay">Start Delay Blocks</label>
+                  <input id="start-delay" type="number" min="1" data-start-delay-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="prebid-blocks">Prebid Blocks</label>
+                  <input id="prebid-blocks" type="number" min="0" data-prebid-blocks-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="auction-blocks">Auction Blocks</label>
+                  <input id="auction-blocks" type="number" min="1" data-auction-blocks-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="migration-delay">Migration Delay Blocks</label>
+                  <input id="migration-delay" type="number" min="1" data-migration-delay-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="sweep-delay">Sweep Delay Blocks</label>
+                  <input id="sweep-delay" type="number" min="1" data-sweep-delay-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="required-raised">Required USDC Raised</label>
+                  <input id="required-raised" data-required-raised-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="floor-price">Floor Price (USDC per token)</label>
+                  <input id="floor-price" data-floor-price-input data-launch-input />
+                </div>
+                <div class="field">
+                  <label for="tick-size">Tick Size (USDC per token)</label>
+                  <input id="tick-size" data-tick-size-input data-launch-input />
+                </div>
+              </div>
+            </section>
+
+            <section class="fieldset">
+              <h3>Liquidity</h3>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="auction-token-percentage">Auction Token Percentage</label>
+                  <input
+                    id="auction-token-percentage"
+                    type="number"
+                    min="1"
+                    max="99"
+                    step="0.1"
+                    data-auction-token-percentage-input
+                    data-launch-input
+                  />
+                </div>
+                <div class="field">
+                  <label for="pool-lp-fee">Pool LP Fee</label>
+                  <select id="pool-lp-fee" data-pool-lp-fee-input data-launch-input>
+                    ${lpFeeOptions}
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="pool-tick-spacing">Pool Tick Spacing</label>
+                  <select id="pool-tick-spacing" data-pool-tick-spacing-input data-launch-input>
+                    ${tickSpacingOptions}
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="max-usdc-for-lp">Max USDC For LP (optional)</label>
+                  <input id="max-usdc-for-lp" data-max-usdc-for-lp-input data-launch-input />
+                </div>
+              </div>
+            </section>
+
+            <p class="validation-summary" data-validation-summary>
+              Waiting for launch parameters.
+            </p>
+
+            <div class="actions">
+              <button type="button" data-preview-button>Build launch preview</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <h2><span class="step">3</span>Proof Of Human</h2>
+            <p class="subtle">
+              The World proof is requested with the connected wallet address as
+              the signal and verified by the local API before becoming part of the
+              future contract payload.
+            </p>
+            <div class="actions">
+              <button type="button" data-verify-button>Verify with World ID</button>
+            </div>
+            <div class="status" data-status data-kind="idle">
+              Waiting to start.
+            </div>
+            <section class="connector-panel" data-connector-panel hidden>
+              <p>Scan this QR code with the World App on your phone.</p>
+              <img
+                class="connector-qr"
+                data-connector-qr
+                alt="World ID connector QR code"
+              />
+            </section>
+            <a
+              class="connector"
+              data-connector
+              hidden
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open connector URL
+            </a>
+          </article>
+        </section>
 
         <article class="card">
           <p class="output-label" data-output-label>Output</p>
           <pre data-output>{
-  "apiBaseUrl": "${escapeHtml(config.apiBaseUrl)}",
-  "worldAction": "${escapeHtml(config.worldAction)}"
+  "status": "loading-browser-config"
 }</pre>
         </article>
       </section>
     </main>
-    <script>
-      window.__HUMANLY_WEB_CONFIG__ = ${JSON.stringify(config)};
-    </script>
     <script type="module" src="/client.js"></script>
   </body>
 </html>`;
 }
 
-async function buildClientBundle(): Promise<string> {
+export async function buildClientBundle(): Promise<string> {
+  const clientEntrypoint = new URL("./client.ts", import.meta.url).pathname;
+
   const result = await Bun.build({
-    entrypoints: ["./client.ts"],
+    entrypoints: [clientEntrypoint],
     target: "browser",
     format: "esm",
     minify: false,
@@ -292,14 +535,22 @@ async function buildClientBundle(): Promise<string> {
   });
 
   if (!result.success || result.outputs.length === 0) {
-    const logs = result.logs.map((log) => log.message).join("\n");
+    const logs = result.logs
+      .map((log: { message: string }) => log.message)
+      .join("\n");
     throw new Error(`Failed to build web client bundle.\n${logs}`);
   }
 
-  return await result.outputs[0].text();
+  const output = result.outputs[0];
+
+  if (!output) {
+    throw new Error("Bun.build returned no browser bundle output.");
+  }
+
+  return await output.text();
 }
 
-async function loadIdKitWasmFile(): Promise<BunFile> {
+export async function loadIdKitWasmFile(): Promise<Bun.BunFile> {
   const idKitEntryUrl = await import.meta.resolve("@worldcoin/idkit-core");
   const wasmUrl = new URL("idkit_wasm_bg.wasm", idKitEntryUrl);
   const wasmFile = Bun.file(wasmUrl);
@@ -311,25 +562,37 @@ async function loadIdKitWasmFile(): Promise<BunFile> {
   return wasmFile;
 }
 
+let clientBundlePromise: Promise<string> | undefined;
+let idKitWasmFilePromise: Promise<Bun.BunFile> | undefined;
+
+function getClientBundle(): Promise<string> {
+  clientBundlePromise ??= buildClientBundle();
+  return clientBundlePromise;
+}
+
+function getIdKitWasmFile(): Promise<Bun.BunFile> {
+  idKitWasmFilePromise ??= loadIdKitWasmFile();
+  return idKitWasmFilePromise;
+}
+
 export async function createWebFetchHandler(config: WebConfig) {
-  const clientBundle = await buildClientBundle();
-  const wasmFile = await loadIdKitWasmFile();
+  const clientBundle = await getClientBundle();
+  const wasmFile = await getIdKitWasmFile();
+  const browserConfig = {
+    apiBaseUrl: config.apiBaseUrl,
+    worldAction: config.worldAction,
+    previewAddresses: config.previewAddresses,
+  };
 
   return function fetch(request: Request): Response {
     const url = new URL(request.url);
 
     if (url.pathname === "/" || url.pathname === "/index.html") {
-      return new Response(
-        renderIndexHtml({
-          apiBaseUrl: config.apiBaseUrl,
-          worldAction: config.worldAction,
-        }),
-        {
-          headers: {
-            "content-type": "text/html; charset=utf-8",
-          },
+      return new Response(renderIndexHtml(), {
+        headers: {
+          "content-type": "text/html; charset=utf-8",
         },
-      );
+      });
     }
 
     if (url.pathname === "/client.js") {
@@ -356,6 +619,14 @@ export async function createWebFetchHandler(config: WebConfig) {
       });
     }
 
+    if (url.pathname === "/config.json") {
+      return Response.json(browserConfig, {
+        headers: {
+          "cache-control": "no-store",
+        },
+      });
+    }
+
     if (url.pathname === "/healthz") {
       return Response.json({
         ok: true,
@@ -368,7 +639,7 @@ export async function createWebFetchHandler(config: WebConfig) {
 }
 
 export async function startWebServer() {
-  const config = createWebConfig(process.env);
+  const config = createWebConfig(process.env as WebEnv);
   const fetch = await createWebFetchHandler(config);
 
   const server = Bun.serve({

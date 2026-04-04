@@ -114,10 +114,15 @@ export interface WorldVerifyResponse {
   message?: string;
 }
 
+export type WorldFetchImplementation = (
+  input: Request | URL | string,
+  init?: RequestInit,
+) => Promise<Response>;
+
 export interface VerifyWorldProofOptions {
   rpId: WorldRpId;
   apiBaseUrl?: string;
-  fetchImplementation?: typeof fetch;
+  fetchImplementation?: WorldFetchImplementation;
 }
 
 export interface LegacyWorldIdVerificationInput {
