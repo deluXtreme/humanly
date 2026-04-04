@@ -8,6 +8,7 @@ export interface AssetFetcher {
 export interface HumanlyCloudflareEnv extends ApiWorldEnv, WebEnv {
   ASSETS: AssetFetcher;
   X402_PAY_TO?: string;
+  X402_DISABLED?: string;
   X402_NETWORK?: string;
   X402_AUCTION_INFO_PRICE?: string;
   X402_AUCTION_ACTION_PRICE?: string;

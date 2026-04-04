@@ -17,16 +17,26 @@ function isValidEvmAddress(value: string): value is `0x${string}` {
   return /^0x[a-fA-F0-9]{40}$/.test(value);
 }
 
-export function isX402Configured(env: HumanlyCloudflareEnv): boolean {
-  return Boolean(env.X402_PAY_TO && env.X402_PAY_TO.trim().length > 0);
+function isTruthy(value: string | undefined): boolean {
+  if (!value) {
+    return false;
+  }
+
+  return ["1", "true", "yes", "on"].includes(value.trim().toLowerCase());
 }
 
 export function createAuctionPaymentMiddleware(env: HumanlyCloudflareEnv) {
-  if (!isX402Configured(env)) {
+  if (isTruthy(env.X402_DISABLED)) {
     return null;
   }
 
-  if (!isValidEvmAddress(env.X402_PAY_TO!)) {
+  if (!env.X402_PAY_TO || env.X402_PAY_TO.trim().length === 0) {
+    throw new Error(
+      "X402_PAY_TO must be configured unless X402_DISABLED=true.",
+    );
+  }
+
+  if (!isValidEvmAddress(env.X402_PAY_TO)) {
     throw new Error("X402_PAY_TO must be a valid 0x-prefixed address.");
   }
 
@@ -35,7 +45,7 @@ export function createAuctionPaymentMiddleware(env: HumanlyCloudflareEnv) {
     throw new Error("X402_NETWORK must look like eip155:<chainId>.");
   }
 
-  const payTo = env.X402_PAY_TO!;
+  const payTo = env.X402_PAY_TO;
   const facilitatorClient = new HTTPFacilitatorClient({
     url: env.X402_FACILITATOR_URL ?? DEFAULT_X402_FACILITATOR_URL,
   });

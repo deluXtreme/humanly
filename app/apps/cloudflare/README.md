@@ -44,7 +44,9 @@ cp .dev.vars.example .dev.vars
 
 Then fill in the real World/API values.
 
-To enable x402 on the auction endpoints, also set:
+x402 is enabled by default for `/api/auctions/*`.
+
+For local development, either configure it explicitly:
 
 ```bash
 X402_PAY_TO=0xYourWallet
@@ -52,6 +54,12 @@ X402_NETWORK=eip155:84532
 X402_AUCTION_INFO_PRICE=$0.001
 X402_AUCTION_ACTION_PRICE=$0.01
 X402_FACILITATOR_URL=https://x402.org/facilitator
+```
+
+or disable it explicitly:
+
+```bash
+X402_DISABLED=true
 ```
 
 Run locally with:
@@ -71,3 +79,12 @@ wrangler deploy
 
 World secrets should be configured as Worker secrets / vars, not committed to
 the repo.
+
+## World Verify Note
+
+The Worker runtime that calls World's verify API must send a real
+`User-Agent` header.
+
+Without it, World may return an HTML `403 Forbidden` response instead of JSON.
+The current `packages/world` verify client already handles this correctly and
+also sends `Accept: application/json`.
