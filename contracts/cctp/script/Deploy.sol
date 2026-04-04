@@ -17,6 +17,14 @@ contract Deploy is Script {
     mapping(uint256 => DeploymentParams) internal _deploymentParams;
 
     function setUp() public {
+        // Arc Testnet
+        _deploymentParams[5_042_002] = DeploymentParams({
+            messageTransmitter: 0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275,
+            tokenMessenger: 0x8FE6B999Dc680CcFDD5Bf7EB0974218be2542DAA,
+            supportedMessageVersion: 1,
+            supportedBurnMessageVersion: 1,
+            usdc: 0x3600000000000000000000000000000000000000
+        });
         // Base Sepolia
         _deploymentParams[84_532] = DeploymentParams({
             messageTransmitter: 0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275,
