@@ -72,6 +72,17 @@ describe("cloudflare worker", () => {
     expect(await response.text()).toBe("asset:/");
   });
 
+  test("rewrites the hook miner pretty URL to the static asset", async () => {
+    const fetchHandler = createCloudflareFetchHandler();
+    const response = await fetchHandler(
+      new Request("https://human.ly/hook-miner"),
+      createTestEnv(),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.text()).toBe("asset:/hook-miner.html");
+  });
+
   test("protects auction routes with x402 when configured", async () => {
     const fetchHandler = createCloudflareFetchHandler({
       auctionPaymentMiddleware: async (_context) =>

@@ -3,6 +3,15 @@ import { describe, expect, test } from "bun:test";
 import { createWebConfig } from "./config.ts";
 import { createWebFetchHandler } from "./server.ts";
 
+const TEST_WEB_ASSETS = {
+  clientBundle: "console.log('client');",
+  hookMinerBundle: "console.log('hook-miner');",
+  wasmBody: new Uint8Array([0x00, 0x61, 0x73, 0x6d]),
+  hookMinerWorkerBody: "self.onmessage = () => {};",
+  hookMinerModuleBody: "export default async function init() {}",
+  hookMinerWasmBody: new Uint8Array([0x00, 0x61, 0x73, 0x6d]),
+};
+
 describe("web app", () => {
   test("creates the web config with sensible local defaults", () => {
     const config = createWebConfig({});
@@ -55,7 +64,7 @@ describe("web app", () => {
         continuousClearingAuctionFactory:
           "0x4444444444444444444444444444444444444444",
       },
-    });
+    }, TEST_WEB_ASSETS);
 
     const response = fetch(new Request("http://local/idkit_wasm_bg.wasm"));
 
@@ -78,7 +87,7 @@ describe("web app", () => {
         continuousClearingAuctionFactory:
           "0x4444444444444444444444444444444444444444",
       },
-    });
+    }, TEST_WEB_ASSETS);
 
     const response = fetch(new Request("http://local/"));
     const html = await response.text();
@@ -88,5 +97,30 @@ describe("web app", () => {
     expect(html).toContain("Connect wallet");
     expect(html).toContain("Build launch preview");
     expect(html).toContain("Verify with World ID");
+  });
+
+  test("serves the hook salt miner page", async () => {
+    const fetch = await createWebFetchHandler({
+      apiBaseUrl: "http://127.0.0.1:3010",
+      worldAction: "create-auction",
+      host: "127.0.0.1",
+      port: 3011,
+      previewAddresses: {
+        liquidityLauncher: "0x1111111111111111111111111111111111111111",
+        uerc20Factory: "0x2222222222222222222222222222222222222222",
+        fullRangeLbpStrategyFactory:
+          "0x3333333333333333333333333333333333333333",
+        continuousClearingAuctionFactory:
+          "0x4444444444444444444444444444444444444444",
+      },
+    }, TEST_WEB_ASSETS);
+
+    const response = fetch(new Request("http://local/hook-miner"));
+    const html = await response.text();
+
+    expect(response.status).toBe(200);
+    expect(html).toContain("Humanly / Hook Salt Miner");
+    expect(html).toContain("Start mining");
+    expect(html).toContain("Hook Permissions");
   });
 });

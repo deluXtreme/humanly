@@ -35,13 +35,60 @@ body {
 }
 
 main {
-  width: min(1080px, calc(100vw - 32px));
+  width: min(1520px, calc(100vw - 72px));
   margin: 0 auto;
   padding: 48px 0 72px;
 }
 
 .hero {
   margin-bottom: 28px;
+  max-width: 1180px;
+}
+
+.hero--split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(260px, 360px);
+  gap: 28px;
+  align-items: end;
+}
+
+.hero-copy {
+  min-width: 0;
+}
+
+.hero-art {
+  position: relative;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.42)),
+    linear-gradient(180deg, rgba(255, 250, 241, 0.9), rgba(234, 244, 239, 0.82));
+  box-shadow: 0 18px 60px rgba(24, 33, 31, 0.08);
+  overflow: hidden;
+}
+
+.hero-art::after {
+  content: "";
+  position: absolute;
+  inset: auto -16% -28% auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(10, 124, 102, 0.14), transparent 68%);
+}
+
+.hero-art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero-caption {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
 }
 
 .eyebrow {
@@ -61,21 +108,26 @@ h1 {
 }
 
 .lede {
-  max-width: 62ch;
+  max-width: 72ch;
   font-size: 18px;
   line-height: 1.6;
   color: var(--muted);
 }
 
+.lede a,
+.subtle a {
+  color: var(--accent);
+}
+
 .grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 20px;
+  grid-template-columns: minmax(0, 1.55fr) minmax(380px, 0.95fr);
+  gap: 28px;
   align-items: start;
 }
 
 .card {
-  padding: 24px;
+  padding: 28px;
   border: 1px solid var(--line);
   border-radius: 24px;
   background: var(--panel);
@@ -138,7 +190,7 @@ h1 {
 
 .field-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 14px;
 }
 
@@ -256,7 +308,7 @@ pre {
 
 .stack {
   display: grid;
-  gap: 20px;
+  gap: 24px;
 }
 
 .actions {
@@ -271,13 +323,98 @@ pre {
   line-height: 1.6;
 }
 
+.miner-check-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px 12px;
+}
+
+.miner-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.miner-check input {
+  margin-top: 2px;
+}
+
+.miner-check strong {
+  display: block;
+  font-size: 14px;
+}
+
+.miner-check span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.stat-card {
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.stat-card p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stat-card code {
+  display: block;
+  word-break: break-all;
+}
+
+.copy-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.copy-row button {
+  padding: 10px 14px;
+}
+
 @media (max-width: 820px) {
+  main {
+    width: min(100vw - 24px, 720px);
+    padding: 32px 0 48px;
+  }
+
+  .hero--split {
+    grid-template-columns: 1fr;
+  }
+
   .grid {
     grid-template-columns: 1fr;
   }
 
+  .miner-check-grid,
+  .stat-grid,
   .field-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1360px) {
+  .grid {
+    grid-template-columns: minmax(0, 1.72fr) minmax(400px, 0.92fr);
   }
 }
 `;
@@ -330,7 +467,8 @@ export function renderIndexHtml(): string {
         <p class="lede">
           This local development flow connects a wallet, configures a constrained
           Uniswap Liquidity Launcher auction, collects a World ID proof, and
-          prepares the future Humanly contract payload.
+          prepares the future Humanly contract payload. Need a Uniswap v4 hook
+          salt for a future pool? Use the <a href="/hook-miner">hook salt miner</a>.
         </p>
       </section>
 
@@ -523,6 +661,221 @@ export function renderIndexHtml(): string {
 </html>`;
 }
 
+function renderHookPermissionCheckbox(
+  permission: string,
+  description: string,
+): string {
+  return `<label class="miner-check">
+    <input type="checkbox" data-miner-input data-hook-permission="${escapeHtml(permission)}" />
+    <span>
+      <strong>${escapeHtml(permission)}</strong>
+      <span>${escapeHtml(description)}</span>
+    </span>
+  </label>`;
+}
+
+export function renderHookMinerHtml(): string {
+  const permissionCheckboxes = ([
+    ["beforeInitialize", "Run before the hook initializes the pool."],
+    ["afterInitialize", "Run after pool initialization completes."],
+    ["beforeAddLiquidity", "Intercept liquidity additions before execution."],
+    ["afterAddLiquidity", "Run after liquidity has been added."],
+    ["beforeRemoveLiquidity", "Intercept liquidity removal before execution."],
+    ["afterRemoveLiquidity", "Run after liquidity has been removed."],
+    ["beforeSwap", "Run before swaps enter the pool manager."],
+    ["afterSwap", "Run after swaps execute."],
+    ["beforeDonate", "Intercept donation flows before execution."],
+    ["afterDonate", "Run after donations execute."],
+    ["beforeSwapReturnDelta", "Return custom deltas before swap settlement."],
+    ["afterSwapReturnDelta", "Return custom deltas after swap settlement."],
+    ["afterAddLiquidityReturnDelta", "Return deltas after adding liquidity."],
+    ["afterRemoveLiquidityReturnDelta", "Return deltas after removing liquidity."],
+  ] as const)
+    .map(([permission, description]) =>
+      renderHookPermissionCheckbox(permission, description),
+    )
+    .join("");
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Humanly Salt Miner</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <section class="hero hero--split">
+        <div class="hero-copy">
+          <p class="eyebrow">Humanly / Hook Salt Miner</p>
+          <h1>Salt Miner</h1>
+          <p class="lede">
+            Dig through the search space for a Uniswap v4 hook address that
+            lands on the right permission mask. The Rust wasm miner runs in
+            browser workers while Cloudflare just serves the tools. Return to the
+            <a href="/">launch studio</a> when you strike salt.
+          </p>
+        </div>
+        <figure class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 420 320" role="presentation">
+            <defs>
+              <linearGradient id="salt-ground" x1="0%" x2="0%" y1="0%" y2="100%">
+                <stop offset="0%" stop-color="#efe6d2" />
+                <stop offset="100%" stop-color="#d7e6df" />
+              </linearGradient>
+              <linearGradient id="salt-crystal" x1="0%" x2="100%" y1="0%" y2="100%">
+                <stop offset="0%" stop-color="#fefcf7" />
+                <stop offset="100%" stop-color="#9fd7cb" />
+              </linearGradient>
+            </defs>
+            <rect x="0" y="210" width="420" height="110" rx="34" fill="url(#salt-ground)" />
+            <ellipse cx="290" cy="232" rx="86" ry="26" fill="#f8f4ea" />
+            <ellipse cx="118" cy="244" rx="70" ry="22" fill="#ece1cb" />
+            <polygon points="282,88 314,158 250,158" fill="url(#salt-crystal)" stroke="#18211f" stroke-opacity="0.16" />
+            <polygon points="334,104 356,154 312,154" fill="#d7f2ec" stroke="#18211f" stroke-opacity="0.12" />
+            <polygon points="242,118 258,150 226,150" fill="#fefaf0" stroke="#18211f" stroke-opacity="0.12" />
+            <ellipse cx="156" cy="208" rx="32" ry="36" fill="#18211f" fill-opacity="0.08" />
+            <circle cx="150" cy="120" r="28" fill="#e5b083" />
+            <path d="M122 162c8-18 50-18 58 0v54h-58z" fill="#0a7c66" />
+            <path d="M136 170h16v68h-16z" fill="#f6f2e8" fill-opacity="0.55" />
+            <path d="M180 172c20-6 46 6 56 26" fill="none" stroke="#18211f" stroke-width="14" stroke-linecap="round" />
+            <path d="M112 172c-18 4-32 18-36 40" fill="none" stroke="#18211f" stroke-width="14" stroke-linecap="round" />
+            <path d="M214 94l58 82" fill="none" stroke="#7d5a34" stroke-width="10" stroke-linecap="round" />
+            <path d="M198 110l86-34" fill="none" stroke="#7d5a34" stroke-width="10" stroke-linecap="round" />
+            <path d="M186 112l36 12" fill="none" stroke="#18211f" stroke-width="9" stroke-linecap="round" />
+            <path d="M274 64l18 28" fill="none" stroke="#18211f" stroke-width="8" stroke-linecap="round" />
+            <path d="M282 72l-10 24" fill="none" stroke="#18211f" stroke-width="8" stroke-linecap="round" />
+            <path d="M70 238c28-10 56-10 84 0" fill="none" stroke="#cdbb99" stroke-width="14" stroke-linecap="round" />
+            <circle cx="144" cy="114" r="4" fill="#18211f" />
+            <circle cx="160" cy="114" r="4" fill="#18211f" />
+            <path d="M142 128c8 8 18 8 26 0" fill="none" stroke="#18211f" stroke-width="4" stroke-linecap="round" />
+          </svg>
+          <figcaption class="hero-caption">
+            Tiny prospector, oversized ambition, hopefully immaculate hook bits.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="grid">
+        <section class="stack">
+          <article class="card">
+            <h2><span class="step">1</span>Configure Miner</h2>
+            <p class="subtle">
+              Provide the hook deployer, the init code hash, the permission bits,
+              and an optional vanity prefix. The worker will search for a CREATE2
+              salt whose deployed address ends with the required Uniswap v4 hook
+              permission mask.
+            </p>
+
+            <section class="fieldset">
+              <div class="field-grid">
+                <div class="field">
+                  <label for="miner-deployer-address">Deployer Address</label>
+                  <input id="miner-deployer-address" data-miner-input data-deployer-address-input />
+                </div>
+                <div class="field">
+                  <label for="miner-init-code-hash">Init Code Hash</label>
+                  <input
+                    id="miner-init-code-hash"
+                    data-miner-input
+                    data-init-code-hash-input
+                    placeholder="0x..."
+                  />
+                </div>
+                <div class="field">
+                  <label for="miner-vanity-prefix">Vanity Prefix</label>
+                  <input
+                    id="miner-vanity-prefix"
+                    data-miner-input
+                    data-vanity-prefix-input
+                    placeholder="optional hex prefix"
+                  />
+                </div>
+                <div class="field">
+                  <label for="miner-thread-count">Threads</label>
+                  <input
+                    id="miner-thread-count"
+                    type="number"
+                    min="1"
+                    max="32"
+                    data-miner-input
+                    data-thread-input
+                  />
+                </div>
+              </div>
+
+              <div class="actions">
+                <label class="miner-check">
+                  <input type="checkbox" data-miner-input data-case-sensitive-input />
+                  <span>
+                    <strong>Case Sensitive Prefix</strong>
+                    <span>Match vanity casing exactly instead of lowercasing it.</span>
+                  </span>
+                </label>
+              </div>
+            </section>
+
+            <section class="fieldset">
+              <h3>Hook Permissions</h3>
+              <div class="miner-check-grid">
+                ${permissionCheckboxes}
+              </div>
+            </section>
+
+            <div class="actions">
+              <button type="button" data-start-button>Start mining</button>
+              <button type="button" data-stop-button>Stop</button>
+            </div>
+
+            <div class="status" data-status data-kind="idle">
+              Ready to mine a Uniswap v4 hook salt.
+            </div>
+          </article>
+        </section>
+
+        <article class="card">
+          <p class="output-label" data-output-label>Hook Miner Draft</p>
+          <p class="subtle">
+            The right column keeps the derived hook mask, selected permission set,
+            and the current mining result together.
+          </p>
+
+          <section class="stat-grid">
+            <div class="stat-card">
+              <p>Hook Mask</p>
+              <code data-mask-value>0x0000000000000000000000000000000000000000</code>
+            </div>
+            <div class="stat-card">
+              <p>Permissions</p>
+              <code data-permissions-value>none selected</code>
+            </div>
+            <div class="stat-card">
+              <p>Mined Salt</p>
+              <code data-salt-value>not mined yet</code>
+            </div>
+            <div class="stat-card">
+              <p>Hook Address</p>
+              <code data-address-value>not mined yet</code>
+            </div>
+          </section>
+
+          <div class="copy-row">
+            <button type="button" data-copy-salt-button>Copy salt</button>
+            <button type="button" data-copy-address-button>Copy address</button>
+          </div>
+
+          <pre data-output>{
+  "status": "loading-hook-miner"
+}</pre>
+        </article>
+      </section>
+    </main>
+    <script type="module" src="/hook-miner.js"></script>
+  </body>
+</html>`;
+}
+
 export async function buildClientBundle(): Promise<string> {
   const clientEntrypoint = new URL("./client.ts", import.meta.url).pathname;
 
@@ -550,6 +903,33 @@ export async function buildClientBundle(): Promise<string> {
   return await output.text();
 }
 
+export async function buildHookMinerBundle(): Promise<string> {
+  const minerEntrypoint = new URL("./hook-miner.ts", import.meta.url).pathname;
+
+  const result = await Bun.build({
+    entrypoints: [minerEntrypoint],
+    target: "browser",
+    format: "esm",
+    minify: false,
+    sourcemap: "inline",
+  });
+
+  if (!result.success || result.outputs.length === 0) {
+    const logs = result.logs
+      .map((log: { message: string }) => log.message)
+      .join("\n");
+    throw new Error(`Failed to build hook miner bundle.\n${logs}`);
+  }
+
+  const output = result.outputs[0];
+
+  if (!output) {
+    throw new Error("Bun.build returned no hook miner bundle output.");
+  }
+
+  return await output.text();
+}
+
 export async function loadIdKitWasmFile(): Promise<Bun.BunFile> {
   const idKitEntryUrl = await import.meta.resolve("@worldcoin/idkit-core");
   const wasmUrl = new URL("idkit_wasm_bg.wasm", idKitEntryUrl);
@@ -562,8 +942,34 @@ export async function loadIdKitWasmFile(): Promise<Bun.BunFile> {
   return wasmFile;
 }
 
+export function loadHookMinerWorkerFile(): Bun.BunFile {
+  return Bun.file(new URL("./hook-miner-worker.js", import.meta.url));
+}
+
+export function loadHookMinerModuleFile(): Bun.BunFile {
+  return Bun.file(
+    new URL("./vendor/hook-miner/miner_wasm_worker.js", import.meta.url),
+  );
+}
+
+export function loadHookMinerWasmFile(): Bun.BunFile {
+  return Bun.file(
+    new URL("./vendor/hook-miner/miner_wasm_worker_bg.wasm", import.meta.url),
+  );
+}
+
 let clientBundlePromise: Promise<string> | undefined;
 let idKitWasmFilePromise: Promise<Bun.BunFile> | undefined;
+let hookMinerBundlePromise: Promise<string> | undefined;
+
+export interface WebFetchAssets {
+  clientBundle?: string;
+  hookMinerBundle?: string;
+  wasmBody?: BodyInit;
+  hookMinerWorkerBody?: BodyInit;
+  hookMinerModuleBody?: BodyInit;
+  hookMinerWasmBody?: BodyInit;
+}
 
 function getClientBundle(): Promise<string> {
   clientBundlePromise ??= buildClientBundle();
@@ -575,9 +981,30 @@ function getIdKitWasmFile(): Promise<Bun.BunFile> {
   return idKitWasmFilePromise;
 }
 
-export async function createWebFetchHandler(config: WebConfig) {
-  const clientBundle = await getClientBundle();
-  const wasmFile = await getIdKitWasmFile();
+function getHookMinerBundle(): Promise<string> {
+  hookMinerBundlePromise ??= buildHookMinerBundle();
+  return hookMinerBundlePromise;
+}
+
+export async function createWebFetchHandler(
+  config: WebConfig,
+  assets: WebFetchAssets = {},
+) {
+  const [
+    clientBundle,
+    hookMinerBundle,
+    wasmFile,
+    hookMinerWorkerFile,
+    hookMinerModuleFile,
+    hookMinerWasmFile,
+  ] = await Promise.all([
+    assets.clientBundle ?? getClientBundle(),
+    assets.hookMinerBundle ?? getHookMinerBundle(),
+    assets.wasmBody ?? getIdKitWasmFile(),
+    assets.hookMinerWorkerBody ?? loadHookMinerWorkerFile(),
+    assets.hookMinerModuleBody ?? loadHookMinerModuleFile(),
+    assets.hookMinerWasmBody ?? loadHookMinerWasmFile(),
+  ]);
   const browserConfig = {
     apiBaseUrl: config.apiBaseUrl,
     worldAction: config.worldAction,
@@ -599,6 +1026,46 @@ export async function createWebFetchHandler(config: WebConfig) {
       return new Response(clientBundle, {
         headers: {
           "content-type": "application/javascript; charset=utf-8",
+        },
+      });
+    }
+
+    if (url.pathname === "/hook-miner" || url.pathname === "/hook-miner.html") {
+      return new Response(renderHookMinerHtml(), {
+        headers: {
+          "content-type": "text/html; charset=utf-8",
+        },
+      });
+    }
+
+    if (url.pathname === "/hook-miner.js") {
+      return new Response(hookMinerBundle, {
+        headers: {
+          "content-type": "application/javascript; charset=utf-8",
+        },
+      });
+    }
+
+    if (url.pathname === "/hook-miner-worker.js") {
+      return new Response(hookMinerWorkerFile, {
+        headers: {
+          "content-type": "application/javascript; charset=utf-8",
+        },
+      });
+    }
+
+    if (url.pathname === "/vendor/hook-miner/miner_wasm_worker.js") {
+      return new Response(hookMinerModuleFile, {
+        headers: {
+          "content-type": "application/javascript; charset=utf-8",
+        },
+      });
+    }
+
+    if (url.pathname === "/vendor/hook-miner/miner_wasm_worker_bg.wasm") {
+      return new Response(hookMinerWasmFile, {
+        headers: {
+          "content-type": "application/wasm",
         },
       });
     }

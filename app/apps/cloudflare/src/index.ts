@@ -60,6 +60,10 @@ export function createCloudflareFetchHandler(
       ),
     );
 
+    app.get("/hook-miner", (c) =>
+      env.ASSETS.fetch(new Request(new URL("/hook-miner.html", c.req.url))),
+    );
+
     if (auctionPaymentMiddleware) {
       app.use("/api/auctions/*", auctionPaymentMiddleware);
     }
