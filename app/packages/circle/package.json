@@ -1,11 +1,16 @@
 {
   "name": "circle",
   "module": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
   "type": "module",
   "scripts": {
+    "check": "bun --eval \"await import('./index.ts')\"",
     "build": "tsc --noEmit",
     "fmt": "prettier --write .",
-    "arc": "bun scripts/arc.ts"
+    "arc": "bun scripts/arc.ts",
+    "test": "bun test"
   },
   "devDependencies": {
     "@types/bun": "latest",
