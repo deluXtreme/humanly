@@ -4,7 +4,10 @@ import { onDepositForBurn } from "./main";
 import type { Config } from "./main";
 import type { EVMLog } from "@chainlink/cre-sdk";
 import { type Hex, hexToBytes, pad } from "viem";
-import { parseAttestationData, irisStatusUrl } from "../../app/packages/circle/src/iris-types";
+import {
+  parseAttestationData,
+  irisStatusUrl,
+} from "../../app/packages/circle/src/iris-types";
 
 function toBytes(hex: string, size: number): Uint8Array {
   return hexToBytes(pad(hex as Hex, { size }));
@@ -19,19 +22,24 @@ function buildDepositForBurnLog(opts: {
   //   [0] amount  [1] mintRecipient  [2] destinationDomain
   //   [3] destinationTokenMessenger  [4] destinationCaller  [5] maxFee
   const data = new Uint8Array(6 * 32);
-  const amountHex = `0x${(opts.amount ?? 201838n).toString(16).padStart(64, "0")}` as Hex;
+  const amountHex =
+    `0x${(opts.amount ?? 201838n).toString(16).padStart(64, "0")}` as Hex;
   data.set(hexToBytes(amountHex), 0);
   data.set(toBytes(opts.destinationCaller, 32), 4 * 32);
 
   return {
     address: hexToBytes("0x28b5a0e9c621a5badaa536219b3a228c8168cf5d"),
     topics: [
-      hexToBytes("0x0c8c1cbdc5190613ebd485511d4e2812cfa45eecb79d845893331fedad5130a5"),
+      hexToBytes(
+        "0x0c8c1cbdc5190613ebd485511d4e2812cfa45eecb79d845893331fedad5130a5",
+      ),
     ],
     txHash: toBytes(opts.txHash, 32),
     blockHash: new Uint8Array(32),
     data,
-    eventSig: hexToBytes("0x0c8c1cbdc5190613ebd485511d4e2812cfa45eecb79d845893331fedad5130a5"),
+    eventSig: hexToBytes(
+      "0x0c8c1cbdc5190613ebd485511d4e2812cfa45eecb79d845893331fedad5130a5",
+    ),
     blockNumber: BigInt(12345),
     txIndex: 0,
     index: 0,
@@ -46,6 +54,8 @@ const AUCTION_CONTRACT = "0x1234567890abcdef1234567890abcdef12345678";
 describe("onDepositForBurn filter", () => {
   test("returns empty string when destinationCaller does not match", async () => {
     const config: Config = {
+      network: "mainnet",
+      srcDomain: 6,
       cctpAuctionCaller: AUCTION_CALLER,
       cctpAuctionContract: AUCTION_CONTRACT,
     };
@@ -55,7 +65,8 @@ describe("onDepositForBurn filter", () => {
     const otherCaller =
       "0x0000000000000000000000001111111111111111111111111111111111111111";
     const log = buildDepositForBurnLog({
-      txHash: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      txHash:
+        "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       destinationCaller: otherCaller,
     });
 
@@ -65,6 +76,8 @@ describe("onDepositForBurn filter", () => {
 
   test("logs skip message for non-matching caller", async () => {
     const config: Config = {
+      network: "mainnet",
+      srcDomain: 6,
       cctpAuctionCaller: AUCTION_CALLER,
       cctpAuctionContract: AUCTION_CONTRACT,
     };
@@ -72,8 +85,9 @@ describe("onDepositForBurn filter", () => {
     runtime.config = config;
 
     const log = buildDepositForBurnLog({
-      txHash: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-      destinationCaller: "0x" + "00".repeat(32) as Hex,
+      txHash:
+        "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      destinationCaller: ("0x" + "00".repeat(32)) as Hex,
     });
 
     onDepositForBurn(runtime, log);
@@ -102,7 +116,8 @@ describe("parseAttestationData", () => {
           decodedMessage: {
             sourceDomain: "6",
             destinationDomain: "10",
-            destinationCaller: "0x0000000000000000000000000000000000000000000000000000000000000000" as Hex,
+            destinationCaller:
+              "0x0000000000000000000000000000000000000000000000000000000000000000" as Hex,
           },
         },
       ],
@@ -134,8 +149,6 @@ describe("parseAttestationData", () => {
   });
 
   test("throws when no messages", async () => {
-    expect(() => parseAttestationData({ messages: [] })).toThrow(
-      "No messages",
-    );
+    expect(() => parseAttestationData({ messages: [] })).toThrow("No messages");
   });
 });

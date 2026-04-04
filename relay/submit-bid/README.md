@@ -8,16 +8,19 @@ Steps to run the example
 
 You need to add a private key to env file. This is specifically required if you want to simulate chain writes. For that to work the key should be valid and funded.
 If your workflow does not do any chain write then you can just put any dummy key as a private key. e.g.
+
 ```
 CRE_ETH_PRIVATE_KEY=0000000000000000000000000000000000000000000000000000000000000001
 ```
 
 ## 2. Install dependencies
+
 ```bash
 bun install
 ```
 
 ## 3. Simulate the workflow
+
 Run the command from <b>project root directory</b>
 
 ```bash
