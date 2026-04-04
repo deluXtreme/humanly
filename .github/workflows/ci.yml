@@ -28,7 +28,7 @@ jobs:
       #   run: bun run --filter '*' build
 
       - name: Format check
-        run: cd packages/circle && bunx prettier --check .
+        run: bun run --filter 'circle' fmt -- --check
 
   relay:
     name: Relay CRE

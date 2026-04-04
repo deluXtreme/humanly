@@ -3,5 +3,8 @@
   "version": "0.1.0",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "fmt": "bun run --filter 'circle' fmt"
+  }
 }

@@ -1,22 +1,23 @@
 import type { Hash } from "viem";
-import type { IrisMessageResponse } from "./iris-types";
-
-export type {
+import type {
+  AttestationData,
   CctpFeeData,
   IrisMessageResponse,
-  AttestationData,
 } from "./iris-types";
+import { irisStatusUrl, parseAttestationData } from "./iris-types";
+
+export type { CctpFeeData, IrisMessageResponse, AttestationData };
 export { computeFees, irisStatusUrl, parseAttestationData } from "./iris-types";
 
 export async function getCctpFees(
   irisApiBase: string,
   srcDomain: number,
   destDomain: number,
-): Promise<import("./iris-types").CctpFeeData[]> {
+): Promise<CctpFeeData[]> {
   const res = await fetch(
     `${irisApiBase}/v2/burn/USDC/fees/${srcDomain}/${destDomain}?forward=true`,
   );
-  return res.json() as Promise<import("./iris-types").CctpFeeData[]>;
+  return res.json() as Promise<CctpFeeData[]>;
 }
 
 export async function getAttestationData(
@@ -24,8 +25,7 @@ export async function getAttestationData(
   srcDomain: number,
   burnTxHash: Hash,
   pollIntervalMs = 2000,
-): Promise<import("./iris-types").AttestationData> {
-  const { irisStatusUrl, parseAttestationData } = await import("./iris-types");
+): Promise<AttestationData> {
   const url = irisStatusUrl(irisApiBase, srcDomain, burnTxHash);
 
   while (true) {

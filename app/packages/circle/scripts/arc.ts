@@ -67,7 +67,11 @@ async function main() {
 
   // Step 1: Get fees
   console.log("\nStep 1: Getting CCTP fees...");
-  const fees = await getCctpFees(irisApiBase, srcChain.domain, destChain.domain);
+  const fees = await getCctpFees(
+    irisApiBase,
+    srcChain.domain,
+    destChain.domain,
+  );
   const transferAmount = 1n; // 1 WEI USDC
   const feeData = fees[0];
   if (!feeData) throw new Error("No fee data returned from Iris API");

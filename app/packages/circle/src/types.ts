@@ -6,9 +6,5 @@ import type {
   WalletClient,
 } from "viem";
 
-export type ClientWithPublicActions = WalletClient<
-  Transport,
-  Chain,
-  Account
-> &
+export type ClientWithPublicActions = WalletClient<Transport, Chain, Account> &
   PublicActions;
