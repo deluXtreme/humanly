@@ -2,16 +2,16 @@
 
 [profile.default]
   auto_detect_solc = false
+  skip = ["node_modules"]
   block_timestamp = 1_738_368_000 # Feb 1, 2025 at 00:00 GMT
   bytecode_hash = "none"
-  evm_version = "shanghai"
   fuzz = { runs = 1_000 }
   gas_reports = ["*"]
   optimizer = true
   optimizer_runs = 10_000
   out = "out"
   script = "script"
-  solc = "0.8.29"
+  solc = "0.7.6"
   src = "src"
   test = "tests"
 
