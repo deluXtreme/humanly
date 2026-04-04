@@ -6,6 +6,7 @@
     "apps/*"
   ],
   "scripts": {
+    "arc": "bun run --filter circle arc",
     "fmt": "bun run --filter 'circle' fmt"
   },
   "devDependencies": {

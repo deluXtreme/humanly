@@ -16,6 +16,10 @@ bun install
 ```
 
 ```bash
+bun run arc
+```
+
+```bash
 bun test --filter world
 ```
 
