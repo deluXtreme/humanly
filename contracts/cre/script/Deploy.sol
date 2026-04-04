@@ -17,9 +17,9 @@ contract Deploy is Script {
         // Arc testnet
         // Forwarder: https://docs.chain.link/cre/guides/workflow/using-evm-client/forwarder-directory-ts
         _deploymentParams[5_042_002] = DeploymentParams({
-            // Simulation Testnet Forewarder.
+            // Simulation Testnet Forwarder.
             forwarder: 0x6E9EE680ef59ef64Aa8C7371279c27E496b5eDc1,
-            cctpAuction: address(0) // TODO: fill in after deploying CCTPAuction
+            cctpAuction: 0x2CDf56BE53C9758D1B9f0Fc891B650e82BB64c52
         });
         // Base Sepolia
         // Forwarder: https://docs.chain.link/cre/guides/workflow/using-evm-client/forwarder-directory-ts

@@ -46,7 +46,16 @@ forge verify-contract <CONTRACT_ADDRESS> src/<Contract>.sol:<Contract> \
 
 | Network            | Chain ID | RPC Alias          | Blockscout API URL                              |
 | ------------------ | -------- | ------------------ | ------------------------------------------------ |
+| Arc Testnet        | 5042002  | `arc_testnet`      | `https://testnet.arcscan.app/api/`               |
 | Base Mainnet       | 8453     | `base`             | `https://base.blockscout.com/api/`               |
 | Unichain Mainnet   | 130      | `unichain`         | `https://unichain.blockscout.com/api/`           |
 | Base Sepolia       | 84532    | `base_sepolia`     | `https://base-sepolia.blockscout.com/api/`       |
 | Unichain Sepolia   | 1301     | `unichain_sepolia` | `https://unichain-sepolia.blockscout.com/api/`   |
+
+### Deployed Addresses
+
+| Network          | CCTPAuction | CCTPAuctionWrapper |
+| ---------------- | ----------- | ------------------ |
+| Arc Testnet      | [`0x2CDf56BE53C9758D1B9f0Fc891B650e82BB64c52`](https://testnet.arcscan.app/address/0x2CDf56BE53C9758D1B9f0Fc891B650e82BB64c52) | [`0x7737cae00C4D0eB677a66AFEF921E7d7EeD32c55`](https://testnet.arcscan.app/address/0x7737cae00C4D0eB677a66AFEF921E7d7EeD32c55) |
+| Unichain Sepolia | [`0xe10288AD9581c5954f2947e6B0FF136B5a942bbf`](https://unichain-sepolia.blockscout.com/address/0xe10288AD9581c5954f2947e6B0FF136B5a942bbf) | [`0x3aE495B2cB9E9E7EBaf00C215796D23fEE3c2aE4`](https://unichain-sepolia.blockscout.com/address/0x3aE495B2cB9E9E7EBaf00C215796D23fEE3c2aE4) |
+
