@@ -38,10 +38,12 @@ export interface WorldRpContextRequestBody {
 export type WorldRpContextResponse = HybridWorldIdRequest;
 
 export interface WorldVerifyRequestBody {
-  nonce: Hex;
-  action: string;
+  nonce: string;
+  action?: string;
   responses: WorldLegacyProofResponse[];
   protocolVersion?: WorldProofProtocolVersion;
+  protocol_version?: WorldProofProtocolVersion;
+  environment?: string;
 }
 
 export interface HandleApiWorldRequestOptions

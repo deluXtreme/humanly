@@ -71,16 +71,34 @@ describe("api app", () => {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        nonce: "0xabcd",
+        nonce: "nonce-demo",
         action: "create-auction",
+        environment: "production",
+        protocol_version: "3.0",
         responses: [],
       }),
     });
 
     const response = await handleWorldVerifyRequest(request, {
       config,
-      fetchImplementation: (async () =>
-        new Response(
+      fetchImplementation: (async (_input, init) => {
+        const body = JSON.parse(String(init?.body)) as {
+          protocol_version: string;
+          nonce: string;
+          action?: string;
+          environment?: string;
+          responses: unknown[];
+        };
+
+        expect(body).toEqual({
+          protocol_version: "3.0",
+          nonce: "nonce-demo",
+          action: "create-auction",
+          environment: "production",
+          responses: [],
+        });
+
+        return new Response(
           JSON.stringify({
             success: true,
             action: "create-auction",
@@ -91,7 +109,8 @@ describe("api app", () => {
               "content-type": "application/json",
             },
           },
-        )) as WorldFetchImplementation,
+        );
+      }) as WorldFetchImplementation,
     });
 
     expect(response.status).toBe(200);
