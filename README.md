@@ -52,10 +52,15 @@ forge verify-contract <CONTRACT_ADDRESS> src/<Contract>.sol:<Contract> \
 | Base Sepolia       | 84532    | `base_sepolia`     | `https://base-sepolia.blockscout.com/api/`       |
 | Unichain Sepolia   | 1301     | `unichain_sepolia` | `https://unichain-sepolia.blockscout.com/api/`   |
 
-### Deployed Addresses
+### Mainnet Deployed Addresses
+
+| Network      | CCTPAuction | CREAuctionWrapper | CCA |
+| ------------ | ----------- | ----------------- | --- |
+| Base Mainnet | [`0xBFb2Cb1C39C914CBf3eE6C5B094eD71D7d8410C8`](https://basescan.org/address/0xBFb2Cb1C39C914CBf3eE6C5B094eD71D7d8410C8) | [`0xE08166250c9f666E301E9EeBE22ecDE77eA4b787`](https://basescan.org/address/0xE08166250c9f666E301E9EeBE22ecDE77eA4b787) | [`0x27c2a11AA3E2237fDE4aE782cC36eBBB49d26c57`](https://basescan.org/address/0x27c2a11AA3E2237fDE4aE782cC36eBBB49d26c57) |
+
+### Testnet Deployed Addresses
 
 | Network          | CCTPAuction | CREAuctionWrapper |
-| ---------------- | ----------- | ------------------ |
+| ---------------- | ----------- | ----------------- |
 | Arc Testnet      | [`0x2CDf56BE53C9758D1B9f0Fc891B650e82BB64c52`](https://testnet.arcscan.app/address/0x2CDf56BE53C9758D1B9f0Fc891B650e82BB64c52) | [`0x7737cae00C4D0eB677a66AFEF921E7d7EeD32c55`](https://testnet.arcscan.app/address/0x7737cae00C4D0eB677a66AFEF921E7d7EeD32c55) |
 | Unichain Sepolia | [`0xe10288AD9581c5954f2947e6B0FF136B5a942bbf`](https://unichain-sepolia.blockscout.com/address/0xe10288AD9581c5954f2947e6B0FF136B5a942bbf) | [`0x3aE495B2cB9E9E7EBaf00C215796D23fEE3c2aE4`](https://unichain-sepolia.blockscout.com/address/0x3aE495B2cB9E9E7EBaf00C215796D23fEE3c2aE4) |
-

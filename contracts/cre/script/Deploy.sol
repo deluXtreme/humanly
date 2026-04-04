@@ -32,7 +32,7 @@ contract Deploy is Script {
         // Forwarder: https://docs.chain.link/cre/guides/workflow/using-evm-client/forwarder-directory-ts
         _deploymentParams[8453] = DeploymentParams({
             forwarder: 0xF8344CFd5c43616a4366C34E3EEE75af79a74482,
-            cctpAuction: address(0) // TODO: fill in after deploying CCTPAuction
+            cctpAuction: 0xBFb2Cb1C39C914CBf3eE6C5B094eD71D7d8410C8
         });
 
         // Unichain Mainnet
