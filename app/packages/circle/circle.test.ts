@@ -22,9 +22,9 @@ describe("circle package exports", () => {
   });
 
   test("encodes cctp-forward hook data prefix", () => {
-    expect(encodeHookData("0x1234").startsWith("0x636374702d666f7277617264")).toBe(
-      true,
-    );
+    expect(
+      encodeHookData("0x1234").startsWith("0x636374702d666f7277617264"),
+    ).toBe(true);
   });
 
   test("exports the deposit for burn topic", () => {
