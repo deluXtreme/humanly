@@ -46,7 +46,7 @@ function parseOptionalPositiveInteger(
 }
 
 export function createApiWorldConfig(
-  env: ApiWorldEnv = process.env,
+  env: ApiWorldEnv = {},
 ): ApiWorldConfig {
   return {
     appId: readRequiredEnv(env, "WORLD_APP_ID") as `app_${string}`,

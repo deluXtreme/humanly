@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import type { SignWorldRpRequestInput } from "./types.ts";
 
 import {
   WORLD_LEGACY_PROTOCOL_VERSION,
@@ -90,7 +91,11 @@ describe("world package", () => {
           "0x1111111111111111111111111111111111111111111111111111111111111111",
       },
       {
-        signRequestImplementation: ({ action, signingKeyHex, ttl }) => {
+        signRequestImplementation: ({
+          action,
+          signingKeyHex,
+          ttl,
+        }: SignWorldRpRequestInput) => {
           expect(action).toBe("create-auction");
           expect(signingKeyHex).toBe(
             "0x1111111111111111111111111111111111111111111111111111111111111111",
@@ -98,8 +103,8 @@ describe("world package", () => {
           expect(ttl).toBeUndefined();
 
           return {
-            sig: "0xaaaa",
-            nonce: "0xbbbb",
+            sig: "0xaaaa" as const,
+            nonce: "0xbbbb" as const,
             createdAt: 1_775_186_400,
             expiresAt: 1_775_186_700,
           };
@@ -137,8 +142,8 @@ describe("world package", () => {
           expect(ttl).toBe(300);
 
           return {
-            sig: "0xcccc",
-            nonce: "0xdddd",
+            sig: "0xcccc" as const,
+            nonce: "0xdddd" as const,
             createdAt: 1_775_186_400,
             expiresAt: 1_775_186_700,
           };

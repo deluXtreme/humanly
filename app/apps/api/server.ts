@@ -1,5 +1,6 @@
 import { createApiWorldConfig } from "./config.ts";
 import { createApiRouter } from "./index.ts";
+import type { ApiWorldEnv } from "./types.ts";
 
 function parsePort(value: string | undefined): number {
   if (!value) {
@@ -16,7 +17,7 @@ function parsePort(value: string | undefined): number {
 }
 
 function createServerFetchHandler() {
-  const worldConfig = createApiWorldConfig(process.env);
+  const worldConfig = createApiWorldConfig(process.env as ApiWorldEnv);
   const apiRouter = createApiRouter({ config: worldConfig });
 
   return function fetch(request: Request): Promise<Response> | Response {
