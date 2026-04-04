@@ -1,5 +1,50 @@
 # Humanly
 
+## Architecture
+
+Humanly is a sybil-resistant token launch platform. Issuers prove their humanity via **World ID** before launching a **Uniswap Continuous Clearing Auction (CCA)**. Participants bid cross-chain using **Circle CCTP** for USDC transfers and **Chainlink CRE** for message relay.
+
+```mermaid
+flowchart LR
+    subgraph Source Chain
+        U([User / Bidder])
+        U -->|burn USDC + hook data| CCTP_Src[Circle CCTP<br/>TokenMessenger]
+    end
+
+    subgraph Chainlink CRE
+        CCTP_Src -.->|log event trigger| CRE[CRE Workflow<br/>constructs report]
+    end
+
+    subgraph Destination Chain – Base
+        CRE -->|deliver report| Wrapper[CREAuctionWrapper<br/><i>contracts/cre</i>]
+        Wrapper -->|mintAndSubmitBid| Auction[CCTPAuction<br/><i>contracts/cctp</i>]
+        Auction -->|receiveMessage| CCTP_Dst[Circle CCTP<br/>MessageTransmitter]
+        CCTP_Dst -->|mint USDC| Auction
+        Auction -->|submitBid| CCA[Uniswap CCA]
+
+        Issuer([Token Issuer])
+        Issuer -->|World ID proof +<br/>token params| HumanlyCCA[HumanlyCCA<br/><i>contracts/cca</i>]
+        HumanlyCCA -->|verify| WorldID[World ID<br/>Satellite]
+        HumanlyCCA -->|createToken +<br/>distributeToken| LL[Uniswap<br/>LiquidityLauncher]
+        LL -->|launch| CCA
+    end
+```
+
+### Contracts
+
+| Project | Contract | Solidity | Role |
+|---------|----------|----------|------|
+| `contracts/cca` | `HumanlyCCA` | 0.8.34 | Verifies World ID proof, creates token, launches CCA |
+| `contracts/cctp` | `CCTPAuction` | 0.7.6 | Mints cross-chain USDC via CCTP, places auction bids |
+| `contracts/cre` | `CREAuctionWrapper` | 0.8.34 | Chainlink CRE receiver, forwards reports to CCTPAuction |
+
+### Integrated Protocols
+
+- **[Circle CCTP](https://developers.circle.com/stablecoins/cctp-getting-started)** — Cross-chain USDC transfers (burn on source, mint on destination)
+- **[Chainlink CRE](https://docs.chain.link/cre)** — Log event trigger + report delivery from source to destination chain
+- **[World ID](https://docs.worldcoin.org/)** — Proof-of-humanity verification for token issuers
+- **[Uniswap CCA](https://docs.uniswap.org/)** — Continuous Clearing Auction for fair token distribution
+
 ## Contract Deployment
 
 Contracts are split into two separate Forge projects under `contracts/`:
