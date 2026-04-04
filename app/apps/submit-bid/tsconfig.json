@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": [],
+    "types": ["@types/bun"],
     "baseUrl": ".",
     "paths": {
       "viem": ["./node_modules/viem"],

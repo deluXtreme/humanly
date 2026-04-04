@@ -23,9 +23,11 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # TODO: fix tsconfig to resolve @types/bun so tsc --noEmit works
-      # - name: Build
-      #   run: bun run --filter '*' build
+      - name: Build
+        run: bun run --filter '*' build
+
+      - name: Test
+        run: bun run --filter '*' test
 
       - name: Format check
         run: bun run --filter 'circle' fmt -- --check
@@ -35,16 +37,13 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: relay/submit-bid
+        working-directory: app/apps/submit-bid
     steps:
       - uses: actions/checkout@v5
 
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
-      - name: Install relay dependencies
-        run: bun install --frozen-lockfile
 
       - name: Install app dependencies
         run: bun install --frozen-lockfile
@@ -62,5 +61,5 @@ jobs:
       - name: Compile workflow
         run: |
           export PATH="$HOME/.cre/bin:$PATH"
-          cd ..
-          cre workflow build submit-bid --target staging-settings
+          cd ../..
+          cre workflow build apps/submit-bid --target staging-settings
