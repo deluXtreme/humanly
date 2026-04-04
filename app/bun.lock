@@ -13,6 +13,7 @@
     "apps/api": {
       "name": "api",
       "dependencies": {
+        "viem": "^2.47.10",
         "world": "workspace:*",
       },
       "devDependencies": {
@@ -57,7 +58,7 @@
     "apps/web": {
       "name": "web",
       "dependencies": {
-        "@worldcoin/idkit-core": "latest",
+        "@worldcoin/idkit-core": "4.0.16",
         "qrcode": "latest",
         "uniswap": "workspace:*",
         "viem": "^2.47.10",
