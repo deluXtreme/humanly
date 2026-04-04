@@ -77,22 +77,24 @@ export interface WorldLegacyProofResponse {
   merkle_root: Hex;
   nullifier: Hex;
   proof: Hex;
-  signal_hash: Hex;
+  signal_hash?: Hex;
   max_age?: number;
 }
 
 export interface WorldVerifyRequestPayload {
   protocol_version: WorldProofProtocolVersion;
-  nonce: Hex;
-  action: string;
+  nonce: string;
+  action?: string;
   responses: WorldLegacyProofResponse[];
+  environment?: string;
 }
 
 export interface CreateWorldVerifyRequestPayloadInput {
-  nonce: Hex;
-  action: string;
+  nonce: string;
+  action?: string;
   responses: WorldLegacyProofResponse[];
   protocolVersion?: WorldProofProtocolVersion;
+  environment?: string;
 }
 
 export interface WorldVerifyResult {

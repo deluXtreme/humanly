@@ -45,10 +45,19 @@ export function createHybridWorldIdRequest(
 export function createWorldVerifyRequestPayload(
   input: CreateWorldVerifyRequestPayloadInput,
 ): WorldVerifyRequestPayload {
-  return {
+  const payload: WorldVerifyRequestPayload = {
     protocol_version: input.protocolVersion ?? WORLD_LEGACY_PROTOCOL_VERSION,
     nonce: input.nonce,
-    action: input.action,
     responses: input.responses,
   };
+
+  if (input.action) {
+    payload.action = input.action;
+  }
+
+  if (input.environment) {
+    payload.environment = input.environment;
+  }
+
+  return payload;
 }

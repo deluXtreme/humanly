@@ -10,6 +10,7 @@ import {
   createWorldRpContext,
   createWorldVerifyRequestPayload,
   decodeLegacyWorldProof,
+  verifyWorldProof,
   signWorldRpRequest,
 } from "./index.ts";
 
@@ -48,12 +49,16 @@ describe("world package", () => {
 
   test("builds a verify payload with the legacy protocol by default", () => {
     const payload = createWorldVerifyRequestPayload({
-      nonce: "0xabcd",
+      nonce: "nonce-demo",
       action: "create-auction",
+      environment: "production",
       responses: [],
     });
 
     expect(payload.protocol_version).toBe(WORLD_LEGACY_PROTOCOL_VERSION);
+    expect(payload.nonce).toBe("nonce-demo");
+    expect(payload.action).toBe("create-auction");
+    expect(payload.environment).toBe("production");
   });
 
   test("decodes a legacy uint256[8] proof into bigint values", () => {
@@ -157,5 +162,49 @@ describe("world package", () => {
       createdAt: 1_775_186_400,
       expiresAt: 1_775_186_700,
     });
+  });
+
+  test("sends a User-Agent header when verifying proofs", async () => {
+    let capturedHeaders: HeadersInit | undefined;
+
+    await verifyWorldProof(
+      {
+        protocol_version: "3.0",
+        nonce: "nonce-demo",
+        action: "create-auction",
+        responses: [
+          {
+            identifier: "orb",
+            merkle_root: "0x01",
+            nullifier: "0x02",
+            proof: "0x03",
+            signal_hash: "0x04",
+          },
+        ],
+      },
+      {
+        rpId: "rp_demo",
+        fetchImplementation: async (_input, init) => {
+          capturedHeaders = init?.headers;
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              action: "create-auction",
+            }),
+            {
+              status: 200,
+              headers: {
+                "content-type": "application/json",
+              },
+            },
+          );
+        },
+      },
+    );
+
+    const headers = new Headers(capturedHeaders);
+    expect(headers.get("user-agent")).toBe("humanly-world-verify/0.1");
+    expect(headers.get("accept")).toBe("application/json");
   });
 });

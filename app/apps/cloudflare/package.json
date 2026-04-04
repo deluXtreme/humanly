@@ -13,7 +13,11 @@
     "deploy": "wrangler deploy"
   },
   "dependencies": {
+    "@x402/core": "^2.9.0",
+    "@x402/evm": "^2.9.0",
+    "@x402/hono": "^2.9.0",
     "api": "workspace:*",
+    "hono": "^4.12.10",
     "web": "workspace:*",
     "world": "workspace:*"
   },

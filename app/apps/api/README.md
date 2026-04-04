@@ -8,6 +8,9 @@ This app owns runtime concerns that should not live in reusable packages:
 - enforcing the allowed World action list
 - exposing `/api/worldid/rp-context`
 - exposing `/api/worldid/verify`
+- exposing `/api/auctions/:chain/:auction`
+- exposing `/api/auctions/:chain/:auction/preview-bid`
+- exposing `/api/auctions/:chain/:auction/build-bid-tx`
 - request routing and runtime integration
 
 ## Env
@@ -70,3 +73,13 @@ The server exposes:
 - `GET /healthz`
 - `POST /api/worldid/rp-context`
 - `POST /api/worldid/verify`
+- `GET /api/auctions/:chain/:auction`
+- `POST /api/auctions/:chain/:auction/preview-bid`
+- `POST /api/auctions/:chain/:auction/build-bid-tx`
+
+Auction participation support is currently narrow by design:
+
+- supported chains: `base`, `base-sepolia`
+- direct bid entrypoint only: `submitBid(uint256,uint128,address,uint256,bytes)`
+- no hosted submission yet
+- no cross-chain bidding yet

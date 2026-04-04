@@ -75,9 +75,10 @@ interface WorldLegacyProofResponse {
 
 interface WorldLegacyIdKitResult {
   nonce: `0x${string}`;
-  action: string;
+  action?: string;
   responses: WorldLegacyProofResponse[];
   protocol_version?: "3.0" | "4.0";
+  environment?: string;
 }
 
 interface HumanlyFutureWorldProofPreview {
@@ -218,10 +219,28 @@ function isWorldLegacyIdKitResult(value: unknown): value is WorldLegacyIdKitResu
 
   return (
     isHexString(candidate.nonce) &&
-    typeof candidate.action === "string" &&
     Array.isArray(candidate.responses) &&
     candidate.responses.every((response) => isWorldLegacyProofResponse(response))
   );
+}
+
+function normalizeVerificationPayload(
+  proofResult: unknown,
+  fallbackAction: string,
+): unknown {
+  if (!proofResult || typeof proofResult !== "object") {
+    return proofResult;
+  }
+
+  const candidate = proofResult as Record<string, unknown>;
+
+  return {
+    ...candidate,
+    action:
+      typeof candidate.action === "string" && candidate.action.trim().length > 0
+        ? candidate.action
+        : fallbackAction,
+  };
 }
 
 function clearConnectorUi() {
@@ -328,10 +347,26 @@ async function verifyProof(
     body: JSON.stringify(proofResult),
   });
 
-  const json = await response.json();
+  const rawBody = await response.text();
+  let json: { error?: string } | VerificationResponse | undefined;
+
+  try {
+    json = JSON.parse(rawBody) as { error?: string } | VerificationResponse;
+  } catch {
+    if (!response.ok) {
+      throw new Error(
+        `World proof verification failed with status ${response.status}.`,
+      );
+    }
+
+    throw new Error("World proof verification returned a non-JSON response.");
+  }
 
   if (!response.ok) {
-    throw new Error(json.error ?? "World proof verification failed.");
+    throw new Error(
+      ("error" in json ? json.error : undefined) ??
+        "World proof verification failed.",
+    );
   }
 
   return json as VerificationResponse;
@@ -479,9 +514,15 @@ function buildWorldProofPreview(): HumanlyFutureWorldProofPreview | null {
     return null;
   }
 
+  const action = state.worldProof.action ?? state.browserConfig?.worldAction;
+
+  if (!action) {
+    return null;
+  }
+
   return {
     verificationMode: "legacy_orb_v3",
-    action: state.worldProof.action,
+    action,
     signal: state.wallet.address,
     nonce: state.worldProof.nonce,
     merkleRoot: primaryResponse.merkle_root,
@@ -628,7 +669,7 @@ async function runWorldFlow() {
   setStatus("Verifying proof with the API...");
   const verificationResult = await verifyProof(
     config.apiBaseUrl,
-    completion.result,
+    normalizeVerificationPayload(completion.result, config.worldAction),
   );
 
   state.worldProof = completion.result;

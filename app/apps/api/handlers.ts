@@ -60,6 +60,18 @@ function assertHasAction(
   }
 }
 
+function normalizeWorldVerifyBody(
+  body: WorldVerifyRequestBody,
+) {
+  return createWorldVerifyRequestPayload({
+    nonce: body.nonce,
+    action: body.action,
+    responses: body.responses,
+    protocolVersion: body.protocolVersion ?? body.protocol_version,
+    environment: body.environment,
+  });
+}
+
 export async function handleWorldRpContextRequest(
   request: Request,
   options: HandleApiWorldRequestOptions,
@@ -122,12 +134,7 @@ export async function handleWorldVerifyRequest(
     assertHasAction(body);
     assertWorldActionAllowed(body.action, options.config);
 
-    const payload = createWorldVerifyRequestPayload({
-      nonce: body.nonce,
-      action: body.action,
-      responses: body.responses,
-      protocolVersion: body.protocolVersion,
-    });
+    const payload = normalizeWorldVerifyBody(body);
 
     const response = await verifyWorldProof(payload, {
       rpId: options.config.rpId,

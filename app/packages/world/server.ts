@@ -1,5 +1,8 @@
 import { createWorldRpContext } from "./client.ts";
-import { WORLD_DEFAULT_VERIFY_API_BASE_URL } from "./constants.ts";
+import {
+  WORLD_DEFAULT_VERIFY_API_BASE_URL,
+  WORLD_DEFAULT_VERIFY_USER_AGENT,
+} from "./constants.ts";
 import type {
   CreateSignedWorldRpContextInput,
   SignWorldRpRequestInput,
@@ -32,12 +35,27 @@ export async function verifyWorldProof(
       method: "POST",
       headers: {
         "content-type": "application/json",
+        accept: "application/json",
+        "user-agent": WORLD_DEFAULT_VERIFY_USER_AGENT,
       },
       body: JSON.stringify(payload),
     },
   );
 
-  const json = (await response.json()) as WorldVerifyResponse;
+  const rawBody = await response.text();
+  let json: WorldVerifyResponse | undefined;
+
+  try {
+    json = JSON.parse(rawBody) as WorldVerifyResponse;
+  } catch {
+    if (!response.ok) {
+      throw new Error(
+        `World verification failed with status ${response.status}.`,
+      );
+    }
+
+    throw new Error("World verification returned a non-JSON response.");
+  }
 
   if (!response.ok) {
     const message =

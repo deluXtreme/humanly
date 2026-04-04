@@ -38,10 +38,12 @@ export interface WorldRpContextRequestBody {
 export type WorldRpContextResponse = HybridWorldIdRequest;
 
 export interface WorldVerifyRequestBody {
-  nonce: Hex;
-  action: string;
+  nonce: string;
+  action?: string;
   responses: WorldLegacyProofResponse[];
   protocolVersion?: WorldProofProtocolVersion;
+  protocol_version?: WorldProofProtocolVersion;
+  environment?: string;
 }
 
 export interface HandleApiWorldRequestOptions
@@ -50,4 +52,105 @@ export interface HandleApiWorldRequestOptions
   config: ApiWorldConfig;
 }
 
-export type ApiRouterOptions = HandleApiWorldRequestOptions;
+export type SupportedAuctionChain = "base" | "base-sepolia";
+
+export interface AuctionEndpointInfoResponse {
+  chain: {
+    key: SupportedAuctionChain;
+    chainId: number;
+    name: string;
+    currencySymbol: "USDC";
+    currencyDecimals: 6;
+    x402Network: `eip155:${number}`;
+  };
+  auction: Hex;
+  bidFunction: {
+    signature: "submitBid(uint256,uint128,address,uint256,bytes)";
+    args: [
+      "maxPrice",
+      "amount",
+      "bidder",
+      "prevTickPrice",
+      "innerHookData",
+    ];
+  };
+  supportedActions: {
+    previewBid: true;
+    buildBidTx: true;
+    hostedSubmission: false;
+  };
+  paymentMode: "cloudflare_x402_when_configured";
+  note: string;
+}
+
+export interface AuctionBidRequestBody {
+  bidder: Hex;
+  amount: string;
+  maxPrice: string;
+  prevTickPrice?: string;
+  hookData?: Hex;
+  value?: string;
+}
+
+export interface NormalizedAuctionBidRequest {
+  bidder: Hex;
+  amount: string;
+  maxPrice: string;
+  prevTickPrice: string;
+  hookData: Hex;
+  value: string;
+}
+
+export interface BuiltAuctionBidTransaction {
+  chain: {
+    key: SupportedAuctionChain;
+    chainId: number;
+    name: string;
+  };
+  to: Hex;
+  data: Hex;
+  value: string;
+}
+
+export interface AuctionBidSimulationResult {
+  attempted: boolean;
+  ok: boolean;
+  error?: string;
+}
+
+export interface AuctionBidPreviewResponse {
+  chain: {
+    key: SupportedAuctionChain;
+    chainId: number;
+    name: string;
+  };
+  auction: Hex;
+  normalizedRequest: NormalizedAuctionBidRequest;
+  transaction: BuiltAuctionBidTransaction;
+  simulation: AuctionBidSimulationResult;
+  note: string;
+}
+
+export interface AuctionBuildBidTxResponse {
+  chain: {
+    key: SupportedAuctionChain;
+    chainId: number;
+    name: string;
+  };
+  auction: Hex;
+  normalizedRequest: NormalizedAuctionBidRequest;
+  transaction: BuiltAuctionBidTransaction;
+}
+
+export type AuctionBidSimulationImplementation = (
+  chain: SupportedAuctionChain,
+  auction: Hex,
+  request: NormalizedAuctionBidRequest,
+) => Promise<AuctionBidSimulationResult>;
+
+export interface HandleApiAuctionRequestOptions {
+  simulateAuctionBidImplementation?: AuctionBidSimulationImplementation;
+}
+
+export type ApiRouterOptions =
+  HandleApiWorldRequestOptions & HandleApiAuctionRequestOptions;

@@ -2,6 +2,8 @@ import type { Hex } from "./types.ts";
 
 export const WORLD_DEFAULT_VERIFY_API_BASE_URL =
   "https://developer.world.org/api/v4/verify";
+export const WORLD_DEFAULT_VERIFY_USER_AGENT =
+  "humanly-world-verify/0.1";
 
 export const WORLD_ORB_VERIFICATION_LEVEL = "orb" as const;
 export const WORLD_LEGACY_PROTOCOL_VERSION = "3.0" as const;
