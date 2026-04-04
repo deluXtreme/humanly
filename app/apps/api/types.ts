@@ -4,8 +4,8 @@ import type {
   SignWorldRpRequestOptions,
   VerifyWorldProofOptions,
   WorldAppId,
-  WorldLegacyProofResponse,
   WorldProofProtocolVersion,
+  WorldProofResponse,
   WorldRpId,
   WorldVerificationLevel,
 } from "world";
@@ -32,6 +32,7 @@ export interface WorldRpContextRequestBody {
   action: string;
   signal?: string;
   verificationLevel?: WorldVerificationLevel;
+  allowLegacyProofs?: boolean;
   ttl?: number;
 }
 
@@ -40,7 +41,7 @@ export type WorldRpContextResponse = HybridWorldIdRequest;
 export interface WorldVerifyRequestBody {
   nonce: string;
   action?: string;
-  responses: WorldLegacyProofResponse[];
+  responses: WorldProofResponse[];
   protocolVersion?: WorldProofProtocolVersion;
   protocol_version?: WorldProofProtocolVersion;
   environment?: string;

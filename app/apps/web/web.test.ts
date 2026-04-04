@@ -5,14 +5,17 @@ import { createWebFetchHandler } from "./server.ts";
 
 describe("web app", () => {
   test("creates the web config with sensible local defaults", () => {
-    const config = createWebConfig({});
+    const config = createWebConfig({
+      WORLD_RP_ID: "rp_1234567890abcdef",
+    });
 
     expect(config.apiBaseUrl).toBe("http://127.0.0.1:3010");
     expect(config.worldAction).toBe("create-auction");
+    expect(config.worldRpId).toBe("rp_1234567890abcdef");
     expect(config.host).toBe("127.0.0.1");
     expect(config.port).toBe(3011);
     expect(config.previewAddresses.liquidityLauncher).toBe(
-      "0x1111111111111111111111111111111111111111",
+      "0x00000008412db3394C91A5CbD01635c6d140637C",
     );
   });
 
@@ -20,6 +23,7 @@ describe("web app", () => {
     const config = createWebConfig({
       API_BASE_URL: "http://127.0.0.1:4010",
       WORLD_ACTION: "create-auction",
+      WORLD_RP_ID: "rp_abcdef1234567890",
       HOST: "0.0.0.0",
       PORT: "4011",
       PREVIEW_LIQUIDITY_LAUNCHER_ADDRESS:
@@ -34,6 +38,7 @@ describe("web app", () => {
 
     expect(config.apiBaseUrl).toBe("http://127.0.0.1:4010");
     expect(config.worldAction).toBe("create-auction");
+    expect(config.worldRpId).toBe("rp_abcdef1234567890");
     expect(config.host).toBe("0.0.0.0");
     expect(config.port).toBe(4011);
     expect(config.previewAddresses.uerc20Factory).toBe(
@@ -45,6 +50,7 @@ describe("web app", () => {
     const fetch = await createWebFetchHandler({
       apiBaseUrl: "http://127.0.0.1:3010",
       worldAction: "create-auction",
+      worldRpId: "rp_1234567890abcdef",
       host: "127.0.0.1",
       port: 3011,
       previewAddresses: {
@@ -55,6 +61,7 @@ describe("web app", () => {
         continuousClearingAuctionFactory:
           "0x4444444444444444444444444444444444444444",
       },
+      humanlyCcaAddress: "0x27c2a11AA3E2237fDE4aE782cC36eBBB49d26c57",
     });
 
     const response = fetch(new Request("http://local/idkit_wasm_bg.wasm"));
@@ -68,6 +75,7 @@ describe("web app", () => {
     const fetch = await createWebFetchHandler({
       apiBaseUrl: "http://127.0.0.1:3010",
       worldAction: "create-auction",
+      worldRpId: "rp_1234567890abcdef",
       host: "127.0.0.1",
       port: 3011,
       previewAddresses: {
@@ -78,6 +86,7 @@ describe("web app", () => {
         continuousClearingAuctionFactory:
           "0x4444444444444444444444444444444444444444",
       },
+      humanlyCcaAddress: "0x27c2a11AA3E2237fDE4aE782cC36eBBB49d26c57",
     });
 
     const response = fetch(new Request("http://local/"));
@@ -88,5 +97,6 @@ describe("web app", () => {
     expect(html).toContain("Connect wallet");
     expect(html).toContain("Build launch preview");
     expect(html).toContain("Verify with World ID");
+    expect(html).toContain("Create auction onchain");
   });
 });

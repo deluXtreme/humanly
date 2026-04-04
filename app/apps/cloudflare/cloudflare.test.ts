@@ -6,12 +6,13 @@ import type { HumanlyCloudflareEnv } from "./src/types.ts";
 function createTestEnv(): HumanlyCloudflareEnv {
   return {
     WORLD_APP_ID: "app_demo",
-    WORLD_RP_ID: "rp_demo",
+    WORLD_RP_ID: "rp_1234567890abcdef",
     WORLD_RP_SIGNING_KEY:
       "0x1111111111111111111111111111111111111111111111111111111111111111",
     WORLD_ALLOWED_ACTIONS: "create-auction",
     WORLD_ACTION: "create-auction",
     API_BASE_URL: "",
+    HUMANLY_CCA_ADDRESS: "0x27c2a11AA3E2237fDE4aE782cC36eBBB49d26c57",
     X402_PAY_TO: "0x0000000000000000000000000000000000000001",
     X402_NETWORK: "eip155:84532",
     X402_AUCTION_INFO_PRICE: "$0.001",
@@ -58,6 +59,7 @@ describe("cloudflare worker", () => {
     expect(await response.json()).toMatchObject({
       apiBaseUrl: "",
       worldAction: "create-auction",
+      worldRpId: "rp_1234567890abcdef",
     });
   });
 

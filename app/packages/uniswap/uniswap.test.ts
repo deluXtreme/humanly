@@ -22,6 +22,7 @@ import {
 import {
   buildHumanlyEncodedLaunchArtifacts,
   buildHumanlyFullRangeLaunchPlan,
+  computeHumanlyCcaSignalHash,
 } from "./builders.ts";
 import {
   decimalPriceToQ96,
@@ -110,6 +111,23 @@ describe("humanly uniswap launch surface", () => {
     expect(fields).toContain("auction.auctionBlocks");
     expect(fields).toContain("auction.migrationDelayBlocks");
     expect(fields).toContain("auction.sweepDelayBlocks");
+  });
+
+  test("rejects auction durations that cannot generate a valid schedule", () => {
+    const input = createDefaultHumanlyFullRangeLaunchInput();
+    input.token.name = "Humanly";
+    input.token.symbol = "HUM";
+    input.token.description = "Human-first launches with cross-chain bidding.";
+    input.auction.auctionBlocks = 10_000_001;
+
+    const issues = validateHumanlyFullRangeLaunchInput(input);
+    const scheduleIssue = issues.find(
+      (issue) => issue.field === "auction.auctionBlocks",
+    );
+
+    expect(scheduleIssue?.message).toContain(
+      "Generated final block MPS is not positive.",
+    );
   });
 
   test("rejects unsupported liquidity values", () => {
@@ -252,9 +270,15 @@ describe("humanly uniswap launch surface", () => {
     expect(plan.migratorParameters.maxCurrencyAmountForLP).toBe(2_500_000_000n);
     expect(plan.createToken.initialSupply).toBe(1_000_000n * 10n ** 18n);
     expect(plan.price.requiredCurrencyRaised).toBe(1_000_000_000n);
+    expect(plan.ccaParams.createTokenParams.name).toBe("Humanly");
+    expect(plan.ccaParams.distributeTokenParams.salt.startsWith("0x")).toBe(true);
     expect(encoded.tokenData.startsWith("0x")).toBe(true);
     expect(encoded.auctionParameters.startsWith("0x")).toBe(true);
     expect(encoded.fullRangeStrategyConfig).toBe(plan.distribution.configData);
+    expect(encoded.ccaParams.startsWith("0x")).toBe(true);
+    expect(
+      computeHumanlyCcaSignalHash(context.creator, plan.ccaParams),
+    ).toMatch(/^0x[0-9a-fA-F]{64}$/);
   });
 
   test("rejects derived block numbers that exceed uint64 bounds", () => {

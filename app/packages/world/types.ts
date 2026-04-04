@@ -58,8 +58,8 @@ export interface CreateSignedWorldRpContextInput extends SignWorldRpRequestInput
 export interface HybridWorldIdRequest {
   app_id: WorldAppId;
   action: string;
-  verification_level: WorldVerificationLevel;
-  allow_legacy_proofs: true;
+  verification_level?: WorldVerificationLevel;
+  allow_legacy_proofs: boolean;
   rp_context: WorldRpContext;
   signal?: string;
 }
@@ -70,6 +70,7 @@ export interface CreateHybridWorldIdRequestInput {
   rpContext: WorldRpContext;
   signal?: string;
   verificationLevel?: WorldVerificationLevel;
+  allowLegacyProofs?: boolean;
 }
 
 export interface WorldLegacyProofResponse {
@@ -81,18 +82,47 @@ export interface WorldLegacyProofResponse {
   max_age?: number;
 }
 
+export interface WorldV4ProofResponse {
+  identifier: string;
+  signal_hash?: Hex;
+  proof: readonly [Hex, Hex, Hex, Hex, Hex] | Hex[];
+  nullifier: Hex;
+  issuer_schema_id: number;
+  expires_at_min: number;
+  credential_genesis_issued_at_min?: number;
+}
+
+export interface WorldUniquenessResultV4 {
+  protocol_version: "4.0";
+  nonce: Hex;
+  action: string;
+  responses: WorldV4ProofResponse[];
+  environment: string;
+}
+
+export interface WorldLegacyResultV3 {
+  protocol_version: "3.0";
+  nonce: Hex;
+  action?: string;
+  responses: WorldLegacyProofResponse[];
+  environment?: string;
+}
+
+export type WorldIdKitResult = WorldLegacyResultV3 | WorldUniquenessResultV4;
+export type WorldProofResponse = WorldLegacyProofResponse | WorldV4ProofResponse;
+
 export interface WorldVerifyRequestPayload {
   protocol_version: WorldProofProtocolVersion;
   nonce: string;
   action?: string;
-  responses: WorldLegacyProofResponse[];
+  responses: WorldProofResponse[];
   environment?: string;
 }
 
 export interface CreateWorldVerifyRequestPayloadInput {
   nonce: string;
   action?: string;
-  responses: WorldLegacyProofResponse[];
+  responses: WorldProofResponse[];
   protocolVersion?: WorldProofProtocolVersion;
   environment?: string;
 }
@@ -160,4 +190,22 @@ export interface HybridWorldVerificationRecord {
   verifiedAt: string;
   nullifier?: string;
   sessionId?: string;
+}
+
+export interface WorldUniquenessVerificationInput {
+  nullifier: bigint;
+  action: bigint;
+  rpId: bigint;
+  nonce: bigint;
+  signalHash: bigint;
+  expiresAtMin: bigint;
+  issuerSchemaId: bigint;
+  credentialGenesisIssuedAtMin: bigint;
+  zeroKnowledgeProof: readonly [bigint, bigint, bigint, bigint, bigint];
+}
+
+export interface CreateWorldUniquenessVerificationInput {
+  result: WorldUniquenessResultV4;
+  rpId: WorldRpId | string;
+  responseIndex?: number;
 }

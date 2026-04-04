@@ -214,6 +214,49 @@ export interface HumanlyUniswapAuctionParameters {
   auctionStepsData: Hex;
 }
 
+export interface HumanlyCcaCreateTokenParams {
+  name: string;
+  symbol: string;
+  initialSupply: bigint;
+  tokenData: Hex;
+}
+
+export interface HumanlyCcaMigratorParams {
+  poolLPFee: number;
+  poolTickSpacing: number;
+  positionRecipient: Address;
+  migrationBlock: bigint;
+  initializerFactory: Address;
+  tokenSplit: number;
+  sweepBlock: bigint;
+  operator: Address;
+  maxCurrencyAmountForLP: bigint;
+}
+
+export interface HumanlyCcaAuctionParams {
+  tokensRecipient: Address;
+  fundsRecipient: Address;
+  startBlock: bigint;
+  endBlock: bigint;
+  claimBlock: bigint;
+  tickSpacing: bigint;
+  validationHook: Address;
+  floorPrice: bigint;
+  requiredCurrencyRaised: bigint;
+  auctionStepsData: Hex;
+}
+
+export interface HumanlyCcaDistributeTokenParams {
+  salt: Hex;
+  migratorParams: HumanlyCcaMigratorParams;
+  auctionParams: HumanlyCcaAuctionParams;
+}
+
+export interface HumanlyCcaParams {
+  createTokenParams: HumanlyCcaCreateTokenParams;
+  distributeTokenParams: HumanlyCcaDistributeTokenParams;
+}
+
 export interface HumanlyBuiltFullRangeLaunchPlan {
   metadata: HumanlyUerc20Metadata;
   price: HumanlyDerivedPriceConfiguration;
@@ -223,10 +266,12 @@ export interface HumanlyBuiltFullRangeLaunchPlan {
   distribution: HumanlyUniswapDistribution;
   migratorParameters: HumanlyUniswapMigratorParameters;
   auctionParameters: HumanlyUniswapAuctionParameters;
+  ccaParams: HumanlyCcaParams;
 }
 
 export interface HumanlyAbiEncodedLaunchArtifacts {
   tokenData: Hex;
   auctionParameters: Hex;
   fullRangeStrategyConfig: Hex;
+  ccaParams: Hex;
 }

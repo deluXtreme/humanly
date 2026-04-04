@@ -2,7 +2,8 @@
   "name": "world",
   "module": "index.ts",
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./browser": "./browser.ts"
   },
   "type": "module",
   "scripts": {
@@ -10,7 +11,8 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@worldcoin/idkit-server": "latest"
+    "@worldcoin/idkit-server": "latest",
+    "viem": "^2.47.10"
   },
   "devDependencies": {
     "@types/bun": "latest"

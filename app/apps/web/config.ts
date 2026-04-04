@@ -3,12 +3,15 @@ import { isAddress } from "viem";
 import type { BrowserWebConfig, WebConfig, WebEnv } from "./types.ts";
 
 const DEFAULT_PREVIEW_ADDRESSES = {
-  liquidityLauncher: "0x1111111111111111111111111111111111111111",
-  uerc20Factory: "0x2222222222222222222222222222222222222222",
-  fullRangeLbpStrategyFactory: "0x3333333333333333333333333333333333333333",
+  liquidityLauncher: "0x00000008412db3394C91A5CbD01635c6d140637C",
+  uerc20Factory: "0x7737cae00C4D0eB677a66AFEF921E7d7EeD32c55",
+  fullRangeLbpStrategyFactory: "0x39E5eB34dD2c8082Ee1e556351ae660F33B04252",
   continuousClearingAuctionFactory:
-    "0x4444444444444444444444444444444444444444",
+    "0xCCccCcCAE7503Cac057829BF2811De42E16e0bD5",
 } as const;
+
+const DEFAULT_HUMANLY_CCA_ADDRESS =
+  "0x27c2a11AA3E2237fDE4aE782cC36eBBB49d26c57" as const;
 
 function parsePort(value: string | undefined): number {
   if (!value) {
@@ -42,6 +45,14 @@ interface BrowserWebConfigOptions {
   defaultApiBaseUrl?: string;
 }
 
+function readRpId(value: string | undefined): `rp_${string}` {
+  if (!value || !/^rp_[0-9a-fA-F]+$/.test(value)) {
+    throw new Error("WORLD_RP_ID must be provided as an rp_-prefixed hex string.");
+  }
+
+  return value as `rp_${string}`;
+}
+
 export function createBrowserWebConfig(
   env: WebEnv = {},
   options: BrowserWebConfigOptions = {},
@@ -51,6 +62,7 @@ export function createBrowserWebConfig(
   return {
     apiBaseUrl: source.API_BASE_URL ?? options.defaultApiBaseUrl ?? "",
     worldAction: source.WORLD_ACTION ?? "create-auction",
+    worldRpId: readRpId(source.WORLD_RP_ID),
     previewAddresses: {
       liquidityLauncher: readAddress(
         source.PREVIEW_LIQUIDITY_LAUNCHER_ADDRESS,
@@ -73,6 +85,11 @@ export function createBrowserWebConfig(
         "PREVIEW_CONTINUOUS_CLEARING_AUCTION_FACTORY_ADDRESS",
       ),
     },
+    humanlyCcaAddress: readAddress(
+      source.HUMANLY_CCA_ADDRESS,
+      DEFAULT_HUMANLY_CCA_ADDRESS,
+      "HUMANLY_CCA_ADDRESS",
+    ),
   };
 }
 

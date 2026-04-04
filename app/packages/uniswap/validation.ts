@@ -15,6 +15,7 @@ import {
   decimalPriceToQ96,
   fitsUint128Units,
 } from "./math.ts";
+import { generateHumanlySupplySchedule } from "./schedule.ts";
 import type {
   HumanlyFullRangeLaunchInput,
   HumanlyLaunchValidationIssue,
@@ -246,6 +247,30 @@ export function validateHumanlyFullRangeLaunchInput(
       "auction.auctionBlocks",
       "Auction duration is too large for the packed auction step encoding.",
     );
+  }
+
+  if (
+    isZeroOrPositiveInteger(input.auction.prebidBlocks) &&
+    BigInt(input.auction.prebidBlocks) <= HUMANLY_MAX_UINT40 &&
+    isPositiveInteger(input.auction.auctionBlocks) &&
+    BigInt(input.auction.auctionBlocks) <= HUMANLY_MAX_UINT40
+  ) {
+    try {
+      generateHumanlySupplySchedule({
+        auctionBlocks: input.auction.auctionBlocks,
+        prebidBlocks: input.auction.prebidBlocks,
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Auction schedule could not be generated from the provided block values.";
+      pushIssue(
+        issues,
+        "auction.auctionBlocks",
+        `${message} Reduce the auction duration or adjust the schedule inputs.`,
+      );
+    }
   }
 
   if (!isPositiveInteger(input.auction.migrationDelayBlocks)) {

@@ -330,7 +330,7 @@ export function renderIndexHtml(): string {
         <p class="lede">
           This local development flow connects a wallet, configures a constrained
           Uniswap Liquidity Launcher auction, collects a World ID proof, and
-          prepares the future Humanly contract payload.
+          submits the merged <code>HumanlyCCA.verifyAndExecute</code> payload on Base.
         </p>
       </section>
 
@@ -339,8 +339,8 @@ export function renderIndexHtml(): string {
           <article class="card">
             <h2><span class="step">1</span>Connect Wallet</h2>
             <p class="subtle">
-              The connected wallet becomes the creator signal for World ID and
-              the future auction owner in the Humanly contract flow.
+              The connected wallet becomes the creator and is bound into the
+              HumanlyCCA signal hash together with the exact launch payload.
             </p>
             <div class="actions">
               <button type="button" data-connect-button>Connect wallet</button>
@@ -481,11 +481,12 @@ export function renderIndexHtml(): string {
             <h2><span class="step">3</span>Proof Of Human</h2>
             <p class="subtle">
               The World proof is requested with the connected wallet address as
-              the signal and verified by the local API before becoming part of the
-              future contract payload.
+              a contract-bound launch signal and verified by the local API before
+              being submitted to <code>verifyAndExecute</code>.
             </p>
             <div class="actions">
               <button type="button" data-verify-button>Verify with World ID</button>
+              <button type="button" data-submit-button>Create auction onchain</button>
             </div>
             <div class="status" data-status data-kind="idle">
               Waiting to start.
@@ -581,7 +582,9 @@ export async function createWebFetchHandler(config: WebConfig) {
   const browserConfig = {
     apiBaseUrl: config.apiBaseUrl,
     worldAction: config.worldAction,
+    worldRpId: config.worldRpId,
     previewAddresses: config.previewAddresses,
+    humanlyCcaAddress: config.humanlyCcaAddress,
   };
 
   return function fetch(request: Request): Response {

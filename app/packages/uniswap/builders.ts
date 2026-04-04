@@ -1,5 +1,9 @@
-import { abiEncode } from "./abi.ts";
-import { getAddress, isAddress } from "viem";
+import {
+  abiEncode,
+  encodeHumanlyCcaParams,
+  hashHumanlyCcaParams,
+} from "./abi.ts";
+import { encodeAbiParameters, getAddress, isAddress, keccak256 } from "viem";
 import {
   HUMANLY_ACTION_CONSTANTS_MSG_SENDER,
   HUMANLY_FIXED_TOKEN_DECIMALS,
@@ -23,6 +27,7 @@ import type {
   HumanlyAbiEncodedLaunchArtifacts,
   HumanlyBuildLaunchContext,
   HumanlyBuiltFullRangeLaunchPlan,
+  HumanlyCcaParams,
   HumanlyDerivedBlockConfiguration,
   HumanlyDerivedPriceConfiguration,
   HumanlyFullRangeLaunchInput,
@@ -207,6 +212,40 @@ export function buildHumanlyAuctionParameters(
   };
 }
 
+export function deriveHumanlyCcaDistributionSalt(
+  context: HumanlyBuildLaunchContext,
+  createToken: HumanlyLiquidityLauncherCreateTokenArgs,
+  migratorParameters: HumanlyUniswapMigratorParameters,
+  auctionParameters: HumanlyUniswapAuctionParameters,
+): `0x${string}` {
+  return keccak256(
+    encodeAbiParameters(
+      [
+        { type: "address" },
+        { type: "string" },
+        { type: "string" },
+        { type: "uint128" },
+        { type: "bytes32" },
+        { type: "uint64" },
+        { type: "uint64" },
+        { type: "uint64" },
+        { type: "uint64" },
+      ],
+      [
+        getAddress(context.creator),
+        createToken.name,
+        createToken.symbol,
+        createToken.initialSupply,
+        keccak256(createToken.tokenData),
+        auctionParameters.startBlock,
+        auctionParameters.endBlock,
+        migratorParameters.migrationBlock,
+        migratorParameters.sweepBlock,
+      ],
+    ),
+  );
+}
+
 export function encodeHumanlyAuctionParameters(
   parameters: HumanlyUniswapAuctionParameters,
 ): `0x${string}` {
@@ -323,6 +362,67 @@ export function buildHumanlyDistribution(
   };
 }
 
+export function buildHumanlyCcaParams(
+  input: HumanlyFullRangeLaunchInput,
+  context: HumanlyBuildLaunchContext,
+): HumanlyCcaParams {
+  const createToken = buildHumanlyCreateTokenArgs(input, context);
+  const migratorParameters = buildHumanlyMigratorParameters(input, context);
+  const auctionParameters = buildHumanlyAuctionParameters(input, context);
+
+  return {
+    createTokenParams: {
+      name: createToken.name,
+      symbol: createToken.symbol,
+      initialSupply: createToken.initialSupply,
+      tokenData: createToken.tokenData,
+    },
+    distributeTokenParams: {
+      salt: deriveHumanlyCcaDistributionSalt(
+        context,
+        createToken,
+        migratorParameters,
+        auctionParameters,
+      ),
+      migratorParams: {
+        poolLPFee: migratorParameters.poolLPFee,
+        poolTickSpacing: migratorParameters.poolTickSpacing,
+        positionRecipient: migratorParameters.positionRecipient,
+        migrationBlock: migratorParameters.migrationBlock,
+        initializerFactory: migratorParameters.initializerFactory,
+        tokenSplit: Number(migratorParameters.tokenSplit),
+        sweepBlock: migratorParameters.sweepBlock,
+        operator: migratorParameters.operator,
+        maxCurrencyAmountForLP: migratorParameters.maxCurrencyAmountForLP,
+      },
+      auctionParams: {
+        tokensRecipient: auctionParameters.tokensRecipient,
+        fundsRecipient: auctionParameters.fundsRecipient,
+        startBlock: auctionParameters.startBlock,
+        endBlock: auctionParameters.endBlock,
+        claimBlock: auctionParameters.claimBlock,
+        tickSpacing: auctionParameters.tickSpacing,
+        validationHook: auctionParameters.validationHook,
+        floorPrice: auctionParameters.floorPrice,
+        requiredCurrencyRaised: auctionParameters.requiredCurrencyRaised,
+        auctionStepsData: auctionParameters.auctionStepsData,
+      },
+    },
+  };
+}
+
+export function computeHumanlyCcaSignalHash(
+  sender: `0x${string}`,
+  ccaParams: HumanlyCcaParams,
+): `0x${string}` {
+  return keccak256(
+    encodeAbiParameters(
+      [{ type: "address" }, { type: "bytes32" }],
+      [getAddress(sender), hashHumanlyCcaParams(ccaParams)],
+    ),
+  );
+}
+
 export function buildHumanlyFullRangeLaunchPlan(
   input: HumanlyFullRangeLaunchInput,
   context: HumanlyBuildLaunchContext,
@@ -339,6 +439,7 @@ export function buildHumanlyFullRangeLaunchPlan(
   const createToken = buildHumanlyCreateTokenArgs(input, context);
   const auctionParameters = buildHumanlyAuctionParameters(input, context);
   const migratorParameters = buildHumanlyMigratorParameters(input, context);
+  const ccaParams = buildHumanlyCcaParams(input, context);
   const distribution = {
     strategy: getAddress(context.addresses.fullRangeLbpStrategyFactory),
     amount: createToken.initialSupply,
@@ -357,6 +458,7 @@ export function buildHumanlyFullRangeLaunchPlan(
     distribution,
     migratorParameters,
     auctionParameters,
+    ccaParams,
   };
 }
 
@@ -370,5 +472,6 @@ export function buildHumanlyEncodedLaunchArtifacts(
     tokenData: plan.createToken.tokenData,
     auctionParameters: encodeHumanlyAuctionParameters(plan.auctionParameters),
     fullRangeStrategyConfig: plan.distribution.configData,
+    ccaParams: encodeHumanlyCcaParams(plan.ccaParams),
   };
 }
