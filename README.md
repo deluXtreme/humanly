@@ -4,30 +4,54 @@
 
 Humanly is a sybil-resistant token launch platform. Issuers prove their humanity via **World ID** before launching a **Uniswap Continuous Clearing Auction (CCA)**. Participants bid cross-chain using **Circle CCTP** for USDC transfers and **Chainlink CRE** for message relay.
 
-```mermaid
-flowchart LR
-    subgraph Source Chain
-        U([User / Bidder])
-        U -->|burn USDC + hook data| CCTP_Src[Circle CCTP<br/>TokenMessenger]
-    end
-
-    subgraph Chainlink CRE
-        CCTP_Src -.->|log event trigger| CRE[CRE Workflow<br/>constructs report]
-    end
-
-    subgraph Destination Chain – Base
-        CRE -->|deliver report| Wrapper[CREAuctionWrapper<br/><i>contracts/cre</i>]
-        Wrapper -->|mintAndSubmitBid| Auction[CCTPAuction<br/><i>contracts/cctp</i>]
-        Auction -->|receiveMessage| CCTP_Dst[Circle CCTP<br/>MessageTransmitter]
-        CCTP_Dst -->|mint USDC| Auction
-        Auction -->|submitBid| CCA[Uniswap CCA]
-
-        Issuer([Token Issuer])
-        Issuer -->|World ID proof +<br/>token params| HumanlyCCA[HumanlyCCA<br/><i>contracts/cca</i>]
-        HumanlyCCA -->|verify| WorldID[World ID<br/>Satellite]
-        HumanlyCCA -->|createToken +<br/>distributeToken| LL[Uniswap<br/>LiquidityLauncher]
-        LL -->|launch| CCA
-    end
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          LAUNCH (Token Issuer)                              │
+│                                                                             │
+│  Token Issuer                                                               │
+│       │                                                                     │
+│       │  World ID proof + token params                                      │
+│       ▼                                                                     │
+│  ┌──────────────┐    verify   ┌───────────────────┐                         │
+│  │ HumanlyCCA   │────────────▶│ World ID Satellite│                         │
+│  │ contracts/cca│             └───────────────────┘                         │
+│  └──────┬───────┘                                                           │
+│         │  createToken + distributeToken                                    │
+│         ▼                                                                   │
+│  ┌─────────────────────┐    launch   ┌──────────────┐                       │
+│  │ Uniswap             │────────────▶│ Uniswap CCA  │◀─── bids land here    │
+│  │ LiquidityLauncher   │             └──────────────┘                       │
+│  └─────────────────────┘                    ▲                               │
+└─────────────────────────────────────────────┼───────────────────────────────┘
+                                              │
+┌─────────────────────────────────────────────┼────────────────────────────────┐
+│                     PARTICIPATE (Cross-Chain Bidder)                         │
+│                                              │ submitBid                     │
+│                                              │                               │
+│  ┌─ Source Chain ──────────────────────┐     │  ┌─ Destination Chain (Base)─┐│
+│  │                                     │     │  │                           ││
+│  │  User / Bidder                      │     │  │  ┌───────────────────┐    ││
+│  │       │                             │     │  │  │ CREAuctionWrapper │    ││
+│  │       │ burn USDC + hook data       │     │  │  │ contracts/cre     │    ││
+│  │       ▼                             │     │  │  └────────┬──────────┘    ││
+│  │  ┌──────────────┐                   │     │  │           │               ││
+│  │  │ Circle CCTP  │                   │     │  │           │ forward call  ││
+│  │  │ TokenMessngr │                   │     │  │           ▼               ││
+│  │  └──────┬───────┘                   │     │  │  ┌───────────────────┐    ││
+│  │         │                           │     │  │  │ CCTPAuction       │    ││
+│  │         │ log event                 │     │  │  │ contracts/cctp    │──┘ ││
+│  └─────────┼───────────────────────────┘     │  │  └──┬─────────▲─────┘     ││
+│            │                                 │  │     │         │           ││
+│            ▼                                 │  │     │receive  │mint USDC  ││
+│  ┌─ Chainlink CRE ─────────────────────┐     │  │     │Message  │           ││
+│  │                                     │     │  │     ▼         │           ││
+│  │  CRE Workflow                       │     │  │  ┌───────────────────┐    ││
+│  │  (log trigger ─▶ construct report)  │─────┘  │  │ Circle CCTP       │    ││
+│  │                                     │deliver │  │ MessageTransmttr  │    ││
+│  └─────────────────────────────────────┘report  │  └───────────────────┘    ││
+│                                              │  │                           ││
+│                                              │  └───────────────────────────┘│
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Contracts
