@@ -6,11 +6,7 @@ export type {
   IrisMessageResponse,
   AttestationData,
 } from "./iris-types";
-export {
-  computeFees,
-  irisStatusUrl,
-  parseAttestationData,
-} from "./iris-types";
+export { computeFees, irisStatusUrl, parseAttestationData } from "./iris-types";
 
 export async function getCctpFees(
   irisApiBase: string,

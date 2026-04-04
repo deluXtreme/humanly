@@ -8,10 +8,16 @@ export interface CctpFeeData {
 export function computeFees(
   feeData: CctpFeeData,
   transferAmount: bigint,
-): { forwardFee: bigint; protocolFee: bigint; maxFee: bigint; totalAmount: bigint } {
+): {
+  forwardFee: bigint;
+  protocolFee: bigint;
+  maxFee: bigint;
+  totalAmount: bigint;
+} {
   const forwardFee = BigInt(feeData.forwardFee.med);
   const protocolFee =
-    (transferAmount * BigInt(Math.round(feeData.minimumFee * 100))) / 1_000_000n;
+    (transferAmount * BigInt(Math.round(feeData.minimumFee * 100))) /
+    1_000_000n;
   const maxFee = forwardFee + protocolFee;
   const totalAmount = transferAmount + maxFee;
   return { forwardFee, protocolFee, maxFee, totalAmount };
