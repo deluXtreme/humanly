@@ -10,45 +10,32 @@ import {
   type Runtime,
   type NodeRuntime,
 } from "@chainlink/cre-sdk";
-import { bytesToHex, encodeFunctionData, type Hex } from "viem";
-import {
-  irisStatusUrl,
-  parseAttestationData,
-  type AttestationData,
-  type IrisMessageResponse,
-} from "../../app/packages/circle/src/iris-types";
+import { bytesToHex, type Hex } from "viem";
 import {
   DEPOSIT_FOR_BURN_TOPIC,
+  type ChainConfig,
   getChainByDomain,
   getIrisApiBase,
-  type ChainConfig,
-  type Network,
-} from "../../app/packages/circle/src/data";
+  irisStatusUrl,
+  type AttestationData,
+  type IrisMessageResponse,
+  parseAttestationData,
+} from "circle";
+import {
+  encodeMintAndSubmitBidCalldata,
+  parseDepositForBurnLog,
+  shouldRelayDepositForBurn,
+  type SubmitBidConfig,
+} from "relay-core";
 
-const MINT_AND_SUBMIT_BID_ABI = [
-  {
-    type: "function",
-    name: "mintAndSubmitBid",
-    stateMutability: "nonpayable",
-    inputs: [
-      { name: "message", type: "bytes" },
-      { name: "attestation", type: "bytes" },
-    ],
-    outputs: [],
-  },
-] as const;
-
-export type Config = {
-  network: Network;
-  srcDomain: number;
-  cctpAuctionCaller: string; // bytes32 hex of the destinationCaller to match
-  cctpAuctionContract: string; // address of the auction contract on destination chain
-};
+export type Config = SubmitBidConfig;
 
 function getSrcChain(config: Config): ChainConfig {
-  const chain = getChainByDomain(config.network, config.srcDomain);
-  if (!chain) throw new Error(`Unknown source domain: ${config.srcDomain}`);
-  return chain;
+  const srcChain = getChainByDomain(config.network, config.srcDomain);
+  if (!srcChain) {
+    throw new Error(`Unknown source domain: ${config.srcDomain}`);
+  }
+  return srcChain;
 }
 
 function fetchAttestation(
@@ -56,9 +43,12 @@ function fetchAttestation(
   txHash: string,
 ): AttestationData {
   const srcChain = getSrcChain(nodeRuntime.config);
-  const irisApiBase = getIrisApiBase(nodeRuntime.config.network);
   const http = new HTTPClient();
-  const url = irisStatusUrl(irisApiBase, srcChain.domain, txHash as Hex);
+  const url = irisStatusUrl(
+    getIrisApiBase(nodeRuntime.config.network),
+    srcChain.domain,
+    txHash as Hex,
+  );
   const response = http.sendRequest(nodeRuntime, { url, method: "GET" });
   const irisData = json(response.result()) as IrisMessageResponse;
   return parseAttestationData(irisData);
@@ -69,26 +59,13 @@ export const onDepositForBurn = (
   log: EVMLog,
 ): string => {
   const txHash = bytesToHex(log.txHash);
+  const deposit = parseDepositForBurnLog(log);
   runtime.log(`DepositForBurn detected in tx ${txHash}`);
 
-  // destinationCaller is not indexed, so we filter in the handler.
-  // Data layout (each field 32 bytes):
-  //   [0]   amount
-  //   [1]   mintRecipient
-  //   [2]   destinationDomain
-  //   [3]   destinationTokenMessenger
-  //   [4]   destinationCaller
-  //   [5]   maxFee
-  //   [6..] hookData (offset + length encoded)
-  const callerOffset = 4 * 32;
-  const destinationCaller = bytesToHex(
-    log.data.slice(callerOffset, callerOffset + 32),
-  );
-
   const expected = runtime.config.cctpAuctionCaller.toLowerCase();
-  if (destinationCaller !== expected) {
+  if (!shouldRelayDepositForBurn(deposit, runtime.config.cctpAuctionCaller)) {
     runtime.log(
-      `Skipping: destinationCaller ${destinationCaller} !== ${expected}`,
+      `Skipping: destinationCaller ${deposit.destinationCaller} !== ${expected}`,
     );
     return "";
   }
@@ -111,12 +88,7 @@ export const onDepositForBurn = (
     `Attestation ready for tx ${txHash}, minting on ${destChain.name} (domain ${destinationDomain})`,
   );
 
-  // Encode mintAndSubmitBid calldata
-  const calldata = encodeFunctionData({
-    abi: MINT_AND_SUBMIT_BID_ABI,
-    functionName: "mintAndSubmitBid",
-    args: [message, attestation],
-  });
+  const calldata = encodeMintAndSubmitBidCalldata(message, attestation);
 
   // TODO: Submit transaction to destination chain via EVMClient.writeReport
 
@@ -125,10 +97,10 @@ export const onDepositForBurn = (
 
 export const initWorkflow = (config: Config) => {
   const srcChain = getSrcChain(config);
+  const chainSelectorKey =
+    srcChain.creChainSelector as keyof typeof EVMClient.SUPPORTED_CHAIN_SELECTORS;
   const evmClient = new EVMClient(
-    EVMClient.SUPPORTED_CHAIN_SELECTORS[
-      srcChain.creChainSelector as keyof typeof EVMClient.SUPPORTED_CHAIN_SELECTORS
-    ],
+    EVMClient.SUPPORTED_CHAIN_SELECTORS[chainSelectorKey],
   );
 
   return [

@@ -1,12 +1,23 @@
 # circle
 
-To install dependencies:
+Reusable Circle/CCTP utilities for the Humanly app layer.
+
+## Public API
 
 ```bash
-bun install
+bun run check
 ```
 
-To run:
+```bash
+bun test
+```
+
+## Exports
+
+- CCTP transaction helpers from `src/cctp.ts`
+- chain/domain metadata from `src/data.ts`
+- IRIS URL and attestation helpers from `src/iris.ts`
+- ERC-20 approval helper from `src/erc20.ts`
 
 ```bash
 bun run index.ts

@@ -53,4 +53,3 @@ production-settings:
       url: https://unichain.drpc.org
     - chain-name: ethereum-testnet-sepolia-unichain-1
       url: https://unichain-sepolia.drpc.org
-

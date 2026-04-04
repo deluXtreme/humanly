@@ -1,6 +1,6 @@
 # Hello World (TypeScript)
 
-This template provides a blank TypeScript workflow example. It aims to give a starting point for writing a workflow from scratch and to get started with local simulation.
+This CRE workflow listens for Circle `DepositForBurn` events and prepares the destination calldata for `mintAndSubmitBid`.
 
 Steps to run the example
 
@@ -20,11 +20,10 @@ bun install
 ```
 
 ## 3. Simulate the workflow
-
-Run the command from <b>project root directory</b>
+Run the command from <b>app workspace root</b>
 
 ```bash
-cre workflow simulate <path-to-workflow> --target=staging-settings
+cre workflow simulate apps/submit-bid --target=staging-settings
 ```
 
 It is recommended to look into other existing examples to see how to write a workflow. You can generate them by running the `cre init` command.

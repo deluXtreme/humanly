@@ -5,6 +5,8 @@ node_modules
 out
 dist
 *.tgz
+*.wasm
+.cre_build_tmp.js
 
 # code coverage
 coverage

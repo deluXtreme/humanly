@@ -1,15 +1,17 @@
 {
-  "name": "typescript-simple-template",
-  "version": "1.0.0",
-  "main": "dist/main.js",
+  "name": "submit-bid",
+  "module": "main.ts",
   "private": true,
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "fmt": "prettier --write ."
+    "check": "bun --eval \"await import('./main.ts')\"",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
   },
   "license": "UNLICENSED",
   "dependencies": {
     "@chainlink/cre-sdk": "^1.5.0",
+    "circle": "workspace:*",
+    "relay-core": "workspace:*",
     "viem": "^2.47.6"
   },
   "devDependencies": {
