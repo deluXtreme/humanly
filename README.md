@@ -1,5 +1,86 @@
 # Humanly
 
+## Architecture
+
+Humanly is a sybil-resistant token launch platform. Issuers prove their humanity via **World ID** before launching a **Uniswap Continuous Clearing Auction (CCA)**. Participants can bid from **any chain with any token** — the **Uniswap API** handles the swap to USDC, which then flows cross-chain via **Circle CCTP** and is relayed to the auction by **Chainlink CRE**.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          LAUNCH (Token Issuer)                              │
+│                                                                             │
+│  Token Issuer                                                               │
+│       │                                                                     │
+│       │  World ID proof + token params                                      │
+│       ▼                                                                     │
+│  ┌──────────────┐    verify   ┌───────────────────┐                         │
+│  │ HumanlyCCA   │────────────▶│ World ID Satellite│                         │
+│  │ contracts/cca│             └───────────────────┘                         │
+│  └──────┬───────┘                                                           │
+│         │  createToken + distributeToken                                    │
+│         ▼                                                                   │
+│  ┌─────────────────────┐    launch   ┌──────────────┐                       │
+│  │ Uniswap             │────────────▶│ Uniswap CCA  │◀─── bids land here    │
+│  │ LiquidityLauncher   │             └──────────────┘                       │
+│  └─────────────────────┘                    ▲                               │
+└─────────────────────────────────────────────┼───────────────────────────────┘
+                                              │
+┌─────────────────────────────────────────────┼────────────────────────────────┐
+│                     PARTICIPATE (Cross-Chain Bidder)                         │
+│                                              │ submitBid                     │
+│                                              │                               │
+│  ┌─ Source Chain ──────────────────────┐     │  ┌─ Destination Chain (Base)─┐│
+│  │                                     │     │  │                           ││
+│  │  User / Bidder (any token)          │     │  │  ┌───────────────────┐    ││
+│  │       │                             │     │  │  │ CREAuctionWrapper │    ││
+│  │       │ swap via Uniswap API        │     │  │  │ contracts/cre     │    ││
+│  │       ▼                             │     │  │  └────────┬──────────┘    ││
+│  │  ┌──────────────┐                   │     │  │           │               ││
+│  │  │ Uniswap API  │ any token → USDC  │     │  │           │ forward call  ││
+│  │  └──────┬───────┘                   │     │  │           ▼               ││
+│  │         │ burn USDC + hook data     │     │  │  ┌───────────────────┐    ││
+│  │         ▼                           │     │  │  │ CCTPAuction       │    ││
+│  │  ┌──────────────┐                   │     │  │  │ contracts/cctp    │──┘ ││
+│  │  │ Circle CCTP  │                   │     │  │  └──┬─────────▲─────┘     ││
+│  │  │ TokenMessngr │                   │     │  │     │         │           ││
+│  │  └──────┬───────┘                   │     │  │     │receive  │mint USDC  ││
+│  │         │ log event (DepositForBurn)│     │  │     │Message  │           ││
+│  └─────────┼───────────────────────────┘     │  │     ▼         │           ││
+│            │                                 │  │  ┌───────────────────┐    ││
+│            ▼                                 │  │  │ Circle CCTP       │    ││
+│  ┌─ Chainlink CRE ─────────────────────┐     │  │  │ MessageTransmttr  │    ││
+│  │                                     │     │  │  └───────────────────┘    ││
+│  │  CRE Workflow  (app/apps/submit-bid)│     │  │                           ││
+│  │  log trigger ─▶ fetch attestation   │─────┘  │                           ││
+│  │  from Iris API ─▶ deliver report    │deliver │                           ││
+│  └─────────────────────────────────────┘report  │                           ││
+│                                              │  │                           ││
+│                                              │  └───────────────────────────┘│
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Contracts
+
+| Project | Contract | Solidity | Role |
+|---------|----------|----------|------|
+| `contracts/cca` | `HumanlyCCA` | 0.8.34 | Verifies World ID proof, creates token, launches CCA |
+| `contracts/cctp` | `CCTPAuction` | 0.7.6 | Mints cross-chain USDC via CCTP, places auction bids |
+| `contracts/cre` | `CREAuctionWrapper` | 0.8.34 | Chainlink CRE receiver, forwards reports to CCTPAuction |
+
+### Services
+
+| Service | Location | Description |
+|---------|----------|-------------|
+| **Submit Bid (CRE Workflow)** | `app/apps/submit-bid` | Chainlink CRE workflow with a log trigger watching `DepositForBurn` events on `TokenMessengerV2` per supported source chain. Filters for events where `destinationCaller` matches the `CCTPAuction` contract, fetches the CCTP message + attestation from Circle's Iris API, encodes the `mintAndSubmitBid` calldata, and delivers the report to `CREAuctionWrapper`. |
+| **World ID Verification** | TBD | User-facing service that prompts token issuers to share their proof of humanity. Performs server-side validation and submits the World ID proof alongside the token launch parameters to `HumanlyCCA`. |
+
+### Integrated Protocols
+
+- **[Circle CCTP](https://developers.circle.com/stablecoins/cctp-getting-started)** — Cross-chain USDC transfers (burn on source, mint on destination)
+- **[Chainlink CRE](https://docs.chain.link/cre)** — Log event trigger + report delivery from source to destination chain
+- **[World ID](https://docs.worldcoin.org/)** — Proof-of-humanity verification for token issuers
+- **[Uniswap CCA](https://docs.uniswap.org/)** — Continuous Clearing Auction for fair token distribution
+- **[Uniswap API](https://docs.uniswap.org/)** — Swap any token to USDC on the source chain before cross-chain transfer
+
 ## Contract Deployment
 
 Contracts are split into two separate Forge projects under `contracts/`:
