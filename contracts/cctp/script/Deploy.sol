@@ -17,22 +17,40 @@ contract Deploy is Script {
     mapping(uint256 => DeploymentParams) internal _deploymentParams;
 
     function setUp() public {
-        // Mainnet
-        _deploymentParams[1] = DeploymentParams({
-            messageTransmitter: address(0), // TODO: fill in
-            tokenMessenger: address(0), // TODO: fill in
+        // Base Sepolia
+        _deploymentParams[84_532] = DeploymentParams({
+            messageTransmitter: 0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275,
+            tokenMessenger: 0x8FE6B999Dc680CcFDD5Bf7EB0974218be2542DAA,
             supportedMessageVersion: 1,
             supportedBurnMessageVersion: 1,
-            usdc: 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+            usdc: 0x036CbD53842c5426634e7929541eC2318f3dCF7e
         });
 
-        // Sepolia
-        _deploymentParams[11_155_111] = DeploymentParams({
-            messageTransmitter: address(0), // TODO: fill in
-            tokenMessenger: address(0), // TODO: fill in
+        // Base Mainnet
+        _deploymentParams[8453] = DeploymentParams({
+            messageTransmitter: 0x81D40F21F12A8F0E3252Bccb954D722d4c464B64,
+            tokenMessenger: 0x28b5a0e9C621a5BadaA536219b3a228C8168cf5d,
             supportedMessageVersion: 1,
             supportedBurnMessageVersion: 1,
-            usdc: address(0) // TODO: fill in
+            usdc: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+        });
+
+        // Unichain Mainnet
+        _deploymentParams[130] = DeploymentParams({
+            messageTransmitter: 0x81D40F21F12A8F0E3252Bccb954D722d4c464B64,
+            tokenMessenger: 0x28b5a0e9C621a5BadaA536219b3a228C8168cf5d,
+            supportedMessageVersion: 1,
+            supportedBurnMessageVersion: 1,
+            usdc: 0x078D782b760474a361dDA0AF3839290b0EF57AD6
+        });
+
+        // Unichain Sepolia
+        _deploymentParams[1301] = DeploymentParams({
+            messageTransmitter: 0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275,
+            tokenMessenger: 0x8FE6B999Dc680CcFDD5Bf7EB0974218be2542DAA,
+            supportedMessageVersion: 1,
+            supportedBurnMessageVersion: 1,
+            usdc: 0x31d0220469e10c4E71834a79b1f276d740d3768F
         });
     }
 
