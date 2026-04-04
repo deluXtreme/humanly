@@ -12,6 +12,11 @@ function createTestEnv(): HumanlyCloudflareEnv {
     WORLD_ALLOWED_ACTIONS: "create-auction",
     WORLD_ACTION: "create-auction",
     API_BASE_URL: "",
+    X402_PAY_TO: "0x0000000000000000000000000000000000000001",
+    X402_NETWORK: "eip155:84532",
+    X402_AUCTION_INFO_PRICE: "$0.001",
+    X402_AUCTION_ACTION_PRICE: "$0.01",
+    X402_FACILITATOR_URL: "https://facilitator.x402.org",
     ASSETS: {
       async fetch(input: Request | URL | string): Promise<Response> {
         const request =
@@ -65,5 +70,22 @@ describe("cloudflare worker", () => {
 
     expect(response.status).toBe(200);
     expect(await response.text()).toBe("asset:/");
+  });
+
+  test("protects auction routes with x402 when configured", async () => {
+    const fetchHandler = createCloudflareFetchHandler({
+      auctionPaymentMiddleware: async (_context) =>
+        new Response("Payment required", {
+          status: 402,
+        }),
+    });
+    const response = await fetchHandler(
+      new Request(
+        "https://human.ly/api/auctions/base/0x000000000000000000000000000000000000dEaD",
+      ),
+      createTestEnv(),
+    );
+
+    expect(response.status).toBe(402);
   });
 });

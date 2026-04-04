@@ -1,4 +1,5 @@
 import { createApiRouter, createApiWorldConfig } from "api";
+import { Hono, type MiddlewareHandler } from "hono";
 import { createBrowserWebConfig } from "web";
 import type {
   SignWorldRpRequestOptions,
@@ -6,10 +7,15 @@ import type {
 } from "world";
 
 import type { HumanlyCloudflareEnv } from "./types.ts";
+import { createAuctionPaymentMiddleware } from "./x402.ts";
 
 export interface CloudflareFetchHandlerOptions
   extends SignWorldRpRequestOptions,
-    Pick<VerifyWorldProofOptions, "fetchImplementation"> {}
+    Pick<VerifyWorldProofOptions, "fetchImplementation"> {
+  auctionPaymentMiddleware?: MiddlewareHandler<{
+    Bindings: HumanlyCloudflareEnv;
+  }>;
+}
 
 interface WorkerEntrypoint {
   fetch(
@@ -25,17 +31,24 @@ export function createCloudflareFetchHandler(
     request: Request,
     env: HumanlyCloudflareEnv,
   ): Promise<Response> | Response {
-    const url = new URL(request.url);
+    const app = new Hono<{ Bindings: HumanlyCloudflareEnv }>();
+    const apiRouter = createApiRouter({
+      config: createApiWorldConfig(env),
+      signRequestImplementation: options.signRequestImplementation,
+      fetchImplementation: options.fetchImplementation,
+    });
+    const auctionPaymentMiddleware =
+      options.auctionPaymentMiddleware ?? createAuctionPaymentMiddleware(env);
 
-    if (url.pathname === "/healthz") {
-      return Response.json({
+    app.get("/healthz", (c) =>
+      c.json({
         ok: true,
         service: "humanly-cloudflare",
-      });
-    }
+      }),
+    );
 
-    if (url.pathname === "/config.json") {
-      return Response.json(
+    app.get("/config.json", (c) =>
+      c.json(
         createBrowserWebConfig(env, {
           defaultApiBaseUrl: "",
         }),
@@ -44,20 +57,17 @@ export function createCloudflareFetchHandler(
             "cache-control": "no-store",
           },
         },
-      );
+      ),
+    );
+
+    if (auctionPaymentMiddleware) {
+      app.use("/api/auctions/*", auctionPaymentMiddleware);
     }
 
-    if (url.pathname.startsWith("/api/")) {
-      const apiRouter = createApiRouter({
-        config: createApiWorldConfig(env),
-        signRequestImplementation: options.signRequestImplementation,
-        fetchImplementation: options.fetchImplementation,
-      });
+    app.all("/api/*", (c) => apiRouter(c.req.raw));
+    app.all("*", (c) => env.ASSETS.fetch(c.req.raw));
 
-      return apiRouter(request);
-    }
-
-    return env.ASSETS.fetch(request);
+    return app.fetch(request, env);
   };
 }
 
