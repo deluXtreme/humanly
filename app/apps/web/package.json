@@ -1,16 +1,19 @@
 {
-  "name": "world",
+  "name": "web",
   "module": "index.ts",
   "exports": {
     ".": "./index.ts"
   },
   "type": "module",
   "scripts": {
-    "check": "bun --eval \"import('./index.ts')\"",
+    "check": "bun --eval \"await import('./index.ts'); await import('./server.ts')\"",
+    "dev": "bun --watch server.ts",
+    "start": "bun server.ts",
     "test": "bun test"
   },
   "dependencies": {
-    "@worldcoin/idkit-server": "latest"
+    "@worldcoin/idkit-core": "latest",
+    "qrcode": "latest"
   },
   "devDependencies": {
     "@types/bun": "latest"
