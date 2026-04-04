@@ -58,28 +58,28 @@ function encodeAuctionBidHookData(params: {
   prevTickPrice: bigint;
   innerHookData?: Hex;
 }): Hex {
-  const dataLength = 112 + (params.innerHookData
-    ? (params.innerHookData.length - 2) / 2
-    : 0);
+  const dataLength =
+    112 + (params.innerHookData ? (params.innerHookData.length - 2) / 2 : 0);
 
   const parts: Hex[] = [
-    CCTP_AUCTION_MAGIC,                                       // bytes 0-3:   magic
-    pad(numberToHex(dataLength, { size: 4 }), { size: 4 }),   // bytes 4-7:   data length (uint32)
-    params.auction,                                            // bytes 8-27:  auction address (20 bytes)
-    pad(numberToHex(params.maxPrice, { size: 32 }), { size: 32 }),  // bytes 28-59: maxPrice (uint256)
-    params.bidder,                                             // bytes 60-79: bidder address (20 bytes)
+    CCTP_AUCTION_MAGIC, // bytes 0-3:   magic
+    pad(numberToHex(dataLength, { size: 4 }), { size: 4 }), // bytes 4-7:   data length (uint32)
+    params.auction, // bytes 8-27:  auction address (20 bytes)
+    pad(numberToHex(params.maxPrice, { size: 32 }), { size: 32 }), // bytes 28-59: maxPrice (uint256)
+    params.bidder, // bytes 60-79: bidder address (20 bytes)
     pad(numberToHex(params.prevTickPrice, { size: 32 }), { size: 32 }), // bytes 80-111: prevTickPrice (uint256)
   ];
 
   if (params.innerHookData) {
-    parts.push(params.innerHookData);                          // bytes 112+:  inner hook data
+    parts.push(params.innerHookData); // bytes 112+:  inner hook data
   }
 
   return concat(parts);
 }
 
 // TODO: Replace with actual auction parameters
-const AUCTION_CONTRACT = "0x0000000000000000000000000000000000000000" as Address;
+const AUCTION_CONTRACT =
+  "0x0000000000000000000000000000000000000000" as Address;
 const MAX_PRICE = 0n;
 const PREV_TICK_PRICE = 0n;
 
@@ -117,7 +117,7 @@ async function main() {
     srcChain.domain,
     destChain.domain,
   );
-  const transferAmount = 1n; // 1 WEI USDC
+  const transferAmount = 4_000_000n; // 1 WEI USDC
   const feeData = fees[0];
   if (!feeData) throw new Error("No fee data returned from Iris API");
   const { forwardFee, protocolFee, maxFee, totalAmount } = computeFees(
