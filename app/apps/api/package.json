@@ -12,6 +12,7 @@
     "test": "bun test"
   },
   "dependencies": {
+    "viem": "^2.47.10",
     "world": "workspace:*"
   },
   "devDependencies": {
