@@ -71,11 +71,13 @@ export function submitMintAndSubmitBid(
   calldata: Hex,
   destEvmClient: ReportCapableEvmClient = getEvmClient(destChain.creChainSelector),
 ): void {
+  const creWrapper = runtime.config.creAuctionWrapper as Hex;
+    runtime.log(`Forward report to CRE Auction Wrapper: ${creWrapper}`);
   const gasEstimate = destEvmClient
     .estimateGas(runtime, {
       msg: encodeCallMsg({
         from: ZERO_ADDRESS,
-        to: runtime.config.cctpAuctionContract as Hex,
+        to: creWrapper,
         data: calldata,
       }),
     })
@@ -84,7 +86,7 @@ export function submitMintAndSubmitBid(
   const report = runtime.report(prepareReportRequest(calldata)).result();
   const tx = destEvmClient
     .writeReport(runtime, {
-      receiver: runtime.config.cctpAuctionContract,
+      receiver: creWrapper,
       report,
       gasConfig: {
         gasLimit: (gasEstimate + gasEstimate / 5n).toString(),
@@ -104,9 +106,9 @@ export function onDepositForBurn(
   const txHash = bytesToHex(log.txHash);
   const deposit = parseDepositForBurnLog(log);
   runtime.log(`DepositForBurn detected in tx ${txHash}`);
-
-  const expected = runtime.config.cctpAuctionCaller.toLowerCase();
-  if (!shouldRelayDepositForBurn(deposit, runtime.config.cctpAuctionCaller)) {
+  const auctionContract = runtime.config.cctpAuctionContract;
+  const expected = auctionContract.toLowerCase();
+  if (!shouldRelayDepositForBurn(deposit, auctionContract)) {
     runtime.log(
       `Skipping: destinationCaller ${deposit.destinationCaller} !== ${expected}`,
     );
