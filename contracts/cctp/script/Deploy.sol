@@ -2,8 +2,8 @@
 pragma solidity 0.7.6;
 pragma experimental ABIEncoderV2;
 
-import {CCTPAuction} from "src/CCTPAuction.sol";
-import {Script} from "forge-std/src/Script.sol";
+import { CCTPAuction } from "src/CCTPAuction.sol";
+import { Script } from "forge-std/src/Script.sol";
 
 contract Deploy is Script {
     struct DeploymentParams {
