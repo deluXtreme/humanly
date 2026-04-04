@@ -11,6 +11,9 @@ describe("web app", () => {
     expect(config.worldAction).toBe("create-auction");
     expect(config.host).toBe("127.0.0.1");
     expect(config.port).toBe(3011);
+    expect(config.previewAddresses.liquidityLauncher).toBe(
+      "0x1111111111111111111111111111111111111111",
+    );
   });
 
   test("reads web overrides from the environment", () => {
@@ -19,12 +22,23 @@ describe("web app", () => {
       WORLD_ACTION: "create-auction",
       HOST: "0.0.0.0",
       PORT: "4011",
+      PREVIEW_LIQUIDITY_LAUNCHER_ADDRESS:
+        "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      PREVIEW_UERC20_FACTORY_ADDRESS:
+        "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      PREVIEW_FULL_RANGE_LBP_STRATEGY_FACTORY_ADDRESS:
+        "0xcccccccccccccccccccccccccccccccccccccccc",
+      PREVIEW_CONTINUOUS_CLEARING_AUCTION_FACTORY_ADDRESS:
+        "0xdddddddddddddddddddddddddddddddddddddddd",
     });
 
     expect(config.apiBaseUrl).toBe("http://127.0.0.1:4010");
     expect(config.worldAction).toBe("create-auction");
     expect(config.host).toBe("0.0.0.0");
     expect(config.port).toBe(4011);
+    expect(config.previewAddresses.uerc20Factory).toBe(
+      "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    );
   });
 
   test("serves the IDKit WASM asset", async () => {
@@ -33,6 +47,14 @@ describe("web app", () => {
       worldAction: "create-auction",
       host: "127.0.0.1",
       port: 3011,
+      previewAddresses: {
+        liquidityLauncher: "0x1111111111111111111111111111111111111111",
+        uerc20Factory: "0x2222222222222222222222222222222222222222",
+        fullRangeLbpStrategyFactory:
+          "0x3333333333333333333333333333333333333333",
+        continuousClearingAuctionFactory:
+          "0x4444444444444444444444444444444444444444",
+      },
     });
 
     const response = fetch(new Request("http://local/idkit_wasm_bg.wasm"));
@@ -40,5 +62,31 @@ describe("web app", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("content-type")).toBe("application/wasm");
     expect((await response.arrayBuffer()).byteLength).toBeGreaterThan(0);
+  });
+
+  test("serves the launch studio page", async () => {
+    const fetch = await createWebFetchHandler({
+      apiBaseUrl: "http://127.0.0.1:3010",
+      worldAction: "create-auction",
+      host: "127.0.0.1",
+      port: 3011,
+      previewAddresses: {
+        liquidityLauncher: "0x1111111111111111111111111111111111111111",
+        uerc20Factory: "0x2222222222222222222222222222222222222222",
+        fullRangeLbpStrategyFactory:
+          "0x3333333333333333333333333333333333333333",
+        continuousClearingAuctionFactory:
+          "0x4444444444444444444444444444444444444444",
+      },
+    });
+
+    const response = fetch(new Request("http://local/"));
+    const html = await response.text();
+
+    expect(response.status).toBe(200);
+    expect(html).toContain("Humanly / Launch Studio");
+    expect(html).toContain("Connect wallet");
+    expect(html).toContain("Build launch preview");
+    expect(html).toContain("Verify with World ID");
   });
 });

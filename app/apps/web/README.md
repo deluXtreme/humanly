@@ -1,12 +1,15 @@
 # web
 
-Minimal World ID frontend for local Humanly development.
+Humanly launch-creation frontend for local development.
 
-This app:
+This app now:
 
-- requests `rp_context` from the API
-- launches the World IDKit Orb compatibility flow
-- sends the completed proof back to the API for verification
+- connects an injected wallet with `viem`
+- collects a constrained Uniswap launch configuration
+- builds a future-ready launch preview using `packages/uniswap`
+- launches the World ID Orb compatibility flow
+- verifies the returned proof with the API
+- shows the combined payload that the future Humanly contract will consume
 
 ## Env
 
@@ -14,6 +17,10 @@ This app:
 - `HOST` defaults to `127.0.0.1`
 - `API_BASE_URL` defaults to `http://127.0.0.1:3010`
 - `WORLD_ACTION` defaults to `create-auction`
+- `PREVIEW_LIQUIDITY_LAUNCHER_ADDRESS` overrides the local preview address book
+- `PREVIEW_UERC20_FACTORY_ADDRESS` overrides the local preview address book
+- `PREVIEW_FULL_RANGE_LBP_STRATEGY_FACTORY_ADDRESS` overrides the local preview address book
+- `PREVIEW_CONTINUOUS_CLEARING_AUCTION_FACTORY_ADDRESS` overrides the local preview address book
 
 Copy `.env.example` to `.env` if you want to override the defaults.
 
@@ -36,3 +43,10 @@ Open:
 ```text
 http://127.0.0.1:3011
 ```
+
+## Notes
+
+- This app still stops at preview. The final create-auction contract is not merged yet.
+- The launch preview uses the connected wallet as the creator and World signal.
+- The preview address book can use placeholders locally until real deployment
+  addresses are known.
