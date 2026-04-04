@@ -3,6 +3,12 @@ import { describe, expect, test } from "bun:test";
 import { createWebConfig } from "./config.ts";
 import { createWebFetchHandler } from "./server.ts";
 
+const TEST_WEB_ASSETS = {
+  clientBundle: "console.log('client');",
+  worldReproBundle: "console.log('world-repro');",
+  wasmBody: new Uint8Array([0x00, 0x61, 0x73, 0x6d]),
+};
+
 describe("web app", () => {
   test("creates the web config with sensible local defaults", () => {
     const config = createWebConfig({
@@ -24,6 +30,7 @@ describe("web app", () => {
       API_BASE_URL: "http://127.0.0.1:4010",
       WORLD_ACTION: "create-auction",
       WORLD_RP_ID: "rp_abcdef1234567890",
+      WORLD_GENESIS_ISSUED_AT_MIN: "1775333000",
       HOST: "0.0.0.0",
       PORT: "4011",
       PREVIEW_LIQUIDITY_LAUNCHER_ADDRESS:
@@ -39,6 +46,7 @@ describe("web app", () => {
     expect(config.apiBaseUrl).toBe("http://127.0.0.1:4010");
     expect(config.worldAction).toBe("create-auction");
     expect(config.worldRpId).toBe("rp_abcdef1234567890");
+    expect(config.worldGenesisIssuedAtMin).toBe(1775333000);
     expect(config.host).toBe("0.0.0.0");
     expect(config.port).toBe(4011);
     expect(config.previewAddresses.uerc20Factory).toBe(
@@ -47,22 +55,25 @@ describe("web app", () => {
   });
 
   test("serves the IDKit WASM asset", async () => {
-    const fetch = await createWebFetchHandler({
-      apiBaseUrl: "http://127.0.0.1:3010",
-      worldAction: "create-auction",
-      worldRpId: "rp_1234567890abcdef",
-      host: "127.0.0.1",
-      port: 3011,
-      previewAddresses: {
-        liquidityLauncher: "0x1111111111111111111111111111111111111111",
-        uerc20Factory: "0x2222222222222222222222222222222222222222",
-        fullRangeLbpStrategyFactory:
-          "0x3333333333333333333333333333333333333333",
-        continuousClearingAuctionFactory:
-          "0x4444444444444444444444444444444444444444",
+    const fetch = await createWebFetchHandler(
+      {
+        apiBaseUrl: "http://127.0.0.1:3010",
+        worldAction: "create-auction",
+        worldRpId: "rp_1234567890abcdef",
+        worldGenesisIssuedAtMin: 1775333000,
+        host: "127.0.0.1",
+        port: 3011,
+        previewAddresses: {
+          liquidityLauncher: "0x1111111111111111111111111111111111111111",
+          uerc20Factory: "0x2222222222222222222222222222222222222222",
+          fullRangeLbpStrategyFactory:
+            "0x3333333333333333333333333333333333333333",
+          continuousClearingAuctionFactory:
+            "0x4444444444444444444444444444444444444444",
+        },
       },
-      humanlyCcaAddress: "0x27c2a11AA3E2237fDE4aE782cC36eBBB49d26c57",
-    });
+      TEST_WEB_ASSETS,
+    );
 
     const response = fetch(new Request("http://local/idkit_wasm_bg.wasm"));
 
@@ -72,22 +83,25 @@ describe("web app", () => {
   });
 
   test("serves the launch studio page", async () => {
-    const fetch = await createWebFetchHandler({
-      apiBaseUrl: "http://127.0.0.1:3010",
-      worldAction: "create-auction",
-      worldRpId: "rp_1234567890abcdef",
-      host: "127.0.0.1",
-      port: 3011,
-      previewAddresses: {
-        liquidityLauncher: "0x1111111111111111111111111111111111111111",
-        uerc20Factory: "0x2222222222222222222222222222222222222222",
-        fullRangeLbpStrategyFactory:
-          "0x3333333333333333333333333333333333333333",
-        continuousClearingAuctionFactory:
-          "0x4444444444444444444444444444444444444444",
+    const fetch = await createWebFetchHandler(
+      {
+        apiBaseUrl: "http://127.0.0.1:3010",
+        worldAction: "create-auction",
+        worldRpId: "rp_1234567890abcdef",
+        worldGenesisIssuedAtMin: 1775333000,
+        host: "127.0.0.1",
+        port: 3011,
+        previewAddresses: {
+          liquidityLauncher: "0x1111111111111111111111111111111111111111",
+          uerc20Factory: "0x2222222222222222222222222222222222222222",
+          fullRangeLbpStrategyFactory:
+            "0x3333333333333333333333333333333333333333",
+          continuousClearingAuctionFactory:
+            "0x4444444444444444444444444444444444444444",
+        },
       },
-      humanlyCcaAddress: "0x27c2a11AA3E2237fDE4aE782cC36eBBB49d26c57",
-    });
+      TEST_WEB_ASSETS,
+    );
 
     const response = fetch(new Request("http://local/"));
     const html = await response.text();
@@ -97,6 +111,34 @@ describe("web app", () => {
     expect(html).toContain("Connect wallet");
     expect(html).toContain("Build launch preview");
     expect(html).toContain("Verify with World ID");
-    expect(html).toContain("Create auction onchain");
+  });
+
+  test("serves the minimal World repro page", async () => {
+    const fetch = await createWebFetchHandler(
+      {
+        apiBaseUrl: "http://127.0.0.1:3010",
+        worldAction: "create-auction",
+        worldRpId: "rp_1234567890abcdef",
+        worldGenesisIssuedAtMin: 1775333000,
+        host: "127.0.0.1",
+        port: 3011,
+        previewAddresses: {
+          liquidityLauncher: "0x1111111111111111111111111111111111111111",
+          uerc20Factory: "0x2222222222222222222222222222222222222222",
+          fullRangeLbpStrategyFactory:
+            "0x3333333333333333333333333333333333333333",
+          continuousClearingAuctionFactory:
+            "0x4444444444444444444444444444444444444444",
+        },
+      },
+      TEST_WEB_ASSETS,
+    );
+
+    const response = fetch(new Request("http://local/world-repro"));
+    const html = await response.text();
+
+    expect(response.status).toBe(200);
+    expect(html).toContain("Humanly / World ID Minimal Repro");
+    expect(html).toContain("Start minimal World repro");
   });
 });

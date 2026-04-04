@@ -4,16 +4,12 @@ import type { SignWorldRpRequestInput } from "./types.ts";
 import {
   WORLD_LEGACY_PROTOCOL_VERSION,
   WORLD_ORB_GROUP_ID,
-  assertWorldUniquenessResultV4,
   createHybridWorldIdRequest,
   createLegacyWorldIdVerificationInput,
   createSignedWorldRpContext,
-  createWorldUniquenessVerificationInput,
   createWorldRpContext,
   createWorldVerifyRequestPayload,
   decodeLegacyWorldProof,
-  hashWorldAction,
-  parseWorldRpIdToUint64,
   verifyWorldProof,
   signWorldRpRequest,
 } from "./index.ts";
@@ -27,7 +23,7 @@ function encodeUint256Array(values: bigint[]): `0x${string}` {
 }
 
 describe("world package", () => {
-  test("creates a hybrid IDKit request with v4-only defaults", () => {
+  test("creates a hybrid IDKit request with legacy-proof defaults", () => {
     const rpContext = createWorldRpContext({
       rpId: "rp_demo",
       signature: {
@@ -45,31 +41,10 @@ describe("world package", () => {
       rpContext,
     });
 
-    expect(request.allow_legacy_proofs).toBe(false);
-    expect(request.verification_level).toBeUndefined();
+    expect(request.allow_legacy_proofs).toBe(true);
+    expect(request.verification_level).toBe("orb");
     expect(request.rp_context.rp_id).toBe("rp_demo");
     expect(request.signal).toBe("0xCreator");
-  });
-
-  test("includes verification_level only when explicitly requested", () => {
-    const rpContext = createWorldRpContext({
-      rpId: "rp_demo",
-      signature: {
-        sig: "0x1234",
-        nonce: "0xabcd",
-        createdAt: 1_775_186_400,
-        expiresAt: 1_775_186_700,
-      },
-    });
-
-    const request = createHybridWorldIdRequest({
-      appId: "app_demo",
-      action: "create-auction",
-      verificationLevel: "orb",
-      rpContext,
-    });
-
-    expect(request.verification_level).toBe("orb");
   });
 
   test("builds a verify payload with the legacy protocol by default", () => {
@@ -231,43 +206,5 @@ describe("world package", () => {
     const headers = new Headers(capturedHeaders);
     expect(headers.get("user-agent")).toBe("humanly-world-verify/0.1");
     expect(headers.get("accept")).toBe("application/json");
-  });
-
-  test("creates v4 uniqueness verification input for contract calls", () => {
-    const result = {
-      protocol_version: "4.0" as const,
-      nonce: "0x10" as const,
-      action: "create-auction",
-      environment: "production",
-      responses: [
-        {
-          identifier: "proof_of_human",
-          signal_hash: "0x20" as const,
-          proof: [
-            "0x01",
-            "0x02",
-            "0x03",
-            "0x04",
-            "0x05",
-          ] as const,
-          nullifier: "0x30" as const,
-          issuer_schema_id: 1,
-          expires_at_min: 123,
-        },
-      ],
-    };
-
-    assertWorldUniquenessResultV4(result);
-
-    const input = createWorldUniquenessVerificationInput({
-      result,
-      rpId: "rp_1234567890abcdef",
-    });
-
-    expect(input.nullifier).toBe(0x30n);
-    expect(input.action).toBe(BigInt(hashWorldAction("create-auction")));
-    expect(input.rpId).toBe(parseWorldRpIdToUint64("rp_1234567890abcdef"));
-    expect(input.signalHash).toBe(0x20n);
-    expect(input.zeroKnowledgeProof).toEqual([1n, 2n, 3n, 4n, 5n]);
   });
 });

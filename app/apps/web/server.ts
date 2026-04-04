@@ -35,13 +35,15 @@ body {
 }
 
 main {
-  width: min(1080px, calc(100vw - 32px));
+  width: min(1520px, calc(100vw - 48px));
   margin: 0 auto;
-  padding: 48px 0 72px;
+  padding: 52px 0 84px;
 }
 
 .hero {
-  margin-bottom: 28px;
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-bottom: 32px;
 }
 
 .eyebrow {
@@ -69,15 +71,15 @@ h1 {
 
 .grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  gap: 28px;
   align-items: start;
 }
 
 .card {
-  padding: 24px;
+  padding: 28px 30px;
   border: 1px solid var(--line);
-  border-radius: 24px;
+  border-radius: 28px;
   background: var(--panel);
   backdrop-filter: blur(14px);
   box-shadow: 0 18px 60px rgba(24, 33, 31, 0.08);
@@ -87,6 +89,14 @@ h1 {
   margin-top: 0;
   margin-bottom: 12px;
   font-size: 24px;
+}
+
+.card h3 {
+  margin: 0 0 14px;
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
 }
 
 .field {
@@ -130,16 +140,29 @@ h1 {
 
 .fieldset {
   margin: 0 0 18px;
-  padding: 18px;
+  padding: 20px;
   border: 1px solid var(--line);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.5);
+  border-radius: 22px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.42)
+  );
 }
 
 .field-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+}
+
+.field-grid--token {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.field-grid--auction,
+.field-grid--liquidity {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .field-grid .field {
@@ -256,7 +279,7 @@ pre {
 
 .stack {
   display: grid;
-  gap: 20px;
+  gap: 24px;
 }
 
 .actions {
@@ -271,11 +294,47 @@ pre {
   line-height: 1.6;
 }
 
+.results-card {
+  position: sticky;
+  top: 28px;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 10px;
+  min-height: calc(100vh - 96px);
+}
+
+.results-card pre {
+  height: 100%;
+  min-height: 640px;
+  max-height: none;
+}
+
 @media (max-width: 820px) {
+  main {
+    width: min(100vw - 24px, 960px);
+    padding: 28px 0 56px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
   .grid {
     grid-template-columns: 1fr;
   }
 
+  .results-card {
+    position: static;
+    min-height: 0;
+  }
+
+  .results-card pre {
+    min-height: 360px;
+  }
+
+  .field-grid--token,
+  .field-grid--auction,
+  .field-grid--liquidity,
   .field-grid {
     grid-template-columns: 1fr;
   }
@@ -325,13 +384,15 @@ export function renderIndexHtml(): string {
   <body>
     <main>
       <section class="hero">
-        <p class="eyebrow">Humanly / Launch Studio</p>
-        <h1>Create a human-gated Uniswap launch.</h1>
-        <p class="lede">
-          This local development flow connects a wallet, configures a constrained
-          Uniswap Liquidity Launcher auction, collects a World ID proof, and
-          submits the merged <code>HumanlyCCA.verifyAndExecute</code> payload on Base.
-        </p>
+        <div>
+          <p class="eyebrow">Humanly / Launch Studio</p>
+          <h1>Create a human-gated Uniswap launch.</h1>
+          <p class="lede">
+            This flow connects a wallet, configures a constrained
+            Uniswap launch, requests a World proof, and verifies that proof
+            against World’s backend.
+          </p>
+        </div>
       </section>
 
       <section class="grid">
@@ -339,8 +400,8 @@ export function renderIndexHtml(): string {
           <article class="card">
             <h2><span class="step">1</span>Connect Wallet</h2>
             <p class="subtle">
-              The connected wallet becomes the creator and is bound into the
-              HumanlyCCA signal hash together with the exact launch payload.
+              The connected wallet anchors the launch draft and becomes the
+              creator identity shown in the final demo receipt.
             </p>
             <div class="actions">
               <button type="button" data-connect-button>Connect wallet</button>
@@ -354,7 +415,8 @@ export function renderIndexHtml(): string {
               This UI intentionally exposes a narrower surface than raw
               Uniswap launcher contracts: <code>UERC20</code> +
               <code>FullRangeLBPStrategy</code> + USDC + generated CCA
-              schedules.
+              schedules. The output panel keeps a live structured preview of the
+              current launch state.
             </p>
 
             <section class="fieldset">
@@ -368,7 +430,7 @@ export function renderIndexHtml(): string {
 
             <section class="fieldset">
               <h3>Token</h3>
-              <div class="field-grid">
+              <div class="field-grid field-grid--token">
                 <div class="field">
                   <label for="token-name">Name</label>
                   <input id="token-name" data-token-name-input data-launch-input />
@@ -398,7 +460,7 @@ export function renderIndexHtml(): string {
 
             <section class="fieldset">
               <h3>Auction</h3>
-              <div class="field-grid">
+              <div class="field-grid field-grid--auction">
                 <div class="field">
                   <label for="start-delay">Start Delay Blocks</label>
                   <input id="start-delay" type="number" min="1" data-start-delay-input data-launch-input />
@@ -436,7 +498,7 @@ export function renderIndexHtml(): string {
 
             <section class="fieldset">
               <h3>Liquidity</h3>
-              <div class="field-grid">
+              <div class="field-grid field-grid--liquidity">
                 <div class="field">
                   <label for="auction-token-percentage">Auction Token Percentage</label>
                   <input
@@ -480,13 +542,11 @@ export function renderIndexHtml(): string {
           <article class="card">
             <h2><span class="step">3</span>Proof Of Human</h2>
             <p class="subtle">
-              The World proof is requested with the connected wallet address as
-              a contract-bound launch signal and verified by the local API before
-              being submitted to <code>verifyAndExecute</code>.
+              Request a World proof for the connected wallet and verify it
+              against World’s backend before continuing.
             </p>
             <div class="actions">
               <button type="button" data-verify-button>Verify with World ID</button>
-              <button type="button" data-submit-button>Create auction onchain</button>
             </div>
             <div class="status" data-status data-kind="idle">
               Waiting to start.
@@ -511,8 +571,12 @@ export function renderIndexHtml(): string {
           </article>
         </section>
 
-        <article class="card">
-          <p class="output-label" data-output-label>Output</p>
+        <article class="card results-card">
+          <p class="output-label" data-output-label>Demo State</p>
+          <p class="subtle">
+            This panel stays synced with the current runtime state, launch
+            preview, and World verification receipt.
+          </p>
           <pre data-output>{
   "status": "loading-browser-config"
 }</pre>
@@ -524,8 +588,98 @@ export function renderIndexHtml(): string {
 </html>`;
 }
 
-export async function buildClientBundle(): Promise<string> {
-  const clientEntrypoint = new URL("./client.ts", import.meta.url).pathname;
+export function renderWorldReproHtml(): string {
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Humanly World Repro</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Humanly / World ID Minimal Repro</p>
+        <h1>Run the smallest possible World request.</h1>
+        <p class="lede">
+          This page bypasses the launch builder and contract integration. It only
+          fetches an RP context, creates a World request, and waits for the raw
+          completion result so SDK or bridge issues are easier to isolate.
+        </p>
+      </section>
+
+      <section class="stack">
+        <article class="card">
+          <h2><span class="step">1</span>Minimal Inputs</h2>
+          <p class="subtle">
+            Leave signal blank to test the bare minimum. Paste a signal only if
+            you want to compare behavior against the create-auction flow.
+          </p>
+
+          <section class="fieldset">
+            <div class="field-grid">
+              <div class="field">
+                <label for="world-action">Action</label>
+                <input id="world-action" data-action-input />
+              </div>
+              <div class="field">
+                <label for="world-genesis">Genesis Issued At Min</label>
+                <input id="world-genesis" data-genesis-input />
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="world-signal">Signal (optional)</label>
+                <input
+                  id="world-signal"
+                  data-signal-input
+                  placeholder="Leave blank for the bare minimum repro"
+                />
+              </div>
+            </div>
+          </section>
+
+          <div class="actions">
+            <button type="button" data-run-button>Start minimal World repro</button>
+          </div>
+
+          <div class="status" data-status data-kind="idle">
+            Waiting to start.
+          </div>
+
+          <section class="connector-panel" data-connector-panel hidden>
+            <p>Scan this QR code with the World App on your phone.</p>
+            <img
+              class="connector-qr"
+              data-connector-qr
+              alt="World ID connector QR code"
+            />
+          </section>
+          <a
+            class="connector"
+            data-connector
+            hidden
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open connector URL
+          </a>
+        </article>
+
+        <article class="card">
+          <p class="output-label" data-output-label>Output</p>
+          <pre data-output>{
+  "status": "loading-browser-config"
+}</pre>
+        </article>
+      </section>
+    </main>
+    <script type="module" src="/world-repro.js"></script>
+  </body>
+</html>`;
+}
+
+async function buildBrowserBundle(entrypointFile: string): Promise<string> {
+  const clientEntrypoint = new URL(entrypointFile, import.meta.url).pathname;
 
   const result = await Bun.build({
     entrypoints: [clientEntrypoint],
@@ -551,6 +705,14 @@ export async function buildClientBundle(): Promise<string> {
   return await output.text();
 }
 
+export async function buildClientBundle(): Promise<string> {
+  return buildBrowserBundle("./client.ts");
+}
+
+export async function buildWorldReproBundle(): Promise<string> {
+  return buildBrowserBundle("./world-repro.ts");
+}
+
 export async function loadIdKitWasmFile(): Promise<Bun.BunFile> {
   const idKitEntryUrl = await import.meta.resolve("@worldcoin/idkit-core");
   const wasmUrl = new URL("idkit_wasm_bg.wasm", idKitEntryUrl);
@@ -564,11 +726,23 @@ export async function loadIdKitWasmFile(): Promise<Bun.BunFile> {
 }
 
 let clientBundlePromise: Promise<string> | undefined;
+let worldReproBundlePromise: Promise<string> | undefined;
 let idKitWasmFilePromise: Promise<Bun.BunFile> | undefined;
+
+export interface WebFetchAssets {
+  clientBundle?: string;
+  worldReproBundle?: string;
+  wasmBody?: BodyInit;
+}
 
 function getClientBundle(): Promise<string> {
   clientBundlePromise ??= buildClientBundle();
   return clientBundlePromise;
+}
+
+function getWorldReproBundle(): Promise<string> {
+  worldReproBundlePromise ??= buildWorldReproBundle();
+  return worldReproBundlePromise;
 }
 
 function getIdKitWasmFile(): Promise<Bun.BunFile> {
@@ -576,15 +750,26 @@ function getIdKitWasmFile(): Promise<Bun.BunFile> {
   return idKitWasmFilePromise;
 }
 
-export async function createWebFetchHandler(config: WebConfig) {
-  const clientBundle = await getClientBundle();
-  const wasmFile = await getIdKitWasmFile();
+export async function createWebFetchHandler(
+  config: WebConfig,
+  assets: WebFetchAssets = {},
+) {
+  const [clientBundle, worldReproBundle, wasmFile] = await Promise.all([
+    assets.clientBundle ?? getClientBundle(),
+    assets.worldReproBundle ?? getWorldReproBundle(),
+    assets.wasmBody ?? getIdKitWasmFile(),
+  ]);
   const browserConfig = {
     apiBaseUrl: config.apiBaseUrl,
     worldAction: config.worldAction,
-    worldRpId: config.worldRpId,
+    worldRpId: "worldRpId" in config ? config.worldRpId : undefined,
+    worldGenesisIssuedAtMin:
+      "worldGenesisIssuedAtMin" in config
+        ? config.worldGenesisIssuedAtMin
+        : undefined,
     previewAddresses: config.previewAddresses,
-    humanlyCcaAddress: config.humanlyCcaAddress,
+    humanlyCcaAddress:
+      "humanlyCcaAddress" in config ? config.humanlyCcaAddress : undefined,
   };
 
   return function fetch(request: Request): Response {
@@ -600,6 +785,22 @@ export async function createWebFetchHandler(config: WebConfig) {
 
     if (url.pathname === "/client.js") {
       return new Response(clientBundle, {
+        headers: {
+          "content-type": "application/javascript; charset=utf-8",
+        },
+      });
+    }
+
+    if (url.pathname === "/world-repro" || url.pathname === "/world-repro.html") {
+      return new Response(renderWorldReproHtml(), {
+        headers: {
+          "content-type": "text/html; charset=utf-8",
+        },
+      });
+    }
+
+    if (url.pathname === "/world-repro.js") {
+      return new Response(worldReproBundle, {
         headers: {
           "content-type": "application/javascript; charset=utf-8",
         },

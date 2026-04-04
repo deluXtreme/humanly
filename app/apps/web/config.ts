@@ -27,6 +27,22 @@ function parsePort(value: string | undefined): number {
   return parsedValue;
 }
 
+function parseOptionalPositiveInteger(value: string | undefined): number | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const parsedValue = Number.parseInt(value, 10);
+
+  if (!Number.isInteger(parsedValue) || parsedValue <= 0) {
+    throw new Error(
+      "WORLD_GENESIS_ISSUED_AT_MIN must be a positive integer Unix timestamp if provided.",
+    );
+  }
+
+  return parsedValue;
+}
+
 function readAddress(
   value: string | undefined,
   fallback: `0x${string}`,
@@ -63,6 +79,9 @@ export function createBrowserWebConfig(
     apiBaseUrl: source.API_BASE_URL ?? options.defaultApiBaseUrl ?? "",
     worldAction: source.WORLD_ACTION ?? "create-auction",
     worldRpId: readRpId(source.WORLD_RP_ID),
+    worldGenesisIssuedAtMin: parseOptionalPositiveInteger(
+      source.WORLD_GENESIS_ISSUED_AT_MIN,
+    ),
     previewAddresses: {
       liquidityLauncher: readAddress(
         source.PREVIEW_LIQUIDITY_LAUNCHER_ADDRESS,

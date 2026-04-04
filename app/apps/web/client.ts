@@ -1,14 +1,11 @@
-import { IDKit } from "@worldcoin/idkit-core";
+import { IDKit, orbLegacy } from "@worldcoin/idkit-core";
 import QRCode from "qrcode";
 import {
   buildHumanlyEncodedLaunchArtifacts,
   buildHumanlyFullRangeLaunchPlan,
-  computeHumanlyCcaSignalHash,
   createDefaultHumanlyFullRangeLaunchInput,
-  HUMANLY_CCA_ABI,
   type HumanlyAbiEncodedLaunchArtifacts,
   type HumanlyBuiltFullRangeLaunchPlan,
-  type HumanlyCcaParams,
   type HumanlyFullRangeLaunchInput,
   HUMANLY_ALLOWED_POOL_LP_FEES,
   HUMANLY_ALLOWED_POOL_TICK_SPACINGS,
@@ -18,25 +15,13 @@ import {
   type HumanlyUniswapLaunchAddressBook,
   validateHumanlyFullRangeLaunchInput,
 } from "uniswap";
-import {
-  assertWorldUniquenessResultV4,
-  createWorldUniquenessVerificationInput,
-  type WorldUniquenessResultV4,
-} from "world/browser";
-import {
-  createPublicClient,
-  createWalletClient,
-  custom,
-  getAddress,
-  http,
-} from "viem";
-import { base } from "viem/chains";
+import { createPublicClient, createWalletClient, custom, getAddress, http } from "viem";
 import type { BrowserWebConfig } from "./types.ts";
 
 interface RpContextResponse {
   app_id: `app_${string}`;
   action: string;
-  allow_legacy_proofs: boolean;
+  allow_legacy_proofs: true;
   rp_context: {
     rp_id: string;
     nonce: string;
@@ -50,6 +35,15 @@ interface VerificationResponse {
   success: boolean;
   action?: string;
   nullifier?: string;
+  created_at?: string;
+  environment?: string;
+  results?: Array<{
+    identifier?: string;
+    success: boolean;
+    nullifier?: string;
+    code?: string;
+    detail?: string;
+  }>;
   message?: string;
 }
 
@@ -79,38 +73,40 @@ interface LaunchPreview {
   previewAddresses: HumanlyUniswapLaunchAddressBook;
 }
 
-interface HumanlyCcaWorldIdParamsPreview {
-  nullifier: bigint;
-  action: bigint;
-  rpId: bigint;
-  nonce: bigint;
-  signalHash: bigint;
-  expiresAtMin: bigint;
-  issuerSchemaId: bigint;
-  credentialGenesisIssuedAtMin: bigint;
-  zeroKnowledgeProof: readonly [bigint, bigint, bigint, bigint, bigint];
+interface WorldLegacyProofResponse {
+  identifier: string;
+  merkle_root: `0x${string}`;
+  nullifier: `0x${string}`;
+  proof: `0x${string}`;
+  signal_hash: `0x${string}`;
+  max_age?: number;
 }
 
-interface HumanlyFutureLaunchPayloadPreview {
+interface WorldLegacyIdKitResult {
+  nonce: `0x${string}`;
+  action?: string;
+  responses: WorldLegacyProofResponse[];
+  protocol_version?: "3.0" | "4.0";
+  environment?: string;
+}
+
+interface DemoLaunchSummary {
   network: HumanlyLaunchNetwork;
   currentBlock: bigint;
-  previewAddresses: HumanlyUniswapLaunchAddressBook;
-  ccaParams: HumanlyCcaParams;
-  encodedArtifacts: HumanlyAbiEncodedLaunchArtifacts;
+  token: HumanlyFullRangeLaunchInput["token"];
+  auction: HumanlyFullRangeLaunchInput["auction"];
+  liquidity: HumanlyFullRangeLaunchInput["liquidity"];
+  blockPlan: HumanlyBuiltFullRangeLaunchPlan["blocks"];
+  addresses: HumanlyUniswapLaunchAddressBook;
 }
 
-interface HumanlyFutureContractPayloadPreview {
-  contractAddress: `0x${string}` | undefined;
+interface DemoVerificationReceipt {
+  status: "world_backend_verified";
   creator: `0x${string}` | undefined;
   worldAction: string | undefined;
-  worldSignal: `0x${string}` | undefined;
-  proofOfHuman: HumanlyCcaWorldIdParamsPreview | null;
-  liquidityLauncherParameters: HumanlyFutureLaunchPayloadPreview | null;
-  verifyAndExecute: {
-    functionName: "verifyAndExecute";
-    argsReady: boolean;
-  };
-  note: string | null;
+  verification: VerificationResponse | undefined;
+  launch?: DemoLaunchSummary;
+  note: string;
 }
 
 interface LaunchState {
@@ -118,7 +114,7 @@ interface LaunchState {
   wallet: WalletState;
   launchInput: HumanlyFullRangeLaunchInput;
   launchPreview?: LaunchPreview;
-  worldProof?: WorldUniquenessResultV4;
+  worldProof?: unknown;
   worldVerification?: VerificationResponse;
 }
 
@@ -190,6 +186,40 @@ async function getBrowserConfig(): Promise<BrowserWebConfig> {
   return browserConfigPromise;
 }
 
+function isHexString(value: unknown): value is `0x${string}` {
+  return typeof value === "string" && /^0x[0-9a-fA-F]+$/.test(value);
+}
+
+function isWorldLegacyProofResponse(value: unknown): value is WorldLegacyProofResponse {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Partial<WorldLegacyProofResponse>;
+
+  return (
+    typeof candidate.identifier === "string" &&
+    isHexString(candidate.merkle_root) &&
+    isHexString(candidate.nullifier) &&
+    isHexString(candidate.proof) &&
+    isHexString(candidate.signal_hash)
+  );
+}
+
+function isWorldLegacyIdKitResult(value: unknown): value is WorldLegacyIdKitResult {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Partial<WorldLegacyIdKitResult>;
+
+  return (
+    isHexString(candidate.nonce) &&
+    Array.isArray(candidate.responses) &&
+    candidate.responses.every((response) => isWorldLegacyProofResponse(response))
+  );
+}
+
 function normalizeVerificationPayload(
   proofResult: unknown,
   fallbackAction: string,
@@ -207,11 +237,6 @@ function normalizeVerificationPayload(
         ? candidate.action
         : fallbackAction,
   };
-}
-
-function clearVerifiedProofState() {
-  state.worldProof = undefined;
-  state.worldVerification = undefined;
 }
 
 function clearConnectorUi() {
@@ -285,7 +310,6 @@ async function requestRpContext(
     body: JSON.stringify({
       action,
       signal,
-      allowLegacyProofs: false,
     }),
   });
 
@@ -307,7 +331,7 @@ async function requestRpContext(
   };
 }
 
-async function verifyProof(
+async function verifyProofWithBackend(
   apiBaseUrl: string,
   proofResult: unknown,
 ): Promise<VerificationResponse> {
@@ -327,17 +351,17 @@ async function verifyProof(
   } catch {
     if (!response.ok) {
       throw new Error(
-        `World proof verification failed with status ${response.status}.`,
+        `World backend verification failed with status ${response.status}.`,
       );
     }
 
-    throw new Error("World proof verification returned a non-JSON response.");
+    throw new Error("World backend verification returned a non-JSON response.");
   }
 
   if (!response.ok) {
     throw new Error(
       ("error" in json ? json.error : undefined) ??
-        "World proof verification failed.",
+        "World backend verification failed.",
     );
   }
 
@@ -475,68 +499,31 @@ function populateForm() {
   setValidationSummary(validateHumanlyFullRangeLaunchInput(defaults));
 }
 
-function getExpectedWorldSignal(): `0x${string}` | undefined {
-  if (!state.wallet.address || !state.launchPreview) {
-    return undefined;
-  }
-
-  return computeHumanlyCcaSignalHash(
-    state.wallet.address,
-    state.launchPreview.plan.ccaParams,
-  );
-}
-
-function buildWorldProofPreview(): HumanlyCcaWorldIdParamsPreview | null {
-  if (!state.worldProof || !state.browserConfig) {
-    return null;
-  }
-
-  return createWorldUniquenessVerificationInput({
-    result: state.worldProof,
-    rpId: state.browserConfig.worldRpId,
-  });
-}
-
-function buildLaunchPayloadPreview(): HumanlyFutureLaunchPayloadPreview | null {
+function buildDemoLaunchSummary(): DemoLaunchSummary | undefined {
   if (!state.launchPreview) {
-    return null;
+    return undefined;
   }
 
   return {
     network: state.launchPreview.network,
     currentBlock: state.launchPreview.currentBlock,
-    previewAddresses: state.launchPreview.previewAddresses,
-    ccaParams: state.launchPreview.plan.ccaParams,
-    encodedArtifacts: state.launchPreview.encodedArtifacts,
+    token: state.launchPreview.launchInput.token,
+    auction: state.launchPreview.launchInput.auction,
+    liquidity: state.launchPreview.launchInput.liquidity,
+    blockPlan: state.launchPreview.plan.blocks,
+    addresses: state.launchPreview.previewAddresses,
   };
 }
 
-function buildContractPayloadPreview(): HumanlyFutureContractPayloadPreview {
-  const expectedSignal = getExpectedWorldSignal();
-  const selectedNetwork = HUMANLY_SUPPORTED_LAUNCH_NETWORKS[state.launchInput.network];
-  const contractAddress =
-    state.launchInput.network === "base"
-      ? state.browserConfig?.humanlyCcaAddress
-      : undefined;
-
+function buildDemoVerificationReceipt(): DemoVerificationReceipt {
   return {
-    contractAddress,
+    status: "world_backend_verified",
     creator: state.wallet.address,
     worldAction: state.browserConfig?.worldAction,
-    worldSignal: expectedSignal,
-    proofOfHuman: buildWorldProofPreview(),
-    liquidityLauncherParameters: buildLaunchPayloadPreview(),
-    verifyAndExecute: {
-      functionName: "verifyAndExecute",
-      argsReady:
-        contractAddress !== undefined &&
-        buildWorldProofPreview() !== null &&
-        buildLaunchPayloadPreview() !== null,
-    },
+    verification: state.worldVerification,
+    launch: buildDemoLaunchSummary(),
     note:
-      contractAddress === undefined
-        ? `verifyAndExecute is currently configured only for Base (${selectedNetwork.name} is preview-only).`
-        : null,
+      "This demo treats a successful backend verification response from World as the launch approval signal.",
   };
 }
 
@@ -559,8 +546,6 @@ async function connectWallet() {
     address: getAddress(address),
     chainId,
   };
-  state.launchPreview = undefined;
-  clearVerifiedProofState();
 
   getWalletSummary();
 }
@@ -573,7 +558,6 @@ async function buildLaunchPreview() {
   }
 
   state.launchInput = readLaunchInputFromForm();
-  clearVerifiedProofState();
   const issues = validateHumanlyFullRangeLaunchInput(state.launchInput);
   setValidationSummary(issues);
 
@@ -608,7 +592,10 @@ async function buildLaunchPreview() {
     previewAddresses: config.previewAddresses,
   };
 
-  setJsonOutput("Launch Preview", state.launchPreview);
+  setJsonOutput("Launch Preview", {
+    wallet: state.wallet,
+    launchPreview: state.launchPreview,
+  });
 }
 
 async function runWorldFlow() {
@@ -618,31 +605,13 @@ async function runWorldFlow() {
     throw new Error("Connect a wallet before verifying with World ID.");
   }
 
-  if (!state.launchPreview) {
-    throw new Error(
-      "Build a launch preview before verifying with World ID. The proof must be bound to the exact CCA payload.",
-    );
-  }
-
-  if (state.launchPreview.network !== "base") {
-    throw new Error(
-      "HumanlyCCA is currently deployed on Base only. Switch the launch network to Base before collecting a proof for contract execution.",
-    );
-  }
-
-  const expectedSignal = getExpectedWorldSignal();
-
-  if (!expectedSignal) {
-    throw new Error("Unable to derive the expected contract-bound World signal.");
-  }
-
   clearConnectorUi();
 
   setStatus("Requesting RP context from the API...");
   const rpContext = await requestRpContext(
     config.apiBaseUrl,
     config.worldAction,
-    expectedSignal,
+    state.wallet.address,
   );
   setJsonOutput("RP Context", rpContext);
 
@@ -651,16 +620,11 @@ async function runWorldFlow() {
     app_id: rpContext.app_id,
     action: rpContext.action,
     rp_context: rpContext.rp_context,
-    allow_legacy_proofs: false,
+    allow_legacy_proofs: true,
     environment: "production",
   });
 
-  const request = await builder.constraints(
-    {
-      type: "proof_of_human",
-      signal: expectedSignal,
-    },
-  );
+  const request = await builder.preset(orbLegacy({ signal: state.wallet.address }));
 
   await renderConnectorUi(request.connectorURI);
   setStatus("Waiting for the World App / Orb flow to complete...");
@@ -671,113 +635,22 @@ async function runWorldFlow() {
     throw new Error(getIdKitFailureMessage(completion));
   }
 
-  const worldResult = completion.result;
-  if (
-    worldResult &&
-    typeof worldResult === "object" &&
-    "protocol_version" in worldResult &&
-    worldResult.protocol_version === "3.0"
-  ) {
-    throw new Error(
-      "World returned a legacy 3.0 proof even though Humanly requested a v4 uniqueness proof. This is still an upstream legacy response, not a frontend fallback.",
-    );
-  }
-  assertWorldUniquenessResultV4(worldResult);
-
-  const primaryResponse = worldResult.responses[0];
-  if (!primaryResponse?.signal_hash) {
-    throw new Error(
-      "The World ID result did not include `signal_hash`, so it cannot be bound safely to HumanlyCCA.verifyAndExecute.",
-    );
-  }
-
-  if (primaryResponse.signal_hash.toLowerCase() !== expectedSignal.toLowerCase()) {
-    throw new Error(
-      `World returned signal_hash ${primaryResponse.signal_hash}, but HumanlyCCA expects ${expectedSignal}. Refusing to continue with a mismatched proof binding.`,
-    );
-  }
-
-  setStatus("Verifying proof with the API...");
-  const verificationResult = await verifyProof(
+  setStatus("Verifying with World backend...");
+  const verificationResult = await verifyProofWithBackend(
     config.apiBaseUrl,
-    normalizeVerificationPayload(worldResult, config.worldAction),
+    normalizeVerificationPayload(completion.result, config.worldAction),
   );
 
-  state.worldProof = worldResult;
+  state.worldProof = completion.result;
   state.worldVerification = verificationResult;
 
-  setJsonOutput("verifyAndExecute Payload Preview", buildContractPayloadPreview());
-  setStatus("World verification succeeded.", "success");
-}
-
-async function submitCreateAuction() {
-  const config = await getBrowserConfig();
-
-  if (!state.wallet.address) {
-    throw new Error("Connect a wallet before creating an auction.");
-  }
-
-  if (!state.launchPreview) {
-    throw new Error("Build a launch preview before creating an auction.");
-  }
-
-  if (!state.worldProof) {
-    throw new Error("Verify with World ID before creating an auction.");
-  }
-
-  if (state.launchPreview.network !== "base") {
-    throw new Error("verifyAndExecute is currently configured only for Base.");
-  }
-
-  if (state.wallet.chainId !== base.id) {
-    throw new Error("Switch the connected wallet to Base before submitting.");
-  }
-
-  const contractAddress = config.humanlyCcaAddress;
-  if (!contractAddress) {
-    throw new Error("Humanly CCA contract address is not configured.");
-  }
-
-  const idParams = createWorldUniquenessVerificationInput({
-    result: state.worldProof,
-    rpId: config.worldRpId,
-  });
-  const ccaParams = state.launchPreview.plan.ccaParams;
-  const expectedSignal = computeHumanlyCcaSignalHash(state.wallet.address, ccaParams);
-
-  if (idParams.signalHash !== BigInt(expectedSignal)) {
-    throw new Error(
-      `World proof signalHash ${idParams.signalHash.toString()} does not match expected contract signal ${BigInt(expectedSignal).toString()}.`,
-    );
-  }
-
-  const provider = getInjectedProvider();
-  const publicClient = createPublicClient({
-    chain: base,
-    transport: http(HUMANLY_SUPPORTED_LAUNCH_NETWORKS.base.rpcUrl),
-  });
-  const walletClient = createWalletClient({
-    chain: base,
-    transport: custom(provider),
-  });
-
-  const { request } = await publicClient.simulateContract({
-    account: state.wallet.address,
-    address: contractAddress,
-    abi: HUMANLY_CCA_ABI,
-    functionName: "verifyAndExecute",
-    args: [idParams, ccaParams],
-  });
-
-  const hash = await walletClient.writeContract(request);
-
-  setJsonOutput("verifyAndExecute Submitted", {
-    contractAddress,
-    transactionHash: hash,
-    idParams,
-    ccaParams,
-  });
-  setStatus("Create-auction transaction submitted.", "success");
+  setJsonOutput("World Verification Receipt", buildDemoVerificationReceipt());
+  setStatus(
+    state.launchPreview
+      ? "World verified this launch configuration. Demo ready."
+      : "World verification succeeded.",
+    "success",
+  );
 }
 
 function attachFieldValidation() {
@@ -790,8 +663,6 @@ function attachFieldValidation() {
       try {
         const launchInput = readLaunchInputFromForm();
         state.launchInput = launchInput;
-        state.launchPreview = undefined;
-        clearVerifiedProofState();
         setValidationSummary(validateHumanlyFullRangeLaunchInput(launchInput));
       } catch {
         setValidationSummary([
@@ -809,7 +680,6 @@ function attachHandlers() {
   const connectButton = requireElement<HTMLButtonElement>("[data-connect-button]");
   const previewButton = requireElement<HTMLButtonElement>("[data-preview-button]");
   const verifyButton = requireElement<HTMLButtonElement>("[data-verify-button]");
-  const submitButton = requireElement<HTMLButtonElement>("[data-submit-button]");
 
   connectButton.addEventListener("click", async () => {
     connectButton.disabled = true;
@@ -860,23 +730,6 @@ function attachHandlers() {
       verifyButton.disabled = false;
     }
   });
-
-  submitButton.addEventListener("click", async () => {
-    submitButton.disabled = true;
-    setStatus("Submitting verifyAndExecute transaction...");
-
-    try {
-      await submitCreateAuction();
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to submit create-auction transaction.";
-      setStatus(message, "error");
-    } finally {
-      submitButton.disabled = false;
-    }
-  });
 }
 
 async function initializeApp() {
@@ -887,7 +740,7 @@ async function initializeApp() {
 
   try {
     const config = await getBrowserConfig();
-    setJsonOutput("Browser Config", config);
+    setJsonOutput("Demo Runtime", config);
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Failed to load browser config.";

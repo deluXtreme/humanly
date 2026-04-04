@@ -15,8 +15,8 @@
     "@worldcoin/idkit-core": "4.0.16",
     "qrcode": "latest",
     "uniswap": "workspace:*",
-    "viem": "^2.47.10",
-    "world": "workspace:*"
+    "world": "workspace:*",
+    "viem": "^2.47.10"
   },
   "devDependencies": {
     "@types/bun": "latest",

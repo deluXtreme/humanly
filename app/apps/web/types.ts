@@ -4,6 +4,7 @@ export interface WebConfig {
   apiBaseUrl: string;
   worldAction: string;
   worldRpId: `rp_${string}`;
+  worldGenesisIssuedAtMin?: number;
   host: string;
   port: number;
   previewAddresses: HumanlyUniswapLaunchAddressBook;
@@ -14,6 +15,7 @@ export interface WebEnv {
   API_BASE_URL?: string;
   WORLD_ACTION?: string;
   WORLD_RP_ID?: string;
+  WORLD_GENESIS_ISSUED_AT_MIN?: string;
   HOST?: string;
   PORT?: string;
   PREVIEW_LIQUIDITY_LAUNCHER_ADDRESS?: string;
@@ -28,6 +30,7 @@ export type BrowserWebConfig = Pick<
   | "apiBaseUrl"
   | "worldAction"
   | "worldRpId"
+  | "worldGenesisIssuedAtMin"
   | "previewAddresses"
   | "humanlyCcaAddress"
 >;

@@ -11,7 +11,7 @@ import {
 describe("api app", () => {
   const config = createApiWorldConfig({
     WORLD_APP_ID: "app_demo",
-    WORLD_RP_ID: "rp_1234567890abcdef",
+    WORLD_RP_ID: "rp_demo",
     WORLD_RP_SIGNING_KEY:
       "0x3333333333333333333333333333333333333333333333333333333333333333",
     WORLD_ALLOWED_ACTIONS: "create-auction,place-bid",
@@ -20,7 +20,7 @@ describe("api app", () => {
 
   test("creates API world config from environment variables", () => {
     expect(config.appId).toBe("app_demo");
-    expect(config.rpId).toBe("rp_1234567890abcdef");
+    expect(config.rpId).toBe("rp_demo");
     expect(config.allowedActions).toEqual(["create-auction", "place-bid"]);
     expect(config.rpContextTtlSeconds).toBe(600);
   });
@@ -51,10 +51,11 @@ describe("api app", () => {
     expect(await response.json()).toEqual({
       app_id: "app_demo",
       action: "create-auction",
-      allow_legacy_proofs: false,
+      verification_level: "orb",
+      allow_legacy_proofs: true,
       signal: "0xCreator",
-        rp_context: {
-        rp_id: "rp_1234567890abcdef",
+      rp_context: {
+        rp_id: "rp_demo",
         nonce: "0xffff",
         created_at: 1_775_186_400,
         expires_at: 1_775_186_700,

@@ -106,7 +106,6 @@ export async function handleWorldRpContextRequest(
       action: body.action,
       signal: body.signal,
       verificationLevel: body.verificationLevel,
-      allowLegacyProofs: body.allowLegacyProofs,
       rpContext,
     });
 

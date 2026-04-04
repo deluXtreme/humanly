@@ -1,4 +1,7 @@
-import { WORLD_LEGACY_PROTOCOL_VERSION } from "./constants.ts";
+import {
+  WORLD_LEGACY_PROTOCOL_VERSION,
+  WORLD_ORB_VERIFICATION_LEVEL,
+} from "./constants.ts";
 import type {
   CreateHybridWorldIdRequestInput,
   CreateWorldRpContextInput,
@@ -26,13 +29,11 @@ export function createHybridWorldIdRequest(
   const request: HybridWorldIdRequest = {
     app_id: input.appId,
     action: input.action,
-    allow_legacy_proofs: input.allowLegacyProofs ?? false,
+    verification_level:
+      input.verificationLevel ?? WORLD_ORB_VERIFICATION_LEVEL,
+    allow_legacy_proofs: true,
     rp_context: input.rpContext,
   };
-
-  if (input.verificationLevel) {
-    request.verification_level = input.verificationLevel;
-  }
 
   if (input.signal) {
     request.signal = input.signal;

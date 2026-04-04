@@ -6,10 +6,10 @@ This app now:
 
 - connects an injected wallet with `viem`
 - collects a constrained Uniswap launch configuration
-- builds a future-ready launch preview using `packages/uniswap`
+- builds a launch preview using `packages/uniswap`
 - launches the World ID Orb compatibility flow
 - verifies the returned proof with the API
-- shows the combined payload that the future Humanly contract will consume
+- shows the current runtime state, launch preview, and World verification receipt
 
 ## Env
 
@@ -46,7 +46,10 @@ http://127.0.0.1:3011
 
 ## Notes
 
-- This app still stops at preview. The final create-auction contract is not merged yet.
+- This app currently treats successful backend verification from World as the
+  success condition for the launch demo.
+- The app still stops at preview. It does not submit the final create-auction
+  contract transaction.
 - The launch preview uses the connected wallet as the creator and World signal.
 - The preview address book can use placeholders locally until real deployment
   addresses are known.
