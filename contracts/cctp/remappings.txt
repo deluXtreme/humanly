@@ -2,3 +2,4 @@
 @memview-sol/contracts/=node_modules/@memview-sol/contracts/contracts/
 @openzeppelin/contracts/=node_modules/@openzeppelin/contracts/contracts/
 forge-std/=node_modules/forge-std/
+node_modules/@circlefin/evm-cctp-contracts/lib/openzeppelin-contracts/=node_modules/@openzeppelin/contracts/
