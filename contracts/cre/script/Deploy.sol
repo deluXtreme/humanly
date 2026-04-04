@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.34;
 
-import {CCTPAuctionWrapper} from "src/CCTPAuctionWrapper.sol";
-import {Script} from "forge-std/src/Script.sol";
+import { CREAuctionWrapper } from "src/CREAuctionWrapper.sol";
+import { Script } from "forge-std/src/Script.sol";
 
 contract Deploy is Script {
     struct DeploymentParams {
@@ -50,11 +50,11 @@ contract Deploy is Script {
         });
     }
 
-    function run() public returns (CCTPAuctionWrapper _wrapper) {
+    function run() public returns (CREAuctionWrapper _wrapper) {
         DeploymentParams memory _params = _deploymentParams[block.chainid];
 
         vm.startBroadcast();
-        _wrapper = new CCTPAuctionWrapper(_params.forwarder, _params.cctpAuction);
+        _wrapper = new CREAuctionWrapper(_params.forwarder, _params.cctpAuction);
         vm.stopBroadcast();
     }
 }
