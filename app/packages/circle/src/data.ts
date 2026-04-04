@@ -16,9 +16,6 @@ import {
   base,
   polygon,
   unichain,
-  linea,
-  codex,
-  sonic,
   worldchain,
 } from "viem/chains";
 
@@ -172,7 +169,7 @@ const MAINNET_CHAINS: Record<string, ChainConfig> = {
     name: "Unichain",
     domain: 10,
     chain: unichain,
-    creChainSelector: "ethereum-testnet-sepolia-unichain-1", // TODO: update when mainnet selector available
+    creChainSelector: "ethereum-testnet-sepolia-unichain-1", // TODO: update when mainnet selector is available.
     usdc: "0x078D782b760474a361dDA0AF3839290b0EF57AD6",
     tokenMessenger: MAINNET_TOKEN_MESSENGER,
     messageTransmitter: MAINNET_MESSAGE_TRANSMITTER,

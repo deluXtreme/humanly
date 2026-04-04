@@ -1,6 +1,8 @@
 import type { Hex } from "viem";
 
 export type SubmitBidConfig = {
+  network: "testnet" | "mainnet";
+  srcDomain: number;
   cctpAuctionCaller: string;
   cctpAuctionContract: string;
 };

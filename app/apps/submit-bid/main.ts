@@ -12,6 +12,8 @@ import {
 } from "@chainlink/cre-sdk";
 import { bytesToHex, type Hex } from "viem";
 import {
+  DEPOSIT_FOR_BURN_TOPIC,
+  type ChainConfig,
   getChainByDomain,
   getIrisApiBase,
   irisStatusUrl,
@@ -20,24 +22,20 @@ import {
   parseAttestationData,
 } from "circle";
 import {
-  DEPOSIT_FOR_BURN_TOPIC,
   encodeMintAndSubmitBidCalldata,
   parseDepositForBurnLog,
   shouldRelayDepositForBurn,
-  TOKEN_MESSENGER_V2,
   type SubmitBidConfig,
 } from "relay-core";
-
-const BASE_CHAIN_SELECTOR =
-  EVMClient.SUPPORTED_CHAIN_SELECTORS["ethereum-mainnet-base-1"];
-const SRC_DOMAIN = 6; // Base
 
 export type Config = SubmitBidConfig;
 
 function getSrcChain(config: Config): ChainConfig {
-  const chain = getChainByDomain(config.network, config.srcDomain);
-  if (!chain) throw new Error(`Unknown source domain: ${config.srcDomain}`);
-  return chain;
+  const srcChain = getChainByDomain(config.network, config.srcDomain);
+  if (!srcChain) {
+    throw new Error(`Unknown source domain: ${config.srcDomain}`);
+  }
+  return srcChain;
 }
 
 function fetchAttestation(
@@ -45,9 +43,12 @@ function fetchAttestation(
   txHash: string,
 ): AttestationData {
   const srcChain = getSrcChain(nodeRuntime.config);
-  const irisApiBase = getIrisApiBase(nodeRuntime.config.network);
   const http = new HTTPClient();
-  const url = irisStatusUrl(getIrisApiBase("mainnet"), SRC_DOMAIN, txHash as Hex);
+  const url = irisStatusUrl(
+    getIrisApiBase(nodeRuntime.config.network),
+    srcChain.domain,
+    txHash as Hex,
+  );
   const response = http.sendRequest(nodeRuntime, { url, method: "GET" });
   const irisData = json(response.result()) as IrisMessageResponse;
   return parseAttestationData(irisData);
@@ -96,10 +97,10 @@ export const onDepositForBurn = (
 
 export const initWorkflow = (config: Config) => {
   const srcChain = getSrcChain(config);
+  const chainSelectorKey =
+    srcChain.creChainSelector as keyof typeof EVMClient.SUPPORTED_CHAIN_SELECTORS;
   const evmClient = new EVMClient(
-    EVMClient.SUPPORTED_CHAIN_SELECTORS[
-      srcChain.creChainSelector as keyof typeof EVMClient.SUPPORTED_CHAIN_SELECTORS
-    ],
+    EVMClient.SUPPORTED_CHAIN_SELECTORS[chainSelectorKey],
   );
 
   return [
