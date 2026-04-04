@@ -1,6 +1,6 @@
 {
   "network": "mainnet",
-  "srcDomain": 6,
-  "cctpAuctionContract": "0x000000000000000000000000abcdefabcdefabcdefabcdefabcdefabcdefabcd",
-  "creAuctionWrapper": "0x-TODO-1234567890abcdef1234567890abcdef12345678"
+  "srcDomain": 2,
+  "cctpAuctionContract": "0x000000000000000000000000BFb2Cb1C39C914CBf3eE6C5B094eD71D7d8410C8",
+  "creAuctionWrapper": "0xE08166250c9f666E301E9EeBE22ecDE77eA4b787"
 }
