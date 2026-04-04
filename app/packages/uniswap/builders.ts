@@ -3,6 +3,8 @@ import { getAddress, isAddress } from "viem";
 import {
   HUMANLY_ACTION_CONSTANTS_MSG_SENDER,
   HUMANLY_FIXED_TOKEN_DECIMALS,
+  HUMANLY_MAX_UINT128,
+  HUMANLY_MAX_UINT64,
   HUMANLY_SUPPORTED_LAUNCH_NETWORKS,
   HUMANLY_ZERO_ADDRESS,
 } from "./constants.ts";
@@ -45,6 +47,18 @@ function normalizeBlock(value: number | bigint): bigint {
   }
 
   return block;
+}
+
+function assertUint64(value: bigint, label: string): void {
+  if (value < 0n || value > HUMANLY_MAX_UINT64) {
+    throw new Error(`${label} exceeds uint64 bounds.`);
+  }
+}
+
+function assertUint128(value: bigint, label: string): void {
+  if (value < 0n || value > HUMANLY_MAX_UINT128) {
+    throw new Error(`${label} exceeds uint128 bounds.`);
+  }
 }
 
 export const LIQUIDITY_LAUNCHER_FUNCTION_SIGNATURES = [
@@ -92,6 +106,12 @@ export function deriveHumanlyLaunchPricing(
     rawFloorPriceQ96,
     rawTickSpacingQ96,
   );
+  const requiredCurrencyRaised = parseDecimalToUnits(
+    input.auction.requiredUsdcRaised,
+    network.currencyDecimals,
+  );
+
+  assertUint128(requiredCurrencyRaised, "requiredCurrencyRaised");
 
   return {
     currencyDecimals: network.currencyDecimals,
@@ -100,10 +120,7 @@ export function deriveHumanlyLaunchPricing(
     floorPriceQ96,
     rawTickSpacingQ96,
     tickSpacingQ96: rawTickSpacingQ96,
-    requiredCurrencyRaised: parseDecimalToUnits(
-      input.auction.requiredUsdcRaised,
-      network.currencyDecimals,
-    ),
+    requiredCurrencyRaised,
   };
 }
 
@@ -121,6 +138,12 @@ export function deriveHumanlyLaunchBlocks(
   const migrationBlock = endBlock + BigInt(input.auction.migrationDelayBlocks);
   const sweepBlock = migrationBlock + BigInt(input.auction.sweepDelayBlocks);
 
+  assertUint64(startBlock, "startBlock");
+  assertUint64(endBlock, "endBlock");
+  assertUint64(claimBlock, "claimBlock");
+  assertUint64(migrationBlock, "migrationBlock");
+  assertUint64(sweepBlock, "sweepBlock");
+
   return {
     startBlock,
     endBlock,
@@ -137,15 +160,18 @@ export function buildHumanlyCreateTokenArgs(
   assertAddress(context.addresses.liquidityLauncher, "liquidityLauncher");
   assertAddress(context.addresses.uerc20Factory, "uerc20Factory");
 
+  const initialSupply = parseDecimalToUnits(
+    input.token.initialSupply,
+    HUMANLY_FIXED_TOKEN_DECIMALS,
+  );
+  assertUint128(initialSupply, "initialSupply");
+
   return {
     factory: getAddress(context.addresses.uerc20Factory),
     name: input.token.name.trim(),
     symbol: input.token.symbol.trim(),
     decimals: HUMANLY_FIXED_TOKEN_DECIMALS,
-    initialSupply: parseDecimalToUnits(
-      input.token.initialSupply,
-      HUMANLY_FIXED_TOKEN_DECIMALS,
-    ),
+    initialSupply,
     recipient: getAddress(context.addresses.liquidityLauncher),
     tokenData: encodeHumanlyUerc20Metadata(createHumanlyUerc20Metadata(input)),
   };
@@ -212,6 +238,16 @@ export function buildHumanlyMigratorParameters(
     "continuousClearingAuctionFactory",
   );
 
+  const maxCurrencyAmountForLP =
+    (input.liquidity.maxUsdcForLp?.trim().length ?? 0) > 0
+      ? parseDecimalToUnits(
+          input.liquidity.maxUsdcForLp!,
+          network.currencyDecimals,
+        )
+      : HUMANLY_MAX_UINT128;
+
+  assertUint128(maxCurrencyAmountForLP, "maxCurrencyAmountForLP");
+
   return {
     migrationBlock: blocks.migrationBlock,
     currency: getAddress(network.usdcAddress),
@@ -224,13 +260,7 @@ export function buildHumanlyMigratorParameters(
     positionRecipient: getAddress(context.creator),
     sweepBlock: blocks.sweepBlock,
     operator: getAddress(context.creator),
-    maxCurrencyAmountForLP:
-      (input.liquidity.maxUsdcForLp?.trim().length ?? 0) > 0
-        ? parseDecimalToUnits(
-            input.liquidity.maxUsdcForLp!,
-            network.currencyDecimals,
-          )
-        : (2n ** 128n) - 1n,
+    maxCurrencyAmountForLP,
   };
 }
 

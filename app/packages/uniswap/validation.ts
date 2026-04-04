@@ -3,11 +3,18 @@ import {
   HUMANLY_ALLOWED_POOL_TICK_SPACINGS,
   HUMANLY_AUCTION_SCHEDULE_MODE,
   HUMANLY_DEFAULT_LAUNCH_NETWORK,
+  HUMANLY_FIXED_TOKEN_DECIMALS,
+  HUMANLY_MAX_UINT40,
   HUMANLY_SUPPORTED_LAUNCH_CURRENCY,
   HUMANLY_SUPPORTED_LAUNCH_NETWORKS,
   HUMANLY_SUPPORTED_LAUNCH_STRATEGY,
   HUMANLY_SUPPORTED_TOKEN_FACTORY,
 } from "./constants.ts";
+import {
+  countDecimalPlaces,
+  decimalPriceToQ96,
+  fitsUint128Units,
+} from "./math.ts";
 import type {
   HumanlyFullRangeLaunchInput,
   HumanlyLaunchValidationIssue,
@@ -17,11 +24,11 @@ const DECIMAL_PATTERN = /^(0|[1-9]\d*)(\.\d+)?$/;
 const HTTPS_URL_PROTOCOL = "https:";
 
 function isPositiveInteger(value: number): boolean {
-  return Number.isInteger(value) && value > 0;
+  return Number.isSafeInteger(value) && value > 0;
 }
 
 function isZeroOrPositiveInteger(value: number): boolean {
-  return Number.isInteger(value) && value >= 0;
+  return Number.isSafeInteger(value) && value >= 0;
 }
 
 function isValidDecimalString(value: string): boolean {
@@ -130,6 +137,10 @@ export function validateHumanlyFullRangeLaunchInput(
   const tokenWebsite = input.token.website?.trim() ?? "";
   const tokenImage = input.token.image?.trim() ?? "";
   const initialSupply = input.token.initialSupply.trim();
+  const networkConfig =
+    input.network in HUMANLY_SUPPORTED_LAUNCH_NETWORKS
+      ? HUMANLY_SUPPORTED_LAUNCH_NETWORKS[input.network]
+      : HUMANLY_SUPPORTED_LAUNCH_NETWORKS[HUMANLY_DEFAULT_LAUNCH_NETWORK];
 
   if (tokenName.length === 0 || tokenName.length > 64) {
     pushIssue(issues, "token.name", "Token name must be between 1 and 64 characters.");
@@ -173,6 +184,22 @@ export function validateHumanlyFullRangeLaunchInput(
       "token.initialSupply",
       "Initial supply must be a positive decimal amount.",
     );
+  } else {
+    if (countDecimalPlaces(initialSupply) > HUMANLY_FIXED_TOKEN_DECIMALS) {
+      pushIssue(
+        issues,
+        "token.initialSupply",
+        `Initial supply cannot use more than ${HUMANLY_FIXED_TOKEN_DECIMALS} decimal places.`,
+      );
+    }
+
+    if (!fitsUint128Units(initialSupply, HUMANLY_FIXED_TOKEN_DECIMALS)) {
+      pushIssue(
+        issues,
+        "token.initialSupply",
+        "Initial supply is too large to fit the launcher uint128 bounds.",
+      );
+    }
   }
 
   if (!isPositiveInteger(input.auction.startDelayBlocks)) {
@@ -191,11 +218,33 @@ export function validateHumanlyFullRangeLaunchInput(
     );
   }
 
+  if (
+    isZeroOrPositiveInteger(input.auction.prebidBlocks) &&
+    BigInt(input.auction.prebidBlocks) > HUMANLY_MAX_UINT40
+  ) {
+    pushIssue(
+      issues,
+      "auction.prebidBlocks",
+      "Prebid blocks are too large for the packed auction step encoding.",
+    );
+  }
+
   if (!isPositiveInteger(input.auction.auctionBlocks)) {
     pushIssue(
       issues,
       "auction.auctionBlocks",
       "Auction duration must be a positive integer number of blocks.",
+    );
+  }
+
+  if (
+    isPositiveInteger(input.auction.auctionBlocks) &&
+    BigInt(input.auction.auctionBlocks) > HUMANLY_MAX_UINT40
+  ) {
+    pushIssue(
+      issues,
+      "auction.auctionBlocks",
+      "Auction duration is too large for the packed auction step encoding.",
     );
   }
 
@@ -215,27 +264,74 @@ export function validateHumanlyFullRangeLaunchInput(
     );
   }
 
-  if (!isPositiveDecimalString(input.auction.floorPriceUsdc.trim())) {
+  const floorPriceUsdc = input.auction.floorPriceUsdc.trim();
+  const tickSizeUsdc = input.auction.tickSizeUsdc.trim();
+  const requiredUsdcRaised = input.auction.requiredUsdcRaised.trim();
+
+  if (!isPositiveDecimalString(floorPriceUsdc)) {
     pushIssue(
       issues,
       "auction.floorPriceUsdc",
       "Floor price must be a positive decimal USDC amount.",
     );
+  } else {
+    if (countDecimalPlaces(floorPriceUsdc) > HUMANLY_FIXED_TOKEN_DECIMALS) {
+      pushIssue(
+        issues,
+        "auction.floorPriceUsdc",
+        `Floor price cannot use more than ${HUMANLY_FIXED_TOKEN_DECIMALS} decimal places.`,
+      );
+    }
+
+    if (
+      decimalPriceToQ96(
+        floorPriceUsdc,
+        HUMANLY_FIXED_TOKEN_DECIMALS,
+        networkConfig.currencyDecimals,
+      ) <= 0n
+    ) {
+      pushIssue(
+        issues,
+        "auction.floorPriceUsdc",
+        "Floor price is too small to represent for the selected network and token decimals.",
+      );
+    }
   }
 
-  if (!isPositiveDecimalString(input.auction.tickSizeUsdc.trim())) {
+  if (!isPositiveDecimalString(tickSizeUsdc)) {
     pushIssue(
       issues,
       "auction.tickSizeUsdc",
       "Tick size must be a positive decimal USDC amount.",
     );
+  } else {
+    if (countDecimalPlaces(tickSizeUsdc) > HUMANLY_FIXED_TOKEN_DECIMALS) {
+      pushIssue(
+        issues,
+        "auction.tickSizeUsdc",
+        `Tick size cannot use more than ${HUMANLY_FIXED_TOKEN_DECIMALS} decimal places.`,
+      );
+    }
+
+    if (
+      decimalPriceToQ96(
+        tickSizeUsdc,
+        HUMANLY_FIXED_TOKEN_DECIMALS,
+        networkConfig.currencyDecimals,
+      ) < 2n
+    ) {
+      pushIssue(
+        issues,
+        "auction.tickSizeUsdc",
+        "Tick size is too small to represent safely in Q96 space.",
+      );
+    }
   }
 
   if (
-    isPositiveDecimalString(input.auction.floorPriceUsdc.trim()) &&
-    isPositiveDecimalString(input.auction.tickSizeUsdc.trim()) &&
-    Number.parseFloat(input.auction.tickSizeUsdc) >=
-      Number.parseFloat(input.auction.floorPriceUsdc)
+    isPositiveDecimalString(floorPriceUsdc) &&
+    isPositiveDecimalString(tickSizeUsdc) &&
+    Number.parseFloat(tickSizeUsdc) >= Number.parseFloat(floorPriceUsdc)
   ) {
     pushIssue(
       issues,
@@ -244,12 +340,28 @@ export function validateHumanlyFullRangeLaunchInput(
     );
   }
 
-  if (!isZeroOrPositiveDecimalString(input.auction.requiredUsdcRaised.trim())) {
+  if (!isZeroOrPositiveDecimalString(requiredUsdcRaised)) {
     pushIssue(
       issues,
       "auction.requiredUsdcRaised",
       "Required USDC raised must be zero or a positive decimal amount.",
     );
+  } else {
+    if (countDecimalPlaces(requiredUsdcRaised) > networkConfig.currencyDecimals) {
+      pushIssue(
+        issues,
+        "auction.requiredUsdcRaised",
+        `Required USDC raised cannot use more than ${networkConfig.currencyDecimals} decimal places.`,
+      );
+    }
+
+    if (!fitsUint128Units(requiredUsdcRaised, networkConfig.currencyDecimals)) {
+      pushIssue(
+        issues,
+        "auction.requiredUsdcRaised",
+        "Required USDC raised is too large to fit the launcher uint128 bounds.",
+      );
+    }
   }
 
   if (
@@ -289,6 +401,22 @@ export function validateHumanlyFullRangeLaunchInput(
       "liquidity.maxUsdcForLp",
       "Max USDC for LP must be a positive decimal amount if provided.",
     );
+  } else if (maxUsdcForLp.length > 0) {
+    if (countDecimalPlaces(maxUsdcForLp) > networkConfig.currencyDecimals) {
+      pushIssue(
+        issues,
+        "liquidity.maxUsdcForLp",
+        `Max USDC for LP cannot use more than ${networkConfig.currencyDecimals} decimal places.`,
+      );
+    }
+
+    if (!fitsUint128Units(maxUsdcForLp, networkConfig.currencyDecimals)) {
+      pushIssue(
+        issues,
+        "liquidity.maxUsdcForLp",
+        "Max USDC for LP is too large to fit the launcher uint128 bounds.",
+      );
+    }
   }
 
   return issues;

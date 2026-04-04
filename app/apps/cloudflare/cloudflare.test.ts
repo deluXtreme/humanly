@@ -88,4 +88,20 @@ describe("cloudflare worker", () => {
 
     expect(response.status).toBe(402);
   });
+
+  test("only bypasses x402 when explicitly disabled", async () => {
+    const fetchHandler = createCloudflareFetchHandler();
+    const env = createTestEnv();
+    delete env.X402_PAY_TO;
+    env.X402_DISABLED = "true";
+
+    const response = await fetchHandler(
+      new Request(
+        "https://human.ly/api/auctions/base/0x000000000000000000000000000000000000dEaD",
+      ),
+      env,
+    );
+
+    expect(response.status).toBe(200);
+  });
 });
