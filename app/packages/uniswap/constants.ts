@@ -61,6 +61,10 @@ export const HUMANLY_SUPPORTED_LAUNCH_NETWORKS = {
 export const HUMANLY_CCA_MPS = 10_000_000n;
 export const HUMANLY_Q96 = 79_228_162_514_264_337_593_543_950_336n;
 export const HUMANLY_MIN_TICK_SPACING_Q96 = 2n;
+export const HUMANLY_MAX_UINT24 = (2n ** 24n) - 1n;
+export const HUMANLY_MAX_UINT40 = (2n ** 40n) - 1n;
+export const HUMANLY_MAX_UINT64 = (2n ** 64n) - 1n;
+export const HUMANLY_MAX_UINT128 = (2n ** 128n) - 1n;
 export const HUMANLY_ACTION_CONSTANTS_MSG_SENDER =
   "0x0000000000000000000000000000000000000001" as const;
 export const HUMANLY_ZERO_ADDRESS =

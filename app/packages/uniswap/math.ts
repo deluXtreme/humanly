@@ -1,4 +1,5 @@
 import {
+  HUMANLY_MAX_UINT128,
   HUMANLY_MIN_TICK_SPACING_Q96,
   HUMANLY_Q96,
 } from "./constants.ts";
@@ -28,6 +29,17 @@ export function parseDecimalToUnits(
   return (numerator * multiplier) / scale;
 }
 
+export function countDecimalPlaces(value: DecimalString): number {
+  const trimmed = value.trim();
+
+  if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(trimmed)) {
+    throw new Error(`Invalid decimal string: ${value}`);
+  }
+
+  const [, fractionPart = ""] = trimmed.split(".");
+  return fractionPart.length;
+}
+
 export function decimalPriceToQ96(
   value: DecimalString,
   tokenDecimals: number,
@@ -55,4 +67,11 @@ export function roundFloorPriceToTickSpacing(
 
 export function percentageToMps(percentage: number): bigint {
   return BigInt(Math.round(percentage * 100_000));
+}
+
+export function fitsUint128Units(
+  value: DecimalString,
+  decimals: number,
+): boolean {
+  return parseDecimalToUnits(value, decimals) <= HUMANLY_MAX_UINT128;
 }

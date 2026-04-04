@@ -133,6 +133,34 @@ describe("humanly uniswap launch surface", () => {
     expect(fields).toContain("auction.tickSizeUsdc");
   });
 
+  test("rejects precision and uint128-overflow values before encoding", () => {
+    const input = createDefaultHumanlyFullRangeLaunchInput();
+    input.token.name = "Humanly";
+    input.token.symbol = "HUM";
+    input.token.description = "Human-first launches with cross-chain bidding.";
+    input.token.initialSupply = "1.1234567890123456789";
+    input.auction.requiredUsdcRaised = "0.0000001";
+    input.liquidity.maxUsdcForLp = "0.0000001";
+
+    const issues = validateHumanlyFullRangeLaunchInput(input);
+    const fields = issues.map((issue) => issue.field);
+
+    expect(fields).toContain("token.initialSupply");
+    expect(fields).toContain("auction.requiredUsdcRaised");
+    expect(fields).toContain("liquidity.maxUsdcForLp");
+
+    input.token.initialSupply = "999999999999999999999999999999999999999";
+    input.auction.requiredUsdcRaised = "999999999999999999999999999999999999999";
+    input.liquidity.maxUsdcForLp = "999999999999999999999999999999999999999";
+
+    const overflowIssues = validateHumanlyFullRangeLaunchInput(input);
+    const overflowFields = overflowIssues.map((issue) => issue.field);
+
+    expect(overflowFields).toContain("token.initialSupply");
+    expect(overflowFields).toContain("auction.requiredUsdcRaised");
+    expect(overflowFields).toContain("liquidity.maxUsdcForLp");
+  });
+
   test("converts decimal prices into Q96 and rounds floor price to tick spacing", () => {
     const rawFloor = decimalPriceToQ96("0.1", 18, 6);
     const tick = decimalPriceToQ96("0.001", 18, 6);
@@ -227,5 +255,30 @@ describe("humanly uniswap launch surface", () => {
     expect(encoded.tokenData.startsWith("0x")).toBe(true);
     expect(encoded.auctionParameters.startsWith("0x")).toBe(true);
     expect(encoded.fullRangeStrategyConfig).toBe(plan.distribution.configData);
+  });
+
+  test("rejects derived block numbers that exceed uint64 bounds", () => {
+    const input = createDefaultHumanlyFullRangeLaunchInput();
+    input.network = "base";
+    input.token.name = "Humanly";
+    input.token.symbol = "HUM";
+    input.token.description = "Human-first launches with cross-chain bidding.";
+
+    const context: HumanlyBuildLaunchContext = {
+      creator: "0x1111111111111111111111111111111111111111",
+      currentBlock: 2n ** 64n,
+      addresses: {
+        liquidityLauncher: "0x2222222222222222222222222222222222222222",
+        uerc20Factory: "0x3333333333333333333333333333333333333333",
+        fullRangeLbpStrategyFactory:
+          "0x4444444444444444444444444444444444444444",
+        continuousClearingAuctionFactory:
+          "0x5555555555555555555555555555555555555555",
+      },
+    };
+
+    expect(() => buildHumanlyFullRangeLaunchPlan(input, context)).toThrow(
+      "startBlock exceeds uint64 bounds.",
+    );
   });
 });
