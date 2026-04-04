@@ -43,8 +43,12 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install dependencies
+      - name: Install relay dependencies
         run: bun install --frozen-lockfile
+
+      - name: Install app dependencies
+        run: bun install --frozen-lockfile
+        working-directory: app
 
       - name: Typecheck
         run: bun run typecheck
