@@ -16,9 +16,6 @@ import {
   base,
   polygon,
   unichain,
-  linea,
-  codex,
-  sonic,
   worldchain,
 } from "viem/chains";
 

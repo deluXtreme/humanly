@@ -3,9 +3,11 @@ import {
   type EVMLog,
   HTTPClient,
   consensusIdenticalAggregation,
+  encodeCallMsg,
   handler,
   json,
   logTriggerConfig,
+  prepareReportRequest,
   Runner,
   type Runtime,
   type NodeRuntime,
@@ -37,6 +39,8 @@ const MINT_AND_SUBMIT_BID_ABI = [
     outputs: [],
   },
 ] as const;
+
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as const;
 
 export type Config = {
   network: Network;
@@ -117,8 +121,34 @@ export const onDepositForBurn = (
     functionName: "mintAndSubmitBid",
     args: [message, attestation],
   });
+  const destEvmClient = new EVMClient(
+    EVMClient.SUPPORTED_CHAIN_SELECTORS[
+      destChain.creChainSelector as keyof typeof EVMClient.SUPPORTED_CHAIN_SELECTORS
+    ],
+  );
+  const gasEstimate = destEvmClient
+    .estimateGas(runtime, {
+      msg: encodeCallMsg({
+        from: ZERO_ADDRESS,
+        to: runtime.config.cctpAuctionContract as Hex,
+        data: calldata,
+      }),
+    })
+    .result().gas;
+  const report = runtime.report(prepareReportRequest(calldata)).result();
+  const tx = destEvmClient
+    .writeReport(runtime, {
+      receiver: runtime.config.cctpAuctionContract,
+      report,
+      gasConfig: {
+        gasLimit: (gasEstimate + gasEstimate / 5n).toString(),
+      },
+    })
+    .result();
 
-  // TODO: Submit transaction to destination chain via EVMClient.writeReport
+  runtime.log(
+    `Submitted mintAndSubmitBid on ${destChain.name}: ${tx.txHash ? bytesToHex(tx.txHash) : "tx hash unavailable"}`,
+  );
 
   return calldata;
 };

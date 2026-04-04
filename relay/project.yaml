@@ -35,22 +35,16 @@ staging-settings:
   rpcs:
     - chain-name: ethereum-testnet-sepolia
       url: https://ethereum-sepolia-rpc.publicnode.com
-    - chain-name: ethereum-mainnet-base-1
-      url: https://base.llamarpc.com
-    - chain-name: ethereum-mainnet-unichain-1
-      url: https://unichain.drpc.org
     - chain-name: ethereum-testnet-sepolia-unichain-1
       url: https://unichain-sepolia.drpc.org
+
+
 
 # ==========================================================================
 production-settings:
   rpcs:
-    - chain-name: ethereum-testnet-sepolia
-      url: https://ethereum-sepolia-rpc.publicnode.com
     - chain-name: ethereum-mainnet-base-1
       url: https://base.llamarpc.com
     - chain-name: ethereum-mainnet-unichain-1
       url: https://unichain.drpc.org
-    - chain-name: ethereum-testnet-sepolia-unichain-1
-      url: https://unichain-sepolia.drpc.org
 
