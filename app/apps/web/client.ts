@@ -1,4 +1,4 @@
-import { CredentialRequest, IDKit } from "@worldcoin/idkit-core";
+import { IDKit } from "@worldcoin/idkit-core";
 import QRCode from "qrcode";
 import {
   buildHumanlyEncodedLaunchArtifacts,
@@ -656,9 +656,10 @@ async function runWorldFlow() {
   });
 
   const request = await builder.constraints(
-    CredentialRequest("proof_of_human", {
+    {
+      type: "proof_of_human",
       signal: expectedSignal,
-    }),
+    },
   );
 
   await renderConnectorUi(request.connectorURI);
