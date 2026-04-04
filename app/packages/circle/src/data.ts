@@ -1,6 +1,7 @@
 import type { Chain } from "viem";
 import {
   // Testnets
+  arcTestnet,
   sepolia,
   avalancheFuji,
   optimismSepolia,
@@ -45,6 +46,15 @@ const MAINNET_MESSAGE_TRANSMITTER =
   "0x81D40F21F12A8F0E3252Bccb954D722d4c464B64" as const;
 
 const TESTNET_CHAINS: Record<string, ChainConfig> = {
+  arcTestnet: {
+    name: "Arc Testnet",
+    domain: 26,
+    chain: arcTestnet,
+    creChainSelector: "arc-testnet",
+    usdc: "0x3600000000000000000000000000000000000000",
+    tokenMessenger: TESTNET_TOKEN_MESSENGER,
+    messageTransmitter: TESTNET_MESSAGE_TRANSMITTER,
+  },
   ethereumSepolia: {
     name: "Ethereum Sepolia",
     domain: 0,
