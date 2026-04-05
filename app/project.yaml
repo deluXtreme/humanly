@@ -43,6 +43,8 @@ staging-settings:
 # ==========================================================================
 production-settings:
   rpcs:
+    - chain-name: ethereum-mainnet-optimism-1
+      url: https://optimism.drpc.org
     - chain-name: ethereum-mainnet-base-1
       url: https://base.llamarpc.com
     - chain-name: ethereum-mainnet-unichain-1

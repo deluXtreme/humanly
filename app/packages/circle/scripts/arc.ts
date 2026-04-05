@@ -58,39 +58,38 @@ function encodeAuctionBidHookData(params: {
   prevTickPrice: bigint;
   innerHookData?: Hex;
 }): Hex {
-  const dataLength = 112 + (params.innerHookData
-    ? (params.innerHookData.length - 2) / 2
-    : 0);
+  const dataLength =
+    112 + (params.innerHookData ? (params.innerHookData.length - 2) / 2 : 0);
 
   const parts: Hex[] = [
-    CCTP_AUCTION_MAGIC,                                       // bytes 0-3:   magic
-    pad(numberToHex(dataLength, { size: 4 }), { size: 4 }),   // bytes 4-7:   data length (uint32)
-    params.auction,                                            // bytes 8-27:  auction address (20 bytes)
-    pad(numberToHex(params.maxPrice, { size: 32 }), { size: 32 }),  // bytes 28-59: maxPrice (uint256)
-    params.bidder,                                             // bytes 60-79: bidder address (20 bytes)
+    CCTP_AUCTION_MAGIC, // bytes 0-3:   magic
+    pad(numberToHex(dataLength, { size: 4 }), { size: 4 }), // bytes 4-7:   data length (uint32)
+    params.auction, // bytes 8-27:  auction address (20 bytes)
+    pad(numberToHex(params.maxPrice, { size: 32 }), { size: 32 }), // bytes 28-59: maxPrice (uint256)
+    params.bidder, // bytes 60-79: bidder address (20 bytes)
     pad(numberToHex(params.prevTickPrice, { size: 32 }), { size: 32 }), // bytes 80-111: prevTickPrice (uint256)
   ];
 
   if (params.innerHookData) {
-    parts.push(params.innerHookData);                          // bytes 112+:  inner hook data
+    parts.push(params.innerHookData); // bytes 112+:  inner hook data
   }
 
   return concat(parts);
 }
 
 // TODO: Replace with actual auction parameters
-const AUCTION_CONTRACT = "0x0000000000000000000000000000000000000000" as Address;
+const AUCTION_CONTRACT =
+  "0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834" as Address;
 const MAX_PRICE = 0n;
 const PREV_TICK_PRICE = 0n;
 
-const hookData = encodeHookData(
-  encodeAuctionBidHookData({
-    auction: AUCTION_CONTRACT,
-    maxPrice: MAX_PRICE,
-    bidder: account.address,
-    prevTickPrice: PREV_TICK_PRICE,
-  }),
-);
+// Does not use forwarder.
+const hookData = encodeAuctionBidHookData({
+  auction: AUCTION_CONTRACT,
+  maxPrice: MAX_PRICE,
+  bidder: account.address,
+  prevTickPrice: PREV_TICK_PRICE,
+});
 
 async function main() {
   if (!srcChain || !destChain) {
@@ -154,7 +153,8 @@ async function main() {
 
   // Step 4: Burn USDC with Forwarding Service hook
   console.log("\nStep 4: Burning USDC with Forwarding Service hook...");
-  const burnTx = await depositForBurnWithHook(client, {
+  console.log("Show me the hook data", hookData);
+  const payload = {
     tokenMessenger: srcChain.tokenMessenger,
     amount: totalAmount,
     destinationDomain: destChain.domain,
@@ -162,7 +162,9 @@ async function main() {
     burnToken: srcChain.usdc,
     maxFee,
     hookData,
-  });
+  };
+  console.log("Show me the payload", payload);
+  const burnTx = await depositForBurnWithHook(client, payload);
   console.log(
     "Burn Tx:",
     `${srcChain.chain.blockExplorers?.default.url}/tx/${burnTx}`,
