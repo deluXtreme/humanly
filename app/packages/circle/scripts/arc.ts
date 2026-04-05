@@ -78,18 +78,18 @@ function encodeAuctionBidHookData(params: {
 }
 
 // TODO: Replace with actual auction parameters
-const AUCTION_CONTRACT = "0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834" as Address;
+const AUCTION_CONTRACT =
+  "0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834" as Address;
 const MAX_PRICE = 0n;
 const PREV_TICK_PRICE = 0n;
 
-const hookData = encodeHookData(
-  encodeAuctionBidHookData({
-    auction: AUCTION_CONTRACT,
-    maxPrice: MAX_PRICE,
-    bidder: account.address,
-    prevTickPrice: PREV_TICK_PRICE,
-  }),
-);
+// Does not use forwarder.
+const hookData = encodeAuctionBidHookData({
+  auction: AUCTION_CONTRACT,
+  maxPrice: MAX_PRICE,
+  bidder: account.address,
+  prevTickPrice: PREV_TICK_PRICE,
+});
 
 async function main() {
   if (!srcChain || !destChain) {
@@ -116,7 +116,7 @@ async function main() {
     srcChain.domain,
     destChain.domain,
   );
-  const transferAmount = 4_000_000n; // 1 WEI USDC
+  const transferAmount = 1n; // 1 WEI USDC
   const feeData = fees[0];
   if (!feeData) throw new Error("No fee data returned from Iris API");
   const { forwardFee, protocolFee, maxFee, totalAmount } = computeFees(
@@ -153,7 +153,8 @@ async function main() {
 
   // Step 4: Burn USDC with Forwarding Service hook
   console.log("\nStep 4: Burning USDC with Forwarding Service hook...");
-  const burnTx = await depositForBurnWithHook(client, {
+  console.log("Show me the hook data", hookData);
+  const payload = {
     tokenMessenger: srcChain.tokenMessenger,
     amount: totalAmount,
     destinationDomain: destChain.domain,
@@ -161,7 +162,9 @@ async function main() {
     burnToken: srcChain.usdc,
     maxFee,
     hookData,
-  });
+  };
+  console.log("Show me the payload", payload);
+  const burnTx = await depositForBurnWithHook(client, payload);
   console.log(
     "Burn Tx:",
     `${srcChain.chain.blockExplorers?.default.url}/tx/${burnTx}`,

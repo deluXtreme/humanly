@@ -11,7 +11,7 @@ import {
   type Runtime,
   type NodeRuntime,
 } from "@chainlink/cre-sdk";
-import { bytesToHex, type Hex } from "viem";
+import { bytesToHex, createPublicClient, type Hex } from "viem";
 import {
   DEPOSIT_FOR_BURN_TOPIC,
   type ChainConfig,
@@ -73,24 +73,24 @@ export function submitMintAndSubmitBid(
 ): void {
   const creWrapper = runtime.config.creAuctionWrapper as Hex;
     runtime.log(`Forward report to CRE Auction Wrapper: ${creWrapper}`);
-  const gasEstimate = destEvmClient
-    .estimateGas(runtime, {
-      msg: encodeCallMsg({
-        from: ZERO_ADDRESS,
-        to: creWrapper,
-        data: calldata,
-      }),
-    })
-    .result().gas;
+  // const gasEstimate = destEvmClient
+  //   .estimateGas(runtime, {
+  //     msg: encodeCallMsg({
+  //       from: ZERO_ADDRESS,
+  //       to: creWrapper,
+  //       data: calldata,
+  //     }),
+  //   })
+  //   .result().gas;
 
   const report = runtime.report(prepareReportRequest(calldata)).result();
   const tx = destEvmClient
     .writeReport(runtime, {
       receiver: creWrapper,
       report,
-      gasConfig: {
-        gasLimit: (gasEstimate + gasEstimate / 5n).toString(),
-      },
+      // gasConfig: {
+      //   gasLimit: (gasEstimate + gasEstimate / 5n).toString(),
+      // },
     })
     .result();
 

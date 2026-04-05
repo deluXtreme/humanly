@@ -73,7 +73,7 @@ describe("shouldRelayDepositForBurn", () => {
     expect(
       shouldRelayDepositForBurn(
         {
-          destinationCaller:
+          mintRecipient:
             "0x000000000000000000000000abcdefabcdefabcdefabcdefabcdefabcdefabcd",
         },
         "0x000000000000000000000000ABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCD",
@@ -85,7 +85,7 @@ describe("shouldRelayDepositForBurn", () => {
     expect(
       shouldRelayDepositForBurn(
         {
-          destinationCaller:
+          mintRecipient:
             "0x000000000000000000000000abcdefabcdefabcdefabcdefabcdefabcdefabcd",
         },
         "0x0000000000000000000000001111111111111111111111111111111111111111",

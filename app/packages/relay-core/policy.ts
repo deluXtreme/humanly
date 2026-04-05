@@ -8,8 +8,8 @@ export function matchesDestinationCaller(
 }
 
 export function shouldRelayDepositForBurn(
-  deposit: Pick<ParsedDepositForBurn, "destinationCaller">,
+  deposit: Pick<ParsedDepositForBurn, "mintRecipient">,
   expectedCaller: string,
 ): boolean {
-  return matchesDestinationCaller(deposit.destinationCaller, expectedCaller);
+  return matchesDestinationCaller(deposit.mintRecipient, expectedCaller);
 }
