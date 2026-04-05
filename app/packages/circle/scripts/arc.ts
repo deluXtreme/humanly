@@ -2,9 +2,11 @@ import {
   createWalletClient,
   http,
   concat,
-  encodeFunctionData,
-  parseAbi,
+  numberToHex,
+  pad,
   publicActions,
+  type Address,
+  type Hex,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { getChainByDomain, getIrisApiBase, type Network } from "../src/data";
@@ -32,20 +34,63 @@ const srcChain = getChainByDomain(NETWORK, Number(process.env.SRC_DOMAIN));
 const destChain = getChainByDomain(NETWORK, Number(process.env.DEST_DOMAIN));
 const irisApiBase = getIrisApiBase(NETWORK);
 
-// Encode developer hook: unwrap WETH on destination
-const WETH = "0x4200000000000000000000000000000000000006" as const;
-const hookData = encodeHookData(
-  concat([
-    WETH,
-    encodeFunctionData({
-      abi: parseAbi(["function withdraw(uint wad)"]),
-      functionName: "withdraw",
-      args: [1n],
-    }),
-  ]),
-);
-
 const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
+
+// CCTPAuctionHookData magic: bytes4(keccak256("CCTPAuction.Version.0"))
+const CCTP_AUCTION_MAGIC = "0xd55705b2" as const;
+
+/**
+ * Encode CCTPAuctionHookData for bidding in an auction.
+ *
+ * Layout (from CCTPAuctionHookData.sol):
+ *   Bytes  0-3:   bytes4  - Magic value (0xd55705b2)
+ *   Bytes  4-7:   uint32  - Data length
+ *   Bytes  8-27:  address - Auction contract address
+ *   Bytes 28-59:  uint256 - maxPrice
+ *   Bytes 60-79:  address - Bidder
+ *   Bytes 80-111: uint256 - prevTickPrice
+ *   Bytes 112+:   bytes   - Inner hook data
+ */
+function encodeAuctionBidHookData(params: {
+  auction: Address;
+  maxPrice: bigint;
+  bidder: Address;
+  prevTickPrice: bigint;
+  innerHookData?: Hex;
+}): Hex {
+  const dataLength = 112 + (params.innerHookData
+    ? (params.innerHookData.length - 2) / 2
+    : 0);
+
+  const parts: Hex[] = [
+    CCTP_AUCTION_MAGIC,                                       // bytes 0-3:   magic
+    pad(numberToHex(dataLength, { size: 4 }), { size: 4 }),   // bytes 4-7:   data length (uint32)
+    params.auction,                                            // bytes 8-27:  auction address (20 bytes)
+    pad(numberToHex(params.maxPrice, { size: 32 }), { size: 32 }),  // bytes 28-59: maxPrice (uint256)
+    params.bidder,                                             // bytes 60-79: bidder address (20 bytes)
+    pad(numberToHex(params.prevTickPrice, { size: 32 }), { size: 32 }), // bytes 80-111: prevTickPrice (uint256)
+  ];
+
+  if (params.innerHookData) {
+    parts.push(params.innerHookData);                          // bytes 112+:  inner hook data
+  }
+
+  return concat(parts);
+}
+
+// TODO: Replace with actual auction parameters
+const AUCTION_CONTRACT = "0x0000000000000000000000000000000000000000" as Address;
+const MAX_PRICE = 0n;
+const PREV_TICK_PRICE = 0n;
+
+const hookData = encodeHookData(
+  encodeAuctionBidHookData({
+    auction: AUCTION_CONTRACT,
+    maxPrice: MAX_PRICE,
+    bidder: account.address,
+    prevTickPrice: PREV_TICK_PRICE,
+  }),
+);
 
 async function main() {
   if (!srcChain || !destChain) {
