@@ -78,8 +78,7 @@ function encodeAuctionBidHookData(params: {
 }
 
 // TODO: Replace with actual auction parameters
-const AUCTION_CONTRACT =
-  "0x0000000000000000000000000000000000000000" as Address;
+const AUCTION_CONTRACT = "0x7E9BaF7CC7cD83bACeFB9B2D5c5124C0F9c30834" as Address;
 const MAX_PRICE = 0n;
 const PREV_TICK_PRICE = 0n;
 
